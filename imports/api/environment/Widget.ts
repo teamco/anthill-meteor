@@ -1,12 +1,13 @@
-import { TWidget, IMetadata } from "./types";
+import { TWidget, IMetadata, TWidgetContent } from "/imports/config/types";
 import CommonUtils from "/imports/utils/common.utils";
 
 export default class Widget extends CommonUtils implements TWidget {
+  _id?: string;
   name: string;
   description: string;
   thumbnail: string;
   dimensions: { width: number; height: number; };
-  contentType: { value: "Embedded" | "External"; resource: string; };
+  content: TWidgetContent;
   category: string;
   resource: string;
   metadata: IMetadata = {
@@ -27,7 +28,7 @@ export default class Widget extends CommonUtils implements TWidget {
     this.description = widget.description;
     this.thumbnail = widget.thumbnail;
     this.dimensions = widget.dimensions;
-    this.contentType = widget.contentType;
+    this.content = widget.content;
     this.category = widget.category;
     this.resource = widget.resource;
   }

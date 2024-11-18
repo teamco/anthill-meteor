@@ -1,4 +1,4 @@
-import { TLayout, TEnvironment, IUser, IMetadata, TStatus } from "./types";
+import { TLayout, TEnvironment, IUser, IMetadata, TStatus } from "/imports/config/types";
 import CommonUtils from "/imports/utils/common.utils";
 import Layout from "./Layout";
 

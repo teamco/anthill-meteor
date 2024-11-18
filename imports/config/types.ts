@@ -1,5 +1,3 @@
-import * as _ from 'underscore';
-import { EmptyWidget } from '../widgets/empty.widget';
 export type TStatus = {
   isDraft: boolean;
   isActive: boolean;
@@ -31,8 +29,8 @@ export type TTemplate = {
 }
 
 export type TLayout = {
-	addWidget(widget: TWidget): void;
-	removeWidget(widget: TWidget): void;
+  addWidget(widget: TWidget): void;
+  removeWidget(widget: TWidget): void;
   template: TTemplate;
   version: number;
   metadata: IMetadata,
@@ -50,7 +48,7 @@ export type TEnvironment = {
   status: TStatus
 }
 
-type TWidgetContent = {
+export type TWidgetContent = {
   type: 'Embedded' | 'External' | 'Internal' | 'Script';
   value: string;
   params?: { [key: string]: any }
@@ -69,4 +67,9 @@ export type TWidget = {
   category: string;
   resource: string;
   metadata: IMetadata
+}
+
+export type TAbility = {
+  action?: string;
+  subject: string;
 }

@@ -7,7 +7,6 @@ import Environment from "/imports/api/environment/Environment";
 import { EmptyWidget } from "/imports/api/widgets/empty.widget";
 import { IMetadata, TEnvironment, TLayout, TStatus } from "/imports/config/types";
 import { tsToLocaleDateTime } from "/imports/utils/timestamp";
-import Page from "/imports/ui/components/Page/page.component";
 
 interface DataType {
 	key: string;
@@ -62,7 +61,7 @@ const columns: TableProps<DataType>['columns'] = [
 	},
 ];
 
-const DashboardPage: React.FC = (): JSX.Element => {
+const EnvironmentsPage: React.FC = (): JSX.Element => {
 	const isLoading = useSubscribe("environments");
 	const envs: any = useTracker(() => EnvironmentsCollection.find({}).fetch());
 
@@ -80,12 +79,11 @@ const DashboardPage: React.FC = (): JSX.Element => {
 	};
 
 	return (
-		<Page ableFor={{ subject: 'dashboard' }}>
-			<h1>Dashboard</h1>
+		<div>
 			<Table<DataType> columns={columns} dataSource={envs.map((env: TEnvironment, idx: number) => ({ idx: idx + 1, key: env._id, ...env }))} />
 			<Button loading={isLoading()} type={"primary"} onClick={createEnvironment}>Create Env</Button>
-		</Page>
+		</div>
 	);
 }
 
-export default DashboardPage;
+export default EnvironmentsPage;

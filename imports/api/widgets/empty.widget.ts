@@ -1,4 +1,4 @@
-import { IMetadata, IUser, TWidget } from "../environment/types"
+import { IMetadata, IUser, TWidget } from "/imports/config/types"
 
 export class EmptyWidget implements TWidget {
   name: string = "Empty";

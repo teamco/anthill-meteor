@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
-import { IUser } from '/imports/api/environment/types';
+import { IUser } from '/imports/config/types';
 
 import './environments/methods';
 import './environments/publish';
