@@ -1,31 +1,20 @@
 import React, { FC, SetStateAction, useEffect, useState } from 'react';
 import { ConfigProvider, Layout, message, Modal, notification } from 'antd';
-import enUs from 'antd/locale/en_US';
 import { Outlet } from 'react-router-dom';
 
-import dayjs from 'dayjs';
-import 'dayjs/locale/en';
-import { Locale } from 'antd/es/locale';
-import { AbilityContext, AuthenticationContext } from '../context/authentication.context';
+import { AbilityContext, AuthenticationContext } from '/imports/ui/context/authentication.context';
+import { I18nContext } from '/imports/ui/context/i18n.context';
+import { NotificationContext } from '/imports/ui/context/notification.context';
 import { defineAbilityFor } from '/imports/ui/services/ability.service';
 import Loader from '../components/Loader/loader.component';
+import { useIntl } from 'react-intl';
 
 const { Header, Footer, Content } = Layout;
 
 const AdminLayout: FC = (): JSX.Element => {
-  const [locale, setLocal] = useState(enUs);
+  const intl = useIntl();
 
   const [ability, setAbility] = useState(defineAbilityFor(Meteor.user()));
-
-  const changeLocale = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const localeValue = e.target.value;
-    setLocal(localeValue as unknown as SetStateAction<Locale>);
-    if (!localeValue) {
-      dayjs.locale('en');
-    } else {
-      //dayjs.locale('zh-cn');
-    }
-  };
 
   useEffect(() => {
     setAbility(defineAbilityFor(Meteor.user()));
@@ -38,22 +27,26 @@ const AdminLayout: FC = (): JSX.Element => {
   });
 
   return ability ? (
-    <AuthenticationContext.Provider value={ability}>
-      <AbilityContext.Provider value={ability}>
-        <ConfigProvider locale={locale}>
-          <Layout className={'layout'}>
-            <Header className={'header'}>Header</Header>
-            <Content className={'content'}>
-              {messageHolder}
-              {notificationHolder}
-              {modalHolder}
-              <Outlet context={ability} />
-            </Content>
-            <Footer className={'footer'}>Footer</Footer>
-          </Layout>
-        </ConfigProvider>
-      </AbilityContext.Provider>
-    </AuthenticationContext.Provider>
+      <I18nContext.Provider value={intl}>
+        <AuthenticationContext.Provider value={ability}>
+          <AbilityContext.Provider value={ability}>
+            <NotificationContext.Provider value={{ modalApi, messageApi, notificationApi }}>
+              <ConfigProvider>
+                <Layout className={'layout'}>
+                  <Header className={'header'}>Header</Header>
+                  <Content className={'content'}>
+                    {messageHolder}
+                    {notificationHolder}
+                    {modalHolder}
+                    <Outlet />
+                  </Content>
+                  <Footer className={'footer'}>Footer</Footer>
+                </Layout>
+              </ConfigProvider>
+            </NotificationContext.Provider>
+          </AbilityContext.Provider>
+        </AuthenticationContext.Provider>
+      </I18nContext.Provider>
   ) : <Loader spinning={true} />
 };
 

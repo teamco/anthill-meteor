@@ -1,12 +1,9 @@
-import React, { memo, useContext } from 'react';
+import React, { memo } from 'react';
 
-// import Page403 from '@/pages/403';
-
-import Loader from '/imports/ui/components/Loader/loader.component';
-
-import { TAbility } from '/imports/config/types';
-import { AbilityContext } from '/imports/ui/context/authentication.context';
 import { Can } from '/imports/ui/components/Ability/can';
+import Loader from '/imports/ui/components/Loader/loader.component';
+import Page403 from '/imports/ui/pages/403';
+import { TAbility } from '/imports/config/types';
 
 type TPageProps = {
   testId?: string,
@@ -16,7 +13,16 @@ type TPageProps = {
   children?: React.ReactNode
 }
 
-function Page(props: TPageProps) {
+/**
+ * @function Page
+ * @param props.testId The id of the div container of the page (used in tests only)
+ * @param props.className The class of the div container of the page
+ * @param props.spinning Whether or not the page should display a spinner
+ * @param props.ableFor The ability of the page. If the user doesn't have enough permissions to access the page, the page will be redirected to the page403 page with the given status (default is 403).
+ * @param props.children The children of the page
+ * @returns {JSX.Element} The JSX element of the page
+ */
+const Page: React.FC<TPageProps> = (props: TPageProps): JSX.Element => {
   const {
     testId,
     className,
@@ -28,8 +34,6 @@ function Page(props: TPageProps) {
     children
   } = props;
 
-  const ability = useContext(AbilityContext);
-
   return (
     
     <div className={className} data-testid={testId}>
@@ -37,7 +41,7 @@ function Page(props: TPageProps) {
       <Can I={action} a={subject}>
         {children}
       </Can>
-      {/* <Page403 ableFor={props.ableFor}/> */}
+      <Page403 ableFor={props.ableFor}/>
     </div>
   );
 }

@@ -1,20 +1,20 @@
-import auth from '@/locales/en-US/auth';
-import actions from '@/locales/en-US/actions';
-import address from '@/locales/en-US/address';
-import form from '@/locales/en-US/form';
-import error from '@/locales/en-US/error';
-import event from '@/locales/en-US/event';
-import menu from '@/locales/en-US/menu';
-import message from '@/locales/en-US/message';
-import notifications from '@/locales/en-US/notifications';
-import profile from '@/locales/en-US/profile';
-import time from '@/locales/en-US/time';
-import business from '@/locales/en-US/business';
-import service from '@/locales/en-US/service';
-import status from '@/locales/en-US/status';
-import tour from '@/locales/en-US/tour';
-import subscription from '@/locales/en-US/subscription';
-import upload from '@/locales/en-US/upload';
+import auth from './en-US/auth';
+import actions from './en-US/actions';
+import address from './en-US/address';
+import form from './en-US/form';
+import error from './en-US/error';
+import event from './en-US/event';
+import menu from './en-US/menu';
+import message from './en-US/message';
+import notifications from './en-US/notifications';
+import profile from './en-US/profile';
+import time from './en-US/time';
+import business from './en-US/business';
+import service from './en-US/service';
+import status from './en-US/status';
+import tour from './en-US/tour';
+import subscription from './en-US/subscription';
+import upload from './en-US/upload';
 
 export default {
   ...auth,

@@ -7,7 +7,7 @@ type TError = {
 	message?: string;
 }
 
-const ErrorPage: React.FC = (): JSX.Element => {
+const Page404: React.FC = (): JSX.Element => {
 	const error: TError = useRouteError();
 	console.error(error);
 
@@ -22,4 +22,4 @@ const ErrorPage: React.FC = (): JSX.Element => {
 	);
 }
 
-export default ErrorPage;
+export default Page404;

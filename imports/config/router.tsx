@@ -4,7 +4,7 @@ import { createBrowserRouter } from "react-router-dom";
 import AppLayout from "../ui/layouts/app.layout";
 import AdminLayout from "../ui/layouts/admin.layout";
 
-import ErrorPage from "../ui/pages/error";
+import Page404 from "../ui/pages/404";
 
 import HomePage from "../ui/pages/home/home.page";
 import DashboardPage from "../ui/pages/dashboard/dashboard.page";
@@ -14,7 +14,7 @@ export const renderRoutes = () => {
     {
       path: "/",
       element: <AppLayout/>,
-      errorElement: <ErrorPage />,
+      errorElement: <Page404 />,
       children: [
         {
           path: "/",
@@ -25,7 +25,7 @@ export const renderRoutes = () => {
     {
       path: "/admin",
       element: <AdminLayout/>,
-      errorElement: <ErrorPage />,
+      errorElement: <Page404 />,
       children: [
         {
           path: "/admin",
