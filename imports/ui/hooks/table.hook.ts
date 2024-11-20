@@ -29,7 +29,7 @@ type TUseTable = {
  */
 export const useTable = (method: string, total: number, defaults?: TDefaults): TUseTable => {
   const DEFAULT_PAGE_CURRENT = defaults?.current || 1;
-	const DEFAULT_PAGE_SIZE = defaults?.pageSize || 5;
+	const DEFAULT_PAGE_SIZE = defaults?.pageSize || 10;
 
   const [searchParams, setSearchParams] = useSearchParams();
 

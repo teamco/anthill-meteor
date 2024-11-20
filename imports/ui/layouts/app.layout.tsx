@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { Layout } from 'antd';
 import { Outlet } from 'react-router-dom';
 
-import './style/app.layout.less';
+import './app.layout.module.less';
 
 const { Header, Footer, Content } = Layout;
 
