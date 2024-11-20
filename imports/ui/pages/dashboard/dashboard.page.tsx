@@ -10,8 +10,8 @@ import { TileComponent } from "/imports/ui/components/Tile/tile.component";
 
 import { I18nContext } from "/imports/ui/context/i18n.context";
 
-import { t } from "/imports/utils/i18n";
-import { layout } from "/imports/utils/layout";
+import { t } from "../../../utils/i18n.util";
+import { layout } from "../../../utils/layout.util";
 
 /**
  * DashboardPage component

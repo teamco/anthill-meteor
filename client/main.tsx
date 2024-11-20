@@ -12,6 +12,7 @@ import weekYear from 'dayjs/plugin/weekYear';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 
 import App from '/imports/ui/App';
+import { MongoInternals } from 'meteor/mongo';
 
 dayjs.extend(customParseFormat);
 dayjs.extend(advancedFormat);

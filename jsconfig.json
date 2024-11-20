@@ -52,6 +52,9 @@
         "/Users/teamco/.meteor/packages/accounts-password/3.0.2/web.browser/password_client.js",
         "/Users/teamco/.meteor/packages/accounts-password/3.0.2/web.browser/email_templates.js",
         "/Users/teamco/.meteor/packages/accounts-password/3.0.2/web.browser/password_server.js"
+      ],
+      "meteor/meteorhacks:aggregate": [
+        "/Users/teamco/.meteor/packages/meteorhacks_aggregate/1.3.0/web.browser//packages/meteorhacks_aggregate.js"
       ]
     }
   },

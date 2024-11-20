@@ -1,3 +1,6 @@
+import { TablePaginationConfig, GetProp, TableProps } from "antd";
+import { SorterResult } from "antd/es/table/interface";
+
 export type TStatus = {
   isDraft: boolean;
   isActive: boolean;
@@ -78,3 +81,13 @@ export interface CommonDataType {
 	key: string;
   [key: string]: any
 }
+
+export interface ITableParams {
+  pagination?: TablePaginationConfig;
+  sortField?: SorterResult<any>['field'];
+  sortOrder?: SorterResult<any>['order'];
+  filters?: Parameters<GetProp<TableProps, 'onChange'>>[1];
+}
+
+export type TColumns<T extends object = object> = TableProps<T>['columns'];
+export type TTablePaginationConfig = Exclude<GetProp<TableProps, 'pagination'>, boolean>;

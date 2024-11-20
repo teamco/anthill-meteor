@@ -1,5 +1,5 @@
 import { IMetadata, IUser, TLayout, TTemplate, TWidget } from "/imports/config/types";
-import CommonUtils from "/imports/utils/common.utils";
+import CommonUtils from "../../utils/common.util";
 
 export default class Layout extends CommonUtils implements TLayout {
   template: TTemplate = {};

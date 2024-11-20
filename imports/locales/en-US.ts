@@ -4,10 +4,10 @@ import table from './en-US/table';
 // import auth from './en-US/auth';
 // import address from './en-US/address';
 // import form from './en-US/form';
-// import error from './en-US/error';
+import error from './en-US/error';
 // import event from './en-US/event';
 // import menu from './en-US/menu';
-// import message from './en-US/message';
+import message from './en-US/message';
 // import notifications from './en-US/notifications';
 // import profile from './en-US/profile';
 // import time from './en-US/time';
@@ -26,10 +26,10 @@ export default {
   // ...address,
   // ...business,
   // ...form,
-  // ...error,
+  ...error,
   // ...event,
   // ...menu,
-  // ...message,
+  ...message,
   // ...notifications,
   // ...profile,
   // ...time,

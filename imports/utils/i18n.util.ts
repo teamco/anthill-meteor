@@ -1,4 +1,4 @@
-import { logger } from '/imports/utils/console';
+import { logger } from './console.util';
 
 type TIntl = {
   messages: string[];

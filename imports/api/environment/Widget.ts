@@ -1,5 +1,5 @@
 import { TWidget, IMetadata, TWidgetContent } from "/imports/config/types";
-import CommonUtils from "/imports/utils/common.utils";
+import CommonUtils from "../../utils/common.util";
 
 export default class Widget extends CommonUtils implements TWidget {
   _id?: string;

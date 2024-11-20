@@ -1,13 +1,17 @@
-import React, { FC, SetStateAction, useEffect, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { ConfigProvider, Layout, message, Modal, notification } from 'antd';
 import { Outlet } from 'react-router-dom';
+import { useIntl } from 'react-intl';
 
 import { AbilityContext, AuthenticationContext } from '/imports/ui/context/authentication.context';
 import { I18nContext } from '/imports/ui/context/i18n.context';
 import { NotificationContext } from '/imports/ui/context/notification.context';
+
 import { defineAbilityFor } from '/imports/ui/services/ability.service';
-import Loader from '../components/Loader/loader.component';
-import { useIntl } from 'react-intl';
+
+import Loader from '/imports/ui/components/Loader/loader.component';
+
+import { nCache } from '/imports/utils/message.util';
 
 const { Header, Footer, Content } = Layout;
 
@@ -25,6 +29,11 @@ const AdminLayout: FC = (): JSX.Element => {
   const [notificationApi, notificationHolder] = notification.useNotification({
     stack: { threshold: 3 }
   });
+
+  nCache.set('intl', intl);
+  nCache.set('messageApi', messageApi);
+  nCache.set('modalApi', modalApi);
+  nCache.set('notificationApi', notificationApi);
 
   return ability ? (
       <I18nContext.Provider value={intl}>

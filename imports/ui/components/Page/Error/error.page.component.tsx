@@ -4,7 +4,7 @@ import classnames from 'classnames';
 import { useNavigate } from 'react-router-dom';
 import Loader from '/imports/ui/components/Loader/loader.component';
 import { Can } from '/imports/ui/components/Ability/can';
-import { t } from '/imports/utils/i18n';
+import { t } from '../../../../utils/i18n.util';
 import { I18nContext } from '/imports/ui/context/i18n.context';
 import { ResultStatusType } from 'antd/es/result';
 

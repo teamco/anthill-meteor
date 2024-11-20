@@ -1,9 +1,12 @@
 import React from "react";
 import { TableProps } from "antd/es/table";
-import { CommonDataType, IMetadata, TLayout, TStatus } from "/imports/config/types";
-import { indexColumn } from "/imports/utils/antd.utils";
-import { tsToLocaleDateTime } from "/imports/utils/timestamp";
+
 import { DataType } from "./environments.page";
+
+import { IMetadata, TColumns, TStatus } from "/imports/config/types";
+
+import { indexColumn } from "/imports/utils/antd.util";
+import { tsToLocaleDateTime } from "/imports/utils/timestamp.util";
 
 /**
  * Returns columns for a table listing environments, including name, type, status, and last updated at.
@@ -11,17 +14,19 @@ import { DataType } from "./environments.page";
  * @returns {TableProps<DataType>['columns']} The columns
  */
 export const metadataColumns = (): TableProps<DataType>['columns'] => {
-  const columns: TableProps<DataType>['columns'] = [
+  const columns: TColumns<DataType> = [
     indexColumn,
     {
       title: 'Name',
       dataIndex: 'name',
-      key: 'name'
+      key: 'name',
+      sorter: true
     },
     {
       title: 'Type',
       dataIndex: 'type',
-      key: 'type'
+      key: 'type',
+      sorter: true
     },
     {
       title: 'Status',
@@ -41,6 +46,7 @@ export const metadataColumns = (): TableProps<DataType>['columns'] => {
       title: 'Updated At',
       dataIndex: 'metadata',
       key: 'metadata',
+      sorter: true,
       render: (metadata: IMetadata): JSX.Element => {
         return (
           <div>

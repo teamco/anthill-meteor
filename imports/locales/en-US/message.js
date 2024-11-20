@@ -26,6 +26,7 @@ export default {
   'message.error.notFound': 'The {type} was not found',
   'message.error.notAllowed': 'You are not allowed to access this {type}',
   'message.error.connection': 'Failed to connect to the server',
+  'message.success.save': '{instance} successfully created',
   'message.success.sentVerificationEmail': 'Verification email was sent',
   'message.pending.emailVerification': 'Pending email verification',
   'message.error.sentVerificationEmail': 'Failed to send verification email',

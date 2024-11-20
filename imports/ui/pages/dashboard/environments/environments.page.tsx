@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Button, Table } from "antd";
+import { Button, Table } from 'antd';
 import { useTracker, useSubscribe } from "meteor/react-meteor-data";
 
 import Environment from "/imports/api/environment/Environment";
@@ -12,8 +12,11 @@ import { I18nContext } from "/imports/ui/context/i18n.context";
 
 import Page from "/imports/ui/components/Page/page.component";
 
-import { t } from "/imports/utils/i18n";
-import { indexable } from "/imports/utils/antd.utils";
+import { useTable } from "/imports/ui/hooks/table.hook";
+
+import { t } from "/imports/utils/i18n.util";
+import { indexable } from "/imports/utils/antd.util";
+import { catchMsg, successSaveMsg } from "/imports/utils/message.util";
 
 import { metadataColumns } from "./columns.metadata";
 
@@ -42,28 +45,39 @@ export interface DataType extends CommonDataType {
 const EnvironmentsPage: React.FC = (): JSX.Element => {
 	const isLoading = useSubscribe("environments");
 	const intl = useContext(I18nContext);
-	const envs = useTracker(() => EnvironmentsCollection.find({}).fetch());
+
+	const total = useTracker(() => EnvironmentsCollection.find({}).count());
 
 	const user = Meteor.user() || { _id: '1' };
 
+	/**
+	 * Create a new environment using the default type and layout.
+	 *
+	 * The new environment is created with the 'development' type and a default layout
+	 * containing an empty widget. The environment is then inserted into the
+	 * EnvironmentsCollection using a Meteor method call.
+	 */
 	const createEnvironment = () => {
 		const env = new Environment('development', 'development', user);
 		const layout = env.createLayout(user);
 
 		layout.addWidget(new EmptyWidget(null, user));
 
-		Meteor.callAsync("environmentsInsert", { ...env }).then((_id: string) => {
-			//fetchEnvironments();
-		});
+		Meteor.callAsync("environmentsInsert", { ...env }).then(successSaveMsg).catch(catchMsg);
 	};
+
+	const { entities, tableParams, handleTableChange } = useTable("environmentsPaginate", total);
 
 	const columns = metadataColumns();
 
 	const tableProps = {
 		columns,
 		className: 'eList',
-		dataSource: indexable(envs),
+		dataSource: indexable(entities, tableParams.pagination?.current, tableParams.pagination?.pageSize),
 		loading: isLoading(),
+		rowKey: (record: DataType) => record._id,
+		pagination: tableParams.pagination,
+		onChange: handleTableChange,
 		title: () => (
 			<div className="eHooter">
 				<Button loading={isLoading()} type={"primary"} onClick={createEnvironment}>Create Env</Button>
@@ -71,10 +85,10 @@ const EnvironmentsPage: React.FC = (): JSX.Element => {
 		),
 		footer: () => (
 			<div className="eFooter">
-				{t(intl, 'table.total', { amount: envs.length.toString() })}
+				{t(intl, 'table.total', { amount: total.toString() })}
 			</div>
 		)
-	}
+	};
 
 	return (
 		<Page
