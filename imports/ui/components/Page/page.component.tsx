@@ -1,9 +1,12 @@
 import React, { memo } from 'react';
+import classnames from 'classnames';
 
 import { Can } from '/imports/ui/components/Ability/can';
 import Loader from '/imports/ui/components/Loader/loader.component';
 import Page403 from '/imports/ui/pages/403';
 import { TAbility } from '/imports/config/types';
+
+import './page.module.less';
 
 type TPageProps = {
   testId?: string,
@@ -34,9 +37,8 @@ const Page: React.FC<TPageProps> = (props: TPageProps): JSX.Element => {
     children
   } = props;
 
-  return (
-    
-    <div className={className} data-testid={testId}>
+  return (    
+    <div className={classnames('page', className)} data-testid={testId}>
       <Loader spinning={!!spinning} />
       <Can I={action} a={subject}>
         {children}

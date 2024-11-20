@@ -8,6 +8,7 @@ import Page404 from "../ui/pages/404";
 
 import HomePage from "../ui/pages/home/home.page";
 import DashboardPage from "../ui/pages/dashboard/dashboard.page";
+import EnvironmentsPage from "../ui/pages/dashboard/environments/environments.page";
 
 export const renderRoutes = () => {
   return createBrowserRouter([
@@ -23,13 +24,17 @@ export const renderRoutes = () => {
       ],
     },
     {
-      path: "/admin",
+      path: "/dashboard",
       element: <AdminLayout/>,
       errorElement: <Page404 />,
       children: [
         {
-          path: "/admin",
+          path: "/dashboard",
           element: <DashboardPage />,
+        },
+        {
+          path: "/dashboard/environments",
+          element: <EnvironmentsPage />,
         },
       ],
     },

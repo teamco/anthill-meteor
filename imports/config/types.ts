@@ -73,3 +73,8 @@ export type TAbility = {
   action?: string;
   subject: string;
 }
+
+export interface CommonDataType {
+	key: string;
+  [key: string]: any
+}

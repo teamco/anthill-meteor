@@ -1,89 +1,47 @@
-import { Button, Table } from "antd";
-import type { TableProps } from 'antd';
 import React from "react";
+import { Col, Row } from "antd";
+import { useNavigate } from "react-router-dom";
 import { useTracker, useSubscribe } from "meteor/react-meteor-data";
+
 import { EnvironmentsCollection } from "/imports/collections/environments.collection";
-import Environment from "/imports/api/environment/Environment";
-import { EmptyWidget } from "/imports/api/widgets/empty.widget";
-import { IMetadata, TEnvironment, TLayout, TStatus } from "/imports/config/types";
-import { tsToLocaleDateTime } from "/imports/utils/timestamp";
+
 import Page from "/imports/ui/components/Page/page.component";
+import { TileComponent } from "/imports/ui/components/Tile/tile.component";
 
-interface DataType {
-	key: string;
-	name: string;
-	type: string;
-	status: TStatus;
-	metadata: IMetadata;
-	layout: TLayout;
-}
+import { layout } from "/imports/utils/layout";
 
-const columns: TableProps<DataType>['columns'] = [
-	{
-    title: 'N',
-    dataIndex: 'idx',
-    rowScope: 'row',
-  },
-	{
-		title: 'Name',
-		dataIndex: 'name',
-		key: 'name'
-	},
-	{
-		title: 'Type',
-		dataIndex: 'type',
-		key: 'type'
-	},
-	{
-		title: 'Status',
-		dataIndex: 'status',
-		key: 'status',
-		render: (status: TStatus): JSX.Element => {
-			return (
-				<div>
-					{status.isDraft && 'Draft'}
-					{status.isActive && 'Active'}
-					{status.isPending && 'Pending'}
-				</div>
-			)
-		}
-	},
-	{
-		title: 'Updated At',
-		dataIndex: 'metadata',
-		key: 'metadata',
-		render: (metadata: IMetadata): JSX.Element => {
-			return (
-				<div>
-					{tsToLocaleDateTime(metadata?.updatedAt.toString())}
-				</div>
-			)
-		}
-	},
-];
-
+/**
+ * DashboardPage component
+ *
+ * This component renders the dashboard page including a list of environments fetched
+ * from the EnvironmentsCollection. It provides functionality to create a new environment
+ * using a button, which triggers the creation of an environment with an empty layout
+ * and a single empty widget. The component uses Meteor's reactive data sources to
+ * subscribe to the environments publication and track the environment data.
+ *
+ * @returns {JSX.Element} The JSX element representing the dashboard page
+ */
 const DashboardPage: React.FC = (): JSX.Element => {
+	const history = useNavigate();
 	const isLoading = useSubscribe("environments");
-	const envs: any = useTracker(() => EnvironmentsCollection.find({}).fetch());
+	const envs: any[] = useTracker(() => EnvironmentsCollection.find({}).fetch());
 
 	const user = Meteor.user() || { _id: '1' };
 
-	const createEnvironment = () => {
-		const env = new Environment('development', 'development', user);
-		const layout = env.createLayout(user);
-		
-		layout.addWidget(new EmptyWidget(null, user));
-
-		Meteor.callAsync("environmentsInsert", { ...env }).then((_id: string) => {			
-			//fetchEnvironments();
-		});
-	};
+	const navigateTo = {
+		environments: () => history('/dashboard/environments'),
+	}
 
 	return (
 		<Page ableFor={{ subject: 'dashboard' }}>
 			<h1>Dashboard</h1>
-			<Table<DataType> columns={columns} dataSource={envs.map((env: TEnvironment, idx: number) => ({ idx: idx + 1, key: env._id, ...env }))} />
-			<Button loading={isLoading()} type={"primary"} onClick={createEnvironment}>Create Env</Button>
+			<Row gutter={[48, 48]}>
+				<Col {...layout.quarterColumn}>
+					<TileComponent title={"Environments"}
+						onClick={navigateTo.environments}
+						description={envs.length.toString()} />
+				</Col>
+			</Row>
 		</Page>
 	);
 }
