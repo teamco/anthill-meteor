@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Button, Table } from "antd";
 import { useTracker, useSubscribe } from "meteor/react-meteor-data";
 
@@ -8,11 +8,16 @@ import { EmptyWidget } from "/imports/api/widgets/empty.widget";
 
 import { CommonDataType, IMetadata, TLayout, TStatus } from "/imports/config/types";
 
+import { I18nContext } from "/imports/ui/context/i18n.context";
+
 import Page from "/imports/ui/components/Page/page.component";
 
+import { t } from "/imports/utils/i18n";
 import { indexable } from "/imports/utils/antd.utils";
 
 import { metadataColumns } from "./columns.metadata";
+
+import './environments.module.less';
 
 export interface DataType extends CommonDataType {
 	name: string;
@@ -36,6 +41,7 @@ export interface DataType extends CommonDataType {
  */
 const EnvironmentsPage: React.FC = (): JSX.Element => {
 	const isLoading = useSubscribe("environments");
+	const intl = useContext(I18nContext);
 	const envs = useTracker(() => EnvironmentsCollection.find({}).fetch());
 
 	const user = Meteor.user() || { _id: '1' };
@@ -53,10 +59,30 @@ const EnvironmentsPage: React.FC = (): JSX.Element => {
 
 	const columns = metadataColumns();
 
+	const tableProps = {
+		columns,
+		className: 'eList',
+		dataSource: indexable(envs),
+		loading: isLoading(),
+		title: () => (
+			<div className="eHooter">
+				<Button loading={isLoading()} type={"primary"} onClick={createEnvironment}>Create Env</Button>
+			</div>
+		),
+		footer: () => (
+			<div className="eFooter">
+				{t(intl, 'table.total', { amount: envs.length.toString() })}
+			</div>
+		)
+	}
+
 	return (
-		<Page ableFor={{ subject: 'environments' }}>
-			<Table<DataType> columns={columns} dataSource={indexable(envs)} />
-			<Button loading={isLoading()} type={"primary"} onClick={createEnvironment}>Create Env</Button>
+		<Page
+			ableFor={{ subject: 'dashboard.environments' }}
+			title={t(intl, 'dashboard.environments.title')}
+			description={t(intl, 'dashboard.environments.description')}
+		>
+			<Table<DataType> {...tableProps} />
 		</Page>
 	);
 }

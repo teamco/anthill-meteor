@@ -19,6 +19,11 @@
     "react-intl": "^7.0.1",
     "react-router-dom": "^6.28.0"
   },
+  "devDependencies": {
+    "less": "^4.2.0",
+    "less-loader": "^12.2.0",
+    "style-loader": "^3.3.3"
+  },
   "meteor": {
     "mainModule": {
       "client": "client/main.tsx",

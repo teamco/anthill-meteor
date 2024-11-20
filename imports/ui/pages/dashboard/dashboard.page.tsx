@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Col, Row } from "antd";
 import { useNavigate } from "react-router-dom";
 import { useTracker, useSubscribe } from "meteor/react-meteor-data";
@@ -8,6 +8,9 @@ import { EnvironmentsCollection } from "/imports/collections/environments.collec
 import Page from "/imports/ui/components/Page/page.component";
 import { TileComponent } from "/imports/ui/components/Tile/tile.component";
 
+import { I18nContext } from "/imports/ui/context/i18n.context";
+
+import { t } from "/imports/utils/i18n";
 import { layout } from "/imports/utils/layout";
 
 /**
@@ -26,20 +29,22 @@ const DashboardPage: React.FC = (): JSX.Element => {
 	const isLoading = useSubscribe("environments");
 	const envs: any[] = useTracker(() => EnvironmentsCollection.find({}).fetch());
 
-	const user = Meteor.user() || { _id: '1' };
+	const intl = useContext(I18nContext);
 
 	const navigateTo = {
 		environments: () => history('/dashboard/environments'),
 	}
 
 	return (
-		<Page ableFor={{ subject: 'dashboard' }}>
-			<h1>Dashboard</h1>
+		<Page ableFor={{ subject: 'dashboard' }} title={t(intl, 'dashboard.title')}>
 			<Row gutter={[48, 48]}>
 				<Col {...layout.quarterColumn}>
-					<TileComponent title={"Environments"}
+					<TileComponent
+						isLoading={isLoading()}
+						title={"Environments"}
 						onClick={navigateTo.environments}
-						description={envs.length.toString()} />
+						description={envs.length.toString()}
+					/>
 				</Col>
 			</Row>
 		</Page>
