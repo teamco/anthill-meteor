@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { TableProps } from "antd";
 import { useSearchParams } from "react-router-dom";
+import { useTracker } from "meteor/react-meteor-data";
 
 import { ITableParams } from "/imports/config/types";
 
@@ -12,22 +13,22 @@ type TDefaults = {
 }
 
 type TUseTable = { 
+	total: number;
 	entities: any[]; 
 	tableParams: ITableParams; 
+	handleRefresh: () => void;
 	handleTableChange: TableProps<any>['onChange']; 
 }
 
 /**
- * @description
- * Hook for fetching data for a table. It fetches data by calling a server-side method (first argument).
+ * @description Hook for fetching data for a table. It fetches data by calling a server-side method (first argument).
  * @param {string} method Server-side method name.
- * @param {number} total Total number of items.
+ * @param {Mongo.Collection<Document, Document>} Collection MongoDB collection instance.
  * @param {TDefaults} [defaults] Default values for current and pageSize.
- * @returns {{ entities, tableParams, handleTableChange }} Object with `entity`, `tableParams`, and `handleTableChange` properties.
- * @example
- * const { entity, tableParams, handleTableChange } = useTable('method.name', 100, { current: 1, pageSize: 10 });
+ * @returns {TUseTable} Object with `entity`, `tableParams`, `handleRefresh` and `handleTableChange` properties.
+ * @example const { entity, tableParams, handleTableChange } = useTable('method.name', 100, { current: 1, pageSize: 10 });
  */
-export const useTable = (method: string, total: number, defaults?: TDefaults): TUseTable => {
+export const useTable = (method: string, Collection: Mongo.Collection<Document, Document>, defaults?: TDefaults): TUseTable => {
   const DEFAULT_PAGE_CURRENT = defaults?.current || 1;
 	const DEFAULT_PAGE_SIZE = defaults?.pageSize || 10;
 
@@ -43,31 +44,21 @@ export const useTable = (method: string, total: number, defaults?: TDefaults): T
 			pageSize: Number(pageParams[1]) || DEFAULT_PAGE_SIZE
 		},
 	});
+	
+	const total = useTracker(() => Collection.find({}).count());
 
-	useEffect(() => {
+	/**
+	 * Fetches data from the server by calling the `method` method and sets the `entities` state.
+	 * @returns {void}
+	 */
+	const handleRefresh = (): void => {
 		Meteor.callAsync(method, { 
 			current: tableParams.pagination?.current, 
 			pageSize: tableParams.pagination?.pageSize 
 		}).then((res: any[]) => {
 			setEntities(res);
 		}).catch((e) => catchMsg(e, () => setEntities([])))
-	}, [
-		tableParams.pagination?.current,
-		tableParams.pagination?.pageSize,
-		tableParams?.sortOrder,
-		tableParams?.sortField,
-		JSON.stringify(tableParams.filters),
-	]);
-
-	useEffect(() => {
-		setTableParams({
-			...tableParams,
-			pagination: {
-				...tableParams.pagination,
-				total
-			},
-		});
-	}, [entities, total]);
+	};
 
 	/**
 	 * Table change handler.
@@ -93,9 +84,29 @@ export const useTable = (method: string, total: number, defaults?: TDefaults): T
     }
   };
 
+	useEffect(handleRefresh, [
+		tableParams.pagination?.current,
+		tableParams.pagination?.pageSize,
+		tableParams?.sortOrder,
+		tableParams?.sortField,
+		JSON.stringify(tableParams.filters),
+	]);
+
+	useEffect(() => {
+		setTableParams({
+			...tableParams,
+			pagination: {
+				...tableParams.pagination,
+				total
+			},
+		});
+	}, [entities, total]);
+
 	return {
+		total,
 		entities,
 		tableParams,
+		handleRefresh,
 		handleTableChange
 	}
 };

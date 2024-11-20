@@ -1,14 +1,14 @@
 import React, { useContext } from "react";
 import { Button, Table } from 'antd';
-import { useTracker, useSubscribe } from "meteor/react-meteor-data";
+import { useSubscribe } from "meteor/react-meteor-data";
 
-import Environment from "/imports/api/environment/Environment";
 import { EnvironmentsCollection } from "/imports/collections/environments.collection";
-import { EmptyWidget } from "/imports/api/widgets/empty.widget";
 
 import { CommonDataType, IMetadata, TLayout, TStatus } from "/imports/config/types";
 
 import { I18nContext } from "/imports/ui/context/i18n.context";
+import { AbilityContext } from '/imports/ui/context/authentication.context';
+import { NotificationContext } from '/imports/ui/context/notification.context';
 
 import Page from "/imports/ui/components/Page/page.component";
 
@@ -16,7 +16,8 @@ import { useTable } from "/imports/ui/hooks/table.hook";
 
 import { t } from "/imports/utils/i18n.util";
 import { indexable } from "/imports/utils/antd.util";
-import { catchMsg, successSaveMsg } from "/imports/utils/message.util";
+
+import { createEnvironment } from "/imports/ui/services/environment.service";
 
 import { metadataColumns } from "./columns.metadata";
 
@@ -45,28 +46,18 @@ export interface DataType extends CommonDataType {
 const EnvironmentsPage: React.FC = (): JSX.Element => {
 	const isLoading = useSubscribe("environments");
 	const intl = useContext(I18nContext);
-
-	const total = useTracker(() => EnvironmentsCollection.find({}).count());
+	const ability = useContext(AbilityContext);
+	const { modalApi } = useContext(NotificationContext);
 
 	const user = Meteor.user() || { _id: '1' };
 
-	/**
-	 * Create a new environment using the default type and layout.
-	 *
-	 * The new environment is created with the 'development' type and a default layout
-	 * containing an empty widget. The environment is then inserted into the
-	 * EnvironmentsCollection using a Meteor method call.
-	 */
-	const createEnvironment = () => {
-		const env = new Environment('development', 'development', user);
-		const layout = env.createLayout(user);
-
-		layout.addWidget(new EmptyWidget(null, user));
-
-		Meteor.callAsync("environmentsInsert", { ...env }).then(successSaveMsg).catch(catchMsg);
-	};
-
-	const { entities, tableParams: { pagination }, handleTableChange } = useTable("environmentsPaginate", total);
+	const { 
+		total, 
+		entities, 
+		tableParams: { pagination }, 
+		handleRefresh,
+		handleTableChange 
+	} = useTable("environmentsPaginate", EnvironmentsCollection as any);
 
 	const columns = metadataColumns();
 
@@ -79,8 +70,18 @@ const EnvironmentsPage: React.FC = (): JSX.Element => {
 		rowKey: (record: DataType) => record._id,
 		onChange: handleTableChange,
 		title: () => (
-			<div className="eHooter">
-				<Button loading={isLoading()} type={"primary"} onClick={createEnvironment}>Create Env</Button>
+			<div className="eHeader">
+				<Button
+					disabled={ability.cannot('create', 'environment')}
+					loading={isLoading()}
+					type={"primary"}
+					onClick={() => {
+						handleCreateEnvironment();
+						//createEnvironment('name', 'type', user, handleRefresh)
+					}}
+				>
+					Create Env
+				</Button>
 			</div>
 		),
 		footer: () => (
@@ -89,6 +90,20 @@ const EnvironmentsPage: React.FC = (): JSX.Element => {
 			</div>
 		)
 	};
+
+	const handleCreateEnvironment = () => {
+		modalApi.info({
+			title: 'Confirm',
+			content: 'Bla bla ...',
+			footer: (_: any, { OkBtn, CancelBtn }: any) => (
+				<>
+					<Button>Custom Button</Button>
+					<CancelBtn />
+					<OkBtn />
+				</>
+			),
+		})
+	}
 
 	return (
 		<Page

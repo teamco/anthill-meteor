@@ -3,7 +3,9 @@ import classnames from 'classnames';
 
 import { Can } from '/imports/ui/components/Ability/can';
 import Loader from '/imports/ui/components/Loader/loader.component';
+
 import Page403 from '/imports/ui/pages/403';
+
 import { TAbility } from '/imports/config/types';
 
 import './page.module.less';
