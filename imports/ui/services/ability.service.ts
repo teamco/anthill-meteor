@@ -1,7 +1,13 @@
-import { createMongoAbility, AbilityBuilder, MongoAbility, MongoQuery, AbilityTuple } from '@casl/ability';
 import { IUser } from '/imports/config/types';
 
-export function defineAbilityFor(user: IUser): MongoAbility<AbilityTuple, MongoQuery> {
+import { createMongoAbility, Subject, MongoQuery, AbilityBuilder } from '@casl/ability';
+
+type PossibleAbilities = [string, Subject];
+type Conditions = MongoQuery;
+
+const ability = createMongoAbility<PossibleAbilities, Conditions>();
+
+export function defineAbilityFor(user: IUser) {
   const { can, cannot, build } = new AbilityBuilder(createMongoAbility);
 
   can('manage', 'all');

@@ -1,10 +1,10 @@
-import React, { memo } from 'react';
+import React, { memo, useEffect } from 'react';
 import { Button, Result } from 'antd';
 import classnames from 'classnames';
 import { useNavigate } from 'react-router-dom';
 import { stub } from '/imports/utils/functions';
-import Loader from '@/components/Loader';
-import Can from '@/components/Ability';
+import Loader from '/imports/ui/components/Loader/loader.component';
+import { Can } from '/imports/ui/components/Ability/can';
 
 type TErrorProps = {
   loading: boolean;
@@ -71,13 +71,9 @@ const ErrorPage = (props: TErrorProps) => {
       </Can>
   );
 
-  effectHook(() => {
-    DEBUG && errors?.length && logger({ type: 'warn', log: errors });
-  }, [JSON.stringify(errors), DEBUG]);
-
-  effectHook(() => {
-    onQuery({ status, title });
-  });
+  // effectHook(() => {
+  //   onQuery({ status, title });
+  // });
 
   return _error;
 };

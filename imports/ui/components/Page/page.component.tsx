@@ -5,7 +5,8 @@ import React, { memo, useContext } from 'react';
 import Loader from '/imports/ui/components/Loader/loader.component';
 
 import { TAbility } from '/imports/config/types';
-import { useOutletContext } from 'react-router-dom';
+import { AbilityContext } from '/imports/ui/context/authentication.context';
+import { Can } from '/imports/ui/components/Ability/can';
 
 type TPageProps = {
   testId?: string,
@@ -27,13 +28,15 @@ function Page(props: TPageProps) {
     children
   } = props;
 
-  const ability = useOutletContext();
+  const ability = useContext(AbilityContext);
 
   return (
     
     <div className={className} data-testid={testId}>
       <Loader spinning={!!spinning} />
-      {ability.can(action, subject) ? children : null}
+      <Can I={action} a={subject}>
+        {children}
+      </Can>
       {/* <Page403 ableFor={props.ableFor}/> */}
     </div>
   );
