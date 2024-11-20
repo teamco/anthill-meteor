@@ -1,10 +1,8 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { TableProps } from "antd";
 import { useSearchParams } from "react-router-dom";
 
 import { ITableParams } from "/imports/config/types";
-
-import { NotificationContext } from "/imports/ui/context/notification.context";
 
 import { catchMsg } from "/imports/utils/message.util";
 
@@ -33,15 +31,16 @@ export const useTable = (method: string, total: number, defaults?: TDefaults): T
   const DEFAULT_PAGE_CURRENT = defaults?.current || 1;
 	const DEFAULT_PAGE_SIZE = defaults?.pageSize || 5;
 
-  const { notificationApi } = useContext(NotificationContext);
   const [searchParams, setSearchParams] = useSearchParams();
 
 	const [entities, setEntities] = useState([]);
 
+	const pageParams = searchParams.get("p")?.split(".") || [];	
+
   const [tableParams, setTableParams] = useState<ITableParams>({
 		pagination: {
-			current: Number(searchParams.get("c")) || DEFAULT_PAGE_CURRENT,
-			pageSize: Number(searchParams.get("s")) || DEFAULT_PAGE_SIZE
+			current: Number(pageParams[0]) || DEFAULT_PAGE_CURRENT,
+			pageSize: Number(pageParams[1]) || DEFAULT_PAGE_SIZE
 		},
 	});
 
@@ -79,10 +78,7 @@ export const useTable = (method: string, total: number, defaults?: TDefaults): T
 	 * Sets the search params and the table params. If the `pageSize` changed, it clears the `entity` state.
 	 */
 	const handleTableChange: TableProps<any>['onChange'] = (pagination, filters, sorter): void => {
-		setSearchParams({ 
-			c: pagination?.current.toString(), 
-			s: pagination?.pageSize .toString()
-		});
+		setSearchParams({ p: `${pagination?.current}.${pagination?.pageSize}` });
 
 		setTableParams({
       pagination,

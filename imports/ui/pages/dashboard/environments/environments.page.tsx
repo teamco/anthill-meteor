@@ -66,17 +66,17 @@ const EnvironmentsPage: React.FC = (): JSX.Element => {
 		Meteor.callAsync("environmentsInsert", { ...env }).then(successSaveMsg).catch(catchMsg);
 	};
 
-	const { entities, tableParams, handleTableChange } = useTable("environmentsPaginate", total);
+	const { entities, tableParams: { pagination }, handleTableChange } = useTable("environmentsPaginate", total);
 
 	const columns = metadataColumns();
 
 	const tableProps = {
 		columns,
+		pagination,
 		className: 'eList',
-		dataSource: indexable(entities, tableParams.pagination?.current, tableParams.pagination?.pageSize),
+		dataSource: indexable(entities, pagination?.current, pagination?.pageSize),
 		loading: isLoading(),
 		rowKey: (record: DataType) => record._id,
-		pagination: tableParams.pagination,
 		onChange: handleTableChange,
 		title: () => (
 			<div className="eHooter">
