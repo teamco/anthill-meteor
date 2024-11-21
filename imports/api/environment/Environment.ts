@@ -1,5 +1,6 @@
 import { TLayout, TEnvironment, IUser, IMetadata, TStatus } from "/imports/config/types";
-import CommonUtils from "../../utils/common.util";
+import CommonUtils from "/imports/utils/common.util";
+
 import Layout from "./Layout";
 
 export default class Environment extends CommonUtils implements TEnvironment {

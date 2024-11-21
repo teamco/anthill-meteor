@@ -1,5 +1,5 @@
 import { Modal } from "antd";
-import { CommonDataType, ITableParams } from "../config/types";
+import { CommonDataType, ITableParams } from "/imports/config/types";
 
 /**
  * Add an idx property to each item in the array and key property
@@ -18,10 +18,13 @@ export const indexable = (items: any[], current: number = 1, pageSize: number = 
   }));
 };
 
-export const indexColumn: any = {
+export const indexColumn: CommonDataType = {
+  key: 'idx',
   title: String.fromCharCode(8470),
   dataIndex: 'idx',
   rowScope: 'row',
+  width: 70,
+  align: 'center',
 };
 
 const qsTableParams = (params: ITableParams) => ({

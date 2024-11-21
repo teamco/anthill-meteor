@@ -1,4 +1,4 @@
 import { createContextualCan } from '@casl/react';
-import { AbilityContext } from '../../context/authentication.context';
+import { AbilityContext } from '/imports/ui/context/authentication.context';
 
 export const Can = createContextualCan(AbilityContext.Consumer);

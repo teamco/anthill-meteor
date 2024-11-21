@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import dayjs from 'dayjs';
-import { TSorts } from '../ui/hooks/table.hook';
+
+import { TSorts } from '/imports/ui/hooks/table.hook';
 
 /**
  * @param {string} dateA - a date, represented in string format

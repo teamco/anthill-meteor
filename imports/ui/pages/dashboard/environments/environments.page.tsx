@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import { Button, Table } from 'antd';
 import { useSubscribe } from "meteor/react-meteor-data";
+import { TableProps } from "antd/lib/table";
 
 import { EnvironmentsCollection } from "/imports/collections/environments.collection";
 
@@ -21,9 +22,9 @@ import { createEnvironment } from "/imports/ui/services/environment.service";
 
 import { metadataColumns } from "./columns.metadata";
 
-import './environments.module.less';
 import { EnvironmentNew } from "./environment/environment.new";
-import { TableProps } from "antd/lib/table";
+
+import './environments.module.less';
 
 export interface DataType extends CommonDataType {
 	name: string;
@@ -63,11 +64,13 @@ const EnvironmentsPage: React.FC = (): JSX.Element => {
 		handleTableChange
 	} = useTable("environmentsPaginate", EnvironmentsCollection as any);
 
-	const columns: TableProps<DataType>['columns'] = metadataColumns(filteredInfo, sortedInfo, entities);
+	const columns: TableProps<DataType>['columns'] = metadataColumns(intl, filteredInfo, sortedInfo, entities);
 
 	const tableProps = {
 		columns,
 		pagination,
+		scroll: { x: 800 },
+		bordered: true,
 		className: 'eList',
 		dataSource: indexable(entities, pagination?.current, pagination?.pageSize),
 		loading: isLoading(),
@@ -102,7 +105,7 @@ const EnvironmentsPage: React.FC = (): JSX.Element => {
 	const handleCreateEnvironment = () => {
 		modalApi.info({
 			width: 600,
-			title: t(intl, 'actions.addNew', { type: t(intl, 'dashboard.environment.title') }),
+			title: t(intl, 'actions.addNew', { type: t(intl, 'environment.title') }),
 			content: (
 				<EnvironmentNew
 					disabled={isLoading()}

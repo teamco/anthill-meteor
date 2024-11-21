@@ -16,6 +16,7 @@ export default {
   'form.approve': 'Approve',
   'form.confirm': 'Confirm',
   'form.name': '{entity} Name',
+  'form.description': '{entity} Description',
   'form.type': '{entity} Type',
   'form.fullName': 'Full Name',
   'form.verify': 'Verify {type}',

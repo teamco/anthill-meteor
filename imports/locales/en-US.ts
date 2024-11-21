@@ -3,6 +3,7 @@ import dashboard from './en-US/dashboard';
 import table from './en-US/table';
 // import auth from './en-US/auth';
 // import address from './en-US/address';
+import environment from './en-US/environment';
 import form from './en-US/form';
 import error from './en-US/error';
 import event from './en-US/event';
@@ -22,6 +23,7 @@ export default {
   ...actions,
   ...dashboard,
   ...table,
+  ...environment,
   // ...auth,
   // ...address,
   // ...business,

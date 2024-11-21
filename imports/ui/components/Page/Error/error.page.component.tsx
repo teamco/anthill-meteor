@@ -1,12 +1,14 @@
-import React, { memo, useContext, useEffect } from 'react';
+import React, { memo, useContext } from 'react';
 import { Button, Result } from 'antd';
+import { ResultStatusType } from 'antd/es/result';
 import classnames from 'classnames';
 import { useNavigate } from 'react-router-dom';
+
 import Loader from '/imports/ui/components/Loader/loader.component';
 import { Can } from '/imports/ui/components/Ability/can';
-import { t } from '../../../../utils/i18n.util';
+
+import { t } from '/imports/utils/i18n.util';
 import { I18nContext } from '/imports/ui/context/i18n.context';
-import { ResultStatusType } from 'antd/es/result';
 
 type TErrorProps = {
   spinning?: boolean;
@@ -18,6 +20,14 @@ type TErrorProps = {
   onQuery?: () => void;
 };
 
+/**
+ * @function ErrorPage
+ * @description The page will display an error message and a button to go back to the previous page.
+ * @param {TErrorProps} props The props of the component.
+ * @returns {JSX.Element} The JSX element of the page.
+ * @example
+ * <ErrorPage status={'warning'} subject={'pageWarning'} />
+ */
 const ErrorPage = (props: TErrorProps): JSX.Element => {
   const history = useNavigate();
   const intl = useContext(I18nContext);

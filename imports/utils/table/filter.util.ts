@@ -71,6 +71,17 @@ export const getFilters = (column: TColumn, dataSource = []): TGetFilters[] => {
   return Array.from(values) as TGetFilters[];
 };
 
+/**
+ * Generates a filter configuration for a table column.
+ *
+ * @param {TFilters} filteredInfo - Contains the current filter information.
+ * @param {any[]} [dataSource=[]] - The data source for the table.
+ * @param {string} key - The key used for filtering the column.
+ * @returns {Object} An object containing:
+ *   - `filters`: An array of filters, each with `text` and `value` properties.
+ *   - `filteredValue`: The current filtered values for the column, or null if not filtered.
+ *   - `onFilter`: A function that determines if a record should be included based on the filter value.
+ */
 export const columnFilter = (filteredInfo: TFilters, dataSource = [], key: string): { 
   filters: TGetFilters[], 
   filteredValue: FilterValue, 

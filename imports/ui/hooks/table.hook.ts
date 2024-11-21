@@ -95,11 +95,11 @@ export const useTable = (method: string, Collection: Mongo.Collection<Document, 
 		}).catch((e) => catchErrorMsg(e, () => setEntities([])))
 	};
 
-/**
- * Handles the change event after data is fetched or updated.
- * Determines the action type for table change and invokes handleTableChange with updated table parameters.
- * @param {any[]} res - The result set returned from the server.
- */
+	/**
+	 * Handles the change event after data is fetched or updated.
+	 * Determines the action type for table change and invokes handleTableChange with updated table parameters.
+	 * @param {any[]} res - The result set returned from the server.
+	 */
 	const onAfterChange = (res: any[]): void => {
 		let action: TAction = "paginate";
 

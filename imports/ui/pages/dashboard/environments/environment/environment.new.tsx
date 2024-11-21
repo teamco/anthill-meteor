@@ -14,6 +14,7 @@ import '../environments.module.less';
 type TField = {
   name?: string;
   type?: string;
+  description?: string;
 };
 
 type TProps = {
@@ -41,8 +42,9 @@ export const EnvironmentNew: React.FC<TProps> = (props): JSX.Element => {
   const intl = useContext(I18nContext);
   const [form] = Form.useForm();
 
-  const entityMsg = t(intl, 'dashboard.environment.title');
+  const entityMsg = t(intl, 'environment.title');
   const nameMsg = t(intl, 'form.name', { entity: entityMsg })
+  const descriptionMsg = t(intl, 'form.description', { entity: entityMsg })
   const typeMsg = t(intl, 'form.type', { entity: entityMsg })
 
   const nameRule: TFieldRule = requiredField(intl, nameMsg);
@@ -127,6 +129,20 @@ export const EnvironmentNew: React.FC<TProps> = (props): JSX.Element => {
               rules={[typeRule]}
             >
               <Input {...inputProps} placeholder={placeholderField(intl, typeMsg, 'actions.enter')} />
+            </Form.Item>
+          </Col>
+          <Col {...layout.fullColumn}>
+            <Form.Item<TField>
+              label={descriptionMsg}
+              name="description"
+            >
+              <Input.TextArea
+                showCount
+                {...inputProps}
+                maxLength={400}
+                placeholder={placeholderField(intl, descriptionMsg, 'actions.enter')}
+                style={{ maxHeight: 250, minHeight: 100 }}
+              />
             </Form.Item>
           </Col>
         </Row>
