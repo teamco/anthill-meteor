@@ -20,13 +20,17 @@ export const metadataColumns = (): TableProps<DataType>['columns'] => {
       title: 'Name',
       dataIndex: 'name',
       key: 'name',
-      sorter: true
+      sorter: {
+        compare: (a: any, b: any) => a.name - b.name
+      },
     },
     {
       title: 'Type',
       dataIndex: 'type',
       key: 'type',
-      sorter: true
+      sorter: {
+        compare: (a: any, b: any) => a.type - b.type
+      },
     },
     {
       title: 'Status',
@@ -45,8 +49,10 @@ export const metadataColumns = (): TableProps<DataType>['columns'] => {
     {
       title: 'Updated At',
       dataIndex: 'metadata',
-      key: 'metadata',
-      sorter: true,
+      key: 'metadata.updatedAt',
+      sorter: {
+        compare: (a: any, b: any) => a.metadata?.updatedAt - b.metadata?.updatedAt
+      },
       render: (metadata: IMetadata): JSX.Element => {
         return (
           <div>

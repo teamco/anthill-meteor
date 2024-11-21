@@ -6,18 +6,19 @@ import { useTracker } from "meteor/react-meteor-data";
 import { ITableParams } from "/imports/config/types";
 
 import { catchErrorMsg } from "/imports/utils/message.util";
+import { SorterResult } from "antd/es/table/interface";
 
 type TDefaults = {
 	current: number;
 	pageSize: number;
 }
 
-type TUseTable = { 
+type TUseTable = {
 	total: number;
-	entities: any[]; 
-	tableParams: ITableParams; 
+	entities: any[];
+	tableParams: ITableParams;
 	handleRefresh: () => void;
-	handleTableChange: TableProps<any>['onChange']; 
+	handleTableChange: TableProps<any>['onChange'];
 }
 
 /**
@@ -29,22 +30,22 @@ type TUseTable = {
  * @example const { entity, tableParams, handleTableChange } = useTable('method.name', 100, { current: 1, pageSize: 10 });
  */
 export const useTable = (method: string, Collection: Mongo.Collection<Document, Document>, defaults?: TDefaults): TUseTable => {
-  const DEFAULT_PAGE_CURRENT = defaults?.current || 1;
+	const DEFAULT_PAGE_CURRENT = defaults?.current || 1;
 	const DEFAULT_PAGE_SIZE = defaults?.pageSize || 10;
 
-  const [searchParams, setSearchParams] = useSearchParams();
+	const [searchParams, setSearchParams] = useSearchParams();
 
 	const [entities, setEntities] = useState([]);
 
-	const pageParams = searchParams.get("p")?.split(".") || [];	
+	const pageParams = searchParams.get("p")?.split(".") || [];
 
-  const [tableParams, setTableParams] = useState<ITableParams>({
+	const [tableParams, setTableParams] = useState<ITableParams>({
 		pagination: {
 			current: Number(pageParams[0]) || DEFAULT_PAGE_CURRENT,
 			pageSize: Number(pageParams[1]) || DEFAULT_PAGE_SIZE
 		},
 	});
-	
+
 	const total = useTracker(() => Collection.find({}).count());
 
 	/**
@@ -52,9 +53,9 @@ export const useTable = (method: string, Collection: Mongo.Collection<Document, 
 	 * @returns {void}
 	 */
 	const handleRefresh = (): void => {
-		Meteor.callAsync(method, { 
-			current: tableParams.pagination?.current, 
-			pageSize: tableParams.pagination?.pageSize 
+		Meteor.callAsync(method, {
+			current: tableParams.pagination?.current,
+			pageSize: tableParams.pagination?.pageSize
 		}).then((res: any[]) => {
 			setEntities(res);
 		}).catch((e) => catchErrorMsg(e, () => setEntities([])))
@@ -64,25 +65,33 @@ export const useTable = (method: string, Collection: Mongo.Collection<Document, 
 	 * Table change handler.
 	 * @param pagination New pagination object.
 	 * @param filters New filters object.
-	 * @param sorter New sorter object.
+	 * @param {SorterResult<any>} sorter New sorter object.
 	 * @description
 	 * Sets the search params and the table params. If the `pageSize` changed, it clears the `entity` state.
 	 */
-	const handleTableChange: TableProps<any>['onChange'] = (pagination, filters, sorter): void => {
-		setSearchParams({ p: `${pagination?.current}.${pagination?.pageSize}` });
+	const handleTableChange: TableProps<any>['onChange'] = (pagination, filters, sorter: SorterResult<any>): void => {
+		const searchParams: { p?: string; s?: string } = {
+			p: `${pagination?.current}.${pagination?.pageSize}`,
+		}
+
+		if (sorter?.field) {
+			searchParams.s = `${sorter.field}.${sorter.order}`
+		}
+
+		setSearchParams(searchParams);
 
 		setTableParams({
-      pagination,
-      filters,
-      sortOrder: Array.isArray(sorter) ? undefined : sorter.order,
-      sortField: Array.isArray(sorter) ? undefined : sorter.field,
-    });
+			pagination,
+			filters,
+			sortOrder: Array.isArray(sorter) ? undefined : sorter.order,
+			sortField: Array.isArray(sorter) ? undefined : sorter.field,
+		});
 
-    // `dataSource` is useless since `pageSize` changed
-    if (pagination.pageSize !== tableParams.pagination?.pageSize) {
-      setEntities([]);
-    }
-  };
+		// `dataSource` is useless since `pageSize` changed
+		if (pagination.pageSize !== tableParams.pagination?.pageSize) {
+			setEntities([]);
+		}
+	};
 
 	useEffect(handleRefresh, [
 		tableParams.pagination?.current,

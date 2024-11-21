@@ -68,7 +68,7 @@ const EnvironmentsPage: React.FC = (): JSX.Element => {
 		className: 'eList',
 		dataSource: indexable(entities, pagination?.current, pagination?.pageSize),
 		loading: isLoading(),
-		rowKey: (record: DataType) => record._id,
+		// rowKey: (record: DataType) => record._id,
 		onChange: handleTableChange,
 		title: () => (
 			<div className="eHeader">

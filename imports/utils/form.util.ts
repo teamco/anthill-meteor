@@ -1,9 +1,6 @@
 import { Rule } from 'antd/es/form';
 
 import { t, TIntl } from '/imports/utils/i18n.util';
-import { stub } from '/imports/utils/functions.util';
-
-import { catchWarnMsg } from './message.util';
 
 export type TFieldRule = {
   required?: boolean,
@@ -45,10 +42,4 @@ export const placeholderField = (intl: TIntl, label: string, msg: string = 'acti
     field: label,
     type: t(intl, msg)
   });
-};
-
-export const validateFields = (formRef, handler = stub) => {
-  formRef.validateFields().then(() => {
-    handler();
-  }).catch(catchWarnMsg);
 };
