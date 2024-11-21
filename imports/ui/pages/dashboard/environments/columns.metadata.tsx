@@ -52,10 +52,10 @@ export const metadataColumns = (filteredInfo: TFilters, sortedInfo: TSorts, enti
     },
     {
       title: 'Updated At',
-      dataIndex: ['metadata', 'updatedAt'],
+      dataIndex: 'metadata',
       key: 'metadata.updatedAt',
       ...columnSorter(sortedInfo, 'metadata.createdAt', 'metadata'),
-      render: (updatedAt: IMetadata['updatedAt']): JSX.Element => {
+      render: ({ updatedAt }: IMetadata): JSX.Element => {
         return (
           <div>
             {tsToLocaleDateTime(updatedAt.toString())}

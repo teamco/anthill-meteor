@@ -19,17 +19,16 @@ Meteor.methods({
   environmentsPaginate: ({ current = 1, pageSize = 10, sort = DEFAULT_SORT }: TPaginateProps): any[] => {
     let [field, order] = sort;
 
-    if (!field) {
-      field = DEFAULT_SORT[0];
-      order = DEFAULT_SORT[1];
-    }
-
+    if (!field || field === 'metadata') field = DEFAULT_SORT[0];
+    if (!order) field = DEFAULT_SORT[1];
+      
     return EnvironmentsCollection.find({}, {
       skip: (current - 1) * pageSize,
       limit: pageSize,
       sort: [
         typeof field === "string" ? field : field.join('.'),
-        order === "ascend" ? 1 : -1]
+        order === "ascend" ? 1 : -1
+      ]
     }).fetch();
   },
 
