@@ -4,7 +4,10 @@ import { EnvironmentsCollection } from "/imports/collections/environments.collec
 type TPaginateProps = {
   current: number;
   pageSize: number;
+  sort?: [string[] | string, "descend" | "ascend"];
 }
+
+const DEFAULT_SORT: TPaginateProps['sort'] = [['metadata', 'updatedAt'], 'descend'];
 
 Meteor.methods({
 
@@ -13,11 +16,20 @@ Meteor.methods({
    * @param {Object} param - An object with two properties: current (the current page number) and pageSize (the number of items per page).
    * @returns {TEnvironment[]} An array of Environment objects.
    */
-  environmentsPaginate: ({ current = 1, pageSize = 10 }: TPaginateProps): any[] => {
+  environmentsPaginate: ({ current = 1, pageSize = 10, sort = DEFAULT_SORT }: TPaginateProps): any[] => {
+    let [field, order] = sort;
+
+    if (!field) {
+      field = DEFAULT_SORT[0];
+      order = DEFAULT_SORT[1];
+    }
+
     return EnvironmentsCollection.find({}, {
       skip: (current - 1) * pageSize,
       limit: pageSize,
-      sort: [ 'metadata.updatedAt', -1 ]
+      sort: [
+        typeof field === "string" ? field : field.join('.'),
+        order === "ascend" ? 1 : -1]
     }).fetch();
   },
 

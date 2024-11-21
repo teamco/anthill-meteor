@@ -23,6 +23,7 @@ import { metadataColumns } from "./columns.metadata";
 
 import './environments.module.less';
 import { EnvironmentNew } from "./environment/environment.new";
+import { TableProps } from "antd/lib/table";
 
 export interface DataType extends CommonDataType {
 	name: string;
@@ -56,11 +57,13 @@ const EnvironmentsPage: React.FC = (): JSX.Element => {
 		total,
 		entities,
 		tableParams: { pagination },
+		filteredInfo,
+		sortedInfo,
 		handleRefresh,
 		handleTableChange
 	} = useTable("environmentsPaginate", EnvironmentsCollection as any);
 
-	const columns = metadataColumns();
+	const columns: TableProps<DataType>['columns'] = metadataColumns(filteredInfo, sortedInfo, entities);
 
 	const tableProps = {
 		columns,
