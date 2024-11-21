@@ -106,7 +106,6 @@ export const EnvironmentNew: React.FC<TProps> = (props): JSX.Element => {
       <Form
         layout={"vertical"}
         form={form}
-        name={"environment"}
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
         autoComplete={"off"}

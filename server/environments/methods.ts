@@ -15,11 +15,12 @@ Meteor.methods({
    */
   environmentsPaginate: ({ current = 1, pageSize = 10 }: TPaginateProps): any[] => {
     return EnvironmentsCollection.find({}, {
-      skip: (current - 1) * pageSize, 
-      limit: pageSize
+      skip: (current - 1) * pageSize,
+      limit: pageSize,
+      sort: [ 'metadata.updatedAt', -1 ]
     }).fetch();
   },
-  
+
   /**
    * Inserts a new Environment into the collection.
    * @param {Object} doc - The document to insert.
