@@ -7,6 +7,11 @@ type TIcons = {
 
 type TConsole = Partial<Console>;
 
+/**
+ * Replace window.console with a custom implementation that uses the logger function.
+ * The logger function adds an emoji to the beginning of each log message.
+ * @returns {void}
+ */
 export const initLogger = () => {
   const _console: TConsole = ((oldCons: TConsole) => ({
     debug(...args: any[]) {

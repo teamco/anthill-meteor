@@ -8,6 +8,7 @@ import { I18nContext } from '/imports/ui/context/i18n.context';
 
 import { t } from '/imports/utils/i18n.util';
 import { stub } from '/imports/utils/functions.util';
+import { COLORS } from '/imports/utils/colors.util';
 
 type TEditAction = {
   entityId: string;
@@ -50,7 +51,7 @@ export const EditAction: React.FC<TEditAction> = (props): JSX.Element => {
       <Button disabled={disabled}
         loading={isLoading}
         type={type}
-        icon={<EditTwoTone twoToneColor="#52c41a" />}
+        icon={<EditTwoTone twoToneColor={COLORS.success} />}
         onClick={() => onEdit(entityId)}>
         {showLabel && t(intl, 'actions.edit', { type: '' })}
       </Button>
