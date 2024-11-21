@@ -21,7 +21,7 @@ Meteor.methods({
 
     if (!field || field === 'metadata') field = DEFAULT_SORT[0];
     if (!order) field = DEFAULT_SORT[1];
-      
+
     return EnvironmentsCollection.find({}, {
       skip: (current - 1) * pageSize,
       limit: pageSize,
@@ -40,4 +40,13 @@ Meteor.methods({
   environmentsInsert: (doc: object): Promise<string> => {
     return EnvironmentsCollection.insertAsync(doc);
   },
-});
+
+  /**
+   * Removes an Environment from the collection.
+   * @param {string} _id - The _id of the Environment to remove.
+   * @returns {Promise<number>} - The number of removed documents.
+   */
+  environmentRemove: ({ _id }: { _id: string }): Promise<number> => {console.log(_id)
+    return EnvironmentsCollection.removeAsync({ _id });
+  },
+}); 

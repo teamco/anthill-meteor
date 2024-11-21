@@ -27,6 +27,19 @@ export const successSaveMsg = (instance: string = 'Entity'): void => {
   messageApi.success(msg);
 };
 
+/**
+ * Displays a success message using the MessageContext when an entity is deleted.
+ * @param instance - The name of the entity that was deleted. Defaults to 'Entity'.
+ */
+export const successDeleteMsg = (instance: string = 'Entity'): void => {
+  const messageApi = nCache.get('messageApi');
+  const intl = nCache.get('intl');
+
+  const msg = t(intl, 'message.success.delete', { type: instance.toLocaleUpperCase() });
+
+  messageApi.success(msg);
+};
+
 type TError = {
   error: string;
   errorType: string;
@@ -59,7 +72,7 @@ export const catchErrorMsg = (e: TError, fallback?: () => void): void => {
 export const catchWarnMsg = (e: TError): void => {
   const notificationApi = nCache.get('notificationApi');
 
-  notificationApi.warn({
+  notificationApi.warning({
     message: `${e.error}: ${e.errorType}`,
     description: e.message
   });

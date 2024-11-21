@@ -25,6 +25,7 @@ import { metadataColumns } from "./columns.metadata";
 import { EnvironmentNew } from "./environment/environment.new";
 
 import './environments.module.less';
+import { catchErrorMsg, catchWarnMsg, successDeleteMsg, successSaveMsg } from "/imports/utils/message.util";
 
 export interface DataType extends CommonDataType {
 	name: string;
@@ -54,6 +55,22 @@ const EnvironmentsPage: React.FC = (): JSX.Element => {
 
 	const user = Meteor.user() || { _id: '1' };
 
+	const onDelete = (_id: string) => {
+		Meteor.callAsync('environmentRemove', { _id }).
+		then((res: number) => {
+			if (res > 0) {
+				successDeleteMsg();
+				handleRefresh();
+			} else {
+				catchWarnMsg({ 
+					errorType: 'warning', 
+					message: t(intl, 'error.warningMsg'),
+					error: 'Error 400' 
+				});
+			}
+		}).catch(catchErrorMsg)
+	};
+
 	const {
 		total,
 		entities,
@@ -64,7 +81,7 @@ const EnvironmentsPage: React.FC = (): JSX.Element => {
 		handleTableChange
 	} = useTable("environmentsPaginate", EnvironmentsCollection as any);
 
-	const columns: TableProps<DataType>['columns'] = metadataColumns(intl, filteredInfo, sortedInfo, entities);
+	const columns: TableProps<DataType>['columns'] = metadataColumns(intl, filteredInfo, sortedInfo, onDelete, entities);
 
 	const tableProps = {
 		columns,
@@ -109,7 +126,7 @@ const EnvironmentsPage: React.FC = (): JSX.Element => {
 			content: (
 				<EnvironmentNew
 					disabled={isLoading()}
-					onSave={values => createEnvironment(values.name, values.type, user, handleRefresh)}
+					onSave={values => createEnvironment(values.name, values.type, user, handleRefresh, { description: values.description })}
 				/>
 			),
 			footer: null

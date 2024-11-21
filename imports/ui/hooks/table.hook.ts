@@ -92,7 +92,7 @@ export const useTable = (method: string, Collection: Mongo.Collection<Document, 
 			sort: [tableParams.sortField, tableParams.sortOrder]
 		}).then((res: any[]) => {
 			setEntities(res);
-		}).catch((e) => catchErrorMsg(e, () => setEntities([])))
+		}).catch((e) => catchErrorMsg(e, () => setEntities([])));
 	};
 
 	/**
