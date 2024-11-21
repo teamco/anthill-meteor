@@ -45,15 +45,17 @@ const Page: React.FC<TPageProps> = (props: TPageProps): JSX.Element => {
     children
   } = props;
 
-  return (    
-    <div className={classnames('page', className)} data-testid={testId}>
-      <Loader spinning={!!spinning} />
+  return (
+    <div className={classnames('page', className)} data-testid={testId}>      
       <Can I={action} a={subject}>
-        <h1>{title}</h1>
-        <h4>{description}</h4>
-        {children}
+        <div>
+          <Loader spinning={!!spinning} />
+          <h1>{title}</h1>
+          <h4>{description}</h4>
+        </div>
+        <div>{children}</div>
       </Can>
-      <Page403 ableFor={props.ableFor}/>
+      <Page403 ableFor={props.ableFor} />
     </div>
   );
 }

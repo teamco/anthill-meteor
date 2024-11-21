@@ -1,6 +1,6 @@
 import { logger } from './console.util';
 
-type TIntl = {
+export type TIntl = {
   messages: string[];
   formatMessage: ({ id, defaultMessage }, {}) => string;
 }
@@ -13,7 +13,7 @@ type TIntl = {
  * @param {Object} [params={}] - an object of parameters to pass to the formatMessage method.
  * @returns {string} - the translated string.
  */
-export const t = (intl: TIntl, id: string, params = {}): string => {
+export const t = (intl: TIntl, id: string, params: object = {}): string => {
   if (intl?.messages[id]) {
     return intl?.formatMessage({ id, defaultMessage: id }, { ...params });
   }

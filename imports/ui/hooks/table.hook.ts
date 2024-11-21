@@ -5,7 +5,7 @@ import { useTracker } from "meteor/react-meteor-data";
 
 import { ITableParams } from "/imports/config/types";
 
-import { catchMsg } from "/imports/utils/message.util";
+import { catchErrorMsg } from "/imports/utils/message.util";
 
 type TDefaults = {
 	current: number;
@@ -57,7 +57,7 @@ export const useTable = (method: string, Collection: Mongo.Collection<Document, 
 			pageSize: tableParams.pagination?.pageSize 
 		}).then((res: any[]) => {
 			setEntities(res);
-		}).catch((e) => catchMsg(e, () => setEntities([])))
+		}).catch((e) => catchErrorMsg(e, () => setEntities([])))
 	};
 
 	/**

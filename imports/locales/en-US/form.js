@@ -15,6 +15,8 @@ export default {
   'form.placeholder': '{type} {field}',
   'form.approve': 'Approve',
   'form.confirm': 'Confirm',
+  'form.name': '{entity} Name',
+  'form.type': '{entity} Type',
   'form.fullName': 'Full Name',
   'form.verify': 'Verify {type}',
   'form.enterField': 'Enter {type} here',

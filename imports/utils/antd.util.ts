@@ -1,3 +1,4 @@
+import { Modal } from "antd";
 import { CommonDataType, ITableParams } from "../config/types";
 
 /**
@@ -28,3 +29,11 @@ const qsTableParams = (params: ITableParams) => ({
   page: params.pagination?.current,
   ...params,
 });
+
+/**
+ * Closes all modals when called.
+ * @returns {void}
+ */
+export const onModalCancel = (): void => {
+  Modal.destroyAll();
+}

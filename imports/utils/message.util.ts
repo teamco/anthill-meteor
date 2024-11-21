@@ -40,12 +40,26 @@ type TError = {
  * @param e - The error object containing error details.
  * @param fallback - An optional function to execute as a fallback action.
  */
-export const catchMsg = (e: TError, fallback?: () => void): void => {
+export const catchErrorMsg = (e: TError, fallback?: () => void): void => {
   const notificationApi = nCache.get('notificationApi');
 
   typeof fallback === 'function' && fallback();
 
   notificationApi.error({
+    message: `${e.error}: ${e.errorType}`,
+    description: e.message
+  });
+}
+
+/**
+ * Displays an warning notification using the NotificationContext.
+ *
+ * @param e - The error object containing error details.
+ */
+export const catchWarnMsg = (e: TError): void => {
+  const notificationApi = nCache.get('notificationApi');
+
+  notificationApi.warn({
     message: `${e.error}: ${e.errorType}`,
     description: e.message
   });

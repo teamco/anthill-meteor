@@ -3,7 +3,7 @@ import { EmptyWidget } from "/imports/api/widgets/empty.widget";
 
 import { IUser } from "/imports/config/types";
 
-import { successSaveMsg, catchMsg } from "/imports/utils/message.util";
+import { successSaveMsg, catchErrorMsg } from "/imports/utils/message.util";
 
 /**
  * Creates a new environment with an empty layout and an empty widget, and inserts
@@ -25,5 +25,5 @@ export const createEnvironment = (name: string, type: string, user: IUser, handl
       successSaveMsg();
       handleRefresh();
     }).
-    catch(catchMsg);
+    catch(catchErrorMsg);
 };

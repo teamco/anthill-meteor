@@ -3,9 +3,9 @@ import dashboard from './en-US/dashboard';
 import table from './en-US/table';
 // import auth from './en-US/auth';
 // import address from './en-US/address';
-// import form from './en-US/form';
+import form from './en-US/form';
 import error from './en-US/error';
-// import event from './en-US/event';
+import event from './en-US/event';
 // import menu from './en-US/menu';
 import message from './en-US/message';
 // import notifications from './en-US/notifications';
@@ -25,9 +25,9 @@ export default {
   // ...auth,
   // ...address,
   // ...business,
-  // ...form,
+  ...form,
   ...error,
-  // ...event,
+  ...event,
   // ...menu,
   ...message,
   // ...notifications,

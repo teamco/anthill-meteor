@@ -43,3 +43,18 @@
 .margin-left_d(@m: 2) {
   margin-left: calc(@main-margin / @m);
 }
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+  row-gap: @main-margin;
+  
+  .margin-top_m(1);
+
+  .form-footer {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    column-gap: calc(@main-margin / 2);
+  }
+}

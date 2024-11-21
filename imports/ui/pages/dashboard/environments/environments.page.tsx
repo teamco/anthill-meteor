@@ -22,6 +22,7 @@ import { createEnvironment } from "/imports/ui/services/environment.service";
 import { metadataColumns } from "./columns.metadata";
 
 import './environments.module.less';
+import { EnvironmentNew } from "./environment/environment.new";
 
 export interface DataType extends CommonDataType {
 	name: string;
@@ -51,12 +52,12 @@ const EnvironmentsPage: React.FC = (): JSX.Element => {
 
 	const user = Meteor.user() || { _id: '1' };
 
-	const { 
-		total, 
-		entities, 
-		tableParams: { pagination }, 
+	const {
+		total,
+		entities,
+		tableParams: { pagination },
 		handleRefresh,
-		handleTableChange 
+		handleTableChange
 	} = useTable("environmentsPaginate", EnvironmentsCollection as any);
 
 	const columns = metadataColumns();
@@ -75,10 +76,7 @@ const EnvironmentsPage: React.FC = (): JSX.Element => {
 					disabled={ability.cannot('create', 'environment')}
 					loading={isLoading()}
 					type={"primary"}
-					onClick={() => {
-						handleCreateEnvironment();
-						//createEnvironment('name', 'type', user, handleRefresh)
-					}}
+					onClick={handleCreateEnvironment}
 				>
 					Create Env
 				</Button>
@@ -91,17 +89,24 @@ const EnvironmentsPage: React.FC = (): JSX.Element => {
 		)
 	};
 
+/**
+ * Opens a modal dialog to create a new environment.
+ * The modal includes a form component (`EnvironmentNew`) which, upon submission,
+ * triggers the creation of a new environment using the `createEnvironment` function.
+ * The dialog is configured to be 600 pixels wide and displays a title indicating
+ * the addition of a new environment.
+ */
 	const handleCreateEnvironment = () => {
 		modalApi.info({
-			title: 'Confirm',
-			content: 'Bla bla ...',
-			footer: (_: any, { OkBtn, CancelBtn }: any) => (
-				<>
-					<Button>Custom Button</Button>
-					<CancelBtn />
-					<OkBtn />
-				</>
+			width: 600,
+			title: t(intl, 'actions.addNew', { type: t(intl, 'dashboard.environment.title') }),
+			content: (
+				<EnvironmentNew
+					disabled={isLoading()}
+					onSave={values => createEnvironment(values.name, values.type, user, handleRefresh)}
+				/>
 			),
+			footer: null
 		})
 	}
 
