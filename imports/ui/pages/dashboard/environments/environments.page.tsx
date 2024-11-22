@@ -18,14 +18,13 @@ import { useTable } from "/imports/ui/hooks/table.hook";
 import { t } from "/imports/utils/i18n.util";
 import { indexable } from "/imports/utils/antd.util";
 
-import { createEnvironment } from "/imports/ui/services/environment.service";
+import { createEnvironment, deleteEnvironment } from "/imports/ui/services/environment.service";
 
 import { metadataColumns } from "./columns.metadata";
 
 import { EnvironmentNew } from "./environment/environment.new";
 
 import './environments.module.less';
-import { catchErrorMsg, catchWarnMsg, successDeleteMsg, successSaveMsg } from "/imports/utils/message.util";
 
 export interface DataType extends CommonDataType {
 	name: string;
@@ -55,20 +54,20 @@ const EnvironmentsPage: React.FC = (): JSX.Element => {
 
 	const user = Meteor.user() || { _id: '1' };
 
-	const onDelete = (_id: string) => {
-		Meteor.callAsync('environmentRemove', { _id }).
-		then((res: number) => {
-			if (res > 0) {
-				successDeleteMsg();
-				handleRefresh();
-			} else {
-				catchWarnMsg({ 
-					errorType: 'warning', 
-					message: t(intl, 'error.warningMsg'),
-					error: 'Error 400' 
-				});
-			}
-		}).catch(catchErrorMsg)
+	/**
+	 * onDelete
+	 *
+	 * A callback function called when the delete button is clicked in the environments table.
+	 * It deletes the environment with the given id using the deleteEnvironment service function.
+	 *
+	 * @param {string} id - The id of the environment to delete
+	 */
+	const onDelete = (id: string): void => {
+		deleteEnvironment(id, intl, handleRefresh);
+	};
+
+	const onEdit = (id: string): void => {
+		debugger
 	};
 
 	const {
@@ -81,7 +80,7 @@ const EnvironmentsPage: React.FC = (): JSX.Element => {
 		handleTableChange
 	} = useTable("environmentsPaginate", EnvironmentsCollection as any);
 
-	const columns: TableProps<DataType>['columns'] = metadataColumns(intl, filteredInfo, sortedInfo, onDelete, entities);
+	const columns: TableProps<DataType>['columns'] = metadataColumns(intl, filteredInfo, sortedInfo, onDelete, onEdit, entities);
 
 	const tableProps = {
 		columns,

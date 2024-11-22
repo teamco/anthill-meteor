@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { TableProps } from "antd";
+import { SortOrder, TableCurrentDataSource } from "antd/es/table/interface";
 import { useSearchParams } from "react-router-dom";
 import { useTracker } from "meteor/react-meteor-data";
 
 import { ITableParams } from "/imports/config/types";
 
-import { catchErrorMsg } from "/imports/utils/message.util";
-import { SorterResult, SortOrder, TableCurrentDataSource } from "antd/es/table/interface";
+import { getEnvironments } from "/imports/ui/services/environment.service";
 
 type TOnChange = NonNullable<TableProps<any>['onChange']>;
 export type TFilters = Parameters<TOnChange>[1];
@@ -86,13 +86,18 @@ export const useTable = (method: string, Collection: Mongo.Collection<Document, 
 	 * @returns {void}
 	 */
 	const handleRefresh = (): void => {
-		Meteor.callAsync(method, {
+		getEnvironments(method, setEntities, {
 			current: tableParams.pagination?.current,
 			pageSize: tableParams.pagination?.pageSize,
 			sort: [tableParams.sortField, tableParams.sortOrder]
-		}).then((res: any[]) => {
-			setEntities(res);
-		}).catch((e) => catchErrorMsg(e, () => setEntities([])));
+		});
+		// Meteor.callAsync(method, {
+		// 	current: tableParams.pagination?.current,
+		// 	pageSize: tableParams.pagination?.pageSize,
+		// 	sort: [tableParams.sortField, tableParams.sortOrder]
+		// }).then((res: any[]) => {
+		// 	setEntities(res);
+		// }).catch((e) => catchErrorMsg(e, () => setEntities([])));
 	};
 
 	/**

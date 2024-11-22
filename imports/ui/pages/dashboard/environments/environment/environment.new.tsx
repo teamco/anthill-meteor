@@ -141,7 +141,7 @@ export const EnvironmentNew: React.FC<TProps> = (props): JSX.Element => {
                 {...inputProps}
                 maxLength={400}
                 placeholder={placeholderField(intl, descriptionMsg, 'actions.enter')}
-                style={{ maxHeight: 250, minHeight: 100 }}
+                style={{ maxHeight: 250, height: 100 }}
               />
             </Form.Item>
           </Col>

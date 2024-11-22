@@ -25,10 +25,11 @@ import { EditAction } from "/imports/ui/components/edit.action";
  * @param {TFilters} filteredInfo - Contains the current filter information.
  * @param {TSorts} sortedInfo - Contains the current sort information.
  * @param {(id: string) => void} onDelete - The function to be called when the delete action is triggered.
+ * @param {(id: string) => void} onEdit - The function to be called when the edit action is triggered.
  * @param {DataType[]} entities - The data source for the table.
  * @returns {TableProps<DataType>['columns']} A column configuration for the table.
  */
-export const metadataColumns = (intl: TIntl, filteredInfo: TFilters, sortedInfo: TSorts, onDelete: (id: string) => void, entities: DataType[]): TableProps<DataType>['columns'] => {
+export const metadataColumns = (intl: TIntl, filteredInfo: TFilters, sortedInfo: TSorts, onDelete: (id: string) => void, onEdit: (id: string) => void, entities: DataType[]): TableProps<DataType>['columns'] => {
   const columns: TColumns<DataType> = [
     indexColumn,
     {
@@ -91,7 +92,7 @@ export const metadataColumns = (intl: TIntl, filteredInfo: TFilters, sortedInfo:
       render: (record: DataType) => (
         <div>
           <EditAction
-            onEdit={(id: string) => { }}
+            onEdit={onEdit}
             type={'text'}
             entityId={record._id} />
           <DeleteAction
