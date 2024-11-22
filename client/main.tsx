@@ -12,7 +12,8 @@ import weekYear from 'dayjs/plugin/weekYear';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 
 import App from '/imports/ui/App';
-import { MongoInternals } from 'meteor/mongo';
+
+import { initLogger } from '/imports/utils/console.util';
 
 dayjs.extend(customParseFormat);
 dayjs.extend(advancedFormat);
@@ -26,6 +27,8 @@ dayjs.locale('en');
 Meteor.startup(() => {
   const container = document.getElementById('react-target');
   const root = createRoot(container);
+
+  initLogger();
 
   root.render(
     <React.StrictMode>

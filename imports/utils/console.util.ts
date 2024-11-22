@@ -1,10 +1,3 @@
-type TIcons = {
-  log: number;
-  info: number;
-  error: number;
-  warn: number;
-};
-
 type TConsole = Partial<Console>;
 
 /**
@@ -12,24 +5,65 @@ type TConsole = Partial<Console>;
  * The logger function adds an emoji to the beginning of each log message.
  * @returns {void}
  */
-export const initLogger = () => {
+export const initLogger = (): void => {
+
   const _console: TConsole = ((oldCons: TConsole) => ({
-    debug(...args: any[]) {
+
+    /**
+     * Writes a message to the console, including a stack trace from the current position.
+     * @param {...any[]} args - The arguments to be passed to the console.log function.
+     * @returns {void}
+     */
+    debug(...args: any[]): void {
       oldCons.log(args);
     },
-    trace(...args: any[]) {
+
+    /**
+     * Outputs a stack trace to the console from the current position.
+     * 
+     * @param {...any[]} args - The arguments to be passed to the console.trace function.
+     * @returns {void}
+     */
+    trace(...args: any[]): void {
       oldCons.trace(args);
     },
-    log(...args: any[]) {
+
+    /**
+     * Writes a message to the console.
+     * @param {...any[]} args - The arguments to be passed to the console.log function.
+     * @returns {void}
+     */
+    log(...args: any[]): void {
       logger({ type: 'log', args, echo: oldCons });
     },
-    info(...args: any[]) {
+
+    /**
+     * Logs an informational message to the console.
+     * 
+     * @param {...any[]} args - The arguments to be logged as an informational message.
+     * @returns {void}
+     */
+    info(...args: any[]): void {
       logger({ type: 'info', args, echo: oldCons });
     },
-    warn(...args: any[]) {
+
+    /**
+     * Logs a warning message to the console.
+     * 
+     * @param {...any[]} args - The arguments to be logged as a warning message.
+     * @returns {void}
+     */
+    warn(...args: any[]): void {
       logger({ type: 'warn', args, echo: oldCons });
     },
-    error(...args: any[]) {
+
+    /**
+     * Logs an error message to the console.
+     * 
+     * @param {...any[]} args - The arguments to be logged as an error message.
+     * @returns {void}
+     */
+    error(...args: any[]): void {
       logger({ type: 'error', args, echo: oldCons });
     },
   }))(window.console);
@@ -42,6 +76,13 @@ type TLogger = {
   echo?: TConsole,
   [key: string]: any
 }
+
+type TIcons = {
+  log: number;
+  info: number;
+  error: number;
+  warn: number;
+};
 
 export const logger = (props: TLogger): void => {
   const {
