@@ -7,7 +7,7 @@ type TConsole = Partial<Console>;
  */
 export const initLogger = (): void => {
 
-  const _console: TConsole = ((oldCons: TConsole) => ({
+  const _console: TConsole = ((oldCons: TConsole): TConsole => ({
 
     /**
      * Writes a message to the console, including a stack trace from the current position.
@@ -84,6 +84,15 @@ type TIcons = {
   warn: number;
 };
 
+  /**
+   * Logs a message to the console with a colored icon.
+   * 
+   * @param {TLogger} props - The logger properties.
+   * @param {string} [props.type=info] - The type of the message.
+   * @param {TConsole} [props.echo=window.console] - The console to which the message is logged.
+   * @param {...any[]} props.args - The arguments to be logged.
+   * @returns {void}
+   */
 export const logger = (props: TLogger): void => {
   const {
     type = 'info',
