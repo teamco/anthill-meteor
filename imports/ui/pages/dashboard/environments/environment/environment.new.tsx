@@ -148,8 +148,8 @@ export const EnvironmentNew: React.FC<TProps> = (props): JSX.Element => {
         </Row>
       </Form>
       <div className='form-footer'>
-        <Button type="default" onClick={onModalCancel}>Cancel</Button>
-        <Button type="primary" onClick={onValidate}>Save</Button>
+        <Button type="default" onClick={onModalCancel}>{t(intl, 'actions.cancel')}</Button>
+        <Button type="primary" onClick={onValidate}>{t(intl, 'actions.save')}</Button>
       </div>
     </div>
   );

@@ -89,5 +89,11 @@ export interface ITableParams {
   filters?: Parameters<GetProp<TableProps, 'onChange'>>[1];
 }
 
+export type TPaginateProps = {
+  current: number;
+  pageSize: number;
+  sort?: [string[] | string, "descend" | "ascend"];
+}
+
 export type TColumns<T extends object = object> = TableProps<T>['columns'];
 export type TTablePaginationConfig = Exclude<GetProp<TableProps, 'pagination'>, boolean>;

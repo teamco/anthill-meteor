@@ -5,6 +5,7 @@ import table from './en-US/table';
 // import address from './en-US/address';
 import environment from './en-US/environment';
 import form from './en-US/form';
+import meta from './en-US/meta';
 import error from './en-US/error';
 import event from './en-US/event';
 // import menu from './en-US/menu';
@@ -32,6 +33,7 @@ export default {
   ...event,
   // ...menu,
   ...message,
+  ...meta,
   // ...notifications,
   // ...profile,
   // ...time,

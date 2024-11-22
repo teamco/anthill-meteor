@@ -10,15 +10,24 @@ import { NotificationContext } from '/imports/ui/context/notification.context';
 import { defineAbilityFor } from '/imports/ui/services/ability.service';
 
 import Loader from '/imports/ui/components/Loader/loader.component';
+import DrawerPanelComponent from '/imports/ui/components/DrawerPanel/drawerPanel.component';
+import { LayoutHeader } from '/imports/ui/components/Layout/layoutHeader.component';
 
 import { nCache } from '/imports/utils/message.util';
+import { t, TIntl } from '/imports/utils/i18n.util';
 
 const { Header, Footer, Content } = Layout;
 
+/**
+ * @description The main layout for the admin pages
+ * @param {ability} The ability to access the admin pages
+ * @returns {JSX.Element} The main layout for the admin pages
+ */
 const AdminLayout: FC = (): JSX.Element => {
-  const intl = useIntl();
+  const intl: TIntl = useIntl();
 
   const [ability, setAbility] = useState(defineAbilityFor(Meteor.user()));
+  const [drawerPanelOpen, setDrawerPanelOpen] = useState(false);
 
   useEffect(() => {
     setAbility(defineAbilityFor(Meteor.user()));
@@ -35,27 +44,39 @@ const AdminLayout: FC = (): JSX.Element => {
   nCache.set('modalApi', modalApi);
   nCache.set('notificationApi', notificationApi);
 
+  const drawerProps = {
+    title: t(intl, 'dashboard.drawer.title'),
+    drawerPanelOpen,
+    setDrawerPanelOpen
+  }
+
   return ability ? (
-      <I18nContext.Provider value={intl}>
-        <AuthenticationContext.Provider value={ability}>
-          <AbilityContext.Provider value={ability}>
-            <NotificationContext.Provider value={{ modalApi, messageApi, notificationApi }}>
-              <ConfigProvider>
-                <Layout className={'layout'}>
-                  <Header className={'header'}>Header</Header>
-                  <Content className={'content'}>
-                    {messageHolder}
-                    {notificationHolder}
-                    {modalHolder}
-                    <Outlet />
-                  </Content>
-                  <Footer className={'footer'}>Footer</Footer>
-                </Layout>
-              </ConfigProvider>
-            </NotificationContext.Provider>
-          </AbilityContext.Provider>
-        </AuthenticationContext.Provider>
-      </I18nContext.Provider>
+    <I18nContext.Provider value={intl}>
+      <AuthenticationContext.Provider value={ability}>
+        <AbilityContext.Provider value={ability}>
+          <NotificationContext.Provider value={{ modalApi, messageApi, notificationApi }}>
+            <ConfigProvider>
+              <Layout className={'layout'}>
+                <Header className={'header'}>
+                  <LayoutHeader
+                    title={t(intl, 'meta.title')}
+                    onMenuOpen={setDrawerPanelOpen}
+                  />
+                </Header>
+                <Content className={'content'}>
+                  {messageHolder}
+                  {notificationHolder}
+                  {modalHolder}
+                  <DrawerPanelComponent {...drawerProps} />
+                  <Outlet />
+                </Content>
+                <Footer className={'footer'}>Footer</Footer>
+              </Layout>
+            </ConfigProvider>
+          </NotificationContext.Provider>
+        </AbilityContext.Provider>
+      </AuthenticationContext.Provider>
+    </I18nContext.Provider>
   ) : <Loader spinning={true} />
 };
 

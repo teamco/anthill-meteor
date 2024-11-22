@@ -1,8 +1,9 @@
+import { IntlShape, MessageFormatElement } from 'react-intl';
 import { logger } from './console.util';
 
 export type TIntl = {
-  messages: string[];
-  formatMessage: ({ id, defaultMessage }, {}) => string;
+  messages: Record<string, string> | Record<string, MessageFormatElement[]>;
+  formatMessage: ({ id, defaultMessage }: { id: string; defaultMessage: string; }, {}: {}) => string;
 }
 
 /**

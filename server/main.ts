@@ -3,7 +3,7 @@ import { Accounts } from 'meteor/accounts-base';
 import { IUser } from '/imports/config/types';
 
 import './environments/methods';
-import './environments/publish';
+import './widgets/methods';
 
 const SEED_USERNAME = 'admin';
 const SEED_PASSWORD = 'password';

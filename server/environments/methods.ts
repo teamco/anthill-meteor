@@ -1,11 +1,8 @@
 import { Meteor } from "meteor/meteor";
 import { EnvironmentsCollection } from "/imports/collections/environments.collection";
+import { TPaginateProps } from "/imports/config/types";
 
-type TPaginateProps = {
-  current: number;
-  pageSize: number;
-  sort?: [string[] | string, "descend" | "ascend"];
-}
+import './publish';
 
 const DEFAULT_SORT: TPaginateProps['sort'] = [['metadata', 'updatedAt'], 'descend'];
 
@@ -46,7 +43,7 @@ Meteor.methods({
    * @param {string} _id - The _id of the Environment to remove.
    * @returns {Promise<number>} - The number of removed documents.
    */
-  environmentRemove: ({ _id }: { _id: string }): Promise<number> => {console.log(_id)
+  environmentRemove: ({ _id }: { _id: string }): Promise<number> => {
     return EnvironmentsCollection.removeAsync({ _id });
   },
 }); 
