@@ -50,7 +50,7 @@ export default class Widget extends CommonUtils implements TWidget {
     if (!user) return catchClassErrorMsg({ message: 'User is required' });
     if (!Widget) return catchClassErrorMsg({ message: 'Widget is required' });
 
-    const widget = new Widget(user);
+    const widget: TWidget = new Widget(user);
 
     this.name = widget.name;
     this.description = widget.description;
