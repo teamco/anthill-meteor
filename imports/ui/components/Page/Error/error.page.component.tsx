@@ -11,7 +11,7 @@ import { t } from '/imports/utils/i18n.util';
 import { I18nContext } from '/imports/ui/context/i18n.context';
 
 type TErrorProps = {
-  spinning?: boolean;
+  loading?: boolean;
   status: ResultStatusType;
   subject: string;
   className?: string;
@@ -33,10 +33,10 @@ const ErrorPage = (props: TErrorProps): JSX.Element => {
   const intl = useContext(I18nContext);
 
   const {
-    spinning = false,
     status,
     subject,
     className,
+    loading = false,
     title = t(intl, 'error.warning'),
     subTitle = t(intl, 'error.warningMsg')
   } = props;
@@ -54,7 +54,7 @@ const ErrorPage = (props: TErrorProps): JSX.Element => {
 
   const _error = (
       <Can I={'read'} a={subject}>
-        <Loader spinning={spinning}/>
+        <Loader loading={loading}/>
         <div>
           <Result extra={extra}
                   status={status}

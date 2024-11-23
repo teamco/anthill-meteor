@@ -15,7 +15,7 @@ type TPageProps = {
   className?: string,
   title: string,
   description?: string,
-  spinning?: boolean,
+  loading?: boolean,
   ableFor?: TAbility,
   children?: React.ReactNode
 }
@@ -24,7 +24,7 @@ type TPageProps = {
  * @function Page
  * @param props.testId The id of the div container of the page (used in tests only)
  * @param props.className The class of the div container of the page
- * @param props.spinning Whether or not the page should display a spinner
+ * @param props.loading Whether or not the page should display a spinner
  * @param props.ableFor The ability of the page. If the user doesn't have enough permissions to access the page, the page will be redirected to the page403 page with the given status (default is 403).
  * @param props.title The title of the page
  * @param props.description The description of the page
@@ -35,7 +35,7 @@ const Page: React.FC<TPageProps> = (props: TPageProps): JSX.Element => {
   const {
     testId,
     className,
-    spinning = false,
+    loading = false,
     ableFor: {
       action = 'read',
       subject
@@ -49,11 +49,11 @@ const Page: React.FC<TPageProps> = (props: TPageProps): JSX.Element => {
     <div className={classnames('page', className)} data-testid={testId}>      
       <Can I={action} a={subject}>
         <div>
-          <Loader spinning={!!spinning} />
+          <Loader loading={!!loading} />
           <h1>{title}</h1>
           <h4>{description}</h4>
         </div>
-        <div>{children}</div>
+        {loading ? 'Loading...' : <div>{children}</div>}
       </Can>
       <Page403 ableFor={props.ableFor} />
     </div>

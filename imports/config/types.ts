@@ -5,6 +5,7 @@ export type TStatus = {
   isDraft: boolean;
   isActive: boolean;
   isPending: boolean;
+  isOnHold: boolean;
 }
 
 export type TTimestamp = {
@@ -35,6 +36,7 @@ export type TLayout = {
   addWidget(widget: TWidget): void;
   removeWidget(widget: TWidget): void;
   template: TTemplate;
+  current: boolean;
   version: number;
   metadata: IMetadata,
   widgets: TWidget[]
@@ -45,11 +47,14 @@ export type TEnvironment = {
   updateLayout(layout: TLayout): TLayout;
   _id?: string;
   name: string;
+  description?: string;
   type: string;
   layout: TLayout;
   metadata: IMetadata;
-  status: TStatus
+  status: Pick<TStatus, 'isDraft' | 'isActive'>
 }
+
+export type TEnvironmentEdit = Pick<TEnvironment, 'name' | 'description' | 'type' | 'layout' | 'status' | 'metadata'>
 
 export type TWidgetContent = {
   type: 'Embedded' | 'External' | 'Internal' | 'Script';
@@ -78,7 +83,7 @@ export type TAbility = {
 }
 
 export interface CommonDataType {
-	key: string;
+  key: string;
   [key: string]: any
 }
 

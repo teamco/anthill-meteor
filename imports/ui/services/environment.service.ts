@@ -2,8 +2,9 @@ import Environment from "/imports/api/environment/Environment";
 import Widget from "/imports/api/environment/Widget";
 
 import { EmptyWidget } from "/imports/api/widgets/empty.widget";
+import { EnvironmentsCollection } from "/imports/collections/environments.collection";
 
-import { IUser } from "/imports/config/types";
+import { IUser, TEnvironmentEdit } from "/imports/config/types";
 import { t, TIntl } from "/imports/utils/i18n.util";
 
 import { successSaveMsg, catchErrorMsg, successDeleteMsg, catchWarnMsg } from "/imports/utils/message.util";
@@ -19,7 +20,7 @@ import { successSaveMsg, catchErrorMsg, successDeleteMsg, catchWarnMsg } from "/
  * @param {string} [optional.description] - The description of the environment
  */
 export const createEnvironment = (name: string, type: string, user: IUser, handleRefresh: () => void, optional: { description?: string }) => {
-  
+
   const env = new Environment(name, type, user, {
     description: optional.description
   });
@@ -77,3 +78,12 @@ export const getEnvironments = (method: string, setEntities: (res: any[]) => voi
     setEntities(res);
   }).catch((e) => catchErrorMsg(e, () => setEntities([])));
 };
+
+/**
+ * Get an environment by its _id
+ * 
+ * @param {string} _id - The unique identifier of the environment to get.
+ * @return {TEnvironmentEdit} - The environment object
+ */
+export const getEnvironment = (_id: string): TEnvironmentEdit =>
+  EnvironmentsCollection.findOne({ _id }) as TEnvironmentEdit;

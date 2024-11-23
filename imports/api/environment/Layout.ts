@@ -30,6 +30,7 @@ export default class Layout extends CommonUtils implements TLayout {
 
   template: TTemplate = {};
   version: number = 1;
+  current: boolean = false;
   widgets: TWidget[] = [];
   metadata: IMetadata = {
     createdAt: new Date(),

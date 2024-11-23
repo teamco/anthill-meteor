@@ -7,8 +7,12 @@ import AdminLayout from "/imports/ui/layouts/admin.layout";
 import Page404 from "/imports/ui/pages/404";
 
 import HomePage from "/imports/ui/pages/home/home.page";
+
 import DashboardPage from "/imports/ui/pages/dashboard/dashboard.page";
+
 import EnvironmentsPage from "/imports/ui/pages/dashboard/environments/environments.page";
+import EnvironmentEdit from "/imports/ui/pages/dashboard/environments/environment/environment.edit";
+
 import WidgetsPage from "/imports/ui/pages/dashboard/widgets/widgets.page";
 
 /**
@@ -51,6 +55,10 @@ export const renderRoutes = () => {
         {
           path: "/dashboard/environments",
           element: <EnvironmentsPage />,
+        },
+        {
+          path: "/dashboard/environments/:environmentId",
+          element: <EnvironmentEdit />,
         },
         {
           path: "/dashboard/widgets",

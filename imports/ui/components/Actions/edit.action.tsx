@@ -46,12 +46,33 @@ export const EditAction: React.FC<TEditAction> = (props): JSX.Element => {
     onEdit = stub
   } = props;
 
+  const { pathname } = window.location;
+
+  /**
+   * @function aClick
+   * @description Prevents the default link behavior and stops the event propagation.
+   * This is useful when we want to handle the click event manually.
+   * @param {React.MouseEvent<HTMLAnchorElement, MouseEvent>} e The event object
+   * @returns {void}
+   */
+  const aClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>): void => {
+    e.preventDefault();
+  };
+
   return (
     <Can I={'update'} a={entityId}>
       <Button disabled={disabled}
         loading={isLoading}
         type={type}
-        icon={<EditTwoTone twoToneColor={COLORS.success} />}
+        icon={(
+          <a title={t(intl, 'actions.edit', { type: '' })}
+            onClick={aClick}
+            href={`${pathname}/${entityId}`}
+            rel="noopener noreferrer"
+          >
+            <EditTwoTone twoToneColor={COLORS.success} />
+          </a>
+        )}
         onClick={() => onEdit(entityId)}>
         {showLabel && t(intl, 'actions.edit', { type: '' })}
       </Button>

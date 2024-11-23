@@ -95,7 +95,7 @@ const AdminLayout: FC = (): JSX.Element => {
         </AbilityContext.Provider>
       </AuthenticationContext.Provider>
     </I18nContext.Provider>
-  ) : <Loader spinning={true} />
+  ) : <Loader loading={true} />
 };
 
 export default AdminLayout;

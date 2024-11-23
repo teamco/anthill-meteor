@@ -48,7 +48,7 @@ export const menuItems = (intl: TIntl, ability: MongoAbility, history: NavigateF
     icon,
     disabled,
     label: (
-      <a href={path} onClick={(e) => {
+      <a href={path} rel="noopener noreferrer" onClick={(e) => {
         e.preventDefault();
         e.stopPropagation();
 

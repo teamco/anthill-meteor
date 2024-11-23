@@ -4,9 +4,15 @@ export const DEFAULT_TIME_FORMAT = 'HH:mm';
 export const DEFAULT_DATE_FORMAT = 'YYYY-MM-DD';
 export const DEFAULT_DATE_TIME_FORMAT = `${DEFAULT_DATE_FORMAT} ${DEFAULT_TIME_FORMAT}:ss`;
 
+/**
+ * Converts a timestamp to a Date object.
+ * 
+ * @param {number | string} ts - The timestamp to convert, which can be a number or a string.
+ * @returns {Date} A Date object representing the given timestamp.
+ */
 const toDate = (ts: number | string): Date => {
   if (isNaN(new Date(ts).getDate())) {
-    ts = parseInt(ts.toString(), 10);
+    ts = parseInt(ts?.toString(), 10);
   }
   return new Date(ts);
 };

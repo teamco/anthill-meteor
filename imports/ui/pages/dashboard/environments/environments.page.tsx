@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import { Button, Table } from 'antd';
 import { useSubscribe } from "meteor/react-meteor-data";
 import { TableProps } from "antd/lib/table";
+import { useNavigate } from "react-router-dom";
 
 import { EnvironmentsCollection } from "/imports/collections/environments.collection";
 
@@ -51,6 +52,7 @@ const EnvironmentsPage: React.FC = (): JSX.Element => {
 	const intl = useContext(I18nContext);
 	const ability = useContext(AbilityContext);
 	const { modalApi } = useContext(NotificationContext);
+	const history = useNavigate();
 
 	const user = Meteor.user() || { _id: '1' };
 
@@ -67,7 +69,7 @@ const EnvironmentsPage: React.FC = (): JSX.Element => {
 	};
 
 	const onEdit = (id: string): void => {
-		debugger
+		history(`/dashboard/environments/${id}`);
 	};
 
 	const {

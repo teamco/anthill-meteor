@@ -26,10 +26,9 @@ export default class Environment extends CommonUtils implements TEnvironment {
   type: string;
   description?: string;
   layout: TLayout;
-  status: TStatus = {
+  status: Pick<TStatus, 'isDraft' | 'isActive'> = {
     isDraft: false,
-    isActive: false,
-    isPending: false
+    isActive: false
   };
   metadata: IMetadata = {
     createdAt: new Date(),
