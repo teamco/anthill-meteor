@@ -3,7 +3,7 @@ import { TableProps } from "antd/es/table";
 import { Tooltip } from "antd";
 import { QuestionCircleTwoTone } from '@ant-design/icons';
 
-import { DataType } from "./environments.page";
+import { DataType } from "./widgets.page";
 
 import { IMetadata, TColumns, TStatus } from "/imports/config/types";
 

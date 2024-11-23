@@ -3,6 +3,21 @@ import CommonUtils from "/imports/utils/common.util";
 
 import Layout from "./Layout";
 
+/**
+ * Represents an environment configuration that extends common utilities and implements the TEnvironment interface.
+ * Manages the creation and updating of environment layouts and maintains metadata and status information.
+ * 
+ * @property {string} name - The name of the environment.
+ * @property {string} type - The type of the environment.
+ * @property {string} [description] - An optional description of the environment.
+ * @property {TLayout} layout - The layout associated with the environment.
+ * @property {TStatus} status - The current status of the environment.
+ * @property {IMetadata} metadata - Metadata containing creation and update information.
+ * 
+ * @method create - Initializes the environment with a name, type, and user, optionally including a description.
+ * @method createLayout - Creates and initializes the environment layout with user information.
+ * @method updateLayout - Updates the environment with a specified layout.
+ */
 export default class Environment extends CommonUtils implements TEnvironment {
 
   name: string;

@@ -4,6 +4,7 @@ import table from './en-US/table';
 // import auth from './en-US/auth';
 // import address from './en-US/address';
 import environment from './en-US/environment';
+import widget from './en-US/widget';
 import form from './en-US/form';
 import meta from './en-US/meta';
 import error from './en-US/error';
@@ -25,6 +26,7 @@ export default {
   ...dashboard,
   ...table,
   ...environment,
+  ...widget,
   // ...auth,
   // ...address,
   // ...business,

@@ -1,4 +1,6 @@
 import Environment from "/imports/api/environment/Environment";
+import Widget from "/imports/api/environment/Widget";
+
 import { EmptyWidget } from "/imports/api/widgets/empty.widget";
 
 import { IUser } from "/imports/config/types";
@@ -17,12 +19,14 @@ import { successSaveMsg, catchErrorMsg, successDeleteMsg, catchWarnMsg } from "/
  * @param {string} [optional.description] - The description of the environment
  */
 export const createEnvironment = (name: string, type: string, user: IUser, handleRefresh: () => void, optional: { description?: string }) => {
+  
   const env = new Environment(name, type, user, {
     description: optional.description
   });
+
   const layout = env.createLayout(user);
 
-  layout.addWidget(new EmptyWidget(null, user));
+  layout.addWidget(new Widget(EmptyWidget, user));
 
   Meteor.callAsync("environmentsInsert", { ...env }).
     then((_id: string) => {
@@ -46,18 +50,18 @@ export const createEnvironment = (name: string, type: string, user: IUser, handl
  */
 export const deleteEnvironment = (_id: string, intl: TIntl, handleRefresh: () => void) => {
   Meteor.callAsync('environmentRemove', { _id }).
-  then((res: number) => {
-    if (res > 0) {
-      successDeleteMsg();
-      handleRefresh();
-    } else {
-      catchWarnMsg({ 
-        errorType: 'warning', 
-        message: t(intl, 'error.warningMsg'),
-        error: 'Error 400' 
-      });
-    }
-  }).catch(catchErrorMsg)
+    then((res: number) => {
+      if (res > 0) {
+        successDeleteMsg();
+        handleRefresh();
+      } else {
+        catchWarnMsg({
+          errorType: 'warning',
+          message: t(intl, 'error.warningMsg'),
+          error: 'Error 400'
+        });
+      }
+    }).catch(catchErrorMsg)
 };
 
 /**

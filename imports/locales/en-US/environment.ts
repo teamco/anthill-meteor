@@ -11,5 +11,4 @@ export default {
   'environment.list.name': 'Name',
   'environment.list.type': 'Type',
   'environment.list.status': 'Status',
-  'environment.list.updatedAt': 'Updated At',
 }
