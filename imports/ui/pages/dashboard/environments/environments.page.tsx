@@ -87,13 +87,13 @@ const EnvironmentsPage: React.FC = (): JSX.Element => {
 		pagination,
 		scroll: { x: 800 },
 		bordered: true,
-		className: 'eList',
+		className: 'gridList',
 		dataSource: indexable(entities, pagination?.current, pagination?.pageSize),
 		loading: isLoading(),
 		// rowKey: (record: DataType) => record._id,
 		onChange: handleTableChange,
 		title: () => (
-			<div className="eHeader">
+			<div className="gridHeader">
 				<Button
 					disabled={ability.cannot('create', 'environment')}
 					loading={isLoading()}
@@ -105,7 +105,7 @@ const EnvironmentsPage: React.FC = (): JSX.Element => {
 			</div>
 		),
 		footer: () => (
-			<div className="eFooter">
+			<div className="gridFooter">
 				{t(intl, 'table.total', { amount: total.toString() })}
 			</div>
 		)
