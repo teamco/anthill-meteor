@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from 'react';
-import { ConfigProvider, Layout, Menu, message, Modal, notification } from 'antd';
+import { ConfigProvider, Layout, message, Modal, notification } from 'antd';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { useIntl } from 'react-intl';
 
@@ -12,7 +12,8 @@ import { defineAbilityFor } from '/imports/ui/services/ability.service';
 import Loader from '/imports/ui/components/Loader/loader.component';
 import DrawerPanelComponent from '/imports/ui/components/DrawerPanel/drawerPanel.component';
 import { LayoutHeader } from '/imports/ui/components/Layout/layoutHeader.component';
-import { useMenu } from '/imports/ui/components/menu.component';
+import { MenuComponent } from '/imports/ui/components/Menu/menu.component';
+import { useMenu } from '/imports/ui/components/Menu/menu.use';
 
 import { nCache } from '/imports/utils/message.util';
 import { t, TIntl } from '/imports/utils/i18n.util';
@@ -49,10 +50,15 @@ const AdminLayout: FC = (): JSX.Element => {
   const drawerProps = {
     title: t(intl, 'dashboard.drawer.title'),
     drawerPanelOpen,
-    setDrawerPanelOpen
+    setDrawerPanelOpen,
+    footer: (
+      <div className="drawerFooter">
+        test
+      </div>
+    )
   }
 
-  const { selectedMenuKeys, openedMenuKeys, mItems, onOpenChange } = useMenu(intl, ability, history, drawerPanelOpen);
+  const menuProps = useMenu(intl, ability, history, drawerPanelOpen);
   
   return ability ? (
     <I18nContext.Provider value={intl}>
@@ -78,15 +84,7 @@ const AdminLayout: FC = (): JSX.Element => {
                   {notificationHolder}
                   {modalHolder}
                   <DrawerPanelComponent {...drawerProps}>
-                    <Menu                  
-                      className='drawerMenu'
-                      mode="inline"
-                      items={mItems}
-                      defaultSelectedKeys={[...selectedMenuKeys]}
-                      onOpenChange={onOpenChange}
-                      openKeys={openedMenuKeys ? [...openedMenuKeys] : []}
-                      selectedKeys={[...selectedMenuKeys]}
-                    />
+                    <MenuComponent {...menuProps}/>
                   </DrawerPanelComponent>
                   <Outlet />
                 </Content>

@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Drawer } from "antd";
+import { Button, ConfigProvider, Drawer } from "antd";
 import { LeftSquareTwoTone } from "@ant-design/icons";
 
 import './drawerPanel.module.less';
@@ -11,6 +11,7 @@ type TPanelProps = {
   loading?: boolean,
   closable?: boolean,
   title?: string,
+  width?: number,
   children?: any,
   setDrawerPanelOpen: (open: boolean) => void,
   drawerPanelOpen: boolean
@@ -44,6 +45,7 @@ export const DrawerPanelComponent: React.FC<TPanelProps> = (props): JSX.Element 
   const {
     title,
     children,
+    width = 300,
     footer = null,
     size = 'default',
     placement = 'left',
@@ -54,7 +56,15 @@ export const DrawerPanelComponent: React.FC<TPanelProps> = (props): JSX.Element 
   } = props;
 
   return (
+    <ConfigProvider theme={{
+      components: {
+        Drawer: {
+          footerPaddingBlock: 16
+        }
+      }
+    }}>
     <Drawer
+      width={width}
       className="drawer"
       destroyOnClose
       title={title}
@@ -77,6 +87,7 @@ export const DrawerPanelComponent: React.FC<TPanelProps> = (props): JSX.Element 
     >
       {children}
     </Drawer>
+    </ConfigProvider>
   );
 }
 
