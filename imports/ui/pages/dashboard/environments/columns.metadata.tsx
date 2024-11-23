@@ -1,11 +1,11 @@
 import React from "react";
 import { TableProps } from "antd/es/table";
-import { Tooltip } from "antd";
+import { Tag, Tooltip } from "antd";
 import { QuestionCircleTwoTone } from '@ant-design/icons';
 
 import { DataType } from "./environments.page";
 
-import { IMetadata, TColumns, TStatus } from "/imports/config/types";
+import { IMetadata, TColumns, TLayout, TStatus } from "/imports/config/types";
 
 import { indexColumn } from "/imports/utils/antd.util";
 import { tsToLocaleDateTime } from "/imports/utils/timestamp.util";
@@ -17,6 +17,7 @@ import { actionField } from "/imports/utils/table/action.util";
 
 import { DeleteAction } from "/imports/ui/components/Actions/delete.action";
 import { EditAction } from "/imports/ui/components/Actions/edit.action";
+import widget from "/imports/locales/en-US/widget";
 
 /**
  * Generates a column configuration for the environments table.
@@ -69,6 +70,20 @@ export const metadataColumns = (intl: TIntl, filteredInfo: TFilters, sortedInfo:
             {status.isDraft && 'Draft'}
             {status.isActive && 'Active'}
             {status.isPending && 'Pending'}
+          </div>
+        )
+      }
+    },
+    {
+      title: t(intl, 'environment.list.widgets'),
+      dataIndex: 'layout',
+      key: 'layout.widgets',
+      render(layout: TLayout): JSX.Element {
+        return (
+          <div>
+            {layout.widgets.map((widget, idx) => (
+              <Tag key={idx}>{widget.name}</Tag>
+            ))}
           </div>
         )
       }
