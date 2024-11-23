@@ -6,7 +6,7 @@ export default {
   'widget.list.type': 'Type',
   'widget.list.image': 'Image',
   'widget.list.category': 'Category',
-  'widget.list.status': 'Status',
+  'widget.list.size': 'Size',
   'widget.working.path': 'Relative Path',
   'widget.working.path.extra': 'eg. imports/api/widgets/...',
 }

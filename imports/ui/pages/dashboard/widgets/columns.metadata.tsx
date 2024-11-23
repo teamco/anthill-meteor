@@ -73,6 +73,22 @@ export const metadataColumns = (intl: TIntl, filteredInfo: TFilters, sortedInfo:
       ...columnSorter(sortedInfo, 'category'),
     },
     {
+      title: t(intl, 'widget.list.size'),
+      dataIndex: 'dimensions',
+      key: 'dimensions',
+      width: 100,
+      align: 'center',
+      render: ({ width, height }): JSX.Element => (<>{width}x{height}</>)
+    },
+    {
+      title: t(intl, 'widget.list.type'),
+      width: 100,
+      dataIndex: 'content',
+      key: 'content.type',
+      ...columnSorter(sortedInfo, 'content.type', 'content'),
+      render: ({ type }): string => type
+    },
+    {
       title: t(intl, 'message.info.updatedAt'),
       width: 200,
       dataIndex: 'metadata',
