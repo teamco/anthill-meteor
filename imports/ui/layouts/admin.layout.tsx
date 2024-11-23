@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from 'react';
-import { ConfigProvider, Layout, message, Modal, notification } from 'antd';
-import { Outlet } from 'react-router-dom';
+import { ConfigProvider, Layout, Menu, message, Modal, notification } from 'antd';
+import { Outlet, useNavigate } from 'react-router-dom';
 import { useIntl } from 'react-intl';
 
 import { AbilityContext, AuthenticationContext } from '/imports/ui/context/authentication.context';
@@ -12,6 +12,7 @@ import { defineAbilityFor } from '/imports/ui/services/ability.service';
 import Loader from '/imports/ui/components/Loader/loader.component';
 import DrawerPanelComponent from '/imports/ui/components/DrawerPanel/drawerPanel.component';
 import { LayoutHeader } from '/imports/ui/components/Layout/layoutHeader.component';
+import { useMenu } from '/imports/ui/components/menu.component';
 
 import { nCache } from '/imports/utils/message.util';
 import { t, TIntl } from '/imports/utils/i18n.util';
@@ -25,6 +26,7 @@ const { Header, Footer, Content } = Layout;
  */
 const AdminLayout: FC = (): JSX.Element => {
   const intl: TIntl = useIntl();
+  const history = useNavigate();
 
   const [ability, setAbility] = useState(defineAbilityFor(Meteor.user()));
   const [drawerPanelOpen, setDrawerPanelOpen] = useState(false);
@@ -50,12 +52,20 @@ const AdminLayout: FC = (): JSX.Element => {
     setDrawerPanelOpen
   }
 
+  const { selectedMenuKeys, openedMenuKeys, mItems, onOpenChange } = useMenu(intl, ability, history, drawerPanelOpen);
+  
   return ability ? (
     <I18nContext.Provider value={intl}>
       <AuthenticationContext.Provider value={ability}>
         <AbilityContext.Provider value={ability}>
           <NotificationContext.Provider value={{ modalApi, messageApi, notificationApi }}>
-            <ConfigProvider>
+            <ConfigProvider theme={{
+              components: {
+                Menu: {
+                  activeBarBorderWidth: 0
+                }
+              }
+            }}>
               <Layout className={'layout'}>
                 <Header className={'header'}>
                   <LayoutHeader
@@ -67,7 +77,17 @@ const AdminLayout: FC = (): JSX.Element => {
                   {messageHolder}
                   {notificationHolder}
                   {modalHolder}
-                  <DrawerPanelComponent {...drawerProps} />
+                  <DrawerPanelComponent {...drawerProps}>
+                    <Menu                  
+                      className='drawerMenu'
+                      mode="inline"
+                      items={mItems}
+                      defaultSelectedKeys={[...selectedMenuKeys]}
+                      onOpenChange={onOpenChange}
+                      openKeys={openedMenuKeys ? [...openedMenuKeys] : []}
+                      selectedKeys={[...selectedMenuKeys]}
+                    />
+                  </DrawerPanelComponent>
                   <Outlet />
                 </Content>
                 <Footer className={'footer'}>Footer</Footer>

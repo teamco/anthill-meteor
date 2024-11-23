@@ -14,8 +14,9 @@ import { TFilters, TSorts } from "/imports/ui/hooks/table.hook";
 import { columnFilter } from "/imports/utils/table/filter.util";
 import { t, TIntl } from "/imports/utils/i18n.util";
 import { actionField } from "/imports/utils/table/action.util";
-import { DeleteAction } from "/imports/ui/components/delete.action";
-import { EditAction } from "/imports/ui/components/edit.action";
+
+import { DeleteAction } from "/imports/ui/components/Actions/delete.action";
+import { EditAction } from "/imports/ui/components/Actions/edit.action";
 
 
 /**

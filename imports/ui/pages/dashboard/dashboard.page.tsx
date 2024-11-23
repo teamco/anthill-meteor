@@ -36,7 +36,7 @@ const DashboardPage: React.FC = (): JSX.Element => {
 	}
 
 	return (
-		<Page ableFor={{ subject: 'dashboard' }} title={t(intl, 'dashboard.title')}>
+		<Page ableFor={{ subject: 'dashboard' }} title={t(intl, 'dashboard.title')} description={t(intl, 'dashboard.description')}>
 			<Row gutter={[48, 48]}>
 				<Col {...layout.quarterColumn}>
 					<TileComponent

@@ -8,7 +8,7 @@ import form from './en-US/form';
 import meta from './en-US/meta';
 import error from './en-US/error';
 import event from './en-US/event';
-// import menu from './en-US/menu';
+import menu from './en-US/menu';
 import message from './en-US/message';
 // import notifications from './en-US/notifications';
 // import profile from './en-US/profile';
@@ -31,7 +31,7 @@ export default {
   ...form,
   ...error,
   ...event,
-  // ...menu,
+  ...menu,
   ...message,
   ...meta,
   // ...notifications,
