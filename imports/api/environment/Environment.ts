@@ -1,5 +1,7 @@
 import { TLayout, TEnvironment, IUser, IMetadata, TStatus } from "/imports/config/types";
+
 import CommonUtils from "/imports/utils/common.util";
+import { catchClassErrorMsg } from "/imports/utils/message.util";
 
 import Layout from "./Layout";
 
@@ -52,6 +54,8 @@ export default class Environment extends CommonUtils implements TEnvironment {
    * @param {string} [optional.description] - The description of the environment
    */
   create(name: string, type: string, user: IUser, optional: { description?: string } = {}): void {
+    if (!user) return catchClassErrorMsg({ message: 'User is required' });
+
     this.name = name;
     this.description = optional?.description;
     this.type = type;

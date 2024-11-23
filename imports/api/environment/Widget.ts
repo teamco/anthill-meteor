@@ -1,5 +1,7 @@
 import { TWidget, IMetadata, TWidgetContent, IUser } from "/imports/config/types";
+
 import CommonUtils from "/imports/utils/common.util";
+import { catchClassErrorMsg } from "/imports/utils/message.util";
 
 /**
  * Represents a Widget entity with properties and methods for managing widget data.
@@ -44,7 +46,10 @@ export default class Widget extends CommonUtils implements TWidget {
     this.create(Widget, user);
   }
 
-  create(Widget: new (arg0: IUser) => TWidget, user: IUser): void {
+  create(Widget: new (arg0: IUser) => TWidget, user?: IUser): void {
+    if (!user) return catchClassErrorMsg({ message: 'User is required' });
+    if (!Widget) return catchClassErrorMsg({ message: 'Widget is required' });
+
     const widget = new Widget(user);
 
     this.name = widget.name;

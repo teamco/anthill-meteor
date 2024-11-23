@@ -1,5 +1,7 @@
 import { IMetadata, IUser, TLayout, TTemplate, TWidget } from "/imports/config/types";
+
 import CommonUtils from "/imports/utils/common.util";
+import { catchClassErrorMsg } from "/imports/utils/message.util";
 
 /**
  * Represents a layout that manages a collection of widgets and their metadata.
@@ -54,10 +56,14 @@ export default class Layout extends CommonUtils implements TLayout {
   }
 
   addWidget(widget: TWidget): void {
+    if (!widget) return catchClassErrorMsg({ message: 'Widget is required' });
+
     this.widgets.push(widget);
   }
 
   removeWidget(widget: TWidget): void {
+    if (!widget) return catchClassErrorMsg({ message: 'Widget is required' });
+
     this.widgets = this.widgets.filter((w) => w._id !== widget._id);
   }
 }

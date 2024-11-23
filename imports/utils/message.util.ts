@@ -65,6 +65,21 @@ export const catchErrorMsg = (e: TError, fallback?: () => void): void => {
 }
 
 /**
+ * Displays an error notification with a fixed message "400: Bad Request".
+ *
+ * @param {{ message: string }} e - The error object containing error details to be displayed.
+ */
+export const catchClassErrorMsg = (e: { message: string }): void => {
+  const notificationApi = nCache.get('notificationApi');
+
+  notificationApi.error({
+    message: `400: Bad Request`,
+    description: e.message
+  });
+}
+
+
+/**
  * Displays an warning notification using the NotificationContext.
  *
  * @param e - The error object containing error details.

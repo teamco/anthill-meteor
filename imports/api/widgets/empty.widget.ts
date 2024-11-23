@@ -1,4 +1,6 @@
-import { IMetadata, IUser, TWidget } from "/imports/config/types"
+import { IMetadata, IUser, TWidget } from "/imports/config/types";
+
+import { catchClassErrorMsg } from "/imports/utils/message.util";
 
 /**
  * Represents an EmptyWidget class that implements the TWidget interface.
@@ -45,11 +47,13 @@ export class EmptyWidget implements TWidget {
     updatedBy: ''
   };
 
-  constructor(user: IUser) {
+  constructor(user: IUser) {  
     this.create(user);
   }
 
   create(user?: IUser): void {
+    if (!user) return catchClassErrorMsg({ message: 'User is required' });
+    
     this.metadata = {
       ...this.metadata,
       createdBy: user?._id,
