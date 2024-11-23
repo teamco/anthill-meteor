@@ -61,7 +61,8 @@ export const useTable = (method: string, Collection: Mongo.Collection<Document, 
 	}
 
 	if (sortParams?.length) {
-		_tParams.sortField = sortParams[0].split('.');
+		const sortFieldMatcher = sortParams[0].match(/\./);
+		_tParams.sortField = sortFieldMatcher ? sortParams[0].split('.') : sortParams[0];
 		_tParams.sortOrder = sortParams[1] as SortOrder;
 	}
 

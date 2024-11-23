@@ -17,7 +17,6 @@ import { actionField } from "/imports/utils/table/action.util";
 
 import { DeleteAction } from "/imports/ui/components/Actions/delete.action";
 import { EditAction } from "/imports/ui/components/Actions/edit.action";
-import widget from "/imports/locales/en-US/widget";
 
 /**
  * Generates a column configuration for the environments table.

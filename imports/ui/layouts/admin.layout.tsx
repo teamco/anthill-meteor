@@ -13,7 +13,7 @@ import Loader from '/imports/ui/components/Loader/loader.component';
 import DrawerPanelComponent from '/imports/ui/components/DrawerPanel/drawerPanel.component';
 import { LayoutHeader } from '/imports/ui/components/Layout/layoutHeader.component';
 import { MenuComponent } from '/imports/ui/components/Menu/menu.component';
-import { useMenu } from '/imports/ui/components/Menu/menu.use';
+import { useMenu } from '/imports/ui/hooks/menu.hook';
 
 import { nCache } from '/imports/utils/message.util';
 import { t, TIntl } from '/imports/utils/i18n.util';
