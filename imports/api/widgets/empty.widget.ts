@@ -47,17 +47,20 @@ export class EmptyWidget implements TWidget {
     updatedBy: ''
   };
 
-  constructor(user: IUser) {  
+  constructor(user: IUser) {
     this.create(user);
   }
 
   create(user?: IUser): void {
     if (!user) return catchClassErrorMsg({ message: 'User is required' });
+
+    this.dimensions = { width: 100, height: 100 };
+    this.content = { type: "Internal", value: "Empty" };
     
     this.metadata = {
       ...this.metadata,
       createdBy: user?._id,
       updatedBy: user?._id
-    }
+    };
   }
 }

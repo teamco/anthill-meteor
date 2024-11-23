@@ -33,7 +33,21 @@ export const metadataColumns = (intl: TIntl, filteredInfo: TFilters, sortedInfo:
   const columns: TColumns<DataType> = [
     indexColumn,
     {
-      title: t(intl, 'environment.list.name'),
+      title: t(intl, 'widget.list.image'),
+      dataIndex: 'thumbnail',
+      key: 'thumbnail',
+      width: 80,
+      align: 'center',
+      render(thumbnail: string, record: DataType): JSX.Element {
+        return (
+          <div className="eThumbnail">
+            <img src={thumbnail} alt={record.name} />
+          </div>
+        )
+      }
+    },
+    {
+      title: t(intl, 'widget.list.name'),
       dataIndex: 'name',
       key: 'name',
       ...columnFilter(filteredInfo, entities, 'name'),
@@ -52,40 +66,19 @@ export const metadataColumns = (intl: TIntl, filteredInfo: TFilters, sortedInfo:
       }
     },
     {
-      title: t(intl, 'environment.list.type'),
-      dataIndex: 'type',
-      key: 'type',
-      ...columnFilter(filteredInfo, entities, 'type'),
-      ...columnSorter(sortedInfo, 'type'),
-    },
-    {
-      title: t(intl, 'environment.list.status'),
-      dataIndex: 'status',
-      key: 'status',
-      width: 100,
-      render: (status: TStatus): JSX.Element => {
-        return (
-          <div>
-            {status.isDraft && 'Draft'}
-            {status.isActive && 'Active'}
-            {status.isPending && 'Pending'}
-          </div>
-        )
-      }
+      title: t(intl, 'widget.list.category'),
+      dataIndex: 'category',
+      key: 'category',
+      ...columnFilter(filteredInfo, entities, 'category'),
+      ...columnSorter(sortedInfo, 'category'),
     },
     {
       title: t(intl, 'message.info.updatedAt'),
       width: 200,
       dataIndex: 'metadata',
       key: 'metadata.updatedAt',
-      ...columnSorter(sortedInfo, 'metadata.createdAt', 'metadata'),
-      render: ({ updatedAt }: IMetadata): JSX.Element => {
-        return (
-          <div>
-            {tsToLocaleDateTime(updatedAt.toString())}
-          </div>
-        )
-      }
+      ...columnSorter(sortedInfo, 'metadata.updatedAt', 'metadata'),
+      render: ({ updatedAt }: IMetadata): string => tsToLocaleDateTime(updatedAt.toString())
     },
     {
       ...actionField(intl),

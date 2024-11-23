@@ -1,21 +1,20 @@
-import { IUser } from "/imports/config/types";
+import { IUser, TWidget } from "/imports/config/types";
 import { t, TIntl } from "/imports/utils/i18n.util";
 
 import { successSaveMsg, catchErrorMsg, successDeleteMsg, catchWarnMsg } from "/imports/utils/message.util";
 
 /**
- * Creates a new widget with a single empty widget.
- *
- * @param {string} name - The name of the widget
- * @param {string} type - The type of the widget
- * @param {IUser} user - The user creating the widget
- * @param {() => void} handleRefresh - Function to call after the widget is created
- * @param {Object} [optional] - An object containing optional description
- * @param {string} [optional.description] - The description of the widget
+ * Creates a new widget in the database.
+ * 
+ * This function makes an asynchronous call to add the specified widget
+ * to the collection. Upon successful creation, a success message is displayed
+ * and the handleRefresh function is called to update the UI. If the creation fails,
+ * a warning message is shown. Any errors during the process are caught and handled.
+ * 
+ * @param {TWidget} widget - The widget object to create.
+ * @param {() => void} handleRefresh - Callback function to refresh the widget list after creation.
  */
-export const createWidget = (name: string, type: string, user: IUser, handleRefresh: () => void, optional: { description?: string }) => {
-  const widget = {};
-
+export const createWidget = (widget: TWidget, handleRefresh: () => void) => {
   Meteor.callAsync("widgetsInsert", { ...widget }).
     then((_id: string) => {
       successSaveMsg();

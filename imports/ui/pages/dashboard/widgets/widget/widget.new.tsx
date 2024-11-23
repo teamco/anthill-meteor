@@ -13,8 +13,7 @@ import '../widgets.module.less';
 
 type TField = {
   name?: string;
-  type?: string;
-  description?: string;
+  path?: string;
 };
 
 type TProps = {
@@ -42,13 +41,11 @@ export const WidgetNew: React.FC<TProps> = (props): JSX.Element => {
   const intl = useContext(I18nContext);
   const [form] = Form.useForm();
 
-  const entityMsg = t(intl, 'widget.title');
-  const nameMsg = t(intl, 'form.name', { entity: entityMsg })
-  const descriptionMsg = t(intl, 'form.description', { entity: entityMsg })
-  const typeMsg = t(intl, 'form.type', { entity: entityMsg })
+  const nameMsg = t(intl, 'widget.name');
+  const pathMsg = t(intl, 'widget.working.path');
 
   const nameRule: TFieldRule = requiredField(intl, nameMsg);
-  const typeRule: TFieldRule = requiredField(intl, typeMsg);
+  const pathRule: TFieldRule = requiredField(intl, pathMsg);
 
   /**
    * @function onFinish
@@ -112,7 +109,7 @@ export const WidgetNew: React.FC<TProps> = (props): JSX.Element => {
         onFinishFailed={onFinishFailed}
         autoComplete={"off"}
       >
-        <Row gutter={[24, 12]}>
+        <Row gutter={[24, 12]}>      
           <Col {...layout.halfColumn}>
             <Form.Item<TField>
               label={nameMsg}
@@ -124,25 +121,12 @@ export const WidgetNew: React.FC<TProps> = (props): JSX.Element => {
           </Col>
           <Col {...layout.halfColumn}>
             <Form.Item<TField>
-              label={typeMsg}
-              name="type"
-              rules={[typeRule]}
+              label={pathMsg}
+              name="path"
+              extra={t(intl, 'widget.working.path.extra')}
+              rules={[pathRule]}
             >
-              <Input {...inputProps} placeholder={placeholderField(intl, typeMsg, 'actions.enter')} />
-            </Form.Item>
-          </Col>
-          <Col {...layout.fullColumn}>
-            <Form.Item<TField>
-              label={descriptionMsg}
-              name="description"
-            >
-              <Input.TextArea
-                showCount
-                {...inputProps}
-                maxLength={400}
-                placeholder={placeholderField(intl, descriptionMsg, 'actions.enter')}
-                style={{ maxHeight: 250, height: 100 }}
-              />
+              <Input {...inputProps} placeholder={placeholderField(intl, pathMsg, 'actions.enter')} />
             </Form.Item>
           </Col>
         </Row>

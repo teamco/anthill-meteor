@@ -1,4 +1,7 @@
 import { Meteor } from "meteor/meteor";
+import { readdir } from 'fs/promises';
+import path from 'path';
+
 import { WidgetsCollection } from "/imports/collections/widgets.collection";
 import { TPaginateProps } from "/imports/config/types";
 
@@ -8,6 +11,11 @@ const DEFAULT_SORT: TPaginateProps['sort'] = [['metadata', 'updatedAt'], 'descen
 
 Meteor.methods({
 
+  /**
+   * Fetches a range of widgets from the collection based on pagination criteria.
+   * @param {Object} param - An object with three properties: current (the current page number), pageSize (the number of items per page) and sort (the sort criteria).
+   * @returns {any[]} An array of Widget objects.
+   */
   widgetsPaginate: ({ current = 1, pageSize = 10, sort = DEFAULT_SORT }: TPaginateProps): any[] => {
     let [field, order] = sort;
 

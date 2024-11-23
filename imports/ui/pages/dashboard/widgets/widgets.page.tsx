@@ -17,6 +17,7 @@ import { useTable } from "/imports/ui/hooks/table.hook";
 
 import { t } from "/imports/utils/i18n.util";
 import { indexable } from "/imports/utils/antd.util";
+import { catchClassErrorMsg } from "/imports/utils/message.util";
 
 import { createWidget, deleteWidget } from "/imports/ui/services/widget.service";
 
@@ -25,6 +26,7 @@ import { metadataColumns } from "./columns.metadata";
 import { WidgetNew } from "./widget/widget.new";
 
 import './widgets.module.less';
+import Widget from "/imports/api/environment/Widget";
 
 export interface DataType extends CommonDataType {
 	name: string;
@@ -125,7 +127,23 @@ const WidgetsPage: React.FC = (): JSX.Element => {
 			content: (
 				<WidgetNew
 					disabled={isLoading()}
-					onSave={values => createWidget(values.name, values.type, user, handleRefresh, { description: values.description })}
+					onSave={values => {
+						import(`/${values.path}`).
+						then(module => {
+							const Entity = module[values.name];
+
+							if (!Entity) {
+								catchClassErrorMsg({ message: 'Widget name is invalid' });
+							}
+
+							const widget = new Widget(Entity, user);
+							
+							createWidget(widget, handleRefresh);
+							
+						}).catch(e => {
+							catchClassErrorMsg({ message: 'Widget path is invalid' });
+						})
+					}}
 				/>
 			),
 			footer: null
