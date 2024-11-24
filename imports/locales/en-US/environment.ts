@@ -10,5 +10,7 @@ export default {
   'environment.list.name': 'Name',
   'environment.list.widgets': 'Widgets',
   'environment.list.type': 'Type',
+  'environment.list.layouts': 'Layouts',
+  'environment.list.layout.version': 'Version',
   'environment.list.status': 'Status',
 }

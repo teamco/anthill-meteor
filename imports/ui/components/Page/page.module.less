@@ -6,6 +6,12 @@
   flex-direction: column;
   row-gap: @main-margin;
 
+  > div:last-child {
+    display: flex;
+    flex-direction: column;
+    row-gap: calc(@main-margin * 2);
+  }
+
   h1 {
     .margin-bottom_d();
   }

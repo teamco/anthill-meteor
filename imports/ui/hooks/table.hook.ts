@@ -92,13 +92,6 @@ export const useTable = (method: string, Collection: Mongo.Collection<Document, 
 			pageSize: tableParams.pagination?.pageSize,
 			sort: [tableParams.sortField, tableParams.sortOrder]
 		});
-		// Meteor.callAsync(method, {
-		// 	current: tableParams.pagination?.current,
-		// 	pageSize: tableParams.pagination?.pageSize,
-		// 	sort: [tableParams.sortField, tableParams.sortOrder]
-		// }).then((res: any[]) => {
-		// 	setEntities(res);
-		// }).catch((e) => catchErrorMsg(e, () => setEntities([])));
 	};
 
 	/**
@@ -110,6 +103,7 @@ export const useTable = (method: string, Collection: Mongo.Collection<Document, 
 		let action: TAction = "paginate";
 
 		// TODO (teamco): Check if this is needed.
+		
 		// if (tableParams.sortField && tableParams.sortOrder) {
 		// 	action = "sort";
 		// }

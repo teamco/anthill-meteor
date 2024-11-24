@@ -6,7 +6,6 @@ import { EnvironmentsCollection } from "/imports/collections/environments.collec
 
 import { IUser, TEnvironmentEdit } from "/imports/config/types";
 import { t, TIntl } from "/imports/utils/i18n.util";
-
 import { successSaveMsg, catchErrorMsg, successDeleteMsg, catchWarnMsg } from "/imports/utils/message.util";
 
 /**
@@ -33,6 +32,8 @@ export const createEnvironment = (name: string, type: string, user: IUser, handl
     then((_id: string) => {
       successSaveMsg();
       handleRefresh();
+
+      Meteor.callAsync("layoutsInsert", { ...layout, environmentId: _id }).catch(catchErrorMsg);
     }).
     catch(catchErrorMsg);
 };

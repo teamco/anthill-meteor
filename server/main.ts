@@ -4,6 +4,7 @@ import { IUser } from '/imports/config/types';
 
 import './environments/methods';
 import './widgets/methods';
+import './layouts/methods';
 
 const SEED_USERNAME = 'admin';
 const SEED_PASSWORD = 'password';
