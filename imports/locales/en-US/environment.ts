@@ -12,5 +12,9 @@ export default {
   'environment.list.type': 'Type',
   'environment.list.layouts': 'Layouts',
   'environment.list.layout.version': 'Version',
+  'environment.list.layout.screenshot': 'Screenshot',
   'environment.list.status': 'Status',
+  'environment.tabs.general': 'General',
+  'environment.tabs.layouts': 'Layouts',
+  'environment.tabs.widgets': 'Widgets',
 }

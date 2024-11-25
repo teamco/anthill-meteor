@@ -42,6 +42,12 @@ export const metadataColumns = (intl: TIntl, filteredInfo: TFilters, sortedInfo:
       ...columnSorter(sortedInfo, 'version'),
     },
     {
+      title: t(intl, 'environment.list.layout.screenshot'),
+      dataIndex: 'screenshot',
+      key: 'screenshot',
+      align: 'center'
+    },
+    {
       title: t(intl, 'environment.list.widgets'),
       dataIndex: 'widgets',
       key: 'widgets',

@@ -1,5 +1,6 @@
 import React, { useContext } from "react";
-import { Button, Descriptions, Table } from 'antd';
+import { Button, Descriptions, Table, Tabs, TabsProps } from 'antd';
+import { AppstoreAddOutlined, BlockOutlined, FormOutlined } from "@ant-design/icons";
 import { useSubscribe, useTracker } from "meteor/react-meteor-data";
 import { TableProps } from "antd/lib/table";
 import { useParams } from "react-router-dom";
@@ -104,34 +105,56 @@ const EnvironmentEdit: React.FC = (): JSX.Element => {
 		)
 	};
 
+	const itemTabs: TabsProps['items'] = [
+		{
+			key: 'general',
+			icon: <FormOutlined />,
+			label: t(intl, 'environment.tabs.general'),
+			children: (
+				<Descriptions
+					className="description"
+					size={'small'}
+					bordered
+					title={environment?.name}
+					items={DescriptionMetadata(intl, environment)}
+					extra={(
+						<Button
+							disabled={true}
+							loading={isLoading()}
+							type="primary"
+						>
+							{t(intl, 'actions.update')}
+						</Button>
+					)}
+				/>
+			),
+		},
+		{
+			key: 'layouts',
+			icon: <BlockOutlined />,
+			label: t(intl, 'environment.tabs.layouts'),
+			children: (
+				<div className="layouts">
+					<h3>{t(intl, 'environment.list.layouts')}</h3>
+					<Table<DataType> {...tableProps} />
+				</div>
+			),
+		},
+		{
+			key: 'widgets',
+			icon: <AppstoreAddOutlined />,
+			label: t(intl, 'environment.tabs.widgets'),
+			children: 'Content of Tab Pane 3',
+		},
+	]
+
 	return (
 		<Page
 			ableFor={{ subject: environmentId }}
 			loading={isLoading()}
 			title={t(intl, 'actions.edit', { type: t(intl, 'environment.title') })}
 		>
-			<Descriptions
-				className="description"
-				size={'small'}
-				bordered
-				title={environment?.name}
-				items={DescriptionMetadata(intl, environment)}
-				extra={(
-					<Button
-						disabled={true}
-						loading={isLoading()}
-						type="primary"
-					>
-						{t(intl, 'actions.update')}
-					</Button>
-				)}
-			/>
-
-			<div className="layouts">
-				<h3>{t(intl, 'environment.list.layouts')}</h3>
-				<Table<DataType> {...tableProps} />
-			</div>
-
+			<Tabs className="envTabs" type="card" defaultActiveKey="general" items={itemTabs} />
 		</Page>
 	);
 }
