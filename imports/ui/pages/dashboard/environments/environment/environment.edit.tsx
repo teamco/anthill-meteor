@@ -173,8 +173,18 @@ const EnvironmentEdit: React.FC = (): JSX.Element => {
 		...tableProps(layouts, layoutsMetadataColumns as unknown as ColumnsType<any>, 800, onLayoutDelete),
 	};
 
+	const rowSelection: TableProps<DataType>['rowSelection'] = {
+		onChange: (selectedRowKeys: React.Key[], selectedRows: DataType[]) => {
+			console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+		},
+		getCheckboxProps: (record: DataType) => ({
+			disabled: ability.cannot('assign', record._id),
+			name: record.name,
+		}),
+	};
+
 	const widgetsTableProps = {
-		...tableProps(widgets, widgetsMetadataColumns as unknown as ColumnsType<any>, 1000),
+		...tableProps(widgets, widgetsMetadataColumns as unknown as ColumnsType<any>, 1000)
 	};
 
 	const itemTabs: TabsProps['items'] = [
@@ -234,7 +244,7 @@ const EnvironmentEdit: React.FC = (): JSX.Element => {
 			children: (
 				<div className="widgets">
 					<h3>{t(intl, 'environment.list.widgets')}</h3>
-					<Table<any> {...widgetsTableProps} />
+					<Table<any> {...widgetsTableProps} rowSelection={{ type: 'checkbox', ...rowSelection }} />
 				</div>
 			),
 		},
