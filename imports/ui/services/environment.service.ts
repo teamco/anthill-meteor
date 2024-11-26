@@ -8,6 +8,8 @@ import { IUser, TEnvironmentEdit } from "/imports/config/types";
 import { t, TIntl } from "/imports/utils/i18n.util";
 import { successSaveMsg, catchErrorMsg, successDeleteMsg, catchWarnMsg } from "/imports/utils/message.util";
 
+import { getWidgetBy } from "./widget.service";
+
 /**
  * Creates a new environment with a single empty widget.
  *
@@ -25,8 +27,9 @@ export const createEnvironment = (name: string, type: string, user: IUser, handl
   });
 
   const layout = env.createLayout(user);
+  const { _id } = getWidgetBy("resource", "empty");
 
-  layout.addWidget(new Widget(EmptyWidget, user));
+  layout.addWidget({ ...new Widget(EmptyWidget, user), _id });
 
   Meteor.callAsync("environmentsInsert", { ...env }).
     then((_id: string) => {

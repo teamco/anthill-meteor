@@ -1,4 +1,4 @@
-import { TLayout, TEnvironment, IUser, IMetadata, TStatus } from "/imports/config/types";
+import { TLayout, TEnvironment, IUser, IMetadata, TStatus, TWidget } from "/imports/config/types";
 
 import CommonUtils from "/imports/utils/common.util";
 import { catchClassErrorMsg } from "/imports/utils/message.util";
@@ -10,7 +10,6 @@ import Layout from "./Layout";
  * Manages the creation and updating of environment layouts and maintains metadata and status information.
  * 
  * @property {string} name - The name of the environment.
- * @property {string} type - The type of the environment.
  * @property {string} [description] - An optional description of the environment.
  * @property {TLayout} layout - The layout associated with the environment.
  * @property {TStatus} status - The current status of the environment.
@@ -23,13 +22,13 @@ import Layout from "./Layout";
 export default class Environment extends CommonUtils implements TEnvironment {
 
   name: string;
-  type: string;
   description?: string;
   layout: TLayout;
   status: Pick<TStatus, 'isDraft' | 'isActive'> = {
     isDraft: false,
     isActive: false
   };
+  assignedWidgets: TWidget[] = [];
   metadata: IMetadata = {
     createdAt: new Date(),
     updatedAt: new Date(),
@@ -57,7 +56,6 @@ export default class Environment extends CommonUtils implements TEnvironment {
 
     this.name = name;
     this.description = optional?.description;
-    this.type = type;
     this.status = {
       ...this.status,
       isDraft: true,

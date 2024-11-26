@@ -1,6 +1,4 @@
 import { Meteor } from "meteor/meteor";
-import { readdir } from 'fs/promises';
-import path from 'path';
 
 import { WidgetsCollection } from "/imports/collections/widgets.collection";
 import { TPaginateProps } from "/imports/config/types";

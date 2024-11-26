@@ -7,6 +7,8 @@ import { DataType } from "./environments.page";
 
 import { IMetadata, TColumns, TLayout, TStatus } from "/imports/config/types";
 
+import { StatusComponent } from "/imports/ui/components/Status/status.component";
+
 import { indexColumn } from "/imports/utils/antd.util";
 import { tsToLocaleDateTime } from "/imports/utils/timestamp.util";
 import { columnSorter } from "/imports/utils/table/sorter.util";
@@ -52,13 +54,6 @@ export const metadataColumns = (intl: TIntl, filteredInfo: TFilters, sortedInfo:
       }
     },
     {
-      title: t(intl, 'environment.list.type'),
-      dataIndex: 'type',
-      key: 'type',
-      ...columnFilter(filteredInfo, entities, 'type'),
-      ...columnSorter(sortedInfo, 'type'),
-    },
-    {
       title: t(intl, 'environment.list.status'),
       dataIndex: 'status',
       key: 'status',
@@ -66,9 +61,7 @@ export const metadataColumns = (intl: TIntl, filteredInfo: TFilters, sortedInfo:
       render: (status: TStatus): JSX.Element => {
         return (
           <div>
-            {status.isDraft && 'Draft'}
-            {status.isActive && 'Active'}
-            {status.isPending && 'Pending'}
+            <StatusComponent intl={intl} status={status} />
           </div>
         )
       }

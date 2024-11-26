@@ -45,16 +45,16 @@ export type TLayout = {
 export type TEnvironment = {
   createLayout(user: IUser): TLayout;
   updateLayout(layout: TLayout): TLayout;
+  assignedWidgets: TWidget[];
   _id?: string;
   name: string;
   description?: string;
-  type: string;
   layout: TLayout;
   metadata: IMetadata;
   status: Pick<TStatus, 'isDraft' | 'isActive'>
 }
 
-export type TEnvironmentEdit = Pick<TEnvironment, 'name' | 'description' | 'type' | 'layout' | 'status' | 'metadata'>
+export type TEnvironmentEdit = Pick<TEnvironment, 'name' | 'description' | 'layout' | 'status' | 'metadata'>
 
 export type TWidgetContent = {
   type: 'Embedded' | 'External' | 'Internal' | 'Script';

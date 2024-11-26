@@ -5,7 +5,6 @@ export default {
   'environment.type': 'Environment Type',
   'environment.status.draft': 'Draft',
   'environment.status.active': 'Active',
-  'environment.status.pending': 'Pending',
   'environment.status.hold': 'On Hold',
   'environment.list.name': 'Name',
   'environment.list.widgets': 'Widgets',

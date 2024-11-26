@@ -48,11 +48,25 @@ export interface DataType extends CommonDataType {
  * @returns {JSX.Element} The JSX element representing the environments page
  */
 const EnvironmentsPage: React.FC = (): JSX.Element => {
-	const isLoading = useSubscribe("environments");
+	const isEvironmentsLoading = useSubscribe("environments");
+	const isLayoutsLoading = useSubscribe("layouts");
+	const isWidgetsLoading = useSubscribe("widgets");
+
 	const intl = useContext(I18nContext);
 	const ability = useContext(AbilityContext);
 	const { modalApi } = useContext(NotificationContext);
 	const history = useNavigate();
+
+	/**
+	 * isLoading
+	 *
+	 * A utility function that returns true if the data required for this component is still loading.
+	 *
+	 * @returns {boolean} true if either the environments, layouts, or widgets are still loading
+	 */
+	const isLoading = (): boolean => {
+		return isEvironmentsLoading() || isLayoutsLoading() || isWidgetsLoading();
+	};
 
 	const user = Meteor.user() || { _id: '1' };
 

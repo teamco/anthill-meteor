@@ -1,4 +1,5 @@
-import { IUser, TWidget } from "/imports/config/types";
+import { WidgetsCollection } from "/imports/collections/widgets.collection";
+import { TWidget } from "/imports/config/types";
 import { t, TIntl } from "/imports/utils/i18n.util";
 
 import { successSaveMsg, catchErrorMsg, successDeleteMsg, catchWarnMsg } from "/imports/utils/message.util";
@@ -64,3 +65,13 @@ export const getWidgets = (method: string, setEntities: (res: any[]) => void, op
     setEntities(res);
   }).catch((e) => catchErrorMsg(e, () => setEntities([])));
 };
+
+/**
+ * Finds a widget in the collection by a specified key and value.
+ *
+ * @param {string} key - The key to search for in the collection.
+ * @param {string} value - The value to match for the specified key.
+ * @returns {TWidget} The widget found in the collection or undefined if not found.
+ */
+export const getWidgetBy = (key: string, value: string): TWidget => 
+  WidgetsCollection.findOne({ [key]: value }) as TWidget;
