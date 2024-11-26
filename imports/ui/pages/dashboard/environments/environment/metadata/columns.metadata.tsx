@@ -2,7 +2,7 @@ import React from "react";
 import { TableProps } from "antd/es/table";
 import { Tag } from "antd";
 
-import { DataType } from "../environments.page";
+import { DataType } from "../../environments.page";
 
 import { IMetadata, TColumns, TWidget } from "/imports/config/types";
 

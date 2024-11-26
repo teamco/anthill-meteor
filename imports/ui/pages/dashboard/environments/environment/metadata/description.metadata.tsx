@@ -3,14 +3,14 @@ import { DescriptionsItemType, DescriptionsProps } from "antd/es/descriptions";
 import { Form, Input, Segmented } from "antd";
 import { PauseCircleTwoTone, PlayCircleTwoTone } from "@ant-design/icons";
 
-import { TEnvironment, TEnvironmentEdit, TStatus } from "/imports/config/types";
+import { TEnvironmentEdit } from "/imports/config/types";
 
 import { t, TIntl } from "/imports/utils/i18n.util";
 import { placeholderField, requiredField, TFieldRule } from "/imports/utils/form.util";
 import { COLORS } from "/imports/utils/colors.util";
 import { tsToLocaleDateTime } from "/imports/utils/timestamp.util";
 
-import { TField } from "./environment.edit";
+import { TField } from "../environment.edit";
 
 const { TextArea } = Input;
 
