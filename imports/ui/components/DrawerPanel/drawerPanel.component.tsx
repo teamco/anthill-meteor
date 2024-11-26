@@ -74,7 +74,7 @@ export const DrawerPanelComponent: React.FC<TPanelProps> = (props): JSX.Element 
       closable={closable}
       loading={loading}
       open={drawerPanelOpen}
-      key={placement}
+      onClose={() => setDrawerPanelOpen(false)}
       extra={
         <div className="extra">
           <Button

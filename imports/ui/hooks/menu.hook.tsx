@@ -107,46 +107,56 @@ const getLevelKeys = (items1: LevelKeysProps[]): Record<string, number> => {
   return key;
 };
 
-  /**
-   * Get the selected menu item keys based on the current pathname.
-   * @param {MenuItem[]} mItems - The menu items.
-   * @returns {string[]} The selected menu item keys.
-   */
+/**
+ * Get the selected menu item keys based on the current pathname.
+ * @param {MenuItem[]} mItems - The menu items.
+ * @returns {string[]} The selected menu item keys.
+ */
 const getSelectedKeys = (mItems: MenuItem[]): string[] => {
+
   const { pathname } = window.location;
 
+  const replaceMatchers = (path: string): string => path === '/dashboard' ? path : path.replace(/\/dashboard/, '');
+
   /**
-   * Recursively finds the selected menu item based on the given pathname.
-   * @param {MenuItem} item - The current menu item being processed.
-   * @param {string} path - The current pathname.
-   * @param {string[] | null} parentKeys - The parent keys of the current menu item.
-   * If null, the top-level menu items are being processed.
-   * @returns {PathMatch<any> | string | readonly string[] | null} The selected menu item keys, or null if not found.
+   * Recursively finds the selected menu item based on the given path and parent menu item keys.
+   * If the item has children, it recursively calls itself with the children and the parent keys.
+   * If the item does not have children, it uses matchPath to check if the item's label's href property matches the path.
+   * If a match is found, it returns the parent keys, the item's key, and the matched key.
+   * If no match is found, it returns null.
+   * 
+   * @param {MenuItem} item - The menu item to check.
+   * @param {string} path - The path to check against.
+   * @param {string[] | null} [parentKeys=null] - The parent menu item keys.
+   * @returns {boolean} The selected menu item keys or null if no match is found.
    */
-  const matcher = (item: MenuItem, path: string, parentKeys: string[] | null = null): PathMatch<any> | string | readonly string[] | null => {
+  const matcher = (item: MenuItem, path: string, parentKeys: string[] | null = null): PathMatch<any> | string | readonly string[] | boolean => {
     if (item['children']) {
       const current = item['children'].find((child: MenuItem) => matcher(child, path, [...parentKeys, item.key.toString()]));
       return current ? [...parentKeys, item.key.toString(), current.key] : null;
     }
 
-    return matchPath(item['label']?.['props']?.href, pathname);
+    const _path = replaceMatchers(item['label']['props']['href']);
+    const _pathname = replaceMatchers(pathname);
+
+    return _pathname.includes(_path);
   }
 
   return mItems.flatMap((item: MenuItem) => matcher(item, pathname, [])) as string[];
 }
 
-  /**
-   * Returns the menu items, selected menu item keys, opened menu item keys and the onOpenChange handler.
-   * The menu items are generated based on the given i18n object, ability and history function.
-   * The selected menu item keys are determined based on the current pathname.
-   * The opened menu item keys are determined based on the selected menu item keys.
-   * The onOpenChange handler is used to handle the openChange event.
-   * @param {TIntl} intl - The i18n object.
-   * @param {MongoAbility} ability - The ability object.
-   * @param {NavigateFunction} history - The history function.
-   * @param {boolean} isOpen - Whether the menu is open.
-   * @returns {{ mItems: MenuItem[], selectedMenuKeys: string[], openedMenuKeys: string[], onOpenChange: MenuProps['onOpenChange'] }}
-   */
+/**
+ * Returns the menu items, selected menu item keys, opened menu item keys and the onOpenChange handler.
+ * The menu items are generated based on the given i18n object, ability and history function.
+ * The selected menu item keys are determined based on the current pathname.
+ * The opened menu item keys are determined based on the selected menu item keys.
+ * The onOpenChange handler is used to handle the openChange event.
+ * @param {TIntl} intl - The i18n object.
+ * @param {MongoAbility} ability - The ability object.
+ * @param {NavigateFunction} history - The history function.
+ * @param {boolean} isOpen - Whether the menu is open.
+ * @returns {{ mItems: MenuItem[], selectedMenuKeys: string[], openedMenuKeys: string[], onOpenChange: MenuProps['onOpenChange'] }}
+ */
 export const useMenu = (intl: TIntl, ability: MongoAbility, history: NavigateFunction, isOpen: boolean): { mItems: MenuItem[], selectedMenuKeys: string[], openedMenuKeys: string[], onOpenChange: MenuProps['onOpenChange'] } => {
   const [mItems, setMItems] = useState([]);
   const [selectedMenuKeys, setSelectedMenuKeys] = useState([]);
@@ -167,7 +177,7 @@ export const useMenu = (intl: TIntl, ability: MongoAbility, history: NavigateFun
       setOpenedMenuKeys(selectedKeys);
     }
   }, [mItems, pathname, isOpen]);
-  
+
   /**
    * Function to handle openChange event.
    * @param {string[]} openKeys The keys of open menu items.
