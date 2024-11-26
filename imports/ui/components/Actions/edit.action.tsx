@@ -7,7 +7,6 @@ import { Can } from '/imports/ui/components/Ability/can';
 import { I18nContext } from '/imports/ui/context/i18n.context';
 
 import { t } from '/imports/utils/i18n.util';
-import { stub } from '/imports/utils/functions.util';
 import { COLORS } from '/imports/utils/colors.util';
 
 type TEditAction = {
@@ -43,7 +42,7 @@ export const EditAction: React.FC<TEditAction> = (props): JSX.Element => {
     showLabel = false,
     isLoading = false,
     disabled = false,
-    onEdit = stub
+    onEdit
   } = props;
 
   const { pathname } = window.location;
@@ -59,7 +58,7 @@ export const EditAction: React.FC<TEditAction> = (props): JSX.Element => {
     e.preventDefault();
   };
 
-  return (
+  return onEdit ?(
     <Can I={'update'} a={entityId}>
       <a title={t(intl, 'actions.edit', { type: '' })}
         onClick={aClick}
@@ -77,5 +76,5 @@ export const EditAction: React.FC<TEditAction> = (props): JSX.Element => {
         </Button>
       </a>
     </Can>
-  );
+  ) : null;
 };

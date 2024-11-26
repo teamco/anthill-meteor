@@ -16,4 +16,5 @@ export default {
   'environment.tabs.general': 'General',
   'environment.tabs.layouts': 'Layouts',
   'environment.tabs.widgets': 'Widgets',
+  'environment.layout': 'Layout',
 }

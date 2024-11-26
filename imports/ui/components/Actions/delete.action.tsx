@@ -7,7 +7,6 @@ import { Can } from '/imports/ui/components/Ability/can';
 import { I18nContext } from '/imports/ui/context/i18n.context';
 
 import { t } from '/imports/utils/i18n.util';
-import { stub } from '/imports/utils/functions.util';
 
 import { deleteWarning } from './modal.delete';
 
@@ -48,10 +47,10 @@ export const DeleteAction: React.FC<TDeleteAction> = (props): JSX.Element => {
     showLabel = false,
     isLoading = false,
     disabled = false,
-    onDelete = stub
+    onDelete
   } = props;
 
-  return (
+  return onDelete ? (
     <Can I={'delete'} a={entityId}>
       <Button disabled={disabled}
         loading={isLoading}
@@ -65,5 +64,5 @@ export const DeleteAction: React.FC<TDeleteAction> = (props): JSX.Element => {
         {showLabel && t(intl, 'actions.delete')}
       </Button>
     </Can>
-  );
+  ) : null;
 };

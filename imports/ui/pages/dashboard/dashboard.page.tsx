@@ -27,7 +27,7 @@ import { layout } from "/imports/utils/layout.util";
 const DashboardPage: React.FC = (): JSX.Element => {
 	const history = useNavigate();
 	const isLoading = useSubscribe("environments");
-	const envs: any[] = useTracker(() => EnvironmentsCollection.find({}).fetch());
+	const envs: any[] = useTracker(() => EnvironmentsCollection.find({}).fetch(), []);
 
 	const intl = useContext(I18nContext);
 

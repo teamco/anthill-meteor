@@ -16,15 +16,19 @@ import { actionField } from "/imports/utils/table/action.util";
 import { DeleteAction } from "/imports/ui/components/Actions/delete.action";
 import { VersionAction } from "/imports/ui/components/Actions/version.action";
 
+type TArgs = {
+  intl: TIntl;
+  sortedInfo: TSorts;
+  onDelete: (id: string) => void;
+};
+
 /**
- * Generates a column configuration for the environments table.
+ * Generates a column configuration for the metadata table.
  *
- * @param {TIntl} intl - The current i18n configuration.
- * @param {TSorts} sortedInfo - Contains the current sort information.
- * @param {(id: string) => void} onDelete - The function to be called when the delete action is triggered.
- * @returns {TableProps<DataType>['columns']} A column configuration for the table.
+ * @param {{ intl: TIntl, sortedInfo: TSorts, onDelete: (id: string) => void }} props - The props object
+ * @returns {TableProps<DataType>['columns']} A column configuration for the metadata table
  */
-export const metadataColumns = (intl: TIntl, sortedInfo: TSorts, onDelete: (id: string) => void): TableProps<DataType>['columns'] => {
+export const metadataColumns = ({ intl, sortedInfo, onDelete }: TArgs): TableProps<DataType>['columns'] => {
   const columns: TColumns<DataType> = [
     indexColumn,
     {
@@ -81,7 +85,7 @@ export const metadataColumns = (intl: TIntl, sortedInfo: TSorts, onDelete: (id: 
             onDelete={onDelete}
             type={'text'}
             entityId={record._id}
-            modalMsg={t(intl, 'environment.title')} />
+            modalMsg={t(intl, 'environment.layout')} />
         </div>
       ),
     }

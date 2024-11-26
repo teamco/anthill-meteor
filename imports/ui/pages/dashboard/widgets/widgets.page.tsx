@@ -82,7 +82,7 @@ const WidgetsPage: React.FC = (): JSX.Element => {
 		handleTableChange
 	} = useTable("widgetsPaginate", WidgetsCollection as any);
 
-	const columns: TableProps<DataType>['columns'] = metadataColumns(intl, filteredInfo, sortedInfo, onDelete, onEdit, entities);
+	const columns: TableProps<DataType>['columns'] = metadataColumns({ intl, filteredInfo, sortedInfo, onDelete, onEdit, entities });
 
 	const tableProps = {
 		columns,
@@ -113,13 +113,13 @@ const WidgetsPage: React.FC = (): JSX.Element => {
 		)
 	};
 
-/**
- * Opens a modal dialog to create a new widget.
- * The modal includes a form component (`WidgetNew`) which, upon submission,
- * triggers the creation of a new widget using the `createWidget` function.
- * The dialog is configured to be 600 pixels wide and displays a title indicating
- * the addition of a new widget.
- */
+	/**
+	 * Opens a modal dialog to create a new widget.
+	 * The modal includes a form component (`WidgetNew`) which, upon submission,
+	 * triggers the creation of a new widget using the `createWidget` function.
+	 * The dialog is configured to be 600 pixels wide and displays a title indicating
+	 * the addition of a new widget.
+	 */
 	const handleCreateWidget = () => {
 		modalApi.info({
 			width: 600,
@@ -129,20 +129,20 @@ const WidgetsPage: React.FC = (): JSX.Element => {
 					disabled={isLoading()}
 					onSave={values => {
 						import(`/${values.path}`).
-						then(module => {
-							const Entity = module[values.name];
+							then(module => {
+								const Entity = module[values.name];
 
-							if (!Entity) {
-								catchClassErrorMsg({ message: 'Widget name is invalid' });
-							}
+								if (!Entity) {
+									catchClassErrorMsg({ message: 'Widget name is invalid' });
+								}
 
-							const widget = new Widget(Entity, user);
-							
-							createWidget(widget, handleRefresh);
-							
-						}).catch(e => {
-							catchClassErrorMsg({ message: 'Widget path is invalid' });
-						})
+								const widget = new Widget(Entity, user);
+
+								createWidget(widget, handleRefresh);
+
+							}).catch(e => {
+								catchClassErrorMsg({ message: 'Widget path is invalid' });
+							})
 					}}
 				/>
 			),

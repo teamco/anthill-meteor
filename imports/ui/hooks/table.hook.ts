@@ -19,7 +19,7 @@ type TDefaults = {
 	pageSize: number;
 }
 
-type TUseTable = {
+export type TUseTable = {
 	total: number;
 	entities: any[];
 	tableParams: ITableParams;
@@ -80,7 +80,7 @@ export const useTable = (method: string, Collection: Mongo.Collection<Document, 
 
 	const [tableParams, setTableParams] = useState<ITableParams>(_tParams);
 
-	const total = useTracker(() => Collection.find({}).count());
+	const total = useTracker(() => Collection.find({}).count(), []);
 
 	/**
 	 * Fetches data from the server by calling the `method` method and sets the `entities` state.

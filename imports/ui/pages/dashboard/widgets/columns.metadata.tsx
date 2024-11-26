@@ -1,6 +1,6 @@
 import React from "react";
 import { TableProps } from "antd/es/table";
-import { Tooltip } from "antd";
+import { Tag, Tooltip } from "antd";
 import { QuestionCircleTwoTone } from '@ant-design/icons';
 
 import { DataType } from "./widgets.page";
@@ -18,18 +18,24 @@ import { actionField } from "/imports/utils/table/action.util";
 import { DeleteAction } from "/imports/ui/components/Actions/delete.action";
 import { EditAction } from "/imports/ui/components/Actions/edit.action";
 
+type TArgs = {
+  intl: TIntl;
+  sortedInfo: TSorts,
+  filteredInfo: TFilters;
+  entities: DataType[];
+  onDelete?: (id: string) => void;
+  onEdit?: (id: string) => void;
+  onAssign?: (id: string) => void;
+  onUnAssign?: (id: string) => void;
+}
+
 /**
- * Generates a column configuration for the environments table.
+ * Generates a column configuration for the widgets table.
  *
- * @param {TIntl} intl - The current i18n configuration.
- * @param {TFilters} filteredInfo - Contains the current filter information.
- * @param {TSorts} sortedInfo - Contains the current sort information.
- * @param {(id: string) => void} onDelete - The function to be called when the delete action is triggered.
- * @param {(id: string) => void} onEdit - The function to be called when the edit action is triggered.
- * @param {DataType[]} entities - The data source for the table.
+ * @param {{ intl: TIntl, filteredInfo: TFilters, sortedInfo: TSorts, onDelete: (id: string) => void, onEdit: (id: string) => void, entities: DataType[] }} props - The props object
  * @returns {TableProps<DataType>['columns']} A column configuration for the table.
  */
-export const metadataColumns = (intl: TIntl, filteredInfo: TFilters, sortedInfo: TSorts, onDelete: (id: string) => void, onEdit: (id: string) => void, entities: DataType[]): TableProps<DataType>['columns'] => {
+export const metadataColumns = ({ intl, filteredInfo, sortedInfo, onDelete, onEdit, entities }: TArgs): TableProps<DataType>['columns'] => {
   const columns: TColumns<DataType> = [
     indexColumn,
     {
@@ -71,6 +77,7 @@ export const metadataColumns = (intl: TIntl, filteredInfo: TFilters, sortedInfo:
       key: 'category',
       ...columnFilter(filteredInfo, entities, 'category'),
       ...columnSorter(sortedInfo, 'category'),
+      render: (category: string): JSX.Element => (<Tag>{category.toUpperCase()}</Tag>)
     },
     {
       title: t(intl, 'widget.list.size'),

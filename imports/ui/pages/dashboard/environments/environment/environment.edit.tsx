@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import { Button, Descriptions, Form, FormProps, Table, Tabs, TabsProps } from 'antd';
 import { AppstoreAddOutlined, BlockOutlined, FormOutlined } from "@ant-design/icons";
 import { useSubscribe, useTracker } from "meteor/react-meteor-data";
-import { TableProps } from "antd/lib/table";
+import { ColumnsType, TableProps } from "antd/lib/table";
 import { useParams } from "react-router-dom";
 
 import { TEnvironment, TEnvironmentEdit } from "/imports/config/types";
@@ -11,10 +11,11 @@ import { I18nContext } from "/imports/ui/context/i18n.context";
 import { AbilityContext } from '/imports/ui/context/authentication.context';
 
 import { LayoutsCollection } from "/imports/collections/layouts.collection";
+import { WidgetsCollection } from "/imports/collections/widgets.collection";
 
 import Page from "/imports/ui/components/Page/page.component";
 
-import { useTable } from "/imports/ui/hooks/table.hook";
+import { TUseTable, useTable } from "/imports/ui/hooks/table.hook";
 
 import { t } from "/imports/utils/i18n.util";
 import { indexable } from "/imports/utils/antd.util";
@@ -23,7 +24,8 @@ import { onFinishFailed, onValidate } from "/imports/utils/form.util";
 import { getEnvironment, updateEnvironment } from "/imports/ui/services/environment.service";
 
 import { DataType } from "../environments.page";
-import { metadataColumns } from "./columns.metadata";
+import { metadataColumns as layoutsMetadataColumns } from "./columns.metadata";
+import { metadataColumns as widgetsMetadataColumns } from "/imports/ui/pages/dashboard/widgets/columns.metadata";
 import { DescriptionMetadata } from "./description.metadata";
 
 import '../environments.module.less';
@@ -50,13 +52,14 @@ const EnvironmentEdit: React.FC = (): JSX.Element => {
 
 	const isEnvironmentLoading = useSubscribe("environments");
 	const isLayoutLoading = useSubscribe("layouts");
+	const isWidgetLoading = useSubscribe("widgets");
 
 	const [envName, setEnvName] = useState<string>('');
 	const [canUpdate, setUpdate] = useState<boolean>(false);
 	const [status, setStatus] = useState<TEnvironment['status']>({
-    isActive: false,
-    isDraft: false,
-  });
+		isActive: false,
+		isDraft: false,
+	});
 
 	/**
 	 * isLoading
@@ -66,30 +69,21 @@ const EnvironmentEdit: React.FC = (): JSX.Element => {
 	 * @returns {boolean} true if either the environments or the layouts are still loading
 	 */
 	const isLoading = (): boolean => {
-		return isEnvironmentLoading() || isLayoutLoading();
+		return isEnvironmentLoading() ||
+			isLayoutLoading() ||
+			isWidgetLoading();
 	};
 
 	const intl = useContext(I18nContext);
 	const ability = useContext(AbilityContext);
+
 	const { environmentId } = useParams();
 
-	const environment: TEnvironmentEdit = useTracker(() => getEnvironment(environmentId));
+	const environment: TEnvironmentEdit = useTracker(() => getEnvironment(environmentId), [environmentId]);
 
 	const user = Meteor.user() || { _id: '1' };
 
 	const _canUpdate = ability.can('update', environmentId) && canUpdate;
-
-	/**
-	 * onDelete
-	 *
-	 * A callback function called when the delete button is clicked in the environments table.
-	 * It deletes the environment with the given id using the deleteEnvironment service function.
-	 *
-	 * @param {string} id - The id of the environment to delete
-	 */
-	const onDelete = (id: string): void => {
-		// deleteEnvironment(id, intl, handleRefresh);
-	};
 
 	/**
 	 * @function onFinish
@@ -114,32 +108,73 @@ const EnvironmentEdit: React.FC = (): JSX.Element => {
 		setUpdate(true);
 	};
 
-	const {
-		total,
-		entities,
-		tableParams: { pagination },
-		sortedInfo,
-		handleRefresh,
-		handleTableChange
-	} = useTable("layoutsPaginate", LayoutsCollection as any);
+	const layouts: TUseTable = useTable("layoutsPaginate", LayoutsCollection as any);
+	const widgets: TUseTable = useTable("widgetsPaginate", WidgetsCollection as any);
 
-	const columns: TableProps<DataType>['columns'] = metadataColumns(intl, sortedInfo, onDelete);
+	/**
+	 * onDelete
+	 *
+	 * A callback function called when the delete button is clicked in the environments table.
+	 * It deletes the environment with the given id using the deleteEnvironment service function.
+	 *
+	 * @param {string} id - The id of the environment to delete
+	 */
+	const onLayoutDelete = (id: string): void => {
+		// deleteEnvironment(id, intl, handleRefresh);
+	};
 
-	const tableProps = {
-		columns,
-		pagination,
-		scroll: { x: 800 },
-		bordered: true,
-		className: 'gridList',
-		dataSource: indexable(entities, pagination?.current, pagination?.pageSize),
-		loading: isLoading(),
-		rowKey: (record: DataType) => record._id,
-		onChange: handleTableChange,
-		footer: () => (
-			<div className="gridFooter">
-				{t(intl, 'table.total', { amount: total.toString() })}
-			</div>
-		)
+	/**
+	 * @function tableProps
+	 * @description A utility function that returns a props object for the antd Table component.
+	 * It takes in a context object, metadata function, and an optional scrollX value.
+	 * It returns a props object that includes the columns, pagination, scroll, bordered, className, loading, rowKey, dataSource, onChange, and footer properties.
+	 * @param {TUseTable} ctx - The context object returned by the useTable hook
+	 * @param {TMetadata} metadata - A function that returns an array of column definitions
+	 * @param {number} [scrollX=800] - The horizontal scroll value
+	 * @returns {TableProps<any>}
+	 */
+	const tableProps = (ctx: TUseTable, metadata: any, scrollX: number, onDelete?: (id: string) => void): TableProps<any> => {
+		const {
+			entities,
+			sortedInfo,
+			filteredInfo,
+			total,
+			tableParams: { pagination },
+			handleTableChange
+		} = ctx;
+
+		const columns: TableProps<any>['columns'] = metadata({
+			intl,
+			sortedInfo,
+			filteredInfo,
+			entities,
+			onDelete,
+		});
+
+		return {
+			columns,
+			pagination,
+			scroll: { x: scrollX },
+			bordered: true,
+			className: 'gridList',
+			loading: isLoading(),
+			rowKey: (record: DataType) => record._id,
+			dataSource: indexable(entities, pagination?.current, pagination?.pageSize),
+			onChange: handleTableChange,
+			footer: () => (
+				<div className="gridFooter">
+					{t(intl, 'table.total', { amount: total.toString() })}
+				</div>
+			)
+		}
+	}
+
+	const layoutsTableProps = {
+		...tableProps(layouts, layoutsMetadataColumns as unknown as ColumnsType<any>, 800, onLayoutDelete),
+	};
+
+	const widgetsTableProps = {
+		...tableProps(widgets, widgetsMetadataColumns as unknown as ColumnsType<any>, 1000),
 	};
 
 	const itemTabs: TabsProps['items'] = [
@@ -188,7 +223,7 @@ const EnvironmentEdit: React.FC = (): JSX.Element => {
 			children: (
 				<div className="layouts">
 					<h3>{t(intl, 'environment.list.layouts')}</h3>
-					<Table<DataType> {...tableProps} />
+					<Table<any> {...layoutsTableProps} />
 				</div>
 			),
 		},
@@ -196,7 +231,12 @@ const EnvironmentEdit: React.FC = (): JSX.Element => {
 			key: 'widgets',
 			icon: <AppstoreAddOutlined />,
 			label: t(intl, 'environment.tabs.widgets'),
-			children: 'Content of Tab Pane 3',
+			children: (
+				<div className="widgets">
+					<h3>{t(intl, 'environment.list.widgets')}</h3>
+					<Table<any> {...widgetsTableProps} />
+				</div>
+			),
 		},
 	]
 
