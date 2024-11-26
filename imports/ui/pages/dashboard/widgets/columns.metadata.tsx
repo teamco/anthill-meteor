@@ -36,6 +36,23 @@ type TArgs = {
  * @returns {TableProps<DataType>['columns']} A column configuration for the table.
  */
 export const metadataColumns = ({ intl, filteredInfo, sortedInfo, onDelete, onEdit, entities }: TArgs): TableProps<DataType>['columns'] => {
+  const actionsColumn = onEdit || onDelete ? {
+    ...actionField(intl),
+    render: (record: DataType) => (
+      <div>
+        <EditAction
+          onEdit={onEdit}
+          type={'text'}
+          entityId={record._id} />
+        <DeleteAction
+          onDelete={onDelete}
+          type={'text'}
+          entityId={record._id}
+          modalMsg={t(intl, 'environment.title')} />
+      </div>
+    ),
+  } : {};
+
   const columns: TColumns<DataType> = [
     indexColumn,
     {
@@ -103,22 +120,7 @@ export const metadataColumns = ({ intl, filteredInfo, sortedInfo, onDelete, onEd
       ...columnSorter(sortedInfo, 'metadata.updatedAt', 'metadata'),
       render: ({ updatedAt }: IMetadata): string => tsToLocaleDateTime(updatedAt.toString())
     },
-    {
-      ...actionField(intl),
-      render: (record: DataType) => (
-        <div>
-          <EditAction
-            onEdit={onEdit}
-            type={'text'}
-            entityId={record._id} />
-          <DeleteAction
-            onDelete={onDelete}
-            type={'text'}
-            entityId={record._id}
-            modalMsg={t(intl, 'environment.title')} />
-        </div>
-      ),
-    }
+    actionsColumn
   ];
 
   return columns;
