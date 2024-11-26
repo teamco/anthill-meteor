@@ -97,7 +97,7 @@ export const metadataColumns = (intl: TIntl, filteredInfo: TFilters, sortedInfo:
     {
       ...actionField(intl),
       render: (record: DataType) => (
-        <div>
+        <div className="eActions">
           <EditAction
             onEdit={onEdit}
             type={'text'}

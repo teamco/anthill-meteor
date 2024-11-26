@@ -7,15 +7,15 @@
 .margin_m(@m: 2) {
   margin: calc(@main-margin * @m);
 }
-  
+
 .margin_d(@m: 2) {
   margin: calc(@main-margin / @m);
 }
-  
+
 .margin-top_m(@m: 2) {
   margin-top: calc(@main-margin * @m);
 }
-  
+
 .margin-right_m(@m: 2) {
   margin-right: calc(@main-margin * @m);
 }
@@ -23,11 +23,11 @@
 .margin-bottom_m(@m: 2) {
   margin-bottom: calc(@main-margin * @m);
 }
-  
+
 .margin-left_m(@m: 2) {
   margin-left: calc(@main-margin * @m);
 }
-  
+
 .margin-top_d(@m: 2) {
   margin-top: calc(@main-margin / @m);
 }
@@ -49,7 +49,7 @@
   flex-direction: column;
   row-gap: @main-margin;
   padding-right: calc(@main-margin / 2);
-  
+
   .margin-top_m(1);
 
   .form-footer {
@@ -77,9 +77,16 @@
   }
 }
 
+.eActions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  column-gap: calc(@main-margin / 6);
+}
+
 .modalFooter {
   .margin-top_m(1);
-  
+
   display: flex;
   align-items: center;
   justify-content: flex-end;

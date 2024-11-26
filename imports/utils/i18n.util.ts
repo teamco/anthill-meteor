@@ -3,7 +3,7 @@ import { logger } from './console.util';
 
 export type TIntl = {
   messages: Record<string, string> | Record<string, MessageFormatElement[]>;
-  formatMessage: ({ id, defaultMessage }: { id: string; defaultMessage: string; }, {}: {}) => string;
+  formatMessage: ({ id, defaultMessage }: { id: string; defaultMessage: string; }, { }: {}) => string;
 }
 
 /**
@@ -15,11 +15,17 @@ export type TIntl = {
  * @returns {string} - the translated string.
  */
 export const t = (intl: TIntl, id: string, params: object = {}): string => {
-  if (intl?.messages[id]) {
-    return intl?.formatMessage({ id, defaultMessage: id }, { ...params });
-  }
+  try {
+    if (intl?.messages[id]) {
+      return intl?.formatMessage({ id, defaultMessage: id }, { ...params });
+    }
+  } catch (e) {
+    
+    if (e instanceof Error) {
+      logger({ type: 'warn', msg: `Unable to find translation for [${id}], used default message.` });
+      logger({ type: 'error', msg: e.message });
 
-  logger({ type: 'error', msg: `Unable to find translation for [${id}], used default message.` });
-  
-  return id;
+      return id;
+    }
+  }
 };

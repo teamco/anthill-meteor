@@ -1,11 +1,11 @@
-import React, { useContext } from "react";
-import { Button, Descriptions, Table, Tabs, TabsProps } from 'antd';
+import React, { useContext, useState } from "react";
+import { Button, Descriptions, Form, FormProps, Table, Tabs, TabsProps } from 'antd';
 import { AppstoreAddOutlined, BlockOutlined, FormOutlined } from "@ant-design/icons";
 import { useSubscribe, useTracker } from "meteor/react-meteor-data";
 import { TableProps } from "antd/lib/table";
 import { useParams } from "react-router-dom";
 
-import { TEnvironmentEdit } from "/imports/config/types";
+import { TEnvironment, TEnvironmentEdit } from "/imports/config/types";
 
 import { I18nContext } from "/imports/ui/context/i18n.context";
 import { AbilityContext } from '/imports/ui/context/authentication.context';
@@ -18,14 +18,21 @@ import { useTable } from "/imports/ui/hooks/table.hook";
 
 import { t } from "/imports/utils/i18n.util";
 import { indexable } from "/imports/utils/antd.util";
+import { onFinishFailed, onValidate } from "/imports/utils/form.util";
 
-import { getEnvironment } from "/imports/ui/services/environment.service";
+import { getEnvironment, updateEnvironment } from "/imports/ui/services/environment.service";
 
 import { DataType } from "../environments.page";
 import { metadataColumns } from "./columns.metadata";
 import { DescriptionMetadata } from "./description.metadata";
 
 import '../environments.module.less';
+
+export type TField = {
+	name?: string;
+	description?: string;
+	status?: TEnvironmentEdit['status'];
+};
 
 /**
  * EnvironmentEdit component
@@ -39,8 +46,17 @@ import '../environments.module.less';
  * @returns {JSX.Element} The JSX element representing the environments page
  */
 const EnvironmentEdit: React.FC = (): JSX.Element => {
+	const [form] = Form.useForm();
+
 	const isEnvironmentLoading = useSubscribe("environments");
 	const isLayoutLoading = useSubscribe("layouts");
+
+	const [envName, setEnvName] = useState<string>('');
+	const [canUpdate, setUpdate] = useState<boolean>(false);
+	const [status, setStatus] = useState<TEnvironment['status']>({
+    isActive: false,
+    isDraft: false,
+  });
 
 	/**
 	 * isLoading
@@ -61,6 +77,8 @@ const EnvironmentEdit: React.FC = (): JSX.Element => {
 
 	const user = Meteor.user() || { _id: '1' };
 
+	const _canUpdate = ability.can('update', environmentId) && canUpdate;
+
 	/**
 	 * onDelete
 	 *
@@ -72,21 +90,40 @@ const EnvironmentEdit: React.FC = (): JSX.Element => {
 	const onDelete = (id: string): void => {
 		// deleteEnvironment(id, intl, handleRefresh);
 	};
-	const onEdit = (id: string): void => {
-		// deleteEnvironment(id, intl, handleRefresh);
+
+	/**
+	 * @function onFinish
+	 * @description Handles the successful form submission
+	 * @param {TField} values - The form values
+	 * @example
+	 * <EnvironmentNew onSave={(values) => console.log(values)} />
+	 */
+	const onFinish: FormProps<TField>['onFinish'] = (values: TField): void => {
+		const { name, description } = values;
+		const data: Pick<TEnvironmentEdit, 'name' | 'description' | 'status'> = { name, description, status };
+
+		updateEnvironment(environmentId, data, intl);
+		setUpdate(false);
+	};
+
+	/**
+	 * @function onFieldsChange
+	 * @description Handles form field changes and sets a flag to trigger an update on the next form submission.
+	 */
+	const onFieldsChange = (): void => {
+		setUpdate(true);
 	};
 
 	const {
 		total,
 		entities,
 		tableParams: { pagination },
-		filteredInfo,
 		sortedInfo,
 		handleRefresh,
 		handleTableChange
 	} = useTable("layoutsPaginate", LayoutsCollection as any);
 
-	const columns: TableProps<DataType>['columns'] = metadataColumns(intl, filteredInfo, sortedInfo, onDelete, onEdit, entities);
+	const columns: TableProps<DataType>['columns'] = metadataColumns(intl, sortedInfo, onDelete);
 
 	const tableProps = {
 		columns,
@@ -111,22 +148,37 @@ const EnvironmentEdit: React.FC = (): JSX.Element => {
 			icon: <FormOutlined />,
 			label: t(intl, 'environment.tabs.general'),
 			children: (
-				<Descriptions
-					className="description"
-					size={'small'}
-					bordered
-					title={environment?.name}
-					items={DescriptionMetadata(intl, environment)}
-					extra={(
-						<Button
-							disabled={true}
-							loading={isLoading()}
-							type="primary"
-						>
-							{t(intl, 'actions.update')}
-						</Button>
-					)}
-				/>
+				<Form
+					layout={"vertical"}
+					autoComplete={"off"}
+					form={form}
+					onFinish={onFinish}
+					onFinishFailed={onFinishFailed}
+					onFieldsChange={onFieldsChange}
+					initialValues={{
+						name: environment?.name,
+						description: environment?.description,
+						status: Object.keys(environment?.status || {}).find(s => environment?.status[s])
+					}}
+				>
+					<Descriptions
+						className="description"
+						size={'small'}
+						bordered
+						title={envName || environment?.name}
+						items={DescriptionMetadata(intl, environment, setEnvName, setStatus)}
+						extra={(
+							<Button
+								onClick={e => onValidate(e, form)}
+								disabled={!_canUpdate}
+								loading={isLoading()}
+								type="primary"
+							>
+								{t(intl, 'actions.update')}
+							</Button>
+						)}
+					/>
+				</Form>
 			),
 		},
 		{

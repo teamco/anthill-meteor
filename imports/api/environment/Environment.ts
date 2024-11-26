@@ -36,22 +36,21 @@ export default class Environment extends CommonUtils implements TEnvironment {
     updatedBy: ''
   };
 
-  constructor(name: string, type: string, user: IUser, optional: { description?: string } = {}) {
+  constructor(name: string, user: IUser, optional: { description?: string } = {}) {
     super();
 
-    this.create(name, type, user, optional);
+    this.create(name, user, optional);
   }
 
   /**
    * Creates a new environment with a single empty widget
    *
    * @param {string} name - The name of the environment
-   * @param {string} type - The type of the environment
    * @param {IUser} user - The user creating the environment
    * @param {Object} [optional] - An object containing optional description
    * @param {string} [optional.description] - The description of the environment
    */
-  create(name: string, type: string, user: IUser, optional: { description?: string } = {}): void {
+  create(name: string, user: IUser, optional: { description?: string } = {}): void {
     if (!user) return catchClassErrorMsg({ message: 'User is required' });
 
     this.name = name;

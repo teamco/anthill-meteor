@@ -141,7 +141,7 @@ const EnvironmentsPage: React.FC = (): JSX.Element => {
 			content: (
 				<EnvironmentNew
 					disabled={isLoading()}
-					onSave={values => createEnvironment(values.name, values.type, user, handleRefresh, { description: values.description })}
+					onSave={values => createEnvironment(values.name, user, handleRefresh, { description: values.description })}
 				/>
 			),
 			footer: null

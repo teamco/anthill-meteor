@@ -4,7 +4,7 @@ import { Button, Col, Form, FormProps, Input, Row } from "antd";
 import { I18nContext } from "/imports/ui/context/i18n.context";
 
 import { t } from "/imports/utils/i18n.util";
-import { placeholderField, requiredField, TFieldRule } from "/imports/utils/form.util";
+import { onFinishFailed, onValidate, placeholderField, requiredField, TFieldRule } from "/imports/utils/form.util";
 import { layout } from '/imports/utils/layout.util';
 import { onModalCancel } from "/imports/utils/antd.util";
 import { stub } from "/imports/utils/functions.util";
@@ -13,7 +13,6 @@ import '../environments.module.less';
 
 type TField = {
   name?: string;
-  type?: string;
   description?: string;
 };
 
@@ -60,41 +59,6 @@ export const EnvironmentNew: React.FC<TProps> = (props: TProps): JSX.Element => 
     onModalCancel();
   };
 
-  /**
-   * @function onFinishFailed
-   * @description Handles the case when the form submission fails with validation errors
-   * @param {Object} errorInfo - The error information object
-   * @example
-   * {
-   *   values: {
-   *     name: "My Environment"
-   *   },
-   *   errorFields: [
-   *     {
-   *       name: ["name"],
-   *       errors: ["Please input your name!"]
-   *     }
-   *   ],
-   *   outOfDate: false
-   * }
-   */
-  const onFinishFailed: FormProps<TField>['onFinishFailed'] = (errorInfo: object): void => {
-    console.warn(errorInfo);
-  };
-
-  /**
-   * @function onValidate
-   * @description Validates the form and submits it if the validation is successful
-   * @returns {void}
-   * @example
-   * <button onClick={onValidate}>Save</button>
-   */
-  const onValidate = (): void => {
-    form.validateFields().then(() => {
-      form.submit();
-    }).catch(onFinishFailed);
-  }
-
   const inputProps = {
     disabled,
     autoComplete: 'off',
@@ -138,7 +102,7 @@ export const EnvironmentNew: React.FC<TProps> = (props: TProps): JSX.Element => 
       </Form>
       <div className='form-footer'>
         <Button type="default" onClick={onModalCancel}>{t(intl, 'actions.cancel')}</Button>
-        <Button type="primary" onClick={onValidate}>{t(intl, 'actions.save')}</Button>
+        <Button type="primary" onClick={e => onValidate(e, form)}>{t(intl, 'actions.save')}</Button>
       </div>
     </div>
   );

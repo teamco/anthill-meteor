@@ -22,6 +22,7 @@ export default {
   'actions.shareOn': 'Share on {type}',
   'actions.export': 'Export',
   'actions.edit': 'Edit {type}',
+  'actions.version': 'Version Preview',
   'actions.show': 'Show {type}',
   'actions.showOnMap': 'Show on Map',
   'actions.download': 'Download file',

@@ -1,4 +1,4 @@
-import { Rule } from 'antd/es/form';
+import { FormInstance, FormProps, Rule } from 'antd/es/form';
 
 import { t, TIntl } from '/imports/utils/i18n.util';
 
@@ -43,3 +43,40 @@ export const placeholderField = (intl: TIntl, label: string, msg: string = 'acti
     type: t(intl, msg)
   });
 };
+
+/**
+ * @function onFinishFailed
+ * @description Handles the case when the form submission fails with validation errors
+ * @param {Object} errorInfo - The error information object
+ * @example
+ * {
+ *   values: {
+ *     name: "My Environment"
+ *   },
+ *   errorFields: [
+ *     {
+ *       name: ["name"],
+ *       errors: ["Please input your name!"]
+ *     }
+ *   ],
+ *   outOfDate: false
+ * }
+ */
+export const onFinishFailed: FormProps<any>['onFinishFailed'] = (errorInfo: object): void => {
+  console.warn(errorInfo);
+};
+
+/**
+ * @function onValidate
+ * @description Validates the form and submits it if the validation is successful
+ * @returns {void}
+ * @example
+ * <button onClick={onValidate}>Save</button>
+ */
+export const onValidate = (e: React.MouseEvent<HTMLElement, MouseEvent>, form: FormInstance<any>): void => {
+  e.preventDefault();
+  
+  form.validateFields().then(() => {
+    form.submit();
+  }).catch(onFinishFailed);
+}

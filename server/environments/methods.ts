@@ -39,12 +39,13 @@ Meteor.methods({
   },
 
   /**
-   * Updates an Environment of the collection.
-   * @param {string} _id - The _id of the Environment to update.
-   * @param {Object} doc - The params to update.
-   * @returns {Promise<string>} - The _id of the new Environment.
+   * Updates an Environment in the collection.
+   * @param {Object} param - An object containing the environment ID and the document to update.
+   * @param {string} param._id - The _id of the Environment to update.
+   * @param {Object} param.doc - The parameters to update in the Environment.
+   * @returns {Promise<number>} - The number of documents affected by the update.
    */
-  environmentUpdate: (_id: string, doc: object): Promise<number> => {
+  environmentUpdate: ({ _id, doc }: { _id: string; doc: object; }): Promise<number> => {
     return EnvironmentsCollection.updateAsync({ _id }, { $set: { ...doc } });
   },
 

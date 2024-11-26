@@ -22,7 +22,21 @@ export const successSaveMsg = (instance: string = 'Entity'): void => {
   const messageApi = nCache.get('messageApi');
   const intl = nCache.get('intl');
 
-  const msg = t(intl, 'message.success.save', { instance });
+  const msg = t(intl, 'message.success.create', { instance });
+
+  messageApi.success(msg);
+};
+
+/**
+ * Displays a success message using the NotificationContext.
+ * 
+ * @param instance - The name of the entity that was successfully updated. Defaults to 'Entity'.
+ */
+export const successUpdateMsg = (instance: string = 'Entity'): void => {
+  const messageApi = nCache.get('messageApi');
+  const intl = nCache.get('intl');
+
+  const msg = t(intl, 'message.success.update', { instance });
 
   messageApi.success(msg);
 };
@@ -35,7 +49,7 @@ export const successDeleteMsg = (instance: string = 'Entity'): void => {
   const messageApi = nCache.get('messageApi');
   const intl = nCache.get('intl');
 
-  const msg = t(intl, 'message.success.delete', { type: instance.toLocaleUpperCase() });
+  const msg = t(intl, 'message.success.delete', { instance: instance.toLocaleUpperCase() });
 
   messageApi.success(msg);
 };
