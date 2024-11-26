@@ -16,7 +16,7 @@ import { successSaveMsg, catchErrorMsg, successDeleteMsg, catchWarnMsg } from "/
  * @param {() => void} handleRefresh - Callback function to refresh the widget list after creation.
  */
 export const createWidget = (widget: TWidget, handleRefresh: () => void) => {
-  Meteor.callAsync("widgetsInsert", { ...widget }).
+  Meteor.callAsync("widgetInsert", { ...widget }).
     then((_id: string) => {
       successSaveMsg();
       handleRefresh();

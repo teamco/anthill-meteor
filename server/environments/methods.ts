@@ -34,8 +34,18 @@ Meteor.methods({
    * @param {Object} doc - The document to insert.
    * @returns {Promise<string>} - The _id of the new Environment.
    */
-  environmentsInsert: (doc: object): Promise<string> => {
+  environmentInsert: (doc: object): Promise<string> => {
     return EnvironmentsCollection.insertAsync(doc);
+  },
+
+  /**
+   * Updates an Environment of the collection.
+   * @param {string} _id - The _id of the Environment to update.
+   * @param {Object} doc - The params to update.
+   * @returns {Promise<string>} - The _id of the new Environment.
+   */
+  environmentUpdate: (_id: string, doc: object): Promise<number> => {
+    return EnvironmentsCollection.updateAsync({ _id }, { $set: { ...doc } });
   },
 
   /**

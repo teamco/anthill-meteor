@@ -34,12 +34,22 @@ Meteor.methods({
    * @param {Object} doc - The document to insert.
    * @returns {Promise<string>} - The _id of the new Layout.
    */
-  layoutsInsert: (doc: object): Promise<string> => {
+  layoutInsert: (doc: object): Promise<string> => {
     return LayoutsCollection.insertAsync(doc);
   },
 
   /**
-   * Removes an Layout from the collection.
+   * Updates a Layout of the collection.
+   * @param {string} _id - The _id of the Layout to update.
+   * @param {Object} doc - The params to update.
+   * @returns {Promise<string>} - The _id of the new Layout.
+   */
+  layoutUpdate: (_id: string, doc: object): Promise<number> => {
+    return LayoutsCollection.updateAsync({ _id }, { $set: { ...doc } });
+  },
+
+  /**
+   * Removes a Layout from the collection.
    * @param {string} _id - The _id of the Layout to remove.
    * @returns {Promise<number>} - The number of removed documents.
    */

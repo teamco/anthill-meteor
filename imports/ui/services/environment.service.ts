@@ -31,12 +31,12 @@ export const createEnvironment = (name: string, type: string, user: IUser, handl
 
   layout.addWidget({ ...new Widget(EmptyWidget, user), _id });
 
-  Meteor.callAsync("environmentsInsert", { ...env }).
+  Meteor.callAsync("environmentInsert", { ...env }).
     then((_id: string) => {
       successSaveMsg();
       handleRefresh();
 
-      Meteor.callAsync("layoutsInsert", { ...layout, environmentId: _id }).catch(catchErrorMsg);
+      Meteor.callAsync("layoutInsert", { ...layout, environmentId: _id }).catch(catchErrorMsg);
     }).
     catch(catchErrorMsg);
 };

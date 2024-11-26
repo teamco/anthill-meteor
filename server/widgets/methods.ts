@@ -35,8 +35,18 @@ Meteor.methods({
    * @param {Object} doc - The document to insert.
    * @returns {Promise<string>} - The _id of the new Widget.
    */
-  widgetsInsert: (doc: object): Promise<string> => {
+  widgetInsert: (doc: object): Promise<string> => {
     return WidgetsCollection.insertAsync(doc);
+  },
+
+  /**
+   * Updates a Widget of the collection.
+   * @param {string} _id - The _id of the Widget to update.
+   * @param {Object} doc - The params to update.
+   * @returns {Promise<string>} - The _id of the new Widget.
+   */
+  widgetUpdate: (_id: string, doc: object): Promise<number> => {
+    return WidgetsCollection.updateAsync({ _id }, { $set: { ...doc } });
   },
 
   /**
