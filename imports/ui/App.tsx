@@ -14,6 +14,13 @@ import { IntlProvider } from 'react-intl';
 import { localeData } from '/imports/locales';
 
 
+/**
+ * App component.
+ *
+ * It renders the react-router-dom router and the locale data by antd.
+ *
+ * @returns {JSX.Element} The App component.
+ */
 const App: FC = (): JSX.Element => {
   const router = useMemo(() => renderRoutes(), []);
 
@@ -33,7 +40,9 @@ const App: FC = (): JSX.Element => {
 
   return (
     <IntlProvider locale={intlLocale} messages={localeData[intlLocale]}>
-      <RouterProvider router={router} future={{ v7_startTransition: true }} />
+      <RouterProvider router={router} future={{
+        v7_startTransition: true
+      }} />
     </IntlProvider>
   )
 };
