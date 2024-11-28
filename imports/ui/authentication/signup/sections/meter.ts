@@ -1,5 +1,3 @@
-import React from 'react';
-
 /**
  * Password strength estimator inspired by password crackers
  * @link https://github.com/dropbox/zxcvbn
@@ -12,8 +10,7 @@ import zxcvbn from 'zxcvbn';
  * @param {{ e: React.ChangeEvent<HTMLSelectElement>, setMeterValue: (value: string | number) => void, setMeterText: (value: string | number) => void }} props
  * @returns {void}
  */
-export const onUpdateMeter = ({ e, setMeterValue, setMeterText }: { e: React.ChangeEvent<HTMLSelectElement>, setMeterValue: (value: number) => void, setMeterText: (value: string) => void }): void => {
-  const value = e.target.value as string;
+export const onUpdateMeter = ({ value, setMeterValue, setMeterText }: { value: string, setMeterValue: (value: number) => void, setMeterText: (value: string) => void }): void => {
   const result = zxcvbn(value);
 
   const meterValue = value.length ? result.score : null;

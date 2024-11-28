@@ -100,7 +100,7 @@ const Signup = props => {
           onValuesChange={(changedValues) => {
             if (changedValues.password) {
               onUpdateMeter({
-                e: changedValues.password,
+                value: changedValues.password,
                 setMeterText,
                 setMeterValue
               });
