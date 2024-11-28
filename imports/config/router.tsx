@@ -3,17 +3,16 @@ import { createBrowserRouter } from "react-router-dom";
 
 import AppLayout from "/imports/ui/layouts/app.layout";
 import AdminLayout from "/imports/ui/layouts/admin.layout";
+import SignUp from "/imports/ui/pages/authentication/signup/signup";
+import SignIn from "/imports/ui/pages/authentication/signin/signin";
 
 import Page404 from "/imports/ui/pages/404";
-
 import HomePage from "/imports/ui/pages/home/home.page";
-
 import DashboardPage from "/imports/ui/pages/dashboard/dashboard.page";
-
 import EnvironmentsPage from "/imports/ui/pages/dashboard/environments/environments.page";
 import EnvironmentEdit from "/imports/ui/pages/dashboard/environments/environment/environment.edit";
-
 import WidgetsPage from "/imports/ui/pages/dashboard/widgets/widgets.page";
+
 
 /**
  * Configures and returns the router for the application using `createBrowserRouter`.
@@ -66,6 +65,14 @@ export const renderRoutes = () => {
         },
       ],
     },
+    {
+      path: "/signup",
+      element: <SignUp />,
+    },
+    {
+      path: "/signin",
+      element: <SignIn />,
+    }
   ], {
     basename: "/",
     future: {

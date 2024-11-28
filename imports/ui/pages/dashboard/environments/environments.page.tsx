@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 
 import { EnvironmentsCollection } from "/imports/collections/environments.collection";
 
-import { CommonDataType, IMetadata, TLayout, TStatus } from "/imports/config/types";
+import { CommonDataType, IMetadata, IUser, TLayout, TStatus } from "/imports/config/types";
 
 import { I18nContext } from "/imports/ui/context/i18n.context";
 import { AbilityContext } from '/imports/ui/context/authentication.context';
@@ -68,7 +68,7 @@ const EnvironmentsPage: React.FC = (): JSX.Element => {
 		return isEvironmentsLoading() || isLayoutsLoading() || isWidgetsLoading();
 	};
 
-	const user = Meteor.user() || { _id: '1' };
+	const user = Meteor.user() as IUser;
 
 	/**
 	 * onDelete
@@ -82,6 +82,14 @@ const EnvironmentsPage: React.FC = (): JSX.Element => {
 		deleteEnvironment(id, intl, handleRefresh);
 	};
 
+	/**
+	 * onEdit
+	 *
+	 * A callback function called when the edit button is clicked in the environments table.
+	 * It navigates to the environment edit page with the given id.
+	 *
+	 * @param {string} id - The id of the environment to edit
+	 */
 	const onEdit = (id: string): void => {
 		history(`/dashboard/environments/${id}`);
 	};

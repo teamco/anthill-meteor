@@ -3,7 +3,6 @@ import { ConfigProvider, Layout, message, Modal, notification } from 'antd';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { useIntl } from 'react-intl';
 import { useTracker } from "meteor/react-meteor-data";
-import { GoogleOAuthProvider } from '@react-oauth/google';
 
 import { AbilityContext, AuthenticationContext } from '/imports/ui/context/authentication.context';
 import { I18nContext } from '/imports/ui/context/i18n.context';
@@ -11,7 +10,6 @@ import { NotificationContext } from '/imports/ui/context/notification.context';
 
 import { defineAbilityFor } from '/imports/ui/services/ability.service';
 
-import Loader from '/imports/ui/components/Loader/loader.component';
 import DrawerPanelComponent from '/imports/ui/components/DrawerPanel/drawerPanel.component';
 import { LayoutHeader } from '/imports/ui/components/Layout/layoutHeader.component';
 import { MenuComponent } from '/imports/ui/components/Menu/menu.component';
@@ -19,14 +17,13 @@ import { useMenu } from '/imports/ui/hooks/menu.hook';
 
 import { nCache } from '/imports/utils/message.util';
 import { t, TIntl } from '/imports/utils/i18n.util';
-import { LoginWithGoogle } from '../authentication/loginWithGoogle';
-import Signup from '../authentication/signup/signup';
+
+import SignIn from '/imports/ui/pages/authentication/signin/signin';
 
 const { Header, Footer, Content } = Layout;
 
 /**
  * @description The main layout for the admin pages
- * @param {ability} The ability to access the admin pages
  * @returns {JSX.Element} The main layout for the admin pages
  */
 const AdminLayout: FC = (): JSX.Element => {
@@ -39,8 +36,8 @@ const AdminLayout: FC = (): JSX.Element => {
   const user = useTracker(() => Meteor.user());
 
   useEffect(() => {
-    user && setAbility(defineAbilityFor(user));
-  }, [user]);
+    user?._id && setAbility(defineAbilityFor(user));
+  }, [user?._id]);
 
   const [modalApi, modalHolder] = Modal.useModal();
   const [messageApi, messageHolder] = message.useMessage();
@@ -101,9 +98,7 @@ const AdminLayout: FC = (): JSX.Element => {
           </AbilityContext.Provider>
         </AuthenticationContext.Provider>
       </I18nContext.Provider>
-  ) : <Signup/>
-
-  // <Loader loading={true} />
+  ) : <SignIn/>
 };
 
 export default AdminLayout;

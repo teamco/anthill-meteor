@@ -80,3 +80,19 @@ export const onValidate = (e: React.MouseEvent<HTMLElement, MouseEvent>, form: F
     form.submit();
   }).catch(onFinishFailed);
 }
+
+/**
+ * Constructs an array of field names by concatenating namespace(s) and name(s).
+ *
+ * @param {string | string[]} namespace - A single namespace or an array of namespaces.
+ * @param {string | string[]} names - A single name or an array of names.
+ * @returns {string[]} An array of concatenated namespace(s) and name(s).
+ * If namespaces are provided, they will be prepended to each name.
+ * If no namespace is provided, only names are returned.
+ */
+export const fieldName = (namespace: string | string[], names: string | string[]): string[] => {
+  const fields = Array.isArray(names) ? names : [names];
+  const ns = Array.isArray(namespace) ? namespace : [namespace];
+  
+  return (ns ? [...ns, ...fields] : [...fields]).filter(Boolean);
+};

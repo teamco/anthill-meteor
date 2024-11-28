@@ -16,6 +16,7 @@
     "antd": "^5.22.2",
     "bcrypt": "^5.1.1",
     "dotenv": "^16.4.5",
+    "gravatar": "^1.8.2",
     "lodash": "^4.17.21",
     "meteor-node-stubs": "^1.2.12",
     "qrcode": "^1.5.4",

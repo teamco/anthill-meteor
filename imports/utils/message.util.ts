@@ -54,11 +54,11 @@ export const successDeleteMsg = (instance: string = 'Entity'): void => {
   messageApi.success(msg);
 };
 
-type TError = {
+export type TError = {
   error: string;
   errorType: string;
   message: string;
-}
+} & Meteor.Error
 
 /**
  * Displays an error notification using the NotificationContext.
@@ -71,6 +71,8 @@ export const catchErrorMsg = (e: TError, fallback?: () => void): void => {
   const notificationApi = nCache.get('notificationApi');
 
   typeof fallback === 'function' && fallback();
+
+  console.warn(e);
 
   notificationApi.error({
     message: `${e.error}: ${e.errorType}`,
@@ -86,6 +88,8 @@ export const catchErrorMsg = (e: TError, fallback?: () => void): void => {
 export const catchClassErrorMsg = (e: { message: string }): void => {
   const notificationApi = nCache.get('notificationApi');
 
+  console.warn(e);
+
   notificationApi.error({
     message: `400: Bad Request`,
     description: e.message
@@ -100,6 +104,8 @@ export const catchClassErrorMsg = (e: { message: string }): void => {
  */
 export const catchWarnMsg = (e: TError): void => {
   const notificationApi = nCache.get('notificationApi');
+
+  console.warn(e);
 
   notificationApi.warning({
     message: `${e.error}: ${e.errorType}`,
