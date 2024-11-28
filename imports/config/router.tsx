@@ -12,6 +12,7 @@ import DashboardPage from "/imports/ui/pages/dashboard/dashboard.page";
 import EnvironmentsPage from "/imports/ui/pages/dashboard/environments/environments.page";
 import EnvironmentEdit from "/imports/ui/pages/dashboard/environments/environment/environment.edit";
 import WidgetsPage from "/imports/ui/pages/dashboard/widgets/widgets.page";
+import AuthLayout from "../ui/layouts/auth.layout";
 
 
 /**
@@ -31,47 +32,54 @@ import WidgetsPage from "/imports/ui/pages/dashboard/widgets/widgets.page";
  */
 export const renderRoutes = () => {
   return createBrowserRouter([
+    // {
+    //   path: "/",
+    //   element: <AppLayout />,
+    //   errorElement: <Page404 />,
+    //   children: [
+    //     {
+    //       path: "/",
+    //       element: <HomePage />,
+    //     },
+    //   ],
+    // },
     {
       path: "/",
-      element: <AppLayout/>,
-      errorElement: <Page404 />,
-      children: [
-        {
-          path: "/",
-          element: <HomePage />,
-        },
-      ],
-    },
-    {
-      path: "/dashboard",
-      element: <AdminLayout/>,
+      element: <AuthLayout />,
       errorElement: <Page404 />,
       children: [
         {
           path: "/dashboard",
-          element: <DashboardPage />,
+          element: <AdminLayout />,
+          errorElement: <Page404 />,
+          children: [
+            {
+              path: "/dashboard",
+              element: <DashboardPage />,
+            },
+            {
+              path: "/dashboard/environments",
+              element: <EnvironmentsPage />,
+            },
+            {
+              path: "/dashboard/environments/:environmentId",
+              element: <EnvironmentEdit />,
+            },
+            {
+              path: "/dashboard/widgets",
+              element: <WidgetsPage />,
+            },
+          ],
         },
         {
-          path: "/dashboard/environments",
-          element: <EnvironmentsPage />,
+          path: "/signup",
+          element: <SignUp />,
         },
         {
-          path: "/dashboard/environments/:environmentId",
-          element: <EnvironmentEdit />,
-        },
-        {
-          path: "/dashboard/widgets",
-          element: <WidgetsPage />,
-        },
-      ],
-    },
-    {
-      path: "/signup",
-      element: <SignUp />,
-    },
-    {
-      path: "/signin",
-      element: <SignIn />,
+          path: "/signin",
+          element: <SignIn />,
+        }
+      ]
     }
   ], {
     basename: "/",

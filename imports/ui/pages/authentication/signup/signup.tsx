@@ -12,10 +12,12 @@ import { catchErrorMsg, nCache, successSaveMsg, TError } from '/imports/utils/me
 import Strength from './utils/strength';
 import { onUpdateMeter } from './utils/meter';
 
+import { useAuthRedirect } from '/imports/ui/hooks/authRedirect.hook';
+
 import { EmailField } from '/imports/ui/components/EmailField';
+import { Can } from '/imports/ui/components/Ability/can';
 
 import './signup.module.less';
-import { useAuthRedirect } from '/imports/ui/hooks/authRedirect.hook';
 
 const { Content } = Layout;
 
@@ -66,7 +68,7 @@ const SignUp: React.FC = (): JSX.Element => {
    * <SignUp onSave={(values) => console.log(values)} />
    */
   const onFinish = (values: { email: string; password: string; firstName: string; lastName: string; }) => {
-    
+
     Meteor.call('passwordProfile', {
       email: values.email,
       password: values.password,
@@ -213,27 +215,31 @@ const SignUp: React.FC = (): JSX.Element => {
             <Row gutter={[16, 16]}
               className={'loginBtns'}>
               <Col span={12}>
-                <Tooltip title={t(intl, 'auth.signInTitle')}>
-                  <Button type={'text'}
-                    icon={<LoginOutlined />}
-                    disabled={false}
-                    block
-                    loading={false}
-                    onClick={() => history('/signin')}>
-                    {t(intl, 'auth.signIn')}
-                  </Button>
-                </Tooltip>
+                <Can I={'read'} a={'signin'}>
+                  <Tooltip title={t(intl, 'auth.signInTitle')}>
+                    <Button type={'text'}
+                      icon={<LoginOutlined />}
+                      disabled={false}
+                      block
+                      loading={false}
+                      onClick={() => history('/signin')}>
+                      {t(intl, 'auth.signIn')}
+                    </Button>
+                  </Tooltip>
+                </Can>
               </Col>
               <Col span={12}>
-                <Tooltip title={t(intl, 'auth.signUpTitle')}>
-                  <Button type={'primary'}
-                    htmlType={'submit'}
-                    block
-                    loading={false}
-                    icon={<FormOutlined />}>
-                    {t(intl, 'auth.signUp')}
-                  </Button>
-                </Tooltip>
+                <Can I={'access'} a={'signup'}>
+                  <Tooltip title={t(intl, 'auth.signUpTitle')}>
+                    <Button type={'primary'}
+                      htmlType={'submit'}
+                      block
+                      loading={false}
+                      icon={<FormOutlined />}>
+                      {t(intl, 'auth.signUp')}
+                    </Button>
+                  </Tooltip>
+                </Can>
               </Col>
             </Row>
           </Form.Item>

@@ -4,7 +4,6 @@ import { Outlet, useNavigate } from 'react-router-dom';
 import { useIntl } from 'react-intl';
 import { useTracker } from "meteor/react-meteor-data";
 
-import { AbilityContext, AuthenticationContext } from '/imports/ui/context/authentication.context';
 import { I18nContext } from '/imports/ui/context/i18n.context';
 import { NotificationContext } from '/imports/ui/context/notification.context';
 
@@ -64,41 +63,37 @@ const AdminLayout: FC = (): JSX.Element => {
   const menuProps = useMenu(intl, ability, history, drawerPanelOpen);
 
   return user ? (
-      <I18nContext.Provider value={intl}>
-        <AuthenticationContext.Provider value={ability}>
-          <AbilityContext.Provider value={ability}>
-            <NotificationContext.Provider value={{ modalApi, messageApi, notificationApi }}>
-              <ConfigProvider theme={{
-                components: {
-                  Menu: {
-                    activeBarBorderWidth: 0
-                  }
-                }
-              }}>
-                <Layout className={'layout'}>
-                  <Header className={'header'}>
-                    <LayoutHeader
-                      title={t(intl, 'meta.title')}
-                      onMenuOpen={setDrawerPanelOpen}
-                    />
-                  </Header>
-                  <Content className={'content'}>
-                    {messageHolder}
-                    {notificationHolder}
-                    {modalHolder}
-                    <DrawerPanelComponent {...drawerProps}>
-                      <MenuComponent {...menuProps} />
-                    </DrawerPanelComponent>
-                    <Outlet />
-                  </Content>
-                  <Footer className={'footer'}>Footer</Footer>
-                </Layout>
-              </ConfigProvider>
-            </NotificationContext.Provider>
-          </AbilityContext.Provider>
-        </AuthenticationContext.Provider>
-      </I18nContext.Provider>
-  ) : <SignIn/>
+    <I18nContext.Provider value={intl}>
+      <NotificationContext.Provider value={{ modalApi, messageApi, notificationApi }}>
+        <ConfigProvider theme={{
+          components: {
+            Menu: {
+              activeBarBorderWidth: 0
+            }
+          }
+        }}>
+          <Layout className={'layout'}>
+            <Header className={'header'}>
+              <LayoutHeader
+                title={t(intl, 'meta.title')}
+                onMenuOpen={setDrawerPanelOpen}
+              />
+            </Header>
+            <Content className={'content'}>
+              {messageHolder}
+              {notificationHolder}
+              {modalHolder}
+              <DrawerPanelComponent {...drawerProps}>
+                <MenuComponent {...menuProps} />
+              </DrawerPanelComponent>
+              <Outlet />
+            </Content>
+            <Footer className={'footer'}>Footer</Footer>
+          </Layout>
+        </ConfigProvider>
+      </NotificationContext.Provider>
+    </I18nContext.Provider>
+  ) : <SignIn />
 };
 
 export default AdminLayout;

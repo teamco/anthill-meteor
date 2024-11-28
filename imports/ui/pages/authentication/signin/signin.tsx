@@ -14,6 +14,7 @@ import { useAuthRedirect } from '/imports/ui/hooks/authRedirect.hook';
 import { EmailField } from '/imports/ui/components/EmailField';
 
 import './signin.module.less';
+import { Can } from '/imports/ui/components/Ability/can';
 
 const { Content } = Layout;
 
@@ -95,27 +96,31 @@ const SignIn: React.FC = (): JSX.Element => {
             <Row gutter={[16, 16]}
               className={'loginBtns'}>
               <Col span={12}>
-                <Tooltip title={t(intl, 'auth.signUpTitle')}>
-                  <Button type={'text'}
-                    icon={<LoginOutlined />}
-                    disabled={false}
-                    block
-                    loading={false}
-                    onClick={() => history('/signup')}>
-                    {t(intl, 'auth.signUp')}
-                  </Button>
-                </Tooltip>
+                <Can I={'read'} a={'signup'}>
+                  <Tooltip title={t(intl, 'auth.signUpTitle')}>
+                    <Button type={'text'}
+                      icon={<LoginOutlined />}
+                      disabled={false}
+                      block
+                      loading={false}
+                      onClick={() => history('/signup')}>
+                      {t(intl, 'auth.signUp')}
+                    </Button>
+                  </Tooltip>
+                </Can>
               </Col>
               <Col span={12}>
-                <Tooltip title={t(intl, 'auth.signInTitle')}>
-                  <Button type={'primary'}
-                    htmlType={'submit'}
-                    block
-                    loading={false}
-                    icon={<FormOutlined />}>
-                    {t(intl, 'auth.signIn')}
-                  </Button>
-                </Tooltip>
+                <Can I={'access'} a={'signin'}>
+                  <Tooltip title={t(intl, 'auth.signInTitle')}>
+                    <Button type={'primary'}
+                      htmlType={'submit'}
+                      block
+                      loading={false}
+                      icon={<FormOutlined />}>
+                      {t(intl, 'auth.signIn')}
+                    </Button>
+                  </Tooltip>
+                </Can>
               </Col>
             </Row>
           </Form.Item>
