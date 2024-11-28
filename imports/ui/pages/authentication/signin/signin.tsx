@@ -9,6 +9,8 @@ import { requiredField } from '/imports/utils/form.util';
 import { layout } from '/imports/utils/layout.util';
 import { catchErrorMsg, nCache, TError } from '/imports/utils/message.util';
 
+import { useAuthRedirect } from '/imports/ui/hooks/authRedirect.hook';
+
 import { EmailField } from '/imports/ui/components/EmailField';
 
 import './signin.module.less';
@@ -25,7 +27,7 @@ const { Content } = Layout;
  *
  * @returns {JSX.Element}
  */
-const SignIn: React.FC = (props): JSX.Element => {
+const SignIn: React.FC = (): JSX.Element => {
   const intl: TIntl = useIntl();
   const history = useNavigate();
 
@@ -38,6 +40,8 @@ const SignIn: React.FC = (props): JSX.Element => {
   nCache.set('notificationApi', notificationApi);
 
   const passField = t(intl, 'auth.password');
+
+  useAuthRedirect('/dashboard');
 
   /**
    * Handles the successful form submission

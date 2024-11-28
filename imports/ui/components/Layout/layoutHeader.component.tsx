@@ -21,6 +21,15 @@ interface IUserProfile extends Meteor.User {
   }
 }
 
+/**
+ * A functional component that renders a layout header
+ * 
+ * @param {{ title: string, onMenuOpen: Dispatch<SetStateAction<boolean>> }} props - The component props
+ * @param {string} props.title - The title to be displayed as the header
+ * @param {Dispatch<SetStateAction<boolean>>} props.onMenuOpen - A callback to open the menu
+ * 
+ * @returns {JSX.Element} The rendered header component
+ */
 export const LayoutHeader: FC<THeaderProps> = (props): JSX.Element => {
   const { title, onMenuOpen } = props;
 

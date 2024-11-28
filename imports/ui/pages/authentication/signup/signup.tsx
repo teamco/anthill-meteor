@@ -15,6 +15,7 @@ import { onUpdateMeter } from './utils/meter';
 import { EmailField } from '/imports/ui/components/EmailField';
 
 import './signup.module.less';
+import { useAuthRedirect } from '/imports/ui/hooks/authRedirect.hook';
 
 const { Content } = Layout;
 
@@ -30,7 +31,7 @@ const MIN_PASSWORD_LENGTH = 8;
  *
  * @returns {JSX.Element}
  */
-const SignUp: React.FC = (props): JSX.Element => {
+const SignUp: React.FC = (): JSX.Element => {
   const intl: TIntl = useIntl();
   const history = useNavigate();
 
@@ -51,6 +52,8 @@ const SignUp: React.FC = (props): JSX.Element => {
 
   nCache.set('notificationApi', notificationApi);
   nCache.set('messageApi', messageApi);
+
+  useAuthRedirect('/dashboard');
 
   /**
    * Handles the successful form submission
