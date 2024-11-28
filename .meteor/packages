@@ -21,3 +21,7 @@ static-html@1.4.0             # Define static page content in .html files
 react-meteor-data       # React higher-order component for reactively tracking Meteor data
 less
 accounts-password@3.0.3
+service-configuration
+accounts-github
+accounts-google
+http

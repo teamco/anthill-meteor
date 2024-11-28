@@ -54,7 +54,7 @@ Meteor.methods({
    * @param {string} _id - The _id of the Widget to remove.
    * @returns {Promise<number>} - The number of removed documents.
    */
-  widgetsRemove: ({ _id }: { _id: string }): Promise<number> => {
+  widgetRemove: ({ _id }: { _id: string }): Promise<number> => {
     return WidgetsCollection.removeAsync({ _id });
   },
 }); 

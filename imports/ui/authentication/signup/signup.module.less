@@ -1,0 +1,36 @@
+@import '/imports/theme/theme.less';
+
+.rW {
+  min-height: 100vh;
+
+  main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    row-gap: calc(@main-margin * 2);
+
+    > div,
+    form {
+      max-width: 600px;
+      width: 100%;
+      padding: 0 @main-margin;
+    }
+
+    .pStrength {
+      margin: @main-margin 0;
+    }
+
+    h1 {
+      .margin-bottom_d(1);
+    }
+
+    .ant-form-item {
+      .margin-bottom_d();
+    }
+
+    svg {
+      margin-right: 6px;
+    }
+  }
+}

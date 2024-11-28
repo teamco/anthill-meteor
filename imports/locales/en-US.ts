@@ -1,7 +1,7 @@
 import actions from './en-US/actions';
 import dashboard from './en-US/dashboard';
 import table from './en-US/table';
-// import auth from './en-US/auth';
+import auth from './en-US/auth';
 // import address from './en-US/address';
 import environment from './en-US/environment';
 import widget from './en-US/widget';
@@ -12,7 +12,7 @@ import event from './en-US/event';
 import menu from './en-US/menu';
 import message from './en-US/message';
 // import notifications from './en-US/notifications';
-// import profile from './en-US/profile';
+import profile from './en-US/profile';
 // import time from './en-US/time';
 // import business from './en-US/business';
 // import service from './en-US/service';
@@ -27,7 +27,7 @@ export default {
   ...table,
   ...environment,
   ...widget,
-  // ...auth,
+  ...auth,
   // ...address,
   // ...business,
   ...form,
@@ -37,7 +37,7 @@ export default {
   ...message,
   ...meta,
   // ...notifications,
-  // ...profile,
+  ...profile,
   // ...time,
   // ...service,
   // ...status,

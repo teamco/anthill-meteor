@@ -2,6 +2,8 @@ import React, { FC, useEffect, useState } from 'react';
 import { ConfigProvider, Layout, message, Modal, notification } from 'antd';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { useIntl } from 'react-intl';
+import { useTracker } from "meteor/react-meteor-data";
+import { GoogleOAuthProvider } from '@react-oauth/google';
 
 import { AbilityContext, AuthenticationContext } from '/imports/ui/context/authentication.context';
 import { I18nContext } from '/imports/ui/context/i18n.context';
@@ -17,6 +19,8 @@ import { useMenu } from '/imports/ui/hooks/menu.hook';
 
 import { nCache } from '/imports/utils/message.util';
 import { t, TIntl } from '/imports/utils/i18n.util';
+import { LoginWithGoogle } from '../authentication/loginWithGoogle';
+import Signup from '../authentication/signup/signup';
 
 const { Header, Footer, Content } = Layout;
 
@@ -32,9 +36,11 @@ const AdminLayout: FC = (): JSX.Element => {
   const [ability, setAbility] = useState(defineAbilityFor(Meteor.user()));
   const [drawerPanelOpen, setDrawerPanelOpen] = useState(false);
 
+  const user = useTracker(() => Meteor.user());
+
   useEffect(() => {
-    setAbility(defineAbilityFor(Meteor.user()));
-  }, [Meteor.user()]);
+    user && setAbility(defineAbilityFor(user));
+  }, [user]);
 
   const [modalApi, modalHolder] = Modal.useModal();
   const [messageApi, messageHolder] = message.useMessage();
@@ -59,43 +65,45 @@ const AdminLayout: FC = (): JSX.Element => {
   }
 
   const menuProps = useMenu(intl, ability, history, drawerPanelOpen);
-  
-  return ability ? (
-    <I18nContext.Provider value={intl}>
-      <AuthenticationContext.Provider value={ability}>
-        <AbilityContext.Provider value={ability}>
-          <NotificationContext.Provider value={{ modalApi, messageApi, notificationApi }}>
-            <ConfigProvider theme={{
-              components: {
-                Menu: {
-                  activeBarBorderWidth: 0
+
+  return user ? (
+      <I18nContext.Provider value={intl}>
+        <AuthenticationContext.Provider value={ability}>
+          <AbilityContext.Provider value={ability}>
+            <NotificationContext.Provider value={{ modalApi, messageApi, notificationApi }}>
+              <ConfigProvider theme={{
+                components: {
+                  Menu: {
+                    activeBarBorderWidth: 0
+                  }
                 }
-              }
-            }}>
-              <Layout className={'layout'}>
-                <Header className={'header'}>
-                  <LayoutHeader
-                    title={t(intl, 'meta.title')}
-                    onMenuOpen={setDrawerPanelOpen}
-                  />
-                </Header>
-                <Content className={'content'}>
-                  {messageHolder}
-                  {notificationHolder}
-                  {modalHolder}
-                  <DrawerPanelComponent {...drawerProps}>
-                    <MenuComponent {...menuProps}/>
-                  </DrawerPanelComponent>
-                  <Outlet />
-                </Content>
-                <Footer className={'footer'}>Footer</Footer>
-              </Layout>
-            </ConfigProvider>
-          </NotificationContext.Provider>
-        </AbilityContext.Provider>
-      </AuthenticationContext.Provider>
-    </I18nContext.Provider>
-  ) : <Loader loading={true} />
+              }}>
+                <Layout className={'layout'}>
+                  <Header className={'header'}>
+                    <LayoutHeader
+                      title={t(intl, 'meta.title')}
+                      onMenuOpen={setDrawerPanelOpen}
+                    />
+                  </Header>
+                  <Content className={'content'}>
+                    {messageHolder}
+                    {notificationHolder}
+                    {modalHolder}
+                    <DrawerPanelComponent {...drawerProps}>
+                      <MenuComponent {...menuProps} />
+                    </DrawerPanelComponent>
+                    <Outlet />
+                  </Content>
+                  <Footer className={'footer'}>Footer</Footer>
+                </Layout>
+              </ConfigProvider>
+            </NotificationContext.Provider>
+          </AbilityContext.Provider>
+        </AuthenticationContext.Provider>
+      </I18nContext.Provider>
+  ) : <Signup/>
+
+  // <Loader loading={true} />
 };
 
 export default AdminLayout;

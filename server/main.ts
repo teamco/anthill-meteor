@@ -5,17 +5,10 @@ import { IUser } from '/imports/config/types';
 import './environments/methods';
 import './widgets/methods';
 import './layouts/methods';
+import './logs/errorLogs/methods';
+import './authentication/methods';  
 
-const SEED_USERNAME = 'admin';
-const SEED_PASSWORD = 'password';
+import './social.settings';
 
 Meteor.startup(async () => {
-  const user: IUser = await Accounts.findUserByUsername(SEED_USERNAME);
-
-  if (!user) {
-    Accounts.createUser({
-      username: SEED_USERNAME,
-      password: SEED_PASSWORD,
-    });
-  }
 });
