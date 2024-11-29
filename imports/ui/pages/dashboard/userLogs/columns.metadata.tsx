@@ -1,7 +1,6 @@
 import React from "react";
 import { TableProps } from "antd/es/table";
-import { Tag, Tooltip } from "antd";
-import { QuestionCircleTwoTone } from '@ant-design/icons';
+import { Link } from "react-router-dom";
 
 import { DataType } from "./usreLogs.page";
 
@@ -13,11 +12,6 @@ import { columnSorter } from "/imports/utils/table/sorter.util";
 import { TFilters, TSorts } from "/imports/ui/hooks/table.hook";
 import { columnFilter } from "/imports/utils/table/filter.util";
 import { t, TIntl } from "/imports/utils/i18n.util";
-import { actionField } from "/imports/utils/table/action.util";
-
-import { DeleteAction } from "/imports/ui/components/Actions/delete.action";
-import { EditAction } from "/imports/ui/components/Actions/edit.action";
-import { Link } from "react-router-dom";
 
 type TArgs = {
   intl: TIntl;
