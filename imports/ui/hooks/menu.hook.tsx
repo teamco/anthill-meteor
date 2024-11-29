@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { MenuProps } from "antd";
-import { AppstoreAddOutlined, BlockOutlined, BookOutlined, SlidersOutlined } from '@ant-design/icons';
+import { AppstoreAddOutlined, BlockOutlined, BookOutlined, SlidersOutlined, UnorderedListOutlined } from '@ant-design/icons';
 import { MongoAbility } from "@casl/ability/dist/types";
 import { matchPath, NavigateFunction, PathMatch } from "react-router-dom";
 
@@ -31,6 +31,7 @@ export const menuItems = (intl: TIntl, ability: MongoAbility, history: NavigateF
   const dDashboard = ability.cannot('read', 'Dashboard');
   const dEnvironments = ability.cannot('read', 'Environments');
   const dWidgets = ability.cannot('read', 'Widgets');
+  const dUserLogs = ability.cannot('read', 'UserLogs');
 
   /**
    * Generate a menu item based on the given key, label, icon, path and disabled parameter.
@@ -69,6 +70,7 @@ export const menuItems = (intl: TIntl, ability: MongoAbility, history: NavigateF
         { ..._child('10', 'dashboard.title', <BlockOutlined />, '/dashboard', dDashboard) },
         { ..._child('11', 'dashboard.environments.title', <SlidersOutlined />, '/dashboard/environments', dEnvironments) },
         { ..._child('12', 'dashboard.widgets.title', <AppstoreAddOutlined />, '/dashboard/widgets', dWidgets) },
+        { ..._child('13', 'dashboard.userLogs.title', <UnorderedListOutlined />, '/dashboard/userLogs', dUserLogs) },
       ],
     }
   ]

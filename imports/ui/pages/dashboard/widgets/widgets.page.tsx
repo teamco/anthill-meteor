@@ -54,7 +54,7 @@ const WidgetsPage: React.FC = (): JSX.Element => {
 	const ability = useContext(AbilityContext);
 	const { modalApi } = useContext(NotificationContext);
 
-	const user = Meteor.user() || { _id: '1' };
+	const user = Meteor.user();
 
 	/**
 	 * onDelete

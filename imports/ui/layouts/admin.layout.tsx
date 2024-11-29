@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from 'react';
 import { ConfigProvider, Layout, message, Modal, notification } from 'antd';
-import { Outlet, useNavigate } from 'react-router-dom';
+import { NavigationType, Outlet, useLocation, useNavigate, useNavigationType } from 'react-router-dom';
 import { useIntl } from 'react-intl';
 import { useTracker } from "meteor/react-meteor-data";
 
@@ -19,6 +19,9 @@ import { t, TIntl } from '/imports/utils/i18n.util';
 
 import SignIn from '/imports/ui/pages/authentication/signin/signin';
 
+import './admin.layout.module.less';
+import { useHistoryListener } from '../hooks/history.hook';
+
 const { Header, Footer, Content } = Layout;
 
 /**
@@ -33,6 +36,8 @@ const AdminLayout: FC = (): JSX.Element => {
   const [drawerPanelOpen, setDrawerPanelOpen] = useState(false);
 
   const user = useTracker(() => Meteor.user());
+
+  useHistoryListener();
 
   useEffect(() => {
     user?._id && setAbility(defineAbilityFor(user));
@@ -59,6 +64,12 @@ const AdminLayout: FC = (): JSX.Element => {
       </div>
     )
   }
+
+
+
+  // useBackListener(() => {
+    // Modal.destroyAll();
+  // });
 
   const menuProps = useMenu(intl, ability, history, drawerPanelOpen);
 

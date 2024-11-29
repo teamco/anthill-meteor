@@ -60,8 +60,6 @@ const EnvironmentEdit: React.FC = (): JSX.Element => {
 
 	const environment: TEnvironmentEdit = useTracker(() => getEnvironment(environmentId), [environmentId]);
 
-	const user = Meteor.user() || { _id: '1' };
-
 	const itemTabs: TabsProps['items'] = useEnvironmentTabs(environment, isLoading())
 
 	return (

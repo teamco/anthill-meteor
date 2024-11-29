@@ -1,18 +1,17 @@
 import React from "react";
 import { createBrowserRouter } from "react-router-dom";
 
-import AppLayout from "/imports/ui/layouts/app.layout";
 import AdminLayout from "/imports/ui/layouts/admin.layout";
 import SignUp from "/imports/ui/pages/authentication/signup/signup";
 import SignIn from "/imports/ui/pages/authentication/signin/signin";
 
 import Page404 from "/imports/ui/pages/404";
-import HomePage from "/imports/ui/pages/home/home.page";
 import DashboardPage from "/imports/ui/pages/dashboard/dashboard.page";
 import EnvironmentsPage from "/imports/ui/pages/dashboard/environments/environments.page";
 import EnvironmentEdit from "/imports/ui/pages/dashboard/environments/environment/environment.edit";
 import WidgetsPage from "/imports/ui/pages/dashboard/widgets/widgets.page";
-import AuthLayout from "../ui/layouts/auth.layout";
+import AuthLayout from "/imports/ui/layouts/auth.layout";
+import UserLogsPage from "/imports/ui/pages/dashboard/userLogs/usreLogs.page";
 
 
 /**
@@ -68,6 +67,10 @@ export const renderRoutes = () => {
             {
               path: "/dashboard/widgets",
               element: <WidgetsPage />,
+            },
+            {
+              path: "/dashboard/userLogs",
+              element: <UserLogsPage />,
             },
           ],
         },

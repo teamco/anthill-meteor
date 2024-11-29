@@ -6,5 +6,7 @@ export default {
   'dashboard.environments.description': 'Manage your environments',
   'dashboard.widgets.title': 'Widgets',
   'dashboard.widgets.description': 'Manage your widgets',
+  'dashboard.userLogs.title': 'User Logs',
+  'dashboard.userLogs.description': 'Manage your user logs',
 }
  

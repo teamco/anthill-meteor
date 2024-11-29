@@ -10,6 +10,7 @@ import meta from './en-US/meta';
 import error from './en-US/error';
 import event from './en-US/event';
 import menu from './en-US/menu';
+import logs from './en-US/logs';
 import message from './en-US/message';
 // import notifications from './en-US/notifications';
 import profile from './en-US/profile';
@@ -31,6 +32,7 @@ export default {
   // ...address,
   // ...business,
   ...form,
+  ...logs,
   ...error,
   ...event,
   ...menu,
