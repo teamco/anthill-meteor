@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useTracker } from "meteor/react-meteor-data";
 import { Dropdown, MenuProps } from 'antd';
 import { useIntl } from 'react-intl';
+import classnames from 'classnames';
 
 import { t, TIntl } from '/imports/utils/i18n.util';
 
@@ -71,7 +72,10 @@ export const LayoutHeader: FC<THeaderProps> = (props): JSX.Element => {
       </div>
       <div className='lHA'>
         <Dropdown menu={{ items }} trigger={['click']}>
-          <img src={user?.profile?.picture} alt={user?.profile?.name} />
+          <div className={classnames('avatar', { success: navigator.onLine })}>
+            <img src={user?.profile?.picture} alt={user?.profile?.name} />
+            <div />
+          </div>
         </Dropdown>
       </div>
     </div>

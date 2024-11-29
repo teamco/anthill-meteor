@@ -7,7 +7,7 @@
 
   > div {
     display: flex;
-    align-items: center;  
+    align-items: center;
     column-gap: @main-margin;
 
     svg {
@@ -29,11 +29,36 @@
     justify-content: center;
     column-gap: calc(@main-margin / 3);
 
-    img {
-      width: 32px;
-      height: 32px;
-      border-radius: 4px;
-      cursor: pointer;
+    .avatar {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+
+      img {
+        width: 32px;
+        height: 32px;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+
+      &::after {
+        content: "";
+        position: absolute;
+        right: 4px;
+        bottom: 4px;
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;        
+        border: 1px solid #fff;
+        background-color: @color-dungerous;
+      }
+
+      &.success {
+        &::after {
+          background-color: @color-success;
+        }
+      }
     }
   }
 }
