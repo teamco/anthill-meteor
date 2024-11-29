@@ -1,10 +1,11 @@
 import { Meteor } from "meteor/meteor";
+
 import { EnvironmentsCollection } from "/imports/collections/environments.collection";
-import { TPaginateProps } from "/imports/config/types";
+import { TEnvironment, TPaginateProps } from "/imports/config/types";
+
+import { paginate } from "../generics/paginate";
 
 import './publish';
-
-const DEFAULT_SORT: TPaginateProps['sort'] = [['metadata', 'updatedAt'], 'descend'];
 
 Meteor.methods({
 
@@ -13,20 +14,19 @@ Meteor.methods({
    * @param {Object} param - An object with two properties: current (the current page number) and pageSize (the number of items per page).
    * @returns {TEnvironment[]} An array of Environment objects.
    */
-  environmentsPaginate: ({ current = 1, pageSize = 10, sort = DEFAULT_SORT }: TPaginateProps): any[] => {
-    let [field, order] = sort;
-
-    if (!field || field === 'metadata') field = DEFAULT_SORT[0];
-    if (!order) field = DEFAULT_SORT[1];
-
-    return EnvironmentsCollection.find({}, {
-      skip: (current - 1) * pageSize,
-      limit: pageSize,
-      sort: [
-        typeof field === "string" ? field : field.join('.'),
-        order === "ascend" ? 1 : -1
-      ]
-    }).fetch();
+  environmentsPaginate: ({ current = 1, pageSize = 10, sort }: TPaginateProps): any[] => {
+    return paginate({
+      Collection: EnvironmentsCollection as Mongo.Collection<Document, Document>,
+      args: { current, pageSize, sort },
+      log: {
+        location: { pathname: '/dashboard/environments' },
+        api: {
+          method: 'environmentsPaginate',
+          params: { current, pageSize, sort }
+        },
+        navType: 'API'
+      }
+    });
   },
 
   /**
@@ -35,6 +35,17 @@ Meteor.methods({
    * @returns {Promise<string>} - The _id of the new Environment.
    */
   environmentInsert: (doc: object): Promise<string> => {
+    const data = {
+      location: { pathname: '/dashboard/environments' },
+      api: {
+        method: 'environmentInsert',
+        params: { ...doc }
+      },
+      navType: 'API'
+    }
+
+    Meteor.call('userLogInsert', { ...data });
+
     return EnvironmentsCollection.insertAsync(doc);
   },
 
@@ -42,11 +53,36 @@ Meteor.methods({
    * Updates an Environment in the collection.
    * @param {Object} param - An object containing the environment ID and the document to update.
    * @param {string} param._id - The _id of the Environment to update.
-   * @param {Object} param.doc - The parameters to update in the Environment.
+   * @param {TEnvironment} param.doc - The parameters to update in the Environment.
    * @returns {Promise<number>} - The number of documents affected by the update.
    */
-  environmentUpdate: ({ _id, doc }: { _id: string; doc: object; }): Promise<number> => {
-    return EnvironmentsCollection.updateAsync({ _id }, { $set: { ...doc } });
+  environmentUpdate: async ({ _id, doc }: { _id: string; doc: TEnvironment; }): Promise<number> => {
+    const user = await Meteor.userAsync();
+    const environment = await EnvironmentsCollection.findOneAsync({ _id });
+
+    const data = {
+      location: { pathname: `/dashboard/environments/${_id}` },
+      api: {
+        method: 'environmentUpdate',
+        params: {
+          ...doc,
+          metadata: {
+            ...environment.metadata,
+            updatedAt: new Date(),
+            updatedBy: user._id
+          }
+        }
+      },
+      navType: 'API'
+    }
+    
+    Meteor.call('userLogInsert', { ...data });
+
+    if (environment) {
+      return EnvironmentsCollection.updateAsync({ _id }, { $set: { ...data.api.params } });
+    }
+
+    return 0;
   },
 
   /**
@@ -55,6 +91,17 @@ Meteor.methods({
    * @returns {Promise<number>} - The number of removed documents.
    */
   environmentRemove: ({ _id }: { _id: string }): Promise<number> => {
+    const data = {
+      location: { pathname: '/dashboard/environments' },
+      api: {
+        method: 'environmentRemove',
+        params: { _id }
+      },
+      navType: 'API'
+    }
+
+    Meteor.call('userLogInsert', { ...data });
+
     return EnvironmentsCollection.removeAsync({ _id });
   },
 }); 

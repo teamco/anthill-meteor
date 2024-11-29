@@ -3,9 +3,9 @@ import { Meteor } from "meteor/meteor";
 import { WidgetsCollection } from "/imports/collections/widgets.collection";
 import { TPaginateProps } from "/imports/config/types";
 
-import './publish';
+import { paginate } from "../generics/paginate";
 
-const DEFAULT_SORT: TPaginateProps['sort'] = [['metadata', 'updatedAt'], 'descend'];
+import './publish';
 
 Meteor.methods({
 
@@ -14,20 +14,19 @@ Meteor.methods({
    * @param {Object} param - An object with three properties: current (the current page number), pageSize (the number of items per page) and sort (the sort criteria).
    * @returns {any[]} An array of Widget objects.
    */
-  widgetsPaginate: ({ current = 1, pageSize = 10, sort = DEFAULT_SORT }: TPaginateProps): any[] => {
-    let [field, order] = sort;
-
-    if (!field || field === 'metadata') field = DEFAULT_SORT[0];
-    if (!order) field = DEFAULT_SORT[1];
-
-    return WidgetsCollection.find({}, {
-      skip: (current - 1) * pageSize,
-      limit: pageSize,
-      sort: [
-        typeof field === "string" ? field : field.join('.'),
-        order === "ascend" ? 1 : -1
-      ]
-    }).fetch();
+  widgetsPaginate: ({ current = 1, pageSize = 10, sort }: TPaginateProps): any[] => {
+    return paginate({
+      Collection: WidgetsCollection as Mongo.Collection<Document, Document>,
+      args: { current, pageSize, sort },
+      log: {
+        location: { pathname: '/dashboard/widgets' },
+        api: {
+          method: 'widgetsPaginate',
+          params: { current, pageSize, sort }
+        },
+        navType: 'API'
+      }
+    });
   },
 
   /**
@@ -36,6 +35,17 @@ Meteor.methods({
    * @returns {Promise<string>} - The _id of the new Widget.
    */
   widgetInsert: (doc: object): Promise<string> => {
+    const data = {
+      location: { pathname: '/dashboard/widgets' },
+      api: {
+        method: 'widgetInsert',
+        params: { ...doc }
+      },
+      navType: 'API'
+    }
+
+    Meteor.call('userLogInsert', { ...data });
+
     return WidgetsCollection.insertAsync(doc);
   },
 
@@ -45,8 +55,33 @@ Meteor.methods({
    * @param {Object} doc - The params to update.
    * @returns {Promise<string>} - The _id of the new Widget.
    */
-  widgetUpdate: (_id: string, doc: object): Promise<number> => {
-    return WidgetsCollection.updateAsync({ _id }, { $set: { ...doc } });
+  widgetUpdate: async (_id: string, doc: object): Promise<number> => {
+    const user = await Meteor.userAsync();
+    const widget = await WidgetsCollection.findOneAsync({ _id });
+
+    const data = {
+      location: { pathname: `/dashboard/widgets/${_id}` },
+      api: {
+        method: 'widgetUpdate',
+        params: {
+          ...doc,
+          metadata: {
+            ...widget.metadata,
+            updatedAt: new Date(),
+            updatedBy: user._id
+          }
+        }
+      },
+      navType: 'API'
+    }
+    
+    Meteor.call('userLogInsert', { ...data });
+
+    if (widget) {
+      return WidgetsCollection.updateAsync({ _id }, { $set: { ...data.api.params } });
+    }
+
+    return 0;
   },
 
   /**
@@ -55,6 +90,17 @@ Meteor.methods({
    * @returns {Promise<number>} - The number of removed documents.
    */
   widgetRemove: ({ _id }: { _id: string }): Promise<number> => {
+    const data = {
+      location: { pathname: '/dashboard/widgets' },
+      api: {
+        method: 'widgetRemove',
+        params: { _id }
+      },
+      navType: 'API'
+    }
+
+    Meteor.call('userLogInsert', { ...data });
+
     return WidgetsCollection.removeAsync({ _id });
   },
 }); 

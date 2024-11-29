@@ -64,7 +64,8 @@ export const deleteEnvironment = (_id: string, intl: TIntl, handleRefresh: () =>
         catchWarnMsg({
           errorType: 'warning',
           message: t(intl, 'error.warningMsg'),
-          error: 'Error 400'
+          error: 'Error 400',
+          name: ""
         });
       }
     }).catch(catchErrorMsg)
@@ -91,7 +92,8 @@ export const updateEnvironment = (_id: string, doc: Pick<TEnvironmentEdit, 'name
         catchWarnMsg({
           errorType: 'warning',
           message: t(intl, 'error.warningMsg'),
-          error: 'Error 400'
+          error: 'Error 400',
+          name: ""
         });
       }
     }).catch(catchErrorMsg)

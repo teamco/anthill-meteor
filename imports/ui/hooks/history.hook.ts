@@ -25,15 +25,7 @@ export const useHistoryListener = (): void => {
     ]
 
     if (location.key !== "default" && !skipOn.find((path: string) => location.pathname.match(path))) {
-      Meteor.call('userLogInsert', { 
-        ...data, 
-        metadata: {
-          createdAt: new Date(),
-          updatedAt: new Date(),
-          createdBy: Meteor.user()?._id || null,
-          updatedBy: Meteor.user()?._id || null 
-        }
-      });
+      Meteor.call('userLogInsert', { ...data });
     }
   }, [JSON.stringify(data)]);
 };

@@ -18,7 +18,7 @@ Meteor.methods({
     let [field, order] = sort;
 
     if (!field || field === 'metadata') field = DEFAULT_SORT[0];
-    if (!order) field = DEFAULT_SORT[1];
+    if (!order) order = DEFAULT_SORT[1];
 
     return ErrorLogsCollection.find({}, {
       skip: (current - 1) * pageSize,
