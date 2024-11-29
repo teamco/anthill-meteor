@@ -24,8 +24,12 @@ export const useHistoryListener = (): void => {
       'errorLogs',
     ]
 
-    if (location.key !== "default" && !skipOn.find((path: string) => location.pathname.match(path))) {
+    if (location.key !== "default" &&
+      !skipOn.find((path: string) => location.pathname.match(path)) &&
+      window.location.hostname !== 'localhost') {
+
       Meteor.call('userLogInsert', { ...data });
     }
+    
   }, [JSON.stringify(data)]);
 };

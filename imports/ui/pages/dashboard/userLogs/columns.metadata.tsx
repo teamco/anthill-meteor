@@ -48,6 +48,7 @@ export const metadataColumns = ({ intl, filteredInfo, sortedInfo, entities }: TA
       title: t(intl, 'logs.navType'),
       dataIndex: 'navType',
       key: 'navType',
+      width: 120,
       ...columnFilter(filteredInfo, entities, 'navType'),
       ...columnSorter(sortedInfo, 'navType'),
     },
