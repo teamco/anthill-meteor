@@ -1,0 +1,24 @@
+@import '/imports/theme/theme.less';
+
+.ePreview {
+  height: calc(100vh - @header-height - @footer-height);
+  background-color: #fff;
+
+  .ant-splitter {
+    height: 100%;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+
+  .ant-splitter-panel {
+    overflow: initial;
+    position: relative;
+    height: 100%;
+
+    // .pAction {
+    //   position: absolute;
+    //   top: 0;
+    //   right: 0;
+    //   z-index: 1;
+    // }
+  }
+}

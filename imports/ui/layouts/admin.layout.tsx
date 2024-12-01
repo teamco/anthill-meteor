@@ -17,10 +17,11 @@ import { useMenu } from '/imports/ui/hooks/menu.hook';
 import { nCache } from '/imports/utils/message.util';
 import { t, TIntl } from '/imports/utils/i18n.util';
 
+import { useHistoryListener } from '/imports/ui/hooks/history.hook';
+
 import SignIn from '/imports/ui/pages/authentication/signin/signin';
 
 import './admin.layout.module.less';
-import { useHistoryListener } from '../hooks/history.hook';
 
 const { Header, Footer, Content } = Layout;
 
@@ -64,12 +65,6 @@ const AdminLayout: FC = (): JSX.Element => {
       </div>
     )
   }
-
-
-
-  // useBackListener(() => {
-    // Modal.destroyAll();
-  // });
 
   const menuProps = useMenu(intl, ability, history, drawerPanelOpen);
 

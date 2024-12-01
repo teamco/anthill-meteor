@@ -1,1 +1,1 @@
-export const stub = (): void => {};
+export const stub = (): void => { };

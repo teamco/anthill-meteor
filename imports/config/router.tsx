@@ -4,44 +4,34 @@ import { createBrowserRouter } from "react-router-dom";
 import AdminLayout from "/imports/ui/layouts/admin.layout";
 import SignUp from "/imports/ui/pages/authentication/signup/signup";
 import SignIn from "/imports/ui/pages/authentication/signin/signin";
-
+import AuthLayout from "/imports/ui/layouts/auth.layout";
 import Page404 from "/imports/ui/pages/404";
-import DashboardPage from "/imports/ui/pages/dashboard/dashboard.page";
+
 import EnvironmentsPage from "/imports/ui/pages/dashboard/environments/environments.page";
 import EnvironmentEdit from "/imports/ui/pages/dashboard/environments/environment/environment.edit";
+import EnvironmentPreview from "/imports/ui/pages/dashboard/environments/environment/preview/environment.preview";
+
+import DashboardPage from "/imports/ui/pages/dashboard/dashboard.page";
 import WidgetsPage from "/imports/ui/pages/dashboard/widgets/widgets.page";
-import AuthLayout from "/imports/ui/layouts/auth.layout";
 import UserLogsPage from "/imports/ui/pages/dashboard/userLogs/usreLogs.page";
 
-
 /**
- * Configures and returns the router for the application using `createBrowserRouter`.
- *
- * The router defines the application's routes and their associated components,
- * error elements, and layout structures. The main structure includes:
- * - The root path "/" with `AppLayout` and `HomePage`.
- * - A "/dashboard" path with `AdminLayout`, containing the `DashboardPage`, 
- *   `EnvironmentsPage`, and `WidgetsPage` as children routes.
- *
- * Additionally, a `Page404` component is used as the error element for undefined routes.
- * The router is configured with advanced options under the `future` key to enable
- * specific features and behaviors in line with the latest version 7 updates.
- *
- * @returns {Router} The configured browser router for the application.
+ * Renders the application routes using `createBrowserRouter`.
+ * 
+ * The route configuration includes:
+ * - A root path ("/") with an `AuthLayout` and error fallback to `Page404`.
+ * - Nested routes under "/dashboard" protected by `AdminLayout`, allowing access to:
+ *   - DashboardPage, EnvironmentsPage, EnvironmentEdit, and WidgetsPage.
+ *   - Dynamic routes for environment and version IDs.
+ *   - UserLogsPage.
+ * - Separate routes for authentication (`/signup` and `/signin`).
+ * 
+ * The router is configured with a basename of "/" and various future-facing options
+ * for form method normalization, error revalidation, path handling, fetcher persistence,
+ * and partial hydration.
  */
 export const renderRoutes = () => {
   return createBrowserRouter([
-    // {
-    //   path: "/",
-    //   element: <AppLayout />,
-    //   errorElement: <Page404 />,
-    //   children: [
-    //     {
-    //       path: "/",
-    //       element: <HomePage />,
-    //     },
-    //   ],
-    // },
     {
       path: "/",
       element: <AuthLayout />,
@@ -63,6 +53,10 @@ export const renderRoutes = () => {
             {
               path: "/dashboard/environments/:environmentId",
               element: <EnvironmentEdit />,
+            },
+            {
+              path: "/dashboard/environments/:environmentId/version/:versionId",
+              element: <EnvironmentPreview />,
             },
             {
               path: "/dashboard/widgets",

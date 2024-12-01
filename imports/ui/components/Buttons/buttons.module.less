@@ -1,0 +1,55 @@
+@import '/imports/theme/theme.less';
+
+.addBtn {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  padding: 0 14px;
+  border-radius: 6px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.2s ease-in-out;
+  background-color: #fff;
+
+  &:hover {
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2),
+      0 1px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+  }
+
+  > div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  > div:first-child {
+    flex-direction: column;
+    row-gap: 0;
+
+    &::after {
+      content: '';
+      width: 6px;
+      height: 6px;
+      background-color: red;
+      position: absolute;
+      border-radius: 50%;
+    }
+  }
+
+  > div:last-child {
+    position: absolute;
+    top: 14px;
+    left: 0;
+    column-gap: 0;
+  }
+
+  button {
+    margin: 2px;
+    position: relative;
+
+    &:hover {
+      z-index: 1;
+    }
+  }
+}
