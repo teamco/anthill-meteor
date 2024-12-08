@@ -56,10 +56,13 @@ const EnvironmentPreview: React.FC = (): JSX.Element => {
 
 	/**
 	 * Handles the deletion of the panel with the given uuid in the Splitter component.
-	 * The panel is deleted by calling the deletePanel function with the current state of the Splitter component and the uuid of the panel to be deleted.
-	 * The result of the deletePanel function is then set as the new state of the Splitter component.
+	 * If the Splitter component has only one panel, the function does nothing.
+	 * Otherwise, the panel is deleted and the Splitter component is updated accordingly.
+	 * The uuid of the deleted panel is removed from the metadata of the parent panel.
 	 */
-	const handleDelete = () => {
+	const handleDelete = (): void => {
+		if (splitter.items.length === 1) return;
+
 		const updatedSplitter = deletePanel(splitter, activePanel);
 		setSplitter(updatedSplitter);
 	}
