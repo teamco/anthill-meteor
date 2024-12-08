@@ -42,25 +42,54 @@ export const onModalCancel = (): void => {
   Modal.destroyAll();
 }
 
-export const replacePanel = (panel: TSplitter, targetUUID: string, replacement: TSplitter, layout?: TSplitterLayout) => {
-  const updatedItems= panel?.items?.map((item: TSplitterItem) => {
-    if (typeof item?.uuid === 'string') {
+/**
+ * Recursively searches for the panel with the given uuid in the given Splitter
+ * and replaces it with the given replacement panel.
+ *
+ * @param {TSplitter} splitter - The Splitter component to search in.
+ * @param {string} targetUUID - The uuid of the panel to replace.
+ * @param {TSplitter} replacement - The new panel to replace the old one.
+ * @param {TSplitterLayout} [layout] - The layout of the new panel. If not given, the layout of the old panel is used.
+ * @returns {TSplitter} - The updated Splitter component.
+ */
+export const replacePanel = (splitter: TSplitter, targetUUID: string, replacement: TSplitter, layout?: TSplitterLayout): TSplitter => {
+  const updatedItems = splitter.items.map((item: TSplitterItem) => {
+    if (typeof item.uuid === 'string') {
       if (item.uuid === targetUUID) {
-        if (layout) {
-          return { ...replacement, layout };
-        }
-
-        return { uuid: replacement, layout }
+        return { ...replacement, layout };
       }
 
       return item;
-
-    } else {
-
-      // @ts-ignore
-      return replaceUUIDWithPanel(item, targetUUID, replacement, layout);
     }
+
+    return replacePanel(item, targetUUID, replacement, layout);
   });
 
-  return { ...panel, items: updatedItems };
+  return { ...splitter, items: updatedItems as TSplitterItem[] };
+};
+
+/**
+ * Recursively searches for the panel with the given uuid in the given Splitter
+ * and deletes it.
+ *
+ * @param {TSplitter} splitter - The Splitter component to search in.
+ * @param {string} targetUUID - The uuid of the panel to delete.
+ * @returns {TSplitter} - The updated Splitter component.
+ */
+export const deletePanel = (splitter: TSplitter, targetUUID: string): TSplitter => {
+  
+  const updatedItems = splitter.items.map((item: TSplitterItem) => {
+    if (typeof item === 'object' && 'items' in item) {
+      return deletePanel(item as TSplitter, targetUUID);
+    }
+
+    if (item.uuid === targetUUID) {
+      return null;
+    }
+
+    return item;
+
+  }).filter((item) => item !== null);
+
+  return { ...splitter, items: updatedItems as TSplitterItem[] };
 };

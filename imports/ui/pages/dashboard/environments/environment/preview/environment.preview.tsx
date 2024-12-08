@@ -12,7 +12,7 @@ import { NotificationContext } from "/imports/ui/context/notification.context";
 import { TSplitter, TSplitterItem, TSplitterLayout } from "/imports/config/types";
 
 import { t, TIntl } from "/imports/utils/i18n.util";
-import { replacePanel } from "/imports/utils/antd.util";
+import { deletePanel, replacePanel } from "/imports/utils/antd.util";
 
 import './environment.preview.module.less';
 
@@ -49,10 +49,20 @@ const EnvironmentPreview: React.FC = (): JSX.Element => {
 	const initialSplitter = useMemo(() => ({
 		items: [{ uuid: DEFAULT_UUID, size: '100%' }],
 		layout: DEFAULT_LAYOUT
-	}), []);	
+	}), []);
 
 	const [activePanel, setActivePanel] = useState<string>(null);
 	const [splitter, setSplitter] = useState<TSplitter>(initialSplitter);
+
+	/**
+	 * Handles the deletion of the panel with the given uuid in the Splitter component.
+	 * The panel is deleted by calling the deletePanel function with the current state of the Splitter component and the uuid of the panel to be deleted.
+	 * The result of the deletePanel function is then set as the new state of the Splitter component.
+	 */
+	const handleDelete = () => {
+		const updatedSplitter = deletePanel(splitter, activePanel);
+		setSplitter(updatedSplitter);
+	}
 
 	/**
 	 * Add a new panel to the layout based on the given direction and uuid of the panel to which the new panel should be added.
@@ -124,7 +134,10 @@ const EnvironmentPreview: React.FC = (): JSX.Element => {
 			width: 600,
 			title: t(intl, 'actions.addNew', { type: t(intl, 'widget.title') }),
 			content: (
-				<ArrowButtons className={'pBtn'} panelId={activePanel} onClick={addPanel} />
+				<>
+					<ArrowButtons className={'pBtn'} panelId={activePanel} onClick={addPanel} />
+					<Button onClick={handleDelete}>del</Button>
+				</>
 			),
 			footer: (
 				<Button key={'back'} onClick={Modal.destroyAll}>
