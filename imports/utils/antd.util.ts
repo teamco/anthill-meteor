@@ -1,5 +1,6 @@
 import { Modal } from "antd";
-import { CommonDataType, ITableParams } from "/imports/config/types";
+
+import { CommonDataType, ITableParams, TSplitter, TSplitterItem, TSplitterLayout } from "/imports/config/types";
 
 /**
  * Add an idx property to each item in the array and key property
@@ -40,3 +41,26 @@ const qsTableParams = (params: ITableParams) => ({
 export const onModalCancel = (): void => {
   Modal.destroyAll();
 }
+
+export const replacePanel = (panel: TSplitter, targetUUID: string, replacement: TSplitter, layout?: TSplitterLayout) => {
+  const updatedItems= panel?.items?.map((item: TSplitterItem) => {
+    if (typeof item?.uuid === 'string') {
+      if (item.uuid === targetUUID) {
+        if (layout) {
+          return { ...replacement, layout };
+        }
+
+        return { uuid: replacement, layout }
+      }
+
+      return item;
+
+    } else {
+
+      // @ts-ignore
+      return replaceUUIDWithPanel(item, targetUUID, replacement, layout);
+    }
+  });
+
+  return { ...panel, items: updatedItems };
+};

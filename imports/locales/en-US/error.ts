@@ -20,4 +20,7 @@ export default {
   'error.noConnection': 'No internet connection',
   'error.na': 'None',
   'error.empty': 'No Data',
+  'error.notAllowed': 'You are not allowed to access this {entity}',
+  'error.invalidDirection': 'Invalid direction',
+  'error.invalidDirectionMessage': 'Invalid direction: {direction}',
 }

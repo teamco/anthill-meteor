@@ -102,3 +102,7 @@ export type TPaginateProps = {
 
 export type TColumns<T extends object = object> = TableProps<T>['columns'];
 export type TTablePaginationConfig = Exclude<GetProp<TableProps, 'pagination'>, boolean>;
+
+export type TSplitterLayout = 'horizontal' | 'vertical';
+export type TSplitterItem = { uuid: string, size?: number | string };
+export type TSplitter = { uuid?: string; items?: TSplitterItem[], layout?: TSplitterLayout };

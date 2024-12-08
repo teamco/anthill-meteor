@@ -148,7 +148,7 @@ const WidgetsPage: React.FC = (): JSX.Element => {
 			),
 			footer: null
 		})
-	}
+	};
 
 	return (
 		<Page

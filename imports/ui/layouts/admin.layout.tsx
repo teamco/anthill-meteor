@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from 'react';
 import { ConfigProvider, Layout, message, Modal, notification } from 'antd';
-import { NavigationType, Outlet, useLocation, useNavigate, useNavigationType } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import { useIntl } from 'react-intl';
 import { useTracker } from "meteor/react-meteor-data";
 

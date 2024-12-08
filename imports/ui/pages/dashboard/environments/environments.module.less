@@ -45,26 +45,24 @@
 
 .panel {
   transition: all 0.2s ease-in-out;
-
+  position: relative;
+  
   div.pEdit {
-    height: 100%;
-    position: relative;
+    height: 100%;    
+  }
 
-    button {
-      display: none;
-      position: absolute;
-      top: 5px;
-      right: 5px;
-    }
+  button.pMgmt {
+    display: none;
+    position: absolute;
+    top: 5px;
+    right: 5px;
   }
 
   &.pActive {
     background-color: rgba(141, 165, 239, 0.3);
 
-    div.pEdit {
-      button {
-        display: flex;
-      }
+    button.pMgmt {
+      display: flex;
     }
   }
 }
