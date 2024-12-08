@@ -39,6 +39,7 @@ const App: FC = (): JSX.Element => {
   const intlLocale = locale === enUs ? 'en-US' : 'zh-CN';
 
   return (
+    // @ts-ignore
     <IntlProvider locale={intlLocale} messages={localeData[intlLocale]}>
       <RouterProvider router={router} future={{
         v7_startTransition: true

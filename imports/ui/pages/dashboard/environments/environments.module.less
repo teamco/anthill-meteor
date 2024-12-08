@@ -28,7 +28,6 @@
 }
 
 .envTabs {
-
   @border: 1px solid #f0f0f0;
 
   .ant-tabs-nav {
@@ -41,5 +40,31 @@
     border-top: none;
     border-radius: 0 0 6px 6px;
     padding: 16px;
+  }
+}
+
+.panel {
+  transition: all 0.2s ease-in-out;
+
+  div.pEdit {
+    height: 100%;
+    position: relative;
+
+    button {
+      display: none;
+      position: absolute;
+      top: 5px;
+      right: 5px;
+    }
+  }
+
+  &.pActive {
+    background-color: rgba(141, 165, 239, 0.3);
+
+    div.pEdit {
+      button {
+        display: flex;
+      }
+    }
   }
 }
