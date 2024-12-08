@@ -89,7 +89,7 @@ export const deletePanel = (splitter: TSplitter, targetUUID: string): TSplitter 
 
     return item;
 
-  }).filter((item) => item !== null);
+  }).filter((item: TSplitterItem) => item !== null);
 
   return { ...splitter, items: updatedItems as TSplitterItem[] };
 };
