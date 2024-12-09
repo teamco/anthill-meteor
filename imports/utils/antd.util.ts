@@ -53,16 +53,12 @@ export const onModalCancel = (): void => {
  * @returns {TSplitter} - The updated Splitter component.
  */
 export const replacePanel = (splitter: TSplitter, targetUUID: string, replacement: TSplitter, layout?: TSplitterLayout): TSplitter => {
-  const updatedItems = splitter.items.map((item: TSplitterItem) => {
-    if (typeof item.uuid === 'string') {
-      if (item.uuid === targetUUID) {
-        return { ...replacement, layout };
-      }
-
-      return item;
+  const updatedItems = findPanel(splitter, targetUUID, (item: TSplitterItem) => {
+    if (item) {
+      return { ...replacement, layout } as TSplitterItem;
     }
 
-    return replacePanel(item, targetUUID, replacement, layout);
+    return item;
   });
 
   return { ...splitter, items: updatedItems as TSplitterItem[] };
@@ -77,7 +73,6 @@ export const replacePanel = (splitter: TSplitter, targetUUID: string, replacemen
  * @returns {TSplitter} - The updated Splitter component.
  */
 export const deletePanel = (splitter: TSplitter, targetUUID: string): TSplitter => {
-  
   const updatedItems = splitter.items.map((item: TSplitterItem) => {
     if (typeof item === 'object' && 'items' in item) {
       return deletePanel(item as TSplitter, targetUUID);
@@ -92,4 +87,29 @@ export const deletePanel = (splitter: TSplitter, targetUUID: string): TSplitter 
   }).filter((item: TSplitterItem) => item !== null);
 
   return { ...splitter, items: updatedItems as TSplitterItem[] };
+};
+
+/**
+ * Recursively searches for the panel with the given uuid in the given Splitter
+ * and applies the given callback to it.
+ *
+ * @param {TSplitter} splitter - The Splitter component to search in.
+ * @param {string} targetUUID - The uuid of the panel to replace.
+ * @param {(item?: TSplitterItem) => TSplitterItem | null} callback - A callback function that takes the found panel or undefined
+ * as argument and returns the new panel or null if the panel should be deleted.
+ * @returns {(TSplitterItem | null)[]} - The updated Splitter component.
+ */
+export const findPanel = (splitter: TSplitter, targetUUID: string, callback: (item?: TSplitterItem) => TSplitterItem | null): (TSplitterItem | null)[] => {
+  return splitter.items.map((item: TSplitterItem) => {
+    if (typeof item.uuid === 'string' && item.uuid === targetUUID) {
+      return callback(item);
+    }
+
+    if ('items' in item) {
+      const updatedNestedItems = findPanel(item as TSplitter, targetUUID, callback);
+      return { ...item, items: updatedNestedItems };
+    }
+
+    return item;
+  });
 };

@@ -48,12 +48,13 @@ const EnvironmentPreview: React.FC = (): JSX.Element => {
 
 	const initialSplitter = useMemo(() => ({
 		items: [{ uuid: DEFAULT_UUID, size: '100%' }],
-		layout: DEFAULT_LAYOUT
+		layout: DEFAULT_LAYOUT,
+		parentId: uuidv4()
 	}), []);
 
 	const [activePanel, setActivePanel] = useState<string>(null);
 	const [splitter, setSplitter] = useState<TSplitter>(initialSplitter);
-
+console.debug(1,splitter)
 	/**
 	 * Handles the deletion of the panel with the given uuid in the Splitter component.
 	 * If the Splitter component has only one panel, the function does nothing.
@@ -61,7 +62,8 @@ const EnvironmentPreview: React.FC = (): JSX.Element => {
 	 * The uuid of the deleted panel is removed from the metadata of the parent panel.
 	 */
 	const handleDelete = (): void => {
-		if (splitter.items.length === 1) return;
+		console.debug(2,splitter)
+		// if (splitter.items.length === 1) return;
 
 		const updatedSplitter = deletePanel(splitter, activePanel);
 		setSplitter(updatedSplitter);
@@ -122,7 +124,7 @@ const EnvironmentPreview: React.FC = (): JSX.Element => {
 		<Splitter.Panel key={index} className={classnames('panel', {
 			['pActive']: index === activePanel
 		})}>
-			<div className={'pEdit'} onClick={() => setActivePanel(index)} />
+			<div className={'pEdit'} onClick={() => setActivePanel(index)}>{index}</div>
 			<Button
 				className={'pMgmt'}
 				type={"text"}
@@ -148,7 +150,12 @@ const EnvironmentPreview: React.FC = (): JSX.Element => {
 				</Button>
 			)
 		})
-	}, [activePanel]);
+	}, [activePanel, splitter]);
+
+	const handleSizeChange = useCallback((uuid: string, size) => {
+		console.debug(uuid, size, splitter);
+		// setSplitter((prev: TSplitter) => replacePanel(prev, uuid, { size }))
+	}, [splitter]);
 
 	/**
 	 * A recursive function that renders a Splitter component based on the given node and layout.
@@ -161,20 +168,28 @@ const EnvironmentPreview: React.FC = (): JSX.Element => {
 	 * @returns {JSX.Element} The rendered Splitter component.
 	 */
 	const renderer = (node: TSplitter, layout: TSplitterLayout): JSX.Element => {
-		const uuid = node.uuid || uuidv4();
+		const uuid: string = node?.uuid || uuidv4();
 
-		let splitter = node.uuid ? renderPanel(node.uuid) : <>node</>;
+		let _splitter = node?.uuid ? renderPanel(node.uuid) : <>node</>;
 
 		if (node?.items) {
 			const children = node.items.map((child: TSplitter) => renderer(child, node.layout));
-			splitter = <Splitter layout={node.layout} key={uuid}>{children}</Splitter>;
+			
+			_splitter = (
+				<Splitter
+					layout={node.layout}
+					// onResizeEnd={size => handleSizeChange(node.parentId, size)}
+					key={uuid}>
+					{children}
+				</Splitter>
+			);
 
 			if (layout) {
-				splitter = <Splitter.Panel key={uuid}>{splitter}</Splitter.Panel>
+				_splitter = <Splitter.Panel key={uuid}>{_splitter}</Splitter.Panel>
 			}
 		}
 
-		return splitter;
+		return _splitter;
 	}
 
 	return (
