@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useMemo, useState } from "react";
+import React, { JSX, useCallback, useContext, useMemo, useState } from "react";
 import { useIntl } from "react-intl";
 import { Button, Modal, Splitter } from "antd";
 import { SettingTwoTone } from "@ant-design/icons";
@@ -12,7 +12,7 @@ import { NotificationContext } from "/imports/ui/context/notification.context";
 import { TSplitter, TSplitterItem, TSplitterLayout } from "/imports/config/types";
 
 import { t, TIntl } from "/imports/utils/i18n.util";
-import { deletePanel, replacePanel } from "/imports/utils/antd.util";
+import { cleanPanel, deletePanel, replacePanel } from "/imports/utils/antd.util";
 
 import './environment.preview.module.less';
 
@@ -54,19 +54,23 @@ const EnvironmentPreview: React.FC = (): JSX.Element => {
 
 	const [activePanel, setActivePanel] = useState<string>(null);
 	const [splitter, setSplitter] = useState<TSplitter>(initialSplitter);
-console.debug(1,splitter)
+
 	/**
 	 * Handles the deletion of the panel with the given uuid in the Splitter component.
-	 * If the Splitter component has only one panel, the function does nothing.
-	 * Otherwise, the panel is deleted and the Splitter component is updated accordingly.
-	 * The uuid of the deleted panel is removed from the metadata of the parent panel.
+	 * If the Splitter component only has one panel, the function returns without doing anything.
+	 * The function deletes the panel with the given uuid from the Splitter component by calling the deletePanel function.
+	 * The function then cleans the Splitter component by calling the cleanPanel function.
+	 * If the cleaned Splitter component still has panels, the function updates the Splitter component by calling the setSplitter function.
 	 */
 	const handleDelete = (): void => {
-		console.debug(2,splitter)
-		// if (splitter.items.length === 1) return;
+		if (splitter.items.length === 1) return;
 
 		const updatedSplitter = deletePanel(splitter, activePanel);
-		setSplitter(updatedSplitter);
+		const cleaned = cleanPanel(updatedSplitter);
+		
+		if (cleaned.items.length) {
+			setSplitter(cleaned);	
+		}
 	}
 
 	/**

@@ -90,6 +90,31 @@ export const deletePanel = (splitter: TSplitter, targetUUID: string): TSplitter 
 };
 
 /**
+ * Recursively searches for empty panels in the given Splitter
+ * and removes them.
+ *
+ * @param {TSplitter} splitter - The Splitter component to search in.
+ * @returns {TSplitter} - The updated Splitter component.
+ */
+export const cleanPanel = (splitter: TSplitter): TSplitter => {
+  const updatedItems = splitter.items.map((item: TSplitterItem) => {
+    if (typeof item === 'object' && 'items' in item) {
+      return cleanPanel(item as TSplitter);
+    }
+
+    return item;
+  }).filter((item: TSplitterItem) => {
+    if (typeof item === 'object' && 'items' in item && Array.isArray(item.items)) {
+      return item.items.length > 0;
+    }
+
+    return true;
+  });
+
+  return { ...splitter, items: updatedItems as TSplitterItem[] };
+};
+
+/**
  * Recursively searches for the panel with the given uuid in the given Splitter
  * and applies the given callback to it.
  *
