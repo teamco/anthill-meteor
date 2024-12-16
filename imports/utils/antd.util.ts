@@ -28,6 +28,11 @@ export const indexColumn: CommonDataType = {
   align: 'center',
 };
 
+/**
+ * Converts ITableParams to a query string object.
+ * @param {ITableParams} params - The ITableParams object to convert.
+ * @returns {Record<string, any>} - The query string object.
+ */
 const qsTableParams = (params: ITableParams) => ({
   results: params.pagination?.pageSize,
   page: params.pagination?.current,
@@ -47,13 +52,13 @@ export const onModalCancel = (): void => {
  * and replaces it with the given replacement panel.
  *
  * @param {TSplitter} splitter - The Splitter component to search in.
- * @param {string} targetUUID - The uuid of the panel to replace.
+ * @param {string} targetId - The uuid of the panel to replace.
  * @param {TSplitter} replacement - The new panel to replace the old one.
  * @param {TSplitterLayout} [layout] - The layout of the new panel. If not given, the layout of the old panel is used.
  * @returns {TSplitter} - The updated Splitter component.
  */
-export const replacePanel = (splitter: TSplitter, targetUUID: string, replacement: TSplitter, layout?: TSplitterLayout): TSplitter => {
-  const updatedItems = findPanel(splitter, targetUUID, (item: TSplitterItem) => {
+export const replacePanel = (splitter: TSplitter, targetId: string, replacement: TSplitter, layout?: TSplitterLayout): TSplitter => {
+  const updatedItems = findPanel(splitter, targetId, (item: TSplitterItem) => {
     if (item) {
       return { ...replacement, layout } as TSplitterItem;
     }
@@ -69,16 +74,16 @@ export const replacePanel = (splitter: TSplitter, targetUUID: string, replacemen
  * and deletes it.
  *
  * @param {TSplitter} splitter - The Splitter component to search in.
- * @param {string} targetUUID - The uuid of the panel to delete.
+ * @param {string} targetId - The uuid of the panel to delete.
  * @returns {TSplitter} - The updated Splitter component.
  */
-export const deletePanel = (splitter: TSplitter, targetUUID: string): TSplitter => {
+export const deletePanel = (splitter: TSplitter, targetId: string): TSplitter => {
   const updatedItems = splitter.items.map((item: TSplitterItem) => {
     if (typeof item === 'object' && 'items' in item) {
-      return deletePanel(item as TSplitter, targetUUID);
+      return deletePanel(item as TSplitter, targetId);
     }
 
-    if (item.uuid === targetUUID) {
+    if (item.uuid === targetId) {
       return null;
     }
 
@@ -119,19 +124,19 @@ export const cleanPanel = (splitter: TSplitter): TSplitter => {
  * and applies the given callback to it.
  *
  * @param {TSplitter} splitter - The Splitter component to search in.
- * @param {string} targetUUID - The uuid of the panel to replace.
+ * @param {string} targetId - The uuid of the panel to replace.
  * @param {(item?: TSplitterItem) => TSplitterItem | null} callback - A callback function that takes the found panel or undefined
  * as argument and returns the new panel or null if the panel should be deleted.
  * @returns {(TSplitterItem | null)[]} - The updated Splitter component.
  */
-export const findPanel = (splitter: TSplitter, targetUUID: string, callback: (item?: TSplitterItem) => TSplitterItem | null): (TSplitterItem | null)[] => {
+export const findPanel = (splitter: TSplitter, targetId: string, callback: (item?: TSplitterItem) => TSplitterItem | null): (TSplitterItem | null)[] => {
   return splitter.items.map((item: TSplitterItem) => {
-    if (typeof item.uuid === 'string' && item.uuid === targetUUID) {
+    if (typeof item.uuid === 'string' && item.uuid === targetId) {
       return callback(item);
     }
 
     if ('items' in item) {
-      const updatedNestedItems = findPanel(item as TSplitter, targetUUID, callback);
+      const updatedNestedItems = findPanel(item as TSplitter, targetId, callback);
       return { ...item, items: updatedNestedItems };
     }
 

@@ -67,9 +67,9 @@ const EnvironmentPreview: React.FC = (): JSX.Element => {
 
 		const updatedSplitter = deletePanel(splitter, activePanel);
 		const cleaned = cleanPanel(updatedSplitter);
-		
+
 		if (cleaned.items.length) {
-			setSplitter(cleaned);	
+			setSplitter(cleaned);
 		}
 	}
 
@@ -79,9 +79,9 @@ const EnvironmentPreview: React.FC = (): JSX.Element => {
 	 * The new panel is given a new uuid and a default layout is set.
 	 * The uuid of the new panel is added to the metadata of the parent panel.
 	 * @param {TDirection} direction - The direction of the new panel relative to the given panel. Can be 'up', 'down', 'left' or 'right'.
-	 * @param {string} uuid - The uuid of the panel to which the new panel should be added.
+	 * @param {string} parentId - The uuid of the panel to which the new panel should be added.
 	 */
-	const addPanel: TAddPanelFn = (direction: TDirection, uuid: string): void => {
+	const addPanel: TAddPanelFn = (direction: TDirection, parentId: string): void => {
 		const nextId = uuidv4();
 
 		/**
@@ -92,21 +92,21 @@ const EnvironmentPreview: React.FC = (): JSX.Element => {
 		 * @param {any[]} items - The items of the new panel. Can be a list of uuids, or a list of objects with uuid property.
 		 */
 		const updateSplitter = (layout: TSplitterLayout, items: TSplitterItem[]): void => {
-			setSplitter((prev: TSplitter) => replacePanel(prev, uuid, { items }, layout));
+			setSplitter((prev: TSplitter) => replacePanel(prev, parentId, { items }, layout));
 		};
 
 		switch (direction) {
 			case 'up':
-				updateSplitter('vertical', [{ uuid: nextId }, { uuid }]);
+				updateSplitter('vertical', [{ uuid: nextId, parentId }, { uuid: parentId, parentId }]);
 				break;
 			case 'down':
-				updateSplitter('vertical', [{ uuid }, { uuid: nextId }]);
+				updateSplitter('vertical', [{ uuid: parentId, parentId }, { uuid: nextId, parentId }]);
 				break;
 			case 'left':
-				updateSplitter('horizontal', [{ uuid: nextId }, { uuid }]);
+				updateSplitter('horizontal', [{ uuid: nextId, parentId }, { uuid: parentId, parentId }]);
 				break;
 			case 'right':
-				updateSplitter('horizontal', [{ uuid }, { uuid: nextId }]);
+				updateSplitter('horizontal', [{ uuid: parentId, parentId }, { uuid: nextId, parentId }]);
 				break;
 			default:
 				modalApi.error({
@@ -117,28 +117,32 @@ const EnvironmentPreview: React.FC = (): JSX.Element => {
 	}
 
 	/**
-	 * Render a Splitter Panel with a uuid as key.
-	 * The panel is given a class of 'panel' and 'pActive' if the index matches the activePanel state.
-	 * The panel contains two elements: a div with class 'pEdit' that is clickable and sets the activePanel state
-	 * to the given index, and a Button with class 'pMgmt' that is clickable and calls the handleSplitter function.
-	 * @param {string} index - The uuid of the panel
-	 * @returns {JSX.Element} - A Splitter.Panel component
+	 * Renders a Splitter.Panel component for the given node.
+	 * The panel is assigned a unique key and appropriate CSS classes based on its active state.
+	 * It includes a clickable div that sets the active panel and a button that opens the splitter settings.
+	 *
+	 * @param {TSplitter} node - The node to render as a Splitter.Panel.
+	 * @returns {JSX.Element} The rendered Splitter.Panel component.
 	 */
-	const renderPanel = useCallback((index: string): JSX.Element => (
-		<Splitter.Panel key={index} className={classnames('panel', {
-			['pActive']: index === activePanel
+	const renderPanel = useCallback((node: TSplitter): JSX.Element => (
+		<Splitter.Panel key={node.uuid} className={classnames('panel', {
+			['pActive']: node.uuid === activePanel
 		})}>
-			<div className={'pEdit'} onClick={() => setActivePanel(index)}>{index}</div>
+			<div className={'pEdit'} onClick={() => setActivePanel(node.uuid)}>
+				{node.uuid}
+				<br/>
+				<span style={{color: 'red'}}>{node.parentId}</span>
+			</div>
 			<Button
 				className={'pMgmt'}
 				type={"text"}
 				icon={<SettingTwoTone />}
-				onClick={handleSplitter}
+				onClick={handleSplitterSetting}
 			/>
 		</Splitter.Panel>
 	), [activePanel]);
 
-	const handleSplitter = useCallback(() => {
+	const handleSplitterSetting = useCallback(() => {
 		modalApi.info({
 			width: 600,
 			title: t(intl, 'actions.addNew', { type: t(intl, 'widget.title') }),
@@ -174,15 +178,15 @@ const EnvironmentPreview: React.FC = (): JSX.Element => {
 	const renderer = (node: TSplitter, layout: TSplitterLayout): JSX.Element => {
 		const uuid: string = node?.uuid || uuidv4();
 
-		let _splitter = node?.uuid ? renderPanel(node.uuid) : <>node</>;
+		let _splitter = node?.uuid ? renderPanel(node) : <>node</>;
 
 		if (node?.items) {
 			const children = node.items.map((child: TSplitter) => renderer(child, node.layout));
-			
+
 			_splitter = (
 				<Splitter
 					layout={node.layout}
-					// onResizeEnd={size => handleSizeChange(node.parentId, size)}
+					onResizeEnd={size => handleSizeChange(node.parentId, size)}
 					key={uuid}>
 					{children}
 				</Splitter>

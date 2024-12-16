@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, JSX } from "react";
 import { CaretUpOutlined, CaretDownOutlined, CaretLeftOutlined, CaretRightOutlined } from "@ant-design/icons";
 import { Button } from "antd";
 import classnames from "classnames";
