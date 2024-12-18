@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { JSX, useContext } from "react";
 import { Button, Table } from 'antd';
 import { useSubscribe } from "meteor/react-meteor-data";
 import { TableProps } from "antd/lib/table";

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { JSX } from "react";
 import { TableProps } from "antd/es/table";
 import { Tag, Tooltip } from "antd";
 import { QuestionCircleTwoTone } from '@ant-design/icons';

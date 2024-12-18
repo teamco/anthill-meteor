@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { JSX, useContext } from "react";
 import { Col, Row } from "antd";
 import { useNavigate } from "react-router-dom";
 import { useTracker, useSubscribe } from "meteor/react-meteor-data";

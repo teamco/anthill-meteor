@@ -1,5 +1,5 @@
 import { Button } from "antd";
-import React from "react";
+import React, { JSX } from "react";
 
 const HomePage: React.FC = (): JSX.Element => {
 	return (

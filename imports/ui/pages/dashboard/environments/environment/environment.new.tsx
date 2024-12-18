@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { JSX, useContext } from "react";
 import { Button, Col, Form, FormProps, Input, Row } from "antd";
 
 import { I18nContext } from "/imports/ui/context/i18n.context";

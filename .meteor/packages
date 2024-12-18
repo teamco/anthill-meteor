@@ -25,3 +25,4 @@ service-configuration
 accounts-github
 accounts-google
 http
+fetch

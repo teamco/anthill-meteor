@@ -1,4 +1,4 @@
-import React from "react";
+import React, { JSX } from "react";
 import { Button, ConfigProvider, Drawer } from "antd";
 import { LeftSquareTwoTone } from "@ant-design/icons";
 

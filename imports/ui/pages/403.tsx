@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { JSX, memo } from 'react';
 import { ResultStatusType } from 'antd/es/result';
 
 import { Can } from '/imports/ui/components/Ability/can';

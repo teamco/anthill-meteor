@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { JSX } from 'react';
 import { MailTwoTone } from '@ant-design/icons';
-import { Form, FormItemProps, Input, message } from 'antd';
+import { Form, FormItemProps, Input } from 'antd';
 import { useIntl } from 'react-intl';
 
 import { t } from '/imports/utils/i18n.util';

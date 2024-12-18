@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { JSX } from 'react';
 import { Button, Col, Form, Input, Layout, notification, Row, Tooltip } from 'antd';
 import { FormOutlined, LockTwoTone, LoginOutlined } from '@ant-design/icons';
 import { useIntl } from 'react-intl';

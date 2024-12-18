@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { JSX, useContext } from 'react';
 import { Button } from 'antd';
 import { EditTwoTone } from '@ant-design/icons';
 

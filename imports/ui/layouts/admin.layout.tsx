@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, JSX, useEffect, useState } from 'react';
 import { ConfigProvider, Layout, message, Modal, notification } from 'antd';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { useIntl } from 'react-intl';

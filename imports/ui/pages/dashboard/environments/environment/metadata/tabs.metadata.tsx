@@ -1,5 +1,4 @@
 import React, { useContext, useState } from "react";
-import { useSubscribe } from "meteor/react-meteor-data";
 import { Button, Descriptions, Form, FormProps, Table } from "antd";
 import { AppstoreAddOutlined, BlockOutlined, FormOutlined } from "@ant-design/icons";
 import { TabsProps } from "antd/lib/tabs";

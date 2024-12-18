@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, JSX, useEffect, useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import { useTracker } from "meteor/react-meteor-data";
 

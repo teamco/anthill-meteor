@@ -1,4 +1,4 @@
-import React, { Dispatch, FC, SetStateAction } from 'react';
+import React, { Dispatch, FC, JSX, SetStateAction } from 'react';
 import { LogoutOutlined, RightSquareTwoTone, SettingOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import { useTracker } from "meteor/react-meteor-data";
@@ -31,7 +31,7 @@ interface IUserProfile extends Meteor.User {
  * 
  * @returns {JSX.Element} The rendered header component
  */
-export const LayoutHeader: FC<THeaderProps> = (props): JSX.Element => {
+export const LayoutHeader: FC<THeaderProps> = (props: { title: string; onMenuOpen: Dispatch<SetStateAction<boolean>>; }): JSX.Element => {
   const { title, onMenuOpen } = props;
 
   const intl: TIntl = useIntl();

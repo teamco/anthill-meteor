@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, JSX } from 'react';
 import { Layout } from 'antd';
 import { Outlet } from 'react-router-dom';
 

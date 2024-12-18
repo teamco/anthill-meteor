@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { JSX, memo } from 'react';
 import classnames from 'classnames';
 
 import { Can } from '/imports/ui/components/Ability/can';

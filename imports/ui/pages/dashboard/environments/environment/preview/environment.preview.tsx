@@ -63,7 +63,7 @@ const EnvironmentPreview: React.FC = (): JSX.Element => {
 	 * If the cleaned Splitter component still has panels, the function updates the Splitter component by calling the setSplitter function.
 	 */
 	const handleDelete = (): void => {
-		if (splitter.items.length === 1) return;
+		//if (splitter.items.length === 1) return;
 
 		const updatedSplitter = deletePanel(splitter, activePanel);
 		const cleaned = cleanPanel(updatedSplitter);

@@ -1,4 +1,4 @@
-import React, { memo, useContext } from 'react';
+import React, { JSX, memo, useContext } from 'react';
 import { Button, Result } from 'antd';
 import { ResultStatusType } from 'antd/es/result';
 import classnames from 'classnames';

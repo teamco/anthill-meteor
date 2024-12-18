@@ -1,11 +1,11 @@
-import React from "react";
+import React, { JSX } from "react";
 import { TableProps } from "antd/es/table";
 import { Tag, Tooltip } from "antd";
 import { QuestionCircleTwoTone } from '@ant-design/icons';
 
 import { DataType } from "./widgets.page";
 
-import { IMetadata, TColumns, TStatus } from "/imports/config/types";
+import { IMetadata, TColumns } from "/imports/config/types";
 
 import { indexColumn } from "/imports/utils/antd.util";
 import { tsToLocaleDateTime } from "/imports/utils/timestamp.util";

@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { JSX, useContext } from "react";
 import { Tabs, TabsProps } from 'antd';
 import { useSubscribe, useTracker } from "meteor/react-meteor-data";
 import { useParams } from "react-router-dom";

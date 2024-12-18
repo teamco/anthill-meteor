@@ -1,4 +1,4 @@
-import React from "react";
+import React, { JSX } from "react";
 import { Tag } from "antd";
 import { CheckCircleOutlined, PauseCircleOutlined } from "@ant-design/icons";
 
@@ -24,7 +24,7 @@ type TStatusProps = {
  * @param {boolean} props.status.isActive - Indicates if the status is active.
  * @returns {JSX.Element} A JSX element representing the status tag.
  */
-export const StatusComponent: React.FC<TStatusProps> = (props): JSX.Element => {
+export const StatusComponent: React.FC<TStatusProps> = (props: TStatusProps): JSX.Element => {
   const { intl, status: { isActive = false } } = props;
 
   let color = COLORS.tags.processing;

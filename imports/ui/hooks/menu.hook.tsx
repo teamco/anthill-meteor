@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { MenuProps } from "antd";
 import { AppstoreAddOutlined, BlockOutlined, BookOutlined, SlidersOutlined, UnorderedListOutlined } from '@ant-design/icons';
 import { MongoAbility } from "@casl/ability/dist/types";
-import { matchPath, NavigateFunction, PathMatch } from "react-router-dom";
+import { NavigateFunction, PathMatch } from "react-router-dom";
 
 import { t, TIntl } from "/imports/utils/i18n.util";
 
