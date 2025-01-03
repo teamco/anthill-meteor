@@ -12,10 +12,11 @@
   },
   "dependencies": {
     "@ant-design/icons": "^5.5.2",
+    "@ant-design/v5-patch-for-react-19": "^1.0.3",
     "@babel/runtime": "^7.26.0",
     "@casl/ability": "^6.7.2",
     "@casl/react": "^4.0.0",
-    "antd": "^5.22.5",
+    "antd": "^5.22.7",
     "bcrypt": "^5.1.1",
     "dotenv": "^16.4.7",
     "gravatar": "^1.8.2",
@@ -24,8 +25,8 @@
     "qrcode": "^1.5.4",
     "react": "19.0.0",
     "react-dom": "^19.0.0",
-    "react-intl": "^7.0.4",
-    "react-router-dom": "^6.28.0",
+    "react-intl": "^7.1.0",
+    "react-router-dom": "^6.28.1",
     "speakeasy": "^2.0.0",
     "uuid": "^11.0.3",
     "zxcvbn": "^4.4.2"
@@ -33,7 +34,7 @@
   "devDependencies": {
     "@types/css-modules": "^1.0.5",
     "@types/meteor": "^2.9.8",
-    "@types/react": "^19.0.1",
+    "@types/react": "^19.0.2",
     "@types/react-intl": "^3.0.0",
     "@types/uuid": "^10.0.0",
     "css-loader": "^7.1.2",

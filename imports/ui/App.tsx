@@ -13,6 +13,7 @@ import { renderRoutes } from '/imports/config/router';
 import { IntlProvider } from 'react-intl';
 import { localeData } from '/imports/locales';
 
+import '@ant-design/v5-patch-for-react-19';
 
 /**
  * App component.

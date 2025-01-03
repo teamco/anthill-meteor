@@ -160,8 +160,8 @@ const EnvironmentPreview: React.FC = (): JSX.Element => {
 		})
 	}, [activePanel, splitter]);
 
-	const handleSizeChange = useCallback((uuid: string, size) => {
-		console.debug(uuid, size, splitter);
+	const handleSizeChange = useCallback((node: TSplitter, size) => {
+		console.debug(node, size);
 		// setSplitter((prev: TSplitter) => replacePanel(prev, uuid, { size }))
 	}, [splitter]);
 
@@ -186,7 +186,7 @@ const EnvironmentPreview: React.FC = (): JSX.Element => {
 			_splitter = (
 				<Splitter
 					layout={node.layout}
-					onResizeEnd={size => handleSizeChange(node.parentId, size)}
+					onResizeEnd={size => handleSizeChange(node, size)}
 					key={uuid}>
 					{children}
 				</Splitter>
