@@ -1,5 +1,11 @@
 node_modules/
 .vscode
+.idea
+.qodo
+dist
+build
+coverage
+*.log
 .history
 .meteor/local
 
