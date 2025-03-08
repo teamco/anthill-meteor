@@ -9,5 +9,8 @@ coverage
 .history
 .meteor/local
 
+.DS_Store
+Thumbs.db
+
 .yarn/*
 !.yarn/releases/
