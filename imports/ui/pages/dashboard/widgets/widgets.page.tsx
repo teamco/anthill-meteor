@@ -25,8 +25,9 @@ import { metadataColumns } from "./columns.metadata";
 
 import { WidgetNew } from "./widget/widget.new";
 
-import './widgets.module.less';
 import Widget from "/imports/api/environment/Widget";
+
+import './widgets.module.less';
 
 export interface DataType extends CommonDataType {
 	name: string;
