@@ -14,6 +14,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@ant-design/colors@npm:^8.0.0":
+  version: 8.0.0
+  resolution: "@ant-design/colors@npm:8.0.0"
+  dependencies:
+    "@ant-design/fast-color": "npm:^3.0.0"
+  checksum: 10/3bfc854ebfcfc691729acaef793c585c78abec128fe4ee54931bfd35068ec4fe588baed616128162d1a3c3c7f014906af8c135ba27e2a4b110c1c25bf6b5d78d
+  languageName: node
+  linkType: hard
+
 "@ant-design/cssinjs-utils@npm:^1.1.3":
   version: 1.1.3
   resolution: "@ant-design/cssinjs-utils@npm:1.1.3"
@@ -55,6 +64,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@ant-design/fast-color@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "@ant-design/fast-color@npm:3.0.0"
+  checksum: 10/edd758f977ae04393737f0963d4b56811824bc677a6f7491d548bc20beb15aee16fddd9e8123e6ef31ef7d26f74981366f44155631f0c604f62a0972b472ed75
+  languageName: node
+  linkType: hard
+
 "@ant-design/icons-svg@npm:^4.4.0":
   version: 4.4.2
   resolution: "@ant-design/icons-svg@npm:4.4.2"
@@ -75,6 +91,21 @@ __metadata:
     react: ">=16.0.0"
     react-dom: ">=16.0.0"
   checksum: 10/07ed5711ed06b52ff051683e974d49bf58c41ca7c022bc036efee53d0f177499eac4c6467b3819e2f5f838bdde41fcf6cb58a326e14dd3580cdedf7f69c56f01
+  languageName: node
+  linkType: hard
+
+"@ant-design/icons@npm:^6.0.0":
+  version: 6.0.0
+  resolution: "@ant-design/icons@npm:6.0.0"
+  dependencies:
+    "@ant-design/colors": "npm:^8.0.0"
+    "@ant-design/icons-svg": "npm:^4.4.0"
+    "@rc-component/util": "npm:^1.2.1"
+    classnames: "npm:^2.2.6"
+  peerDependencies:
+    react: ">=16.0.0"
+    react-dom: ">=16.0.0"
+  checksum: 10/71b4f47ae09b8b7b38d641284eef34523a6348b9c616203d4a4f167320e31fc52276a1e1d95856da4b4a3f87c362247500e2f7da837c88ca7be2e9043c9b78a4
   languageName: node
   linkType: hard
 
@@ -1002,6 +1033,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@rc-component/util@npm:^1.2.1":
+  version: 1.2.1
+  resolution: "@rc-component/util@npm:1.2.1"
+  dependencies:
+    react-is: "npm:^18.2.0"
+  peerDependencies:
+    react: ">=18.0.0"
+    react-dom: ">=18.0.0"
+  checksum: 10/a25c1867657c6af16933a31dd314c474dee698579660ab02fb246a9eeeb3723f4fb1a63c06eb441497b583fd827908733048479bbf0f2b175a4530fc471832d2
+  languageName: node
+  linkType: hard
+
 "@remix-run/router@npm:1.23.0":
   version: 1.23.0
   resolution: "@remix-run/router@npm:1.23.0"
@@ -1572,12 +1615,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react@npm:^19.0.10":
-  version: 19.0.10
-  resolution: "@types/react@npm:19.0.10"
+"@types/react@npm:^19.0.12":
+  version: 19.0.12
+  resolution: "@types/react@npm:19.0.12"
   dependencies:
     csstype: "npm:^3.0.2"
-  checksum: 10/10b592d212ebe4b4e0bd42a95c58af3d8dfcb8b3fa4b412d686c2ff8810d5dd3e3a30ebedb31d7b738e33a39c43503e24fe4e6ca8a21d842870043793f4eda98
+  checksum: 10/2476295f27371ea67f0ba3ca8fae3c683fc8d086b8b387e0519e67ff5731072c6ff0372fbd5a4c6d760895b1e7dc8997ac518f07bf6b6a8d1e40aeb5d2068b9e
   languageName: node
   linkType: hard
 
@@ -1715,9 +1758,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"antd@npm:^5.24.3":
-  version: 5.24.3
-  resolution: "antd@npm:5.24.3"
+"antd@npm:^5.24.4":
+  version: 5.24.4
+  resolution: "antd@npm:5.24.4"
   dependencies:
     "@ant-design/colors": "npm:^7.2.0"
     "@ant-design/cssinjs": "npm:^1.23.0"
@@ -1758,7 +1801,7 @@ __metadata:
     rc-slider: "npm:~11.1.8"
     rc-steps: "npm:~6.0.1"
     rc-switch: "npm:~4.1.0"
-    rc-table: "npm:~7.50.3"
+    rc-table: "npm:~7.50.4"
     rc-tabs: "npm:~15.5.1"
     rc-textarea: "npm:~1.9.0"
     rc-tooltip: "npm:~6.4.0"
@@ -1771,7 +1814,7 @@ __metadata:
   peerDependencies:
     react: ">=16.9.0"
     react-dom: ">=16.9.0"
-  checksum: 10/860a681aae52a5c29ed2e08ca3eccdc0fa6cfc63abb441c2bb5e0fb8b6884c76a7582989c081f102fcf96e2970c909e73f411592f742a50dcc2ceaa65fc05098
+  checksum: 10/f79f947083a7ea7d17b7bb5d6ba53ec5c46c439c711877c264b02ad2eaac5cc44d93fa23728cc5d28095bfcaf84ad9fd484ca5eb98171149ae4cea0b9bb58915
   languageName: node
   linkType: hard
 
@@ -3214,17 +3257,17 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "meteor-app@workspace:."
   dependencies:
-    "@ant-design/icons": "npm:^5.6.1"
+    "@ant-design/icons": "npm:^6.0.0"
     "@ant-design/v5-patch-for-react-19": "npm:^1.0.3"
     "@babel/runtime": "npm:^7.26.10"
     "@casl/ability": "npm:^6.7.3"
     "@casl/react": "npm:^5.0.0"
     "@types/css-modules": "npm:^1.0.5"
     "@types/meteor": "npm:^2.9.8"
-    "@types/react": "npm:^19.0.10"
+    "@types/react": "npm:^19.0.12"
     "@types/react-intl": "npm:^3.0.0"
     "@types/uuid": "npm:^10.0.0"
-    antd: "npm:^5.24.3"
+    antd: "npm:^5.24.4"
     bcrypt: "npm:^5.1.1"
     css-loader: "npm:^7.1.2"
     dotenv: "npm:^16.4.7"
@@ -4407,9 +4450,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rc-table@npm:~7.50.3":
-  version: 7.50.3
-  resolution: "rc-table@npm:7.50.3"
+"rc-table@npm:~7.50.4":
+  version: 7.50.4
+  resolution: "rc-table@npm:7.50.4"
   dependencies:
     "@babel/runtime": "npm:^7.10.1"
     "@rc-component/context": "npm:^1.4.0"
@@ -4420,7 +4463,7 @@ __metadata:
   peerDependencies:
     react: ">=16.9.0"
     react-dom: ">=16.9.0"
-  checksum: 10/29600ef59db51c6423a866ced5d33c20803bf1241929a7ef00730482674567358bef84936936cae72813f285068b7d4813e7416fae1f9226b088830dce872d80
+  checksum: 10/6ecbe295c8f8377a9f5405480ef0cb12f26a1a2c80dcd108cb199612a61c06fddad3669ee5f388b99f6c4c758e58ca7b4b2daf33647905aeffda0a5b417a4051
   languageName: node
   linkType: hard
 
