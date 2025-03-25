@@ -641,12 +641,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/runtime@npm:^7.26.10":
-  version: 7.26.10
-  resolution: "@babel/runtime@npm:7.26.10"
+"@babel/runtime@npm:^7.27.0":
+  version: 7.27.0
+  resolution: "@babel/runtime@npm:7.27.0"
   dependencies:
     regenerator-runtime: "npm:^0.14.0"
-  checksum: 10/9d7ff8e96abe3791047c1138789c742411e3ef19c4d7ca18ce916f83cec92c06ec5dc64401759f6dd1e377cf8a01bbd2c62e033eb7550f435cf6579768d0d4a5
+  checksum: 10/e6966e03b695feb4c0ac0856a4355231c2580bf9ebd0298f47739f85c0ea658679dd84409daf26378d42c86c1cbe7e33feab709b14e784254b6c441d91606465
   languageName: node
   linkType: hard
 
@@ -1606,13 +1606,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/prop-types@npm:*":
-  version: 15.7.14
-  resolution: "@types/prop-types@npm:15.7.14"
-  checksum: 10/d0c5407b9ccc3dd5fae0ccf9b1007e7622ba5e6f1c18399b4f24dff33619d469da4b9fa918a374f19dc0d9fe6a013362aab0b844b606cfc10676efba3f5f736d
-  languageName: node
-  linkType: hard
-
 "@types/react-intl@npm:^3.0.0":
   version: 3.0.0
   resolution: "@types/react-intl@npm:3.0.0"
@@ -1628,16 +1621,6 @@ __metadata:
   dependencies:
     csstype: "npm:^3.0.2"
   checksum: 10/1080d5b96ee0b4395f8f167ae6952f570088ee03bdce69f8237aab82c32d9bd2b71106f787bac17ba351acc4aba5e3454bafca51f2eb11d1562073b821e63d15
-  languageName: node
-  linkType: hard
-
-"@types/react@npm:^18.3.12":
-  version: 18.3.19
-  resolution: "@types/react@npm:18.3.19"
-  dependencies:
-    "@types/prop-types": "npm:*"
-    csstype: "npm:^3.0.2"
-  checksum: 10/4b40a4adf7a59390541dc24059c09d95a777e8e8025fab13d660e1929a88e78efadde8ec94ebd357c5cc80b25590645e81c5b621661700f40496e7833b3d2983
   languageName: node
   linkType: hard
 
@@ -1784,9 +1767,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"antd@npm:^5.24.4":
-  version: 5.24.4
-  resolution: "antd@npm:5.24.4"
+"antd@npm:^5.24.5":
+  version: 5.24.5
+  resolution: "antd@npm:5.24.5"
   dependencies:
     "@ant-design/colors": "npm:^7.2.0"
     "@ant-design/cssinjs": "npm:^1.23.0"
@@ -1810,7 +1793,7 @@ __metadata:
     rc-drawer: "npm:~7.2.0"
     rc-dropdown: "npm:~4.2.1"
     rc-field-form: "npm:~2.7.0"
-    rc-image: "npm:~7.11.0"
+    rc-image: "npm:~7.11.1"
     rc-input: "npm:~1.7.3"
     rc-input-number: "npm:~9.4.0"
     rc-mentions: "npm:~2.19.1"
@@ -1840,7 +1823,7 @@ __metadata:
   peerDependencies:
     react: ">=16.9.0"
     react-dom: ">=16.9.0"
-  checksum: 10/f79f947083a7ea7d17b7bb5d6ba53ec5c46c439c711877c264b02ad2eaac5cc44d93fa23728cc5d28095bfcaf84ad9fd484ca5eb98171149ae4cea0b9bb58915
+  checksum: 10/544d69da60f5ced7c8b16ed664774c7dc29699dcd62bf7447b8c9f7e796f0ff644ec35e78045d412243d70c1d95e5e264c66a068b4f4f42e852e2a114fd094e0
   languageName: node
   linkType: hard
 
@@ -3285,7 +3268,7 @@ __metadata:
   dependencies:
     "@ant-design/icons": "npm:^6.0.0"
     "@ant-design/v5-patch-for-react-19": "npm:^1.0.3"
-    "@babel/runtime": "npm:^7.26.10"
+    "@babel/runtime": "npm:^7.27.0"
     "@casl/ability": "npm:^6.7.3"
     "@casl/react": "npm:^5.0.0"
     "@types/css-modules": "npm:^1.0.5"
@@ -3293,7 +3276,7 @@ __metadata:
     "@types/react": "npm:^19.0.12"
     "@types/react-intl": "npm:^3.0.0"
     "@types/uuid": "npm:^10.0.0"
-    antd: "npm:^5.24.4"
+    antd: "npm:^5.24.5"
     bcrypt: "npm:^5.1.1"
     css-loader: "npm:^7.1.2"
     dotenv: "npm:^16.4.7"
@@ -3305,7 +3288,7 @@ __metadata:
     qrcode: "npm:^1.5.4"
     react: "npm:19.0.0"
     react-dom: "npm:^19.0.0"
-    react-intl: "npm:^7.1.7"
+    react-intl: "npm:^7.1.9"
     react-router-dom: "npm:6.30.0"
     speakeasy: "npm:^2.0.0"
     style-loader: "npm:^4.0.0"
@@ -4157,9 +4140,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rc-image@npm:~7.11.0":
-  version: 7.11.0
-  resolution: "rc-image@npm:7.11.0"
+"rc-image@npm:~7.11.1":
+  version: 7.11.1
+  resolution: "rc-image@npm:7.11.1"
   dependencies:
     "@babel/runtime": "npm:^7.11.2"
     "@rc-component/portal": "npm:^1.0.2"
@@ -4170,7 +4153,7 @@ __metadata:
   peerDependencies:
     react: ">=16.9.0"
     react-dom: ">=16.9.0"
-  checksum: 10/e66cee768853cf2acde3c8e01a019352ec378afc11ab5093ff30477f7fe746eaefcba064a6410b0bcb232d2936bae47d3079ea5c4f6c3dc0e95adc5fbaae788b
+  checksum: 10/6c1b893495ef83f7e9ec7aed8669d36631babf58e4791769ba5eb9b335ac58d96b11592f3252fab0b4a27655344351b9c0039803182d12614ebf66fdb5d0184d
   languageName: node
   linkType: hard
 
@@ -4678,25 +4661,25 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-intl@npm:^7.1.7":
-  version: 7.1.7
-  resolution: "react-intl@npm:7.1.7"
+"react-intl@npm:^7.1.9":
+  version: 7.1.9
+  resolution: "react-intl@npm:7.1.9"
   dependencies:
     "@formatjs/ecma402-abstract": "npm:2.3.4"
     "@formatjs/icu-messageformat-parser": "npm:2.11.2"
     "@formatjs/intl": "npm:3.1.5"
     "@types/hoist-non-react-statics": "npm:^3.3.1"
-    "@types/react": "npm:^18.3.12"
+    "@types/react": "npm:16 || 17 || 18 || 19"
     hoist-non-react-statics: "npm:^3.3.2"
     intl-messageformat: "npm:10.7.16"
     tslib: "npm:^2.8.0"
   peerDependencies:
-    react: ^18
+    react: 16 || 17 || 18 || 19
     typescript: 5.8.2
   peerDependenciesMeta:
     typescript:
       optional: true
-  checksum: 10/0d9cf5f156f4a8eab0133cf7ac0839f592e025fe31246f76a873b859256f5363c0e75acf764c0cae24a6eff1388301637cf0aaabfe85beddd259150f11fbf5cf
+  checksum: 10/6424bf75dfe25fdee7ab36847446a331f41fa08a7f77aa00600f7997932d31013ba92a1fe51d15ccb01e6e04b26c865e568335be5f5ca58d4a34ed357a10af58
   languageName: node
   linkType: hard
 
