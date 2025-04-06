@@ -23,7 +23,7 @@ import {
 } from "/imports/config/types";
 
 import "./environment.preview.module.less";
-import { splitterMock } from "./__tests__/splitter.mock";
+// import { splitterMock } from "./__tests__/splitter.mock";
 
 const DEFAULT_UUID = uuidv4();
 const DEFAULT_LAYOUT: TSplitterLayout = "vertical";
@@ -57,8 +57,8 @@ const EnvironmentPreview: React.FC = (): JSX.Element => {
   const initialSplitter = useMemo(
     () => ({
       items: [
-        // { uuid: DEFAULT_UUID, size: "100%" }
-        ...splitterMock,
+        { uuid: DEFAULT_UUID, size: "100%" }
+        // ...splitterMock,
       ],
       layout: DEFAULT_LAYOUT,
       // parentId: uuidv4(),
