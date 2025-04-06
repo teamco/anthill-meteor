@@ -2,7 +2,7 @@ import React, { JSX } from "react";
 import { TableProps } from "antd/es/table";
 import { Link } from "react-router-dom";
 
-import { DataType } from "./usreLogs.page";
+import { IDataType } from "./userLogs.page";
 
 import { IMetadata, TColumns } from "/imports/config/types";
 
@@ -17,17 +17,17 @@ type TArgs = {
   intl: TIntl;
   sortedInfo: TSorts,
   filteredInfo: TFilters;
-  entities: DataType[];
+  entities: IDataType[];
 }
 
 /**
  * Generates a column configuration for the widgets table.
  *
- * @param {{ intl: TIntl, filteredInfo: TFilters, sortedInfo: TSorts, entities: DataType[] }} props - The props object
- * @returns {TableProps<DataType>['columns']} A column configuration for the table.
+ * @param {{ intl: TIntl, filteredInfo: TFilters, sortedInfo: TSorts, entities: IDataType[] }} props - The props object
+ * @returns {TableProps<IDataType>['columns']} A column configuration for the table.
  */
-export const metadataColumns = ({ intl, filteredInfo, sortedInfo, entities }: TArgs): TableProps<DataType>['columns'] => {
-  const columns: TColumns<DataType> = [
+export const metadataColumns = ({ intl, filteredInfo, sortedInfo, entities }: TArgs): TableProps<IDataType>['columns'] => {
+  const columns: TColumns<IDataType> = [
     indexColumn,
     {
       title: t(intl, 'logs.pathname'),

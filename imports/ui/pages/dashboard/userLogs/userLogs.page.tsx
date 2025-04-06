@@ -5,7 +5,7 @@ import { TableProps } from "antd/lib/table";
 
 import { UserLogsCollection } from "/imports/collections/userLogs.collection";
 
-import { CommonDataType, IMetadata, TLayout, TStatus } from "/imports/config/types";
+import { ICommonDataType, IMetadata, TLayout, TStatus } from "/imports/config/types";
 
 import { I18nContext } from "/imports/ui/context/i18n.context";
 import { AbilityContext } from '/imports/ui/context/authentication.context';
@@ -22,7 +22,7 @@ import { metadataColumns } from "./columns.metadata";
 
 import './userLogs.module.less';
 
-export interface DataType extends CommonDataType {
+export interface IDataType extends ICommonDataType {
 	name: string;
 	type: string;
 	status: TStatus;
@@ -60,7 +60,7 @@ const UserLogsPage: React.FC = (): JSX.Element => {
 		handleTableChange
 	} = useTable("userLogsPaginate", UserLogsCollection as any);
 
-	const columns: TableProps<DataType>['columns'] = metadataColumns({ intl, filteredInfo, sortedInfo, entities });
+	const columns: TableProps<IDataType>['columns'] = metadataColumns({ intl, filteredInfo, sortedInfo, entities });
 
 	const tableProps = {
 		columns,
@@ -70,7 +70,7 @@ const UserLogsPage: React.FC = (): JSX.Element => {
 		className: 'gridList',
 		dataSource: indexable(entities, pagination?.current, pagination?.pageSize),
 		loading: isLoading(),
-		rowKey: (record: DataType) => record._id,
+		rowKey: (record: IDataType) => record._id,
 		onChange: handleTableChange,
 		title: () => (
 			<div className="gridHeader">
@@ -97,7 +97,7 @@ const UserLogsPage: React.FC = (): JSX.Element => {
 			title={t(intl, 'dashboard.userLogs.title')}
 			description={t(intl, 'dashboard.userLogs.description')}
 		>
-			<Table<DataType> {...tableProps} />
+			<Table<IDataType> {...tableProps} />
 		</Page>
 	);
 }

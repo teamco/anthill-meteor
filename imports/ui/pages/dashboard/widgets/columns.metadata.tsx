@@ -1,9 +1,9 @@
 import React, { JSX } from "react";
 import { TableProps } from "antd/es/table";
 import { Tag, Tooltip } from "antd";
-import { QuestionCircleTwoTone } from '@ant-design/icons';
+import { QuestionCircleTwoTone } from "@ant-design/icons";
 
-import { DataType } from "./widgets.page";
+import { IDataType } from "./widgets.page";
 
 import { IMetadata, TColumns } from "/imports/config/types";
 
@@ -20,62 +20,70 @@ import { EditAction } from "/imports/ui/components/Actions/edit.action";
 
 type TArgs = {
   intl: TIntl;
-  sortedInfo: TSorts,
+  sortedInfo: TSorts;
   filteredInfo: TFilters;
-  entities: DataType[];
+  entities: IDataType[];
   onDelete?: (id: string) => void;
   onEdit?: (id: string) => void;
   onAssign?: (id: string) => void;
   onUnAssign?: (id: string) => void;
-}
+};
 
 /**
  * Generates a column configuration for the widgets table.
  *
- * @param {{ intl: TIntl, filteredInfo: TFilters, sortedInfo: TSorts, onDelete: (id: string) => void, onEdit: (id: string) => void, entities: DataType[] }} props - The props object
- * @returns {TableProps<DataType>['columns']} A column configuration for the table.
+ * @param {{ intl: TIntl, filteredInfo: TFilters, sortedInfo: TSorts, onDelete: (id: string) => void, onEdit: (id: string) => void, entities: IDataType[] }} props - The props object
+ * @returns {TableProps<IDataType>['columns']} A column configuration for the table.
  */
-export const metadataColumns = ({ intl, filteredInfo, sortedInfo, onDelete, onEdit, entities }: TArgs): TableProps<DataType>['columns'] => {
-  const actionsColumn = onEdit || onDelete ? {
-    ...actionField(intl),
-    render: (record: DataType) => (
-      <div>
-        <EditAction
-          onEdit={onEdit}
-          type={'text'}
-          entityId={record._id} />
-        <DeleteAction
-          onDelete={onDelete}
-          type={'text'}
-          entityId={record._id}
-          modalMsg={t(intl, 'environment.title')} />
-      </div>
-    ),
-  } : {};
+export const metadataColumns = ({
+  intl,
+  filteredInfo,
+  sortedInfo,
+  onDelete,
+  onEdit,
+  entities,
+}: TArgs): TableProps<IDataType>["columns"] => {
+  const actionsColumn =
+    onEdit || onDelete
+      ? {
+          ...actionField(intl),
+          render: (record: IDataType) => (
+            <div>
+              <EditAction onEdit={onEdit} type={"text"} entityId={record._id} />
+              <DeleteAction
+                onDelete={onDelete}
+                type={"text"}
+                entityId={record._id}
+                modalMsg={t(intl, "environment.title")}
+              />
+            </div>
+          ),
+        }
+      : {};
 
-  const columns: TColumns<DataType> = [
+  const columns: TColumns<IDataType> = [
     indexColumn,
     {
-      title: t(intl, 'widget.list.image'),
-      dataIndex: 'thumbnail',
-      key: 'thumbnail',
+      title: t(intl, "widget.list.image"),
+      dataIndex: "thumbnail",
+      key: "thumbnail",
       width: 80,
-      align: 'center',
-      render(thumbnail: string, record: DataType): JSX.Element {
+      align: "center",
+      render(thumbnail: string, record: IDataType): JSX.Element {
         return (
           <div className="eThumbnail">
             <img src={thumbnail} alt={record.name} />
           </div>
-        )
-      }
+        );
+      },
     },
     {
-      title: t(intl, 'widget.list.name'),
-      dataIndex: 'name',
-      key: 'name',
-      ...columnFilter(filteredInfo, entities, 'name'),
-      ...columnSorter(sortedInfo, 'name'),
-      render(name: string, record: DataType): JSX.Element {
+      title: t(intl, "widget.list.name"),
+      dataIndex: "name",
+      key: "name",
+      ...columnFilter(filteredInfo, entities, "name"),
+      ...columnSorter(sortedInfo, "name"),
+      render(name: string, record: IDataType): JSX.Element {
         return record?.description ? (
           <Tooltip title={record?.description}>
             <div className="eIconName">
@@ -85,43 +93,50 @@ export const metadataColumns = ({ intl, filteredInfo, sortedInfo, onDelete, onEd
           </Tooltip>
         ) : (
           <div>{name}</div>
-        )
-      }
+        );
+      },
     },
     {
-      title: t(intl, 'widget.list.category'),
-      dataIndex: 'category',
-      key: 'category',
-      ...columnFilter(filteredInfo, entities, 'category'),
-      ...columnSorter(sortedInfo, 'category'),
-      render: (category: string): JSX.Element => (<Tag>{category.toUpperCase()}</Tag>)
+      title: t(intl, "widget.list.category"),
+      dataIndex: "category",
+      key: "category",
+      ...columnFilter(filteredInfo, entities, "category"),
+      ...columnSorter(sortedInfo, "category"),
+      render: (category: string): JSX.Element => (
+        <Tag>{category.toUpperCase()}</Tag>
+      ),
     },
     {
-      title: t(intl, 'widget.list.size'),
-      dataIndex: 'dimensions',
-      key: 'dimensions',
+      title: t(intl, "widget.list.size"),
+      dataIndex: "dimensions",
+      key: "dimensions",
       width: 100,
-      align: 'center',
-      render: ({ width, height }): JSX.Element => (<>{width}x{height}</>)
+      align: "center",
+      render: ({ width, height }): JSX.Element => (
+        <>
+          {width}x{height}
+        </>
+      ),
     },
     {
-      title: t(intl, 'widget.list.type'),
+      title: t(intl, "widget.list.type"),
       width: 100,
-      dataIndex: 'content',
-      key: 'content.type',
-      ...columnSorter(sortedInfo, 'content.type', 'content'),
-      render: ({ type }): string => type
+      dataIndex: "content",
+      key: "content.type",
+      ...columnSorter(sortedInfo, "content.type", "content"),
+      render: ({ type }): string => type,
     },
     {
-      title: t(intl, 'message.info.updatedAt'),
+      title: t(intl, "message.info.updatedAt"),
       width: 200,
-      dataIndex: 'metadata',
-      key: 'metadata.updatedAt',
-      ...columnSorter(sortedInfo, 'metadata.updatedAt', 'metadata'),
-      render: ({ updatedAt }: IMetadata): string => tsToLocaleDateTime(updatedAt.toString())
+      dataIndex: "metadata",
+      key: "metadata.updatedAt",
+      ...columnSorter(sortedInfo, "metadata.updatedAt", "metadata"),
+      render: ({ updatedAt }: IMetadata): string =>
+        tsToLocaleDateTime(updatedAt.toString()),
     },
-    actionsColumn
+    actionsColumn,
   ];
 
   return columns;
-}
+};

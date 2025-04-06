@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 
 import { EnvironmentsCollection } from "/imports/collections/environments.collection";
 
-import { CommonDataType, IMetadata, IUser, TLayout, TStatus } from "/imports/config/types";
+import { ICommonDataType, IMetadata, IUser, TLayout, TStatus } from "/imports/config/types";
 
 import { I18nContext } from "/imports/ui/context/i18n.context";
 import { AbilityContext } from '/imports/ui/context/authentication.context';
@@ -27,7 +27,7 @@ import { EnvironmentNew } from "./environment/environment.new";
 
 import './environments.module.less';
 
-export interface DataType extends CommonDataType {
+export interface IDataType extends ICommonDataType {
 	name: string;
 	type: string;
 	status: TStatus;
@@ -104,7 +104,7 @@ const EnvironmentsPage: React.FC = (): JSX.Element => {
 		handleTableChange
 	} = useTable("environmentsPaginate", EnvironmentsCollection as any);
 
-	const columns: TableProps<DataType>['columns'] = metadataColumns(intl, filteredInfo, sortedInfo, onDelete, onEdit, entities);
+	const columns: TableProps<IDataType>['columns'] = metadataColumns(intl, filteredInfo, sortedInfo, onDelete, onEdit, entities);
 
 	const tableProps = {
 		columns,
@@ -114,7 +114,7 @@ const EnvironmentsPage: React.FC = (): JSX.Element => {
 		className: 'gridList',
 		dataSource: indexable(entities, pagination?.current, pagination?.pageSize),
 		loading: isLoading(),
-		rowKey: (record: DataType) => record._id,
+		rowKey: (record: IDataType) => record._id,
 		onChange: handleTableChange,
 		title: () => (
 			<div className="gridHeader">
@@ -162,7 +162,7 @@ const EnvironmentsPage: React.FC = (): JSX.Element => {
 			title={t(intl, 'dashboard.environments.title')}
 			description={t(intl, 'dashboard.environments.description')}
 		>
-			<Table<DataType> {...tableProps} />
+			<Table<IDataType> {...tableProps} />
 		</Page>
 	);
 }

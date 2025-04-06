@@ -13,7 +13,7 @@ import EnvironmentPreview from "/imports/ui/pages/dashboard/environments/environ
 
 import DashboardPage from "/imports/ui/pages/dashboard/dashboard.page";
 import WidgetsPage from "/imports/ui/pages/dashboard/widgets/widgets.page";
-import UserLogsPage from "/imports/ui/pages/dashboard/userLogs/usreLogs.page";
+import UserLogsPage from "../ui/pages/dashboard/userLogs/userLogs.page";
 
 /**
  * Renders the application routes using `createBrowserRouter`.
@@ -82,11 +82,11 @@ export const renderRoutes = () => {
     basename: "/",
     future: {
       // Normalize `useNavigation()`/`useFetcher()` `formMethod` to uppercase
-      v7_normalizeFormMethod: true,
-      v7_skipActionErrorRevalidation: true,
-      v7_relativeSplatPath: true,
-      v7_fetcherPersist: true,
-      v7_partialHydration: true
+      // v7_normalizeFormMethod: true,
+      // v7_skipActionErrorRevalidation: true,
+      // v7_relativeSplatPath: true,
+      // v7_fetcherPersist: true,
+      // v7_partialHydration: true
     }
   });
 };

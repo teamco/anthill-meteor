@@ -25,7 +25,7 @@ import { metadataColumns as layoutsMetadataColumns } from "./columns.metadata";
 import { metadataColumns as widgetsMetadataColumns } from "/imports/ui/pages/dashboard/widgets/columns.metadata";
 
 import { TField } from "../environment.edit";
-import { DataType } from "../../environments.page";
+import { IDataType } from "../../environments.page";
 
 /**
  * @function useEnvironmentTabs
@@ -131,7 +131,7 @@ export const useEnvironmentTabs = (environment: TEnvironmentEdit, loading: boole
       scroll: { x: scrollX },
       bordered: true,
       className: 'gridList',
-      rowKey: (record: DataType) => record._id,
+      rowKey: (record: IDataType) => record._id,
       dataSource: indexable(entities, pagination?.current, pagination?.pageSize),
       onChange: handleTableChange,
       footer: () => (
@@ -146,11 +146,11 @@ export const useEnvironmentTabs = (environment: TEnvironmentEdit, loading: boole
     ...tableProps(layouts, layoutsMetadataColumns as unknown as ColumnsType<any>, 800, onLayoutDelete),
   };
 
-  const rowSelection: TableProps<DataType>['rowSelection'] = {
-    onChange: (selectedRowKeys: React.Key[], selectedRows: DataType[]) => {
+  const rowSelection: TableProps<IDataType>['rowSelection'] = {
+    onChange: (selectedRowKeys: React.Key[], selectedRows: IDataType[]) => {
       console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
     },
-    getCheckboxProps: (record: DataType) => ({
+    getCheckboxProps: (record: IDataType) => ({
       disabled: ability.cannot('assign', record._id),
       name: record.name,
     }),

@@ -2,7 +2,7 @@ import React, { JSX } from "react";
 import { TableProps } from "antd/es/table";
 import { Tag } from "antd";
 
-import { DataType } from "../../environments.page";
+import { IDataType } from "../../environments.page";
 
 import { IMetadata, TColumns, TWidget } from "/imports/config/types";
 
@@ -26,10 +26,10 @@ type TArgs = {
  * Generates a column configuration for the metadata table.
  *
  * @param {{ intl: TIntl, sortedInfo: TSorts, onDelete: (id: string) => void }} props - The props object
- * @returns {TableProps<DataType>['columns']} A column configuration for the metadata table
+ * @returns {TableProps<IDataType>['columns']} A column configuration for the metadata table
  */
-export const metadataColumns = ({ intl, sortedInfo, onDelete }: TArgs): TableProps<DataType>['columns'] => {
-  const columns: TColumns<DataType> = [
+export const metadataColumns = ({ intl, sortedInfo, onDelete }: TArgs): TableProps<IDataType>['columns'] => {
+  const columns: TColumns<IDataType> = [
     indexColumn,
     {
       title: t(intl, 'environment.list.layout.version'),
@@ -75,7 +75,7 @@ export const metadataColumns = ({ intl, sortedInfo, onDelete }: TArgs): TablePro
     },
     {
       ...actionField(intl),
-      render: (record: DataType) => (
+      render: (record: IDataType) => (
         <div className="eActions">
           <VersionAction
             type={'text'}

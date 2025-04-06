@@ -6,7 +6,7 @@ import { TableProps } from "antd/lib/table";
 import { WidgetsCollection } from "/imports/collections/widgets.collection";
 
 import {
-  CommonDataType,
+  ICommonDataType,
   IMetadata,
   TLayout,
   TStatus,
@@ -37,7 +37,7 @@ import Widget from "/imports/api/environment/Widget";
 
 import "./widgets.module.less";
 
-export interface DataType extends CommonDataType {
+export interface IDataType extends ICommonDataType {
   name: string;
   type: string;
   status: TStatus;
@@ -91,7 +91,7 @@ const WidgetsPage: React.FC = (): JSX.Element => {
     handleTableChange,
   } = useTable("widgetsPaginate", WidgetsCollection as any);
 
-  const columns: TableProps<DataType>["columns"] = metadataColumns({
+  const columns: TableProps<IDataType>["columns"] = metadataColumns({
     intl,
     filteredInfo,
     sortedInfo,
@@ -108,7 +108,7 @@ const WidgetsPage: React.FC = (): JSX.Element => {
     className: "gridList",
     dataSource: indexable(entities, pagination?.current, pagination?.pageSize),
     loading: isLoading(),
-    rowKey: (record: DataType) => record._id,
+    rowKey: (record: IDataType) => record._id,
     onChange: handleTableChange,
     title: () => (
       <div className="gridHeader">
@@ -172,7 +172,7 @@ const WidgetsPage: React.FC = (): JSX.Element => {
       title={t(intl, "dashboard.widgets.title")}
       description={t(intl, "dashboard.widgets.description")}
     >
-      <Table<DataType> {...tableProps} />
+      <Table<IDataType> {...tableProps} />
     </Page>
   );
 };

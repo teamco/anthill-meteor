@@ -25,30 +25,37 @@ import { layout } from "/imports/utils/layout.util";
  * @returns {JSX.Element} The JSX element representing the dashboard page
  */
 const DashboardPage: React.FC = (): JSX.Element => {
-	const history = useNavigate();
-	const isLoading = useSubscribe("environments");
-	const envs: any[] = useTracker(() => EnvironmentsCollection.find({}).fetch(), []);
+  const history = useNavigate();
+  const isLoading = useSubscribe("environments");
+  const envs: any[] = useTracker(
+    () => EnvironmentsCollection.find({}).fetch(),
+    []
+  );
 
-	const intl = useContext(I18nContext);
+  const intl = useContext(I18nContext);
 
-	const navigateTo = {
-		environments: () => history('/dashboard/environments'),
-	}
+  const navigateTo = {
+    environments: () => history("/dashboard/environments"),
+  };
 
-	return (
-		<Page ableFor={{ subject: 'dashboard' }} title={t(intl, 'dashboard.title')} description={t(intl, 'dashboard.description')}>
-			<Row gutter={[48, 48]}>
-				<Col {...layout.quarterColumn}>
-					<TileComponent
-						isLoading={isLoading()}
-						title={"Environments"}
-						onClick={navigateTo.environments}
-						description={envs.length.toString()}
-					/>
-				</Col>
-			</Row>
-		</Page>
-	);
-}
+  return (
+    <Page
+      ableFor={{ subject: "dashboard" }}
+      title={t(intl, "dashboard.title")}
+      description={t(intl, "dashboard.description")}
+    >
+      <Row gutter={[48, 48]}>
+        <Col {...layout.quarterColumn}>
+          <TileComponent
+            isLoading={isLoading()}
+            title={"Environments"}
+            onClick={navigateTo.environments}
+            description={envs.length.toString()}
+          />
+        </Col>
+      </Row>
+    </Page>
+  );
+};
 
 export default DashboardPage;

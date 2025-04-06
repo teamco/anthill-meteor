@@ -8,26 +8,26 @@ import { ITableParams } from "/imports/config/types";
 
 import { getEnvironments } from "/imports/ui/services/environment.service";
 
-type TOnChange = NonNullable<TableProps<any>['onChange']>;
+type TOnChange = NonNullable<TableProps<any>["onChange"]>;
 export type TFilters = Parameters<TOnChange>[1];
 
 type TGetSingle<T> = T extends (infer U)[] ? U : never;
 export type TSorts = TGetSingle<Parameters<TOnChange>[2]>;
 
 type TDefaults = {
-	current: number;
-	pageSize: number;
-}
+  current: number;
+  pageSize: number;
+};
 
 export type TUseTable = {
-	total: number;
-	entities: any[];
-	tableParams: ITableParams;
-	filteredInfo: TFilters;
-	sortedInfo: TSorts;
-	handleRefresh: () => void;
-	handleTableChange: TOnChange;
-}
+  total: number;
+  entities: any[];
+  tableParams: ITableParams;
+  filteredInfo: TFilters;
+  sortedInfo: TSorts;
+  handleRefresh: () => void;
+  handleTableChange: TOnChange;
+};
 
 type TAction = "paginate" | "sort" | "filter";
 
@@ -39,150 +39,169 @@ type TAction = "paginate" | "sort" | "filter";
  * @returns {TUseTable} Object with `entity`, `tableParams`, `handleRefresh` and `handleTableChange` properties.
  * @example const { entity, tableParams, handleTableChange } = useTable('method.name', 100, { current: 1, pageSize: 10 });
  */
-export const useTable = (method: string, Collection: Mongo.Collection<Document, Document>, defaults?: TDefaults): TUseTable => {
-	const DEFAULT_PAGE_CURRENT = defaults?.current || 1;
-	const DEFAULT_PAGE_SIZE = defaults?.pageSize || 10;
+export const useTable = (
+  method: string,
+  Collection: Mongo.Collection<Document, Document>,
+  defaults?: TDefaults
+): TUseTable => {
+  const DEFAULT_PAGE_CURRENT = defaults?.current || 1;
+  const DEFAULT_PAGE_SIZE = defaults?.pageSize || 10;
 
-	const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
 
-	const [entities, setEntities] = useState([]);
-	const [filteredInfo, setFilteredInfo] = useState<TFilters>({});
-	const [sortedInfo, setSortedInfo] = useState<TSorts>({});
+  const [entities, setEntities] = useState([]);
+  const [filteredInfo, setFilteredInfo] = useState<TFilters>({});
+  const [sortedInfo, setSortedInfo] = useState<TSorts>({});
 
-	const pageParams = searchParams.get("p")?.split(":") || [];
-	const sortParams = searchParams.get("s")?.split(":") || [];
-	const filterParams = searchParams.get("f");
+  const pageParams = searchParams.get("p")?.split(":") || [];
+  const sortParams = searchParams.get("s")?.split(":") || [];
+  const filterParams = searchParams.get("f");
 
-	const _tParams: ITableParams = {
-		pagination: {
-			current: Number(pageParams[0]) || DEFAULT_PAGE_CURRENT,
-			pageSize: Number(pageParams[1]) || DEFAULT_PAGE_SIZE
-		}
-	}
+  const _tParams: ITableParams = {
+    pagination: {
+      current: Number(pageParams[0]) || DEFAULT_PAGE_CURRENT,
+      pageSize: Number(pageParams[1]) || DEFAULT_PAGE_SIZE,
+    },
+  };
 
-	if (sortParams?.length) {
-		const sortFieldMatcher = sortParams[0].match(/\./);
-		_tParams.sortField = sortFieldMatcher ? sortParams[0].split('.') : sortParams[0];
-		_tParams.sortOrder = sortParams[1] as SortOrder;
-	}
+  if (sortParams?.length) {
+    const sortFieldMatcher = sortParams[0].match(/\./);
+    _tParams.sortField = sortFieldMatcher
+      ? sortParams[0].split(".")
+      : sortParams[0];
+    _tParams.sortOrder = sortParams[1] as SortOrder;
+  }
 
-	if (filterParams?.length) {
-		_tParams.filters = {};
-		const filters = filterParams.split("|");
+  if (filterParams?.length) {
+    _tParams.filters = {};
+    const filters = filterParams.split("|");
 
-		for (let filter of filters) {
-			const _split = filter.split(":");
-			const key = _split[0];
-			const value = _split[1].split(',');
-			_tParams.filters[key] = value;
-		}
-	}
+    for (let filter of filters) {
+      const _split = filter.split(":");
+      const key = _split[0];
+      const value = _split[1].split(",");
+      _tParams.filters[key] = value;
+    }
+  }
 
-	const [tableParams, setTableParams] = useState<ITableParams>(_tParams);
+  const [tableParams, setTableParams] = useState<ITableParams>(_tParams);
 
-	const total = useTracker(() => Collection.find({}).count(), []);
+  const total = useTracker(() => Collection.find({}).count(), []);
 
-	/**
-	 * Fetches data from the server by calling the `method` method and sets the `entities` state.
-	 * @returns {void}
-	 */
-	const handleRefresh = (): void => {
-		getEnvironments(method, setEntities, {
-			current: tableParams.pagination?.current,
-			pageSize: tableParams.pagination?.pageSize,
-			sort: [tableParams.sortField, tableParams.sortOrder]
-		});
-	};
+  /**
+   * Fetches data from the server by calling the `method` method and sets the `entities` state.
+   * @returns {void}
+   */
+  const handleRefresh = (): void => {
+    getEnvironments(method, setEntities, {
+      current: tableParams.pagination?.current,
+      pageSize: tableParams.pagination?.pageSize,
+      sort: [tableParams.sortField, tableParams.sortOrder],
+    });
+  };
 
-	/**
-	 * Handles the change event after data is fetched or updated.
-	 * Determines the action type for table change and invokes handleTableChange with updated table parameters.
-	 * @param {any[]} res - The result set returned from the server.
-	 */
-	const onAfterChange = (res: any[]): void => {
-		let action: TAction = "paginate";
+  /**
+   * Handles the change event after data is fetched or updated.
+   * Determines the action type for table change and invokes handleTableChange with updated table parameters.
+   * @param {any[]} res - The result set returned from the server.
+   */
+  const onAfterChange = (res: any[]): void => {
+    let action: TAction = "paginate";
 
-		// TODO (teamco): Check if this is needed.
-		
-		// if (tableParams.sortField && tableParams.sortOrder) {
-		// 	action = "sort";
-		// }
+    // TODO (teamco): Check if this is needed.
 
-		handleTableChange(tableParams.pagination, tableParams.filters, { field: tableParams.sortField, order: tableParams.sortOrder }, { action, currentDataSource: res });
-	};
+    // if (tableParams.sortField && tableParams.sortOrder) {
+    // 	action = "sort";
+    // }
 
-	/**
-	 * Table change handler.
-	 * @param pagination New pagination object.
-	 * @param filters New filters object.
-	 * @param {Record<string, any>} sorter New sorter object.
-	 * @param {TableCurrentDataSource<any>} extra New extra object.
-	 * @description
-	 * Sets the search params and the table params. If the `pageSize` changed, it clears the `entity` state.
-	 */
-	const handleTableChange: TOnChange = (pagination, filters, sorter: Record<string, any>, extra: TableCurrentDataSource<any>): void => {
-		searchParams.set('p', `${pagination?.current}:${pagination?.pageSize}`);
+    handleTableChange(
+      tableParams.pagination,
+      tableParams.filters,
+      { field: tableParams.sortField, order: tableParams.sortOrder },
+      { action, currentDataSource: res }
+    );
+  };
 
-		if (sorter?.field) {
-			const _field = typeof sorter.field === "string" ? sorter.field : sorter.field?.join('.')
-			searchParams.set('s', `${_field}:${sorter.order}`);
-		} else {
-			searchParams.delete('s');
-		}
+  /**
+   * Table change handler.
+   * @param pagination New pagination object.
+   * @param filters New filters object.
+   * @param {Record<string, any>} sorter New sorter object.
+   * @param {TableCurrentDataSource<any>} extra New extra object.
+   * @description
+   * Sets the search params and the table params. If the `pageSize` changed, it clears the `entity` state.
+   */
+  const handleTableChange: TOnChange = (
+    pagination,
+    filters,
+    sorter: Record<string, any>,
+    extra: TableCurrentDataSource<any>
+  ): void => {
+    searchParams.set("p", `${pagination?.current}:${pagination?.pageSize}`);
 
-		if (filters) {
-			const notNulls = Object.entries(filters).filter(f => f[1]?.length);
-			const qs = notNulls.map((f) => `${f[0]}:${f[1].join(',')}`);
-			qs?.length ?
-				searchParams.set('f', qs.join('|')) :
-				searchParams.delete('f');
-		} else {
-			searchParams.delete('f');
-		}
+    if (sorter?.field) {
+      const _field =
+        typeof sorter.field === "string"
+          ? sorter.field
+          : sorter.field?.join(".");
+      searchParams.set("s", `${_field}:${sorter.order}`);
+    } else {
+      searchParams.delete("s");
+    }
 
-		setSearchParams(searchParams);
-		setFilteredInfo(filters);
-		setSortedInfo({
-			order: sorter.order,
-			columnKey: sorter.field,
-		} as TSorts);
+    if (filters) {
+      const notNulls = Object.entries(filters).filter((f) => f[1]?.length);
+      const qs = notNulls.map((f) => `${f[0]}:${f[1].join(",")}`);
+      qs?.length
+        ? searchParams.set("f", qs.join("|"))
+        : searchParams.delete("f");
+    } else {
+      searchParams.delete("f");
+    }
 
-		setTableParams({
-			...tableParams,
-			pagination: {
-				...pagination,
-				total
-			},
-			filters,
-			sortOrder: Array.isArray(sorter) ? undefined : sorter.order,
-			sortField: Array.isArray(sorter) ? undefined : sorter.field
-		});
+    setSearchParams(searchParams);
+    setFilteredInfo(filters);
+    setSortedInfo({
+      order: sorter.order,
+      columnKey: sorter.field,
+    } as TSorts);
 
-		// `dataSource` is useless since `pageSize` changed
-		if (pagination.pageSize !== tableParams.pagination?.pageSize) {
-			setEntities([]);
-		}
-	};
+    setTableParams({
+      ...tableParams,
+      pagination: {
+        ...pagination,
+        total,
+      },
+      filters,
+      sortOrder: Array.isArray(sorter) ? undefined : sorter.order,
+      sortField: Array.isArray(sorter) ? undefined : sorter.field,
+    });
 
-	useEffect(handleRefresh, [
-		tableParams.pagination?.current,
-		tableParams.pagination?.pageSize,
-		tableParams?.sortOrder,
-		tableParams?.sortField,
-		JSON.stringify(tableParams.filters),
-	]);
+    // `dataSource` is useless since `pageSize` changed
+    if (pagination.pageSize !== tableParams.pagination?.pageSize) {
+      setEntities([]);
+    }
+  };
 
-	useEffect(() => {
-		onAfterChange(entities);
-	}, [entities, total]);
+  useEffect(handleRefresh, [
+    tableParams.pagination?.current,
+    tableParams.pagination?.pageSize,
+    tableParams?.sortOrder,
+    tableParams?.sortField,
+    JSON.stringify(tableParams.filters),
+  ]);
 
-	return {
-		total,
-		entities,
-		tableParams,
-		filteredInfo,
-		sortedInfo,
-		handleRefresh,
-		handleTableChange
-	}
+  useEffect(() => {
+    onAfterChange(entities);
+  }, [entities, total]);
+
+  return {
+    total,
+    entities,
+    tableParams,
+    filteredInfo,
+    sortedInfo,
+    handleRefresh,
+    handleTableChange,
+  };
 };
