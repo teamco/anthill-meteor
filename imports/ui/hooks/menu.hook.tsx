@@ -1,12 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { MenuProps } from "antd";
-import { AppstoreAddOutlined, BlockOutlined, BookOutlined, SlidersOutlined, UnorderedListOutlined } from '@ant-design/icons';
+import {
+  AppstoreAddOutlined,
+  BlockOutlined,
+  BookOutlined,
+  SlidersOutlined,
+  UnorderedListOutlined,
+} from "@ant-design/icons";
 import { MongoAbility } from "@casl/ability/dist/types";
 import { NavigateFunction, PathMatch } from "react-router-dom";
 
 import { t, TIntl } from "/imports/utils/i18n.util";
 
-type MenuItem = Required<MenuProps>['items'][number];
+type MenuItem = Required<MenuProps>["items"][number];
 
 interface LevelKeysProps {
   key?: string;
@@ -23,15 +29,20 @@ interface LevelKeysProps {
  * @param {TIntl} intl - The i18n object.
  * @param {MongoAbility} ability - The ability object.
  * @param {NavigateFunction} history - The history function.
+ * @param {React.Dispatch<React.SetStateAction<boolean>>} setDrawerPanelOpen - Function to set the drawer panel open state.
  * @returns {MenuItem[]} An array of menu items.
  */
-export const menuItems = (intl: TIntl, ability: MongoAbility, history: NavigateFunction): MenuItem[] => {
-
-  const dPages = ability.cannot('read', 'Pages');
-  const dDashboard = ability.cannot('read', 'Dashboard');
-  const dEnvironments = ability.cannot('read', 'Environments');
-  const dWidgets = ability.cannot('read', 'Widgets');
-  const dUserLogs = ability.cannot('read', 'UserLogs');
+export const menuItems = (
+  intl: TIntl,
+  ability: MongoAbility,
+  history: NavigateFunction,
+  setDrawerPanelOpen: React.Dispatch<React.SetStateAction<boolean>>
+): MenuItem[] => {
+  const dPages = ability.cannot("read", "Pages");
+  const dDashboard = ability.cannot("read", "Dashboard");
+  const dEnvironments = ability.cannot("read", "Environments");
+  const dWidgets = ability.cannot("read", "Widgets");
+  const dUserLogs = ability.cannot("read", "UserLogs");
 
   /**
    * Generate a menu item based on the given key, label, icon, path and disabled parameter.
@@ -44,17 +55,29 @@ export const menuItems = (intl: TIntl, ability: MongoAbility, history: NavigateF
    * @param {boolean} disabled - Whether the menu item should be disabled.
    * @returns {MenuItem} The generated menu item.
    */
-  const _child = (key: string, label: string, icon: React.ReactNode, path: string, disabled: boolean): MenuItem => ({
+  const _child = (
+    key: string,
+    label: string,
+    icon: React.ReactNode,
+    path: string,
+    disabled: boolean
+  ): MenuItem => ({
     key,
     icon,
     disabled,
     label: (
-      <a href={path} rel="noopener noreferrer" onClick={(e) => {
-        e.preventDefault();
-        e.stopPropagation();
+      <a
+        href={path}
+        rel="noopener noreferrer"
+        onClick={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
 
-        history(path);
-      }}>
+          history(path);
+
+          setDrawerPanelOpen(false);
+        }}
+      >
         {t(intl, label)}
       </a>
     ),
@@ -62,18 +85,50 @@ export const menuItems = (intl: TIntl, ability: MongoAbility, history: NavigateF
 
   return [
     {
-      key: '1',
+      key: "1",
       disabled: dPages,
       icon: <BookOutlined />,
-      label: t(intl, 'menu.pages'),
+      label: t(intl, "menu.pages"),
       children: [
-        { ..._child('10', 'dashboard.title', <BlockOutlined />, '/dashboard', dDashboard) },
-        { ..._child('11', 'dashboard.environments.title', <SlidersOutlined />, '/dashboard/environments', dEnvironments) },
-        { ..._child('12', 'dashboard.widgets.title', <AppstoreAddOutlined />, '/dashboard/widgets', dWidgets) },
-        { ..._child('13', 'dashboard.userLogs.title', <UnorderedListOutlined />, '/dashboard/userLogs', dUserLogs) },
+        {
+          ..._child(
+            "10",
+            "dashboard.title",
+            <BlockOutlined />,
+            "/dashboard",
+            dDashboard
+          ),
+        },
+        {
+          ..._child(
+            "11",
+            "dashboard.environments.title",
+            <SlidersOutlined />,
+            "/dashboard/environments",
+            dEnvironments
+          ),
+        },
+        {
+          ..._child(
+            "12",
+            "dashboard.widgets.title",
+            <AppstoreAddOutlined />,
+            "/dashboard/widgets",
+            dWidgets
+          ),
+        },
+        {
+          ..._child(
+            "13",
+            "dashboard.userLogs.title",
+            <UnorderedListOutlined />,
+            "/dashboard/userLogs",
+            dUserLogs
+          ),
+        },
       ],
-    }
-  ]
+    },
+  ];
 };
 
 /**
@@ -115,10 +170,10 @@ const getLevelKeys = (items1: LevelKeysProps[]): Record<string, number> => {
  * @returns {string[]} The selected menu item keys.
  */
 const getSelectedKeys = (mItems: MenuItem[]): string[] => {
-
   const { pathname } = window.location;
 
-  const replaceMatchers = (path: string): string => path === '/dashboard' ? path : path.replace(/\/dashboard/, '');
+  const replaceMatchers = (path: string): string =>
+    path === "/dashboard" ? path : path.replace(/\/dashboard/, "");
 
   /**
    * Recursively finds the selected menu item based on the given path and parent menu item keys.
@@ -126,26 +181,41 @@ const getSelectedKeys = (mItems: MenuItem[]): string[] => {
    * If the item does not have children, it uses matchPath to check if the item's label's href property matches the path.
    * If a match is found, it returns the parent keys, the item's key, and the matched key.
    * If no match is found, it returns null.
-   * 
+   *
    * @param {MenuItem} item - The menu item to check.
    * @param {string} path - The path to check against.
    * @param {string[] | null} [parentKeys=null] - The parent menu item keys.
    * @returns {boolean} The selected menu item keys or null if no match is found.
    */
-  const matcher = (item: MenuItem, path: string, parentKeys: string[] | null = null): PathMatch<any> | string | readonly string[] | boolean => {
-    if (item['children']) {
-      const current = item['children'].find((child: MenuItem) => matcher(child, path, [...parentKeys, item.key.toString()]));
+  const matcher = (
+    item: MenuItem,
+    path: string,
+    parentKeys: string[] | null = null
+  ): PathMatch<any> | string | readonly string[] | boolean => {
+    if (item["children"]) {
+      const current = item["children"].find((child: MenuItem) =>
+        matcher(child, path, [...parentKeys, item.key.toString()])
+      );
       return current ? [...parentKeys, item.key.toString(), current.key] : null;
     }
 
-    const _path = replaceMatchers(item['label']['props']['href']);
+    const _path = replaceMatchers(item["label"]["props"]["href"]);
     const _pathname = replaceMatchers(pathname);
 
     return _pathname.includes(_path);
-  }
+  };
 
-  return mItems.flatMap((item: MenuItem) => matcher(item, pathname, [])) as string[];
-}
+  return mItems.flatMap((item: MenuItem) =>
+    matcher(item, pathname, [])
+  ) as string[];
+};
+
+type TUseMenu = {
+  mItems: MenuItem[];
+  selectedMenuKeys: string[];
+  openedMenuKeys: string[];
+  onOpenChange: MenuProps["onOpenChange"];
+};
 
 /**
  * Returns the menu items, selected menu item keys, opened menu item keys and the onOpenChange handler.
@@ -157,9 +227,15 @@ const getSelectedKeys = (mItems: MenuItem[]): string[] => {
  * @param {MongoAbility} ability - The ability object.
  * @param {NavigateFunction} history - The history function.
  * @param {boolean} isOpen - Whether the menu is open.
- * @returns {{ mItems: MenuItem[], selectedMenuKeys: string[], openedMenuKeys: string[], onOpenChange: MenuProps['onOpenChange'] }}
+ * @returns {TUseMenu}
  */
-export const useMenu = (intl: TIntl, ability: MongoAbility, history: NavigateFunction, isOpen: boolean): { mItems: MenuItem[], selectedMenuKeys: string[], openedMenuKeys: string[], onOpenChange: MenuProps['onOpenChange'] } => {
+export const useMenu = (
+  intl: TIntl,
+  ability: MongoAbility,
+  history: NavigateFunction,
+  isOpen: boolean,
+  setDrawerPanelOpen: React.Dispatch<React.SetStateAction<boolean>>
+): TUseMenu => {
   const [mItems, setMItems] = useState([]);
   const [selectedMenuKeys, setSelectedMenuKeys] = useState([]);
   const [openedMenuKeys, setOpenedMenuKeys] = useState([]);
@@ -167,7 +243,7 @@ export const useMenu = (intl: TIntl, ability: MongoAbility, history: NavigateFun
   const { pathname } = window.location;
 
   useEffect(() => {
-    isOpen && setMItems(menuItems(intl, ability, history));
+    isOpen && setMItems(menuItems(intl, ability, history, setDrawerPanelOpen));
   }, [intl, ability, history, isOpen]);
 
   const levelKeys = getLevelKeys(mItems as LevelKeysProps[]);
@@ -188,24 +264,27 @@ export const useMenu = (intl: TIntl, ability: MongoAbility, history: NavigateFun
    * When a menu item is closed, it will add all of its child keys to the stateOpenKeys.
    * @return {void} No return value.
    */
-  const onOpenChange: MenuProps['onOpenChange'] = (openKeys: string[]): void => {
-    const currentOpenKey = openKeys.find((key) => openedMenuKeys.indexOf(key) === -1);
+  const onOpenChange: MenuProps["onOpenChange"] = (
+    openKeys: string[]
+  ): void => {
+    const currentOpenKey = openKeys.find(
+      (key) => openedMenuKeys.indexOf(key) === -1
+    );
 
     // Open
     if (currentOpenKey !== undefined) {
-      const repeatIndex = openKeys.
-        filter((key) => key !== currentOpenKey).
-        findIndex((key) => levelKeys[key] === levelKeys[currentOpenKey]);
+      const repeatIndex = openKeys
+        .filter((key) => key !== currentOpenKey)
+        .findIndex((key) => levelKeys[key] === levelKeys[currentOpenKey]);
 
       setOpenedMenuKeys(
-        openKeys.
+        openKeys
           // Remove repeat key
-          filter((_, index) => index !== repeatIndex).
+          .filter((_, index) => index !== repeatIndex)
           // Remove current level all child
-          filter((key) => levelKeys[key] <= levelKeys[currentOpenKey]),
+          .filter((key) => levelKeys[key] <= levelKeys[currentOpenKey])
       );
     } else {
-
       // Close
       setOpenedMenuKeys(openKeys);
     }
