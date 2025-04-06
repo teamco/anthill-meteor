@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { MenuProps } from "antd";
 import {
   AppstoreAddOutlined,
@@ -8,7 +8,7 @@ import {
   UnorderedListOutlined,
 } from "@ant-design/icons";
 import { MongoAbility } from "@casl/ability/dist/types";
-import { NavigateFunction, PathMatch } from "react-router-dom";
+import { NavigateFunction, PathMatch, useLocation } from "react-router-dom";
 
 import { t, TIntl } from "/imports/utils/i18n.util";
 
@@ -44,17 +44,23 @@ export const menuItems = (
   const dWidgets = ability.cannot("read", "Widgets");
   const dUserLogs = ability.cannot("read", "UserLogs");
 
-  /**
-   * Generate a menu item based on the given key, label, icon, path and disabled parameter.
-   * The menu item will be a link that calls the given history function when clicked, and
-   * will be disabled if the disabled parameter is true.
-   * @param {string} key - The key of the menu item.
-   * @param {string} label - The label of the menu item.
-   * @param {React.ReactNode} icon - The icon of the menu item.
-   * @param {string} path - The path that the link should link to.
-   * @param {boolean} disabled - Whether the menu item should be disabled.
-   * @returns {MenuItem} The generated menu item.
-   */
+  const _childLabel = (label: string, path: string): React.ReactNode => (
+    <a
+      href={path}
+      rel="noopener noreferrer"
+      onClick={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        history(path);
+
+        setDrawerPanelOpen(false);
+      }}
+    >
+      {t(intl, label)}
+    </a>
+  );
+
   const _child = (
     key: string,
     label: string,
@@ -65,22 +71,7 @@ export const menuItems = (
     key,
     icon,
     disabled,
-    label: (
-      <a
-        href={path}
-        rel="noopener noreferrer"
-        onClick={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-
-          history(path);
-
-          setDrawerPanelOpen(false);
-        }}
-      >
-        {t(intl, label)}
-      </a>
-    ),
+    label: _childLabel(label, path),
   });
 
   return [
@@ -170,7 +161,7 @@ const getLevelKeys = (items1: LevelKeysProps[]): Record<string, number> => {
  * @returns {string[]} The selected menu item keys.
  */
 const getSelectedKeys = (mItems: MenuItem[]): string[] => {
-  const { pathname } = window.location;
+  const { pathname } = useLocation();
 
   const replaceMatchers = (path: string): string =>
     path === "/dashboard" ? path : path.replace(/\/dashboard/, "");
@@ -264,31 +255,32 @@ export const useMenu = (
    * When a menu item is closed, it will add all of its child keys to the stateOpenKeys.
    * @return {void} No return value.
    */
-  const onOpenChange: MenuProps["onOpenChange"] = (
-    openKeys: string[]
-  ): void => {
-    const currentOpenKey = openKeys.find(
-      (key) => openedMenuKeys.indexOf(key) === -1
-    );
-
-    // Open
-    if (currentOpenKey !== undefined) {
-      const repeatIndex = openKeys
-        .filter((key) => key !== currentOpenKey)
-        .findIndex((key) => levelKeys[key] === levelKeys[currentOpenKey]);
-
-      setOpenedMenuKeys(
-        openKeys
-          // Remove repeat key
-          .filter((_, index) => index !== repeatIndex)
-          // Remove current level all child
-          .filter((key) => levelKeys[key] <= levelKeys[currentOpenKey])
+  const onOpenChange: MenuProps["onOpenChange"] = useCallback(
+    (openKeys: string[]): void => {
+      const currentOpenKey = openKeys.find(
+        (key) => openedMenuKeys.indexOf(key) === -1
       );
-    } else {
-      // Close
-      setOpenedMenuKeys(openKeys);
-    }
-  };
+
+      // Open
+      if (currentOpenKey !== undefined) {
+        const repeatIndex = openKeys
+          .filter((key) => key !== currentOpenKey)
+          .findIndex((key) => levelKeys[key] === levelKeys[currentOpenKey]);
+
+        setOpenedMenuKeys(
+          openKeys
+            // Remove repeat key
+            .filter((_, index) => index !== repeatIndex)
+            // Remove current level all child
+            .filter((key) => levelKeys[key] <= levelKeys[currentOpenKey])
+        );
+      } else {
+        // Close
+        setOpenedMenuKeys(openKeys);
+      }
+    },
+    [levelKeys, openedMenuKeys]
+  );
 
   return { mItems, selectedMenuKeys, openedMenuKeys, onOpenChange };
 };

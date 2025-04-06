@@ -31,4 +31,5 @@ export type TSplitter = {
   parentId?: string;
   items?: TSplitterItem[];
   layout?: TSplitterLayout;
+  size?: number | string;
 };

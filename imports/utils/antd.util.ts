@@ -72,13 +72,24 @@ export const replacePanel = (
   replacement: TSplitter,
   layout?: TSplitterLayout
 ): TSplitter => {
-  const updatedItems = findPanel(splitter, targetId, (item: TSplitterItem) => {
+  let panelFound = false;
+  
+  if (!targetId || targetId.trim() === '') {
+    throw new Error('Panel error: targetId must be a non-empty string');
+  }
+
+  const updatedItems: TSplitterItem[] = findPanel(splitter, targetId, (item: TSplitterItem) => {
     if (item) {
+      panelFound = true;
       return { ...replacement, layout } as TSplitterItem;
     }
 
     return item;
   });
+
+  if (!panelFound) {
+    console.warn(`Panel with targetId '${targetId}' not found.`);
+  }
 
   return { ...splitter, items: updatedItems as TSplitterItem[] };
 };
