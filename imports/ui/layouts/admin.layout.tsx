@@ -1,6 +1,6 @@
 import React, { FC, JSX, useEffect, useState } from "react";
 import { ConfigProvider, Layout, message, Modal, notification } from "antd";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useNavigate } from "@tanstack/react-router";
 import { useIntl } from "react-intl";
 import { useTracker } from "meteor/react-meteor-data";
 
@@ -25,13 +25,17 @@ import "./admin.layout.module.less";
 
 const { Header, Footer, Content } = Layout;
 
+type TProps = {
+  children: string | JSX.Element | JSX.Element[]
+}
+
 /**
  * @description The main layout for the admin pages
  * @returns {JSX.Element} The main layout for the admin pages
  */
-const AdminLayout: FC = (): JSX.Element => {
+const AdminLayout: FC<TProps> = (): JSX.Element => {
   const intl: TIntl = useIntl();
-  const history = useNavigate();
+  const navigate = useNavigate();
 
   const [ability, setAbility] = useState(defineAbilityFor(Meteor.user()));
   const [drawerPanelOpen, setDrawerPanelOpen] = useState(false);
@@ -65,7 +69,7 @@ const AdminLayout: FC = (): JSX.Element => {
   const menuProps = useMenu(
     intl,
     ability,
-    history,
+    navigate,
     drawerPanelOpen,
     setDrawerPanelOpen
   );

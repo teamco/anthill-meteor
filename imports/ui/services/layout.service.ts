@@ -23,7 +23,8 @@ export const deleteLayout = (_id: string, intl: TIntl, handleRefresh: () => void
         catchWarnMsg({
           errorType: 'warning',
           message: t(intl, 'error.warningMsg'),
-          error: 'Error 400'
+          error: 'Error 400',
+          name: "deleteLayout"
         });
       }
     }).catch(catchErrorMsg)

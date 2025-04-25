@@ -1,7 +1,7 @@
 import { Meteor } from "meteor/meteor";
 
 import { WidgetsCollection } from "/imports/collections/widgets.collection";
-import { TPaginateProps } from "/imports/config/types";
+import { TPaginateProps, TRouterTypes } from '/imports/config/types';
 
 import { paginate } from "../generics/paginate";
 
@@ -19,7 +19,7 @@ Meteor.methods({
       Collection: WidgetsCollection as Mongo.Collection<Document, Document>,
       args: { current, pageSize, sort },
       log: {
-        location: { pathname: '/dashboard/widgets' },
+        location: { pathname: TRouterTypes.DASHBOARD_WIDGETS },
         api: {
           method: 'widgetsPaginate',
           params: { current, pageSize, sort }
@@ -36,7 +36,7 @@ Meteor.methods({
    */
   widgetInsert: (doc: object): Promise<string> => {
     const data = {
-      location: { pathname: '/dashboard/widgets' },
+      location: { pathname: TRouterTypes.DASHBOARD_WIDGETS },
       api: {
         method: 'widgetInsert',
         params: { ...doc }
@@ -60,7 +60,7 @@ Meteor.methods({
     const widget = await WidgetsCollection.findOneAsync({ _id });
 
     const data = {
-      location: { pathname: `/dashboard/widgets/${_id}` },
+      location: { pathname: `${TRouterTypes.DASHBOARD_WIDGETS}/${_id}` },
       api: {
         method: 'widgetUpdate',
         params: {
@@ -74,7 +74,7 @@ Meteor.methods({
       },
       navType: 'API'
     }
-    
+
     Meteor.call('userLogInsert', { ...data });
 
     if (widget) {
@@ -91,7 +91,7 @@ Meteor.methods({
    */
   widgetRemove: ({ _id }: { _id: string }): Promise<number> => {
     const data = {
-      location: { pathname: '/dashboard/widgets' },
+      location: { pathname: TRouterTypes.DASHBOARD_WIDGETS },
       api: {
         method: 'widgetRemove',
         params: { _id }
@@ -103,4 +103,4 @@ Meteor.methods({
 
     return WidgetsCollection.removeAsync({ _id });
   },
-}); 
+});

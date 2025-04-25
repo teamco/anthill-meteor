@@ -14,7 +14,7 @@ import {
   cleanPanel,
   deletePanel,
   replacePanel,
-} from "/imports/utils/antd.util";
+} from "../../../../../../utils/splitter.util";
 
 import {
   TSplitter,
@@ -23,13 +23,14 @@ import {
 } from "/imports/config/types";
 
 import "./environment.preview.module.less";
+
 // import { splitterMock } from "./__tests__/splitter.mock";
 
 const DEFAULT_UUID = uuidv4();
 const DEFAULT_LAYOUT: TSplitterLayout = "vertical";
 
-type TAddPanelFn = (direction: string, uuid: string) => void;
 type TDirection = "up" | "down" | "left" | "right";
+type TAddPanelFn = (direction: TDirection, uuid: string) => void;
 
 /**
  * A component that renders a Splitter component that can be edited by adding new panels.
@@ -105,6 +106,14 @@ const EnvironmentPreview: React.FC = (): JSX.Element => {
     direction: TDirection,
     parentId: string
   ): void => {
+		if (!parentId || parentId.trim() === '') {
+      modalApi.error({
+        title: t(intl, "error.invalidParent"),
+        content: t(intl, "error.invalidParentMessage"),
+      });
+      return;
+    }
+		
     const nextId = uuidv4();
 
     /**
@@ -245,8 +254,8 @@ const EnvironmentPreview: React.FC = (): JSX.Element => {
     });
 
     setSplitter((prevSplitter) => {
-      // Create a deep copy to avoid mutation
-      const updatedSplitter = JSON.parse(JSON.stringify(prevSplitter));
+      // Create a deep copy to avoid mutation using structured clone
+      const updatedSplitter = structuredClone(prevSplitter);
 
       // Function to find a node with matching items (by UUID)
       const findAndUpdateNodeByItems = (
@@ -313,7 +322,7 @@ const EnvironmentPreview: React.FC = (): JSX.Element => {
       console.debug("Updated splitter structure:", updatedSplitter);
       return updatedSplitter;
     });
-  }, []);
+  }, [splitter]);
 
   /**
    * A recursive function that renders a Splitter component based on the given node and layout.

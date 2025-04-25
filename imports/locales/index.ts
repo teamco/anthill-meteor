@@ -5,7 +5,7 @@ import * as enUs from './en-US';
  * @type {Object}
  */
 export const localeData: {
-    'en-US': any;
+    'en-US': typeof enUs.default;
 } = {
   'en-US': enUs.default
 };

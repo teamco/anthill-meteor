@@ -1,18 +1,20 @@
-import React, { useCallback, useEffect, useState } from "react";
-import { MenuProps } from "antd";
+import React, { useCallback, useEffect, useState } from 'react';
+import { MenuProps } from 'antd';
 import {
   AppstoreAddOutlined,
   BlockOutlined,
   BookOutlined,
   SlidersOutlined,
   UnorderedListOutlined,
-} from "@ant-design/icons";
-import { MongoAbility } from "@casl/ability/dist/types";
-import { NavigateFunction, PathMatch, useLocation } from "react-router-dom";
+} from '@ant-design/icons';
+import { MongoAbility } from '@casl/ability/dist/types';
+import { NavigateOptions, useLocation } from '@tanstack/react-router';
 
-import { t, TIntl } from "/imports/utils/i18n.util";
+import { t, TIntl } from '/imports/utils/i18n.util';
+import { TRouterTypes } from '/imports/config/types';
 
-type MenuItem = Required<MenuProps>["items"][number];
+type NavigateFunction = (options: NavigateOptions) => Promise<void>;
+type MenuItem = Required<MenuProps>['items'][number];
 
 interface LevelKeysProps {
   key?: string;
@@ -23,36 +25,36 @@ interface LevelKeysProps {
 }
 
 /**
- * Generates an array of menu items based on the given i18n object, ability and history function.
+ * Generates an array of menu items based on the given i18n object, ability and navigate function.
  * The ability object is used to determine which menu items should be disabled.
- * The history function is used to navigate to the correct page when a menu item is clicked.
+ * The navigate function is used to navigate to the correct page when a menu item is clicked.
  * @param {TIntl} intl - The i18n object.
  * @param {MongoAbility} ability - The ability object.
- * @param {NavigateFunction} history - The history function.
+ * @param navigate - The navigate function.
  * @param {React.Dispatch<React.SetStateAction<boolean>>} setDrawerPanelOpen - Function to set the drawer panel open state.
  * @returns {MenuItem[]} An array of menu items.
  */
 export const menuItems = (
   intl: TIntl,
   ability: MongoAbility,
-  history: NavigateFunction,
-  setDrawerPanelOpen: React.Dispatch<React.SetStateAction<boolean>>
+  navigate: NavigateFunction,
+  setDrawerPanelOpen: React.Dispatch<React.SetStateAction<boolean>>,
 ): MenuItem[] => {
-  const dPages = ability.cannot("read", "Pages");
-  const dDashboard = ability.cannot("read", "Dashboard");
-  const dEnvironments = ability.cannot("read", "Environments");
-  const dWidgets = ability.cannot("read", "Widgets");
-  const dUserLogs = ability.cannot("read", "UserLogs");
+  const dPages = ability.cannot('read', 'Pages');
+  const dDashboard = ability.cannot('read', 'Dashboard');
+  const dEnvironments = ability.cannot('read', 'Environments');
+  const dWidgets = ability.cannot('read', 'Widgets');
+  const dUserLogs = ability.cannot('read', 'UserLogs');
 
   const _childLabel = (label: string, path: string): React.ReactNode => (
     <a
       href={path}
       rel="noopener noreferrer"
-      onClick={(e) => {
+      onClick={async (e) => {
         e.preventDefault();
         e.stopPropagation();
 
-        history(path);
+        await navigate({ to: path });
 
         setDrawerPanelOpen(false);
       }}
@@ -66,7 +68,7 @@ export const menuItems = (
     label: string,
     icon: React.ReactNode,
     path: string,
-    disabled: boolean
+    disabled: boolean,
   ): MenuItem => ({
     key,
     icon,
@@ -76,45 +78,45 @@ export const menuItems = (
 
   return [
     {
-      key: "1",
+      key: '1',
       disabled: dPages,
       icon: <BookOutlined />,
-      label: t(intl, "menu.pages"),
+      label: t(intl, 'menu.pages'),
       children: [
         {
           ..._child(
-            "10",
-            "dashboard.title",
+            '10',
+            'dashboard.title',
             <BlockOutlined />,
-            "/dashboard",
-            dDashboard
+            TRouterTypes.DASHBOARD,
+            dDashboard,
           ),
         },
         {
           ..._child(
-            "11",
-            "dashboard.environments.title",
+            '11',
+            'dashboard.environments.title',
             <SlidersOutlined />,
-            "/dashboard/environments",
-            dEnvironments
+            TRouterTypes.DASHBOARD_ENVIRONMENTS,
+            dEnvironments,
           ),
         },
         {
           ..._child(
-            "12",
-            "dashboard.widgets.title",
+            '12',
+            'dashboard.widgets.title',
             <AppstoreAddOutlined />,
-            "/dashboard/widgets",
-            dWidgets
+            TRouterTypes.DASHBOARD_WIDGETS,
+            dWidgets,
           ),
         },
         {
           ..._child(
-            "13",
-            "dashboard.userLogs.title",
+            '13',
+            'dashboard.userLogs.title',
             <UnorderedListOutlined />,
-            "/dashboard/userLogs",
-            dUserLogs
+            TRouterTypes.DASHBOARD_USER_LOGS,
+            dUserLogs,
           ),
         },
       ],
@@ -164,7 +166,7 @@ const getSelectedKeys = (mItems: MenuItem[]): string[] => {
   const { pathname } = useLocation();
 
   const replaceMatchers = (path: string): string =>
-    path === "/dashboard" ? path : path.replace(/\/dashboard/, "");
+    path === TRouterTypes.DASHBOARD ? path : path.replace(/\/dashboard/, '');
 
   /**
    * Recursively finds the selected menu item based on the given path and parent menu item keys.
@@ -181,51 +183,51 @@ const getSelectedKeys = (mItems: MenuItem[]): string[] => {
   const matcher = (
     item: MenuItem,
     path: string,
-    parentKeys: string[] | null = null
-  ): PathMatch<any> | string | readonly string[] | boolean => {
-    if (item["children"]) {
-      const current = item["children"].find((child: MenuItem) =>
-        matcher(child, path, [...parentKeys, item.key.toString()])
+    parentKeys: string[] | null = null,
+  ): boolean | any[] => {
+    if (item['children']) {
+      const current = item['children'].find((child: MenuItem) =>
+        matcher(child, path, [...parentKeys, item.key.toString()]),
       );
       return current ? [...parentKeys, item.key.toString(), current.key] : null;
     }
 
-    const _path = replaceMatchers(item["label"]["props"]["href"]);
+    const _path = replaceMatchers(item['label']['props']['href']);
     const _pathname = replaceMatchers(pathname);
 
     return _pathname.includes(_path);
   };
 
-  return mItems.flatMap((item: MenuItem) =>
-    matcher(item, pathname, [])
-  ) as string[];
+  return mItems.flatMap((item: MenuItem) => matcher(item, pathname, []),
+  ) as unknown as string[];
 };
 
 type TUseMenu = {
   mItems: MenuItem[];
   selectedMenuKeys: string[];
   openedMenuKeys: string[];
-  onOpenChange: MenuProps["onOpenChange"];
+  onOpenChange: MenuProps['onOpenChange'];
 };
 
 /**
  * Returns the menu items, selected menu item keys, opened menu item keys and the onOpenChange handler.
- * The menu items are generated based on the given i18n object, ability and history function.
+ * The menu items are generated based on the given i18n object, ability and navigate function.
  * The selected menu item keys are determined based on the current pathname.
  * The opened menu item keys are determined based on the selected menu item keys.
  * The onOpenChange handler is used to handle the openChange event.
  * @param {TIntl} intl - The i18n object.
  * @param {MongoAbility} ability - The ability object.
- * @param {NavigateFunction} history - The history function.
+ * @param {NavigateFunction} navigate - The navigate function.
  * @param {boolean} isOpen - Whether the menu is open.
+ * @param setDrawerPanelOpen
  * @returns {TUseMenu}
  */
 export const useMenu = (
   intl: TIntl,
   ability: MongoAbility,
-  history: NavigateFunction,
+  navigate: NavigateFunction,
   isOpen: boolean,
-  setDrawerPanelOpen: React.Dispatch<React.SetStateAction<boolean>>
+  setDrawerPanelOpen: React.Dispatch<React.SetStateAction<boolean>>,
 ): TUseMenu => {
   const [mItems, setMItems] = useState([]);
   const [selectedMenuKeys, setSelectedMenuKeys] = useState([]);
@@ -234,8 +236,8 @@ export const useMenu = (
   const { pathname } = window.location;
 
   useEffect(() => {
-    isOpen && setMItems(menuItems(intl, ability, history, setDrawerPanelOpen));
-  }, [intl, ability, history, isOpen]);
+    isOpen && setMItems(menuItems(intl, ability, navigate, setDrawerPanelOpen));
+  }, [intl, ability, navigate, isOpen]);
 
   const levelKeys = getLevelKeys(mItems as LevelKeysProps[]);
 
@@ -255,10 +257,10 @@ export const useMenu = (
    * When a menu item is closed, it will add all of its child keys to the stateOpenKeys.
    * @return {void} No return value.
    */
-  const onOpenChange: MenuProps["onOpenChange"] = useCallback(
+  const onOpenChange: MenuProps['onOpenChange'] = useCallback(
     (openKeys: string[]): void => {
       const currentOpenKey = openKeys.find(
-        (key) => openedMenuKeys.indexOf(key) === -1
+        (key) => openedMenuKeys.indexOf(key) === -1,
       );
 
       // Open
@@ -272,14 +274,14 @@ export const useMenu = (
             // Remove repeat key
             .filter((_, index) => index !== repeatIndex)
             // Remove current level all child
-            .filter((key) => levelKeys[key] <= levelKeys[currentOpenKey])
+            .filter((key) => levelKeys[key] <= levelKeys[currentOpenKey]),
         );
       } else {
         // Close
         setOpenedMenuKeys(openKeys);
       }
     },
-    [levelKeys, openedMenuKeys]
+    [levelKeys, openedMenuKeys],
   );
 
   return { mItems, selectedMenuKeys, openedMenuKeys, onOpenChange };

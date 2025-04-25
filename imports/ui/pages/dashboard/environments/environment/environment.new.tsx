@@ -3,10 +3,10 @@ import { Button, Col, Form, FormProps, Input, Row } from "antd";
 
 import { I18nContext } from "/imports/ui/context/i18n.context";
 
+import { onModalCancel } from '/imports/utils/modal.util';
 import { t } from "/imports/utils/i18n.util";
 import { onFinishFailed, onValidate, placeholderField, requiredField, TFieldRule } from "/imports/utils/form.util";
 import { layout } from '/imports/utils/layout.util';
-import { onModalCancel } from "/imports/utils/antd.util";
 import { stub } from "/imports/utils/functions.util";
 
 import '../environments.module.less';
@@ -25,13 +25,13 @@ type TProps = {
  * @component EnvironmentNew
  * @description A form component that allows users to create a new environment by providing a name and type.
  * The form includes validation rules for each field and handles submission and cancellation actions.
- * 
+ *
  * @param {TProps} props - The props for the component
  * @param {boolean} props.disabled - Determines if the form inputs should be disabled
  * @param {function} [props.onSave] - Callback function to handle the form submission with the entered values
- * 
+ *
  * @returns {JSX.Element} A JSX element representing the environment creation form
- * 
+ *
  * @example
  * <EnvironmentNew onSave={(values) => console.log(values)} disabled={false} />
  */

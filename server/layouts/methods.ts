@@ -1,6 +1,6 @@
 import { Meteor } from "meteor/meteor";
 import { LayoutsCollection } from "/imports/collections/layouts.collection";
-import { TPaginateProps } from "/imports/config/types";
+import { TPaginateProps, TRouterTypes, TLayout } from '/imports/config/types';
 
 import { paginate } from "../generics/paginate";
 
@@ -13,12 +13,12 @@ Meteor.methods({
    * @param {Object} param - An object with two properties: current (the current page number) and pageSize (the number of items per page).
    * @returns {TLayout[]} An array of Layout objects.
    */
-  layoutsPaginate: ({ current = 1, pageSize = 10, sort }: TPaginateProps): any[] => {
+  layoutsPaginate: ({ current = 1, pageSize = 10, sort }: TPaginateProps): TLayout[] => {
     return paginate({
       Collection: LayoutsCollection as Mongo.Collection<Document, Document>,
       args: { current, pageSize, sort },
       log: {
-        location: { pathname: '/dashboard/layouts' },
+        location: { pathname: TRouterTypes.DASHBOARD_LAYOUTS },
         api: {
           method: 'layoutsPaginate',
           params: { current, pageSize, sort }
@@ -35,7 +35,7 @@ Meteor.methods({
    */
   layoutInsert: (doc: object): Promise<string> => {
     const data = {
-      location: { pathname: '/dashboard/layouts' },
+      location: { pathname: TRouterTypes.DASHBOARD_LAYOUTS },
       api: {
         method: 'layoutInsert',
         params: { ...doc }
@@ -59,7 +59,7 @@ Meteor.methods({
     const layout = await LayoutsCollection.findOneAsync({ _id });
 
     const data = {
-      location: { pathname: `/dashboard/layouts/${_id}` },
+      location: { pathname: `${TRouterTypes.DASHBOARD_LAYOUTS}/${_id}` },
       api: {
         method: 'layoutUpdate',
         params: {
@@ -73,7 +73,7 @@ Meteor.methods({
       },
       navType: 'API'
     }
-    
+
     Meteor.call('userLogInsert', { ...data });
 
     if (layout) {
@@ -90,7 +90,7 @@ Meteor.methods({
    */
   layoutRemove: ({ _id }: { _id: string }): Promise<number> => {
     const data = {
-      location: { pathname: '/dashboard/layouts' },
+      location: { pathname: TRouterTypes.DASHBOARD_LAYOUTS },
       api: {
         method: 'layoutRemove',
         params: { _id }
@@ -102,4 +102,4 @@ Meteor.methods({
 
     return LayoutsCollection.removeAsync({ _id });
   },
-}); 
+});

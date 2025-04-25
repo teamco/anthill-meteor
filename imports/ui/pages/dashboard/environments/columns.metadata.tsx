@@ -9,7 +9,7 @@ import { IMetadata, TColumns, TLayout, TStatus } from "/imports/config/types";
 
 import { StatusComponent } from "/imports/ui/components/Status/status.component";
 
-import { indexColumn } from "/imports/utils/antd.util";
+import { indexColumn } from "/imports/utils/table/table.util";
 import { tsToLocaleDateTime } from "/imports/utils/timestamp.util";
 import { columnSorter } from "/imports/utils/table/sorter.util";
 import { TFilters, TSorts } from "/imports/ui/hooks/table.hook";

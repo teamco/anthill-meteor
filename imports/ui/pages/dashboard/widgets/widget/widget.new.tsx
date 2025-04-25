@@ -6,7 +6,7 @@ import { I18nContext } from "/imports/ui/context/i18n.context";
 import { t } from "/imports/utils/i18n.util";
 import { placeholderField, requiredField, TFieldRule } from "/imports/utils/form.util";
 import { layout } from '/imports/utils/layout.util';
-import { onModalCancel } from "/imports/utils/antd.util";
+import { onModalCancel } from '/imports/utils/modal.util';
 import { stub } from "/imports/utils/functions.util";
 
 import '../widgets.module.less';
@@ -25,13 +25,13 @@ type TProps = {
  * @component WidgetNew
  * @description A form component that allows users to create a new widget by providing a name and type.
  * The form includes validation rules for each field and handles submission and cancellation actions.
- * 
+ *
  * @param {TProps} props - The props for the component
  * @param {boolean} props.disabled - Determines if the form inputs should be disabled
  * @param {function} [props.onSave] - Callback function to handle the form submission with the entered values
- * 
+ *
  * @returns {JSX.Element} A JSX element representing the widget creation form
- * 
+ *
  * @example
  * <WidgetNew onSave={(values) => console.log(values)} disabled={false} />
  */
@@ -109,7 +109,7 @@ export const WidgetNew: React.FC<TProps> = (props): JSX.Element => {
         onFinishFailed={onFinishFailed}
         autoComplete={"off"}
       >
-        <Row gutter={[24, 12]}>      
+        <Row gutter={[24, 12]}>
           <Col {...layout.halfColumn}>
             <Form.Item<TField>
               label={nameMsg}

@@ -16,7 +16,7 @@ import Page from "/imports/ui/components/Page/page.component";
 import { useTable } from "/imports/ui/hooks/table.hook";
 
 import { t } from "/imports/utils/i18n.util";
-import { indexable } from "/imports/utils/antd.util";
+import { indexable } from "../../../../utils/table/table.util";
 
 import { metadataColumns } from "./columns.metadata";
 

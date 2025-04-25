@@ -3,10 +3,10 @@ import { Button, Descriptions, Form, FormProps, Table } from "antd";
 import { AppstoreAddOutlined, BlockOutlined, FormOutlined } from "@ant-design/icons";
 import { TabsProps } from "antd/lib/tabs";
 import { ColumnsType, TableProps } from "antd/es/table";
-import { useParams } from "react-router-dom";
+import { useParams } from "@tanstack/react-router";
 
 import { t } from "/imports/utils/i18n.util";
-import { indexable } from "/imports/utils/antd.util";
+import { indexable } from "../../../../../../utils/table/table.util";
 import { onFinishFailed, onValidate } from "/imports/utils/form.util";
 import { TUseTable, useTable } from "/imports/ui/hooks/table.hook";
 

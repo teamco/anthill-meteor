@@ -1,78 +1,83 @@
-import React, { Dispatch, FC, JSX, SetStateAction } from 'react';
-import { LogoutOutlined, RightSquareTwoTone, SettingOutlined } from '@ant-design/icons';
-import { useNavigate } from 'react-router-dom';
+import React, { Dispatch, FC, JSX, SetStateAction } from "react";
+import {
+  LogoutOutlined,
+  RightSquareTwoTone,
+  SettingOutlined,
+} from "@ant-design/icons";
+import { useNavigate } from "@tanstack/react-router";
 import { useTracker } from "meteor/react-meteor-data";
-import { Dropdown, MenuProps } from 'antd';
-import { useIntl } from 'react-intl';
-import classnames from 'classnames';
+import { Dropdown, MenuProps } from "antd";
+import { useIntl } from "react-intl";
+import classnames from "classnames";
 
-import { t, TIntl } from '/imports/utils/i18n.util';
+import { t, TIntl } from "/imports/utils/i18n.util";
 
-import './layoutHeader.module.less';
+import "./layoutHeader.module.less";
 
 type THeaderProps = {
   title: string;
-  onMenuOpen: Dispatch<SetStateAction<boolean>>
-}
+  onMenuOpen: Dispatch<SetStateAction<boolean>>;
+};
 
 interface IUserProfile extends Meteor.User {
   profile: {
     name: string;
     picture: string;
-  }
+  };
 }
 
 /**
  * A functional component that renders a layout header
- * 
+ *
  * @param {{ title: string, onMenuOpen: Dispatch<SetStateAction<boolean>> }} props - The component props
  * @param {string} props.title - The title to be displayed as the header
  * @param {Dispatch<SetStateAction<boolean>>} props.onMenuOpen - A callback to open the menu
- * 
+ *
  * @returns {JSX.Element} The rendered header component
  */
-export const LayoutHeader: FC<THeaderProps> = (props: { title: string; onMenuOpen: Dispatch<SetStateAction<boolean>>; }): JSX.Element => {
+export const LayoutHeader: FC<THeaderProps> = (props: {
+  title: string;
+  onMenuOpen: Dispatch<SetStateAction<boolean>>;
+}): JSX.Element => {
   const { title, onMenuOpen } = props;
 
   const intl: TIntl = useIntl();
-  const history = useNavigate();
+  const navigate = useNavigate();
 
   const user: IUserProfile = useTracker(() => Meteor.user()) as IUserProfile;
 
-  const items: MenuProps['items'] = [
+  const items: MenuProps["items"] = [
     {
-      key: 'name',
+      key: "name",
       label: user?.profile?.name,
-      disabled: true
+      disabled: true,
     },
     {
-      type: 'divider',
+      type: "divider",
     },
     {
-      key: 'profile',
-      label: t(intl, 'profile'),
-      icon: <SettingOutlined />
+      key: "profile",
+      label: t(intl, "profile"),
+      icon: <SettingOutlined />,
     },
     {
-      key: 'signout',
+      key: "signout",
       label: (
-        <div onClick={() => Meteor.logout()}>
-          {t(intl, 'auth.signOut')}
-        </div>
+        <div onClick={() => Meteor.logout()}>{t(intl, "auth.signOut")}</div>
       ),
-      icon: <LogoutOutlined />
+      icon: <LogoutOutlined />,
     },
   ];
 
   return (
-    <div className='lH'>
+    <div className="lH">
       <div>
         <RightSquareTwoTone onClick={() => onMenuOpen(true)} />
-        <h2 onClick={() => history('/dashboard')}>{title}</h2>
+        <h2 onClick={() => navigate({ to: "/dashboard" })}>{title}</h2>
       </div>
-      <div className='lHA'>
-        <Dropdown menu={{ items }} trigger={['click']}>
-          <div className={classnames('avatar', { success: navigator.onLine })}>
+      <div className="lHA">
+        <Dropdown menu={{ items }} trigger={["click"]}>
+          <div className={classnames("avatar", { success: navigator.onLine })}>
             <img src={user?.profile?.picture} alt={user?.profile?.name} />
             <div />
           </div>

@@ -1,12 +1,12 @@
 import React, { JSX } from "react";
 import { TableProps } from "antd/es/table";
-import { Link } from "react-router-dom";
+import { Link } from "@tanstack/react-router";
 
 import { IDataType } from "./userLogs.page";
 
 import { IMetadata, TColumns } from "/imports/config/types";
 
-import { indexColumn } from "/imports/utils/antd.util";
+import { indexColumn } from "/imports/utils/table/table.util";
 import { tsToLocaleDateTime } from "/imports/utils/timestamp.util";
 import { columnSorter } from "/imports/utils/table/sorter.util";
 import { TFilters, TSorts } from "/imports/ui/hooks/table.hook";

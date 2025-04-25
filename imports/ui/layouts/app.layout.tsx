@@ -1,6 +1,6 @@
 import React, { FC, JSX } from 'react';
 import { Layout } from 'antd';
-import { Outlet } from 'react-router-dom';
+import { Outlet } from '@tanstack/react-router';
 
 // import './app.layout.module.less';
 

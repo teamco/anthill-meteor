@@ -1,7 +1,7 @@
 import { Meteor } from "meteor/meteor";
 
 import { EnvironmentsCollection } from "/imports/collections/environments.collection";
-import { TEnvironment, TPaginateProps } from "/imports/config/types";
+import { TEnvironment, TPaginateProps, TRouterTypes } from '/imports/config/types';
 
 import { paginate } from "../generics/paginate";
 
@@ -19,7 +19,7 @@ Meteor.methods({
       Collection: EnvironmentsCollection as Mongo.Collection<Document, Document>,
       args: { current, pageSize, sort },
       log: {
-        location: { pathname: '/dashboard/environments' },
+        location: { pathname: TRouterTypes.DASHBOARD_ENVIRONMENTS },
         api: {
           method: 'environmentsPaginate',
           params: { current, pageSize, sort }
@@ -36,7 +36,7 @@ Meteor.methods({
    */
   environmentInsert: (doc: object): Promise<string> => {
     const data = {
-      location: { pathname: '/dashboard/environments' },
+      location: { pathname: TRouterTypes.DASHBOARD_ENVIRONMENTS },
       api: {
         method: 'environmentInsert',
         params: { ...doc }
@@ -61,7 +61,7 @@ Meteor.methods({
     const environment = await EnvironmentsCollection.findOneAsync({ _id });
 
     const data = {
-      location: { pathname: `/dashboard/environments/${_id}` },
+      location: { pathname: `${TRouterTypes.DASHBOARD_ENVIRONMENTS}/${_id}` },
       api: {
         method: 'environmentUpdate',
         params: {
@@ -75,7 +75,7 @@ Meteor.methods({
       },
       navType: 'API'
     }
-    
+
     Meteor.call('userLogInsert', { ...data });
 
     if (environment) {
@@ -92,7 +92,7 @@ Meteor.methods({
    */
   environmentRemove: ({ _id }: { _id: string }): Promise<number> => {
     const data = {
-      location: { pathname: '/dashboard/environments' },
+      location: { pathname: TRouterTypes.DASHBOARD_ENVIRONMENTS },
       api: {
         method: 'environmentRemove',
         params: { _id }
@@ -104,4 +104,4 @@ Meteor.methods({
 
     return EnvironmentsCollection.removeAsync({ _id });
   },
-}); 
+});

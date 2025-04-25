@@ -18,40 +18,35 @@
     "@babel/runtime": "^7.27.0",
     "@casl/ability": "^6.7.3",
     "@casl/react": "^5.0.0",
-    "antd": "^5.24.5",
+    "@tanstack/react-router": "^1.117.1",
+    "@tanstack/react-router-devtools": "^1.117.1",
+    "@tanstack/router-cli": "^1.117.1",
+    "antd": "^5.24.8",
     "bcrypt": "^5.1.1",
-    "dotenv": "^16.4.7",
+    "dotenv": "^16.5.0",
     "gravatar": "^1.8.2",
     "lodash": "^4.17.21",
-    "meteor-node-stubs": "^1.2.14",
+    "meteor-node-stubs": "1.2.17",
     "qrcode": "^1.5.4",
     "react": "19.1.0",
     "react-dom": "^19.1.0",
-    "react-intl": "^7.1.10",
-    "react-router-dom": "6.30.0",
+    "react-intl": "^7.1.11",
     "speakeasy": "^2.0.0",
+    "uglify-js": "^3.19.3",
     "uuid": "^11.1.0",
     "zxcvbn": "^4.4.2"
   },
-  "devDependencies": {
-    "@swc/core": "^1.11.16",
-    "@types/css-modules": "^1.0.5",
-    "@types/meteor": "^2.9.8",
-    "@types/node": "^20.4.0",
-    "@types/react": "^19.1.0",
-    "@types/react-dom": "^19.1.0",
-    "@types/react-intl": "^3.0.0",
-    "@types/supports-color": "^10.0.0",
-    "@types/typescript": "^2.0.0",
-    "@types/uglify-js": "^3.17.5",
-    "@types/uuid": "^10.0.0",
-    "@types/webpack": "^5.28.5",
-    "css-loader": "^7.1.2",
-    "less": "^4.3.0",
-    "less-loader": "^12.2.0",
-    "style-loader": "^4.0.0",
-    "typescript": "^5.8.3",
-    "webpack": "^5.98.0"
+  "lint-staged": {
+    "*.{json,mdx}": "npx prettier --write",
+    "*.scss": [
+      "npx prettier --write",
+      "stylelint -f --fix --color --validate verbose"
+    ],
+    "*.{js,ts,jsx,tsx}": [
+      "npx prettier --write",
+      "nx affected --target=typecheck",
+      "eslint --fix"
+    ]
   },
   "meteor": {
     "mainModule": {
@@ -60,8 +55,32 @@
     },
     "testModule": "tests/main.js"
   },
-  "packageManager": "yarn@4.7.0",
+  "packageManager": "yarn@4.9.1",
   "engines": {
     "node": "^20.x"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^19.8.0",
+    "@commitlint/config-conventional": "^19.8.0",
+    "@typescript-eslint/eslint-plugin": "^8.31.0",
+    "@typescript-eslint/parser": "^8.31.0",
+    "eslint": "^9.25.1",
+    "eslint-config-prettier": "^10.1.2",
+    "eslint-import-resolver-typescript": "^4.3.4",
+    "eslint-plugin-import": "^2.31.0",
+    "eslint-plugin-jsdoc": "^50.6.11",
+    "eslint-plugin-json": "^4.0.1",
+    "eslint-plugin-jsx-a11y": "^6.10.2",
+    "eslint-plugin-mdx": "^3.4.1",
+    "eslint-plugin-prettier": "^5.2.6",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^15.5.1",
+    "stylelint": "^16.19.1",
+    "stylelint-config-standard-scss": "^14.0.0",
+    "stylelint-scss": "^6.11.1",
+    "vitest": "^3.1.2",
+    "vitest-canvas-mock": "^0.3.3"
   }
 }

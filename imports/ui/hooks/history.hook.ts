@@ -1,9 +1,9 @@
 import { useEffect, useMemo } from "react";
-import { NavigationType, useLocation, useNavigationType } from "react-router-dom";
+import { useLocation } from "@tanstack/react-router";
 
 /**
  * This hook is used to listen to route changes and write the history data to the server.
- * It uses the useLocation and useNavigationType hooks from react-router-dom to get the current location and navigation type.
+ * It uses the useLocation and useNavigationType hooks from @tanstack/react-router to get the current location and navigation type.
  * It then uses the useMemo hook to create a memoized object with the location and navigation type.
  * The useEffect hook is used to write the data to the server when the location or navigation type changes.
  * The data is written to the server with a call to the userLogInsert Meteor method.
@@ -14,9 +14,8 @@ import { NavigationType, useLocation, useNavigationType } from "react-router-dom
  */
 export const useHistoryListener = (): void => {
   const location = useLocation();
-  const navType: NavigationType = useNavigationType();
 
-  const data = useMemo(() => ({ location, navType }), [location.pathname, navType]);
+  const data = useMemo(() => ({ location }), [location.pathname]);
 
   useEffect(() => {
     const skipOn = [
@@ -24,11 +23,11 @@ export const useHistoryListener = (): void => {
       'errorLogs',
     ]
 
-    if (location.key !== "default" &&
+    if (location.pathname !== "default" &&
       !skipOn.find((path: string) => location.pathname.match(path)) &&
       window.location.hostname !== 'localhost') {
 
-      Meteor.call('userLogInsert', { ...data });
+      // Meteor.call('userLogInsert', { ...data });
     }
     
   }, [JSON.stringify(data)]);

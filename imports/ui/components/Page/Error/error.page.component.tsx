@@ -1,14 +1,14 @@
-import React, { JSX, memo, useContext } from 'react';
-import { Button, Result } from 'antd';
-import { ResultStatusType } from 'antd/es/result';
-import classnames from 'classnames';
-import { useNavigate } from 'react-router-dom';
+import React, { JSX, memo, useContext } from "react";
+import { Button, Result } from "antd";
+import { ResultStatusType } from "antd/es/result";
+import classnames from "classnames";
+import { useNavigate } from "@tanstack/react-router";
 
-import Loader from '/imports/ui/components/Loader/loader.component';
-import { Can } from '/imports/ui/components/Ability/can';
+import Loader from "/imports/ui/components/Loader/loader.component";
+import { Can } from "/imports/ui/components/Ability/can";
 
-import { t } from '/imports/utils/i18n.util';
-import { I18nContext } from '/imports/ui/context/i18n.context';
+import { t } from "/imports/utils/i18n.util";
+import { I18nContext } from "/imports/ui/context/i18n.context";
 
 type TErrorProps = {
   loading?: boolean;
@@ -29,7 +29,7 @@ type TErrorProps = {
  * <ErrorPage status={'warning'} subject={'pageWarning'} />
  */
 const ErrorPage = (props: TErrorProps): JSX.Element => {
-  const history = useNavigate();
+  const navigate = useNavigate();
   const intl = useContext(I18nContext);
 
   const {
@@ -37,32 +37,33 @@ const ErrorPage = (props: TErrorProps): JSX.Element => {
     subject,
     className,
     loading = false,
-    title = t(intl, 'error.warning'),
-    subTitle = t(intl, 'error.warningMsg')
+    title = t(intl, "error.warning"),
+    subTitle = t(intl, "error.warningMsg"),
   } = props;
-
 
   const { href } = window.location;
   const url = new URL(href);
-  const referrer = url.searchParams.get('referrer');
+  const referrer = url.searchParams.get("referrer");
 
   const extra = referrer ? (
-      <Button type={'default'} onClick={() => history(referrer)}>
-        {t(intl, 'actions.back')}
-      </Button>
+    <Button type={"default"} onClick={() => navigate({ to: referrer })}>
+      {t(intl, "actions.back")}
+    </Button>
   ) : null;
 
   const _error = (
-      <Can I={'read'} a={subject}>
-        <Loader loading={loading}/>
-        <div>
-          <Result extra={extra}
-                  status={status}
-                  title={title}
-                  subTitle={subTitle}
-                  className={classnames(subject, className)}/>
-        </div>
-      </Can>
+    <Can I={"read"} a={subject}>
+      <Loader loading={loading} />
+      <div>
+        <Result
+          extra={extra}
+          status={status}
+          title={title}
+          subTitle={subTitle}
+          className={classnames(subject, className)}
+        />
+      </div>
+    </Can>
   );
 
   return _error;

@@ -1,19 +1,19 @@
-import React, { JSX, useContext } from 'react';
-import { Button } from 'antd';
-import { EyeTwoTone } from '@ant-design/icons';
-import { useNavigate } from 'react-router-dom';
+import React, { JSX, useContext } from "react";
+import { Button } from "antd";
+import { EyeTwoTone } from "@ant-design/icons";
+import { useNavigate } from "@tanstack/react-router";
 
-import { Can } from '/imports/ui/components/Ability/can';
+import { Can } from "/imports/ui/components/Ability/can";
 
-import { I18nContext } from '/imports/ui/context/i18n.context';
+import { I18nContext } from "/imports/ui/context/i18n.context";
 
-import { t } from '/imports/utils/i18n.util';
-import { COLORS } from '/imports/utils/colors.util';
+import { t } from "/imports/utils/i18n.util";
+import { COLORS } from "/imports/utils/colors.util";
 
 type TVersionAction = {
   version: string;
   entityId: string;
-  type?: 'primary' | 'dashed' | 'text';
+  type?: "primary" | "dashed" | "text";
   showLabel?: boolean;
   isLoading?: boolean;
   disabled?: boolean;
@@ -35,15 +35,15 @@ type TVersionAction = {
  */
 export const VersionAction: React.FC<TVersionAction> = (props): JSX.Element => {
   const intl = useContext(I18nContext);
-  const history = useNavigate();
+  const navigate = useNavigate();
 
   const {
     version,
     entityId,
-    type = 'primary',
+    type = "primary",
     showLabel = false,
     isLoading = false,
-    disabled = false
+    disabled = false,
   } = props;
 
   const { pathname } = window.location;
@@ -58,23 +58,24 @@ export const VersionAction: React.FC<TVersionAction> = (props): JSX.Element => {
   const aClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>): void => {
     e.preventDefault();
 
-    history(`${pathname}/version/${version}`);
+    navigate({ to: `${pathname}/version/${version}` });
   };
 
   return (
-    <Can I={'preview'} a={entityId}>
-      <a title={t(intl, 'actions.version', { type: '' })}
+    <Can I={"preview"} a={entityId}>
+      <a
+        title={t(intl, "actions.version", { type: "" })}
         onClick={aClick}
         href={`${pathname}/version/${version}`}
         rel="noopener noreferrer"
       >
-        <Button disabled={disabled}
+        <Button
+          disabled={disabled}
           loading={isLoading}
           type={type}
-          icon={(
-            <EyeTwoTone twoToneColor={COLORS.tags.green} />
-          )}>
-          {showLabel && t(intl, 'actions.version', { type: '' })}
+          icon={<EyeTwoTone twoToneColor={COLORS.tags.green} />}
+        >
+          {showLabel && t(intl, "actions.version", { type: "" })}
         </Button>
       </a>
     </Can>

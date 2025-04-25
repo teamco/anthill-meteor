@@ -1,38 +1,39 @@
-import React from 'react';
-import { Meteor } from 'meteor/meteor';
-import { createRoot } from 'react-dom/client';
+import React from "react";
+import { Meteor } from "meteor/meteor";
+import { createRoot } from "react-dom/client";
+import { RouterProvider, createRouter } from "@tanstack/react-router";
 
-import dayjs from 'dayjs';
 
-import weekday from 'dayjs/plugin/weekday';
-import advancedFormat from 'dayjs/plugin/advancedFormat';
-import localeData from 'dayjs/plugin/localeData';
-import weekOfYear from 'dayjs/plugin/weekOfYear';
-import weekYear from 'dayjs/plugin/weekYear';
-import customParseFormat from 'dayjs/plugin/customParseFormat';
+import { initLogger } from "/imports/utils/console.util";
+import { initDayjs } from "/imports/utils/dayjs.util";
 
-import App from '/imports/ui/App';
+// Import the generated route tree
+import { routeTree } from "/imports/config/routes/routeTree.gen";
 
-import { initLogger } from '/imports/utils/console.util';
+initDayjs();
 
-dayjs.extend(customParseFormat);
-dayjs.extend(advancedFormat);
-dayjs.extend(weekday);
-dayjs.extend(localeData);
-dayjs.extend(weekOfYear);
-dayjs.extend(weekYear);
+// Create a new router instance
+const router = createRouter({ routeTree } as any);
 
-dayjs.locale('en');
+// Register the router instance for type safety
+declare module "@tanstack/react-router" {
+  interface Register {
+    router: typeof router;
+  }
+}
 
 Meteor.startup(() => {
-  const container = document.getElementById('react-target');
-  const root = createRoot(container);
+  const container = document.getElementById("react-target");
 
-  initLogger();
+  if (!container.innerHTML) {
+    const root = createRoot(container);
 
-  root.render(
-    <React.StrictMode>
-      <App/>
-    </React.StrictMode>
-  );
+    initLogger();
+
+    root.render(
+      <React.StrictMode>
+        <RouterProvider router={router} />
+      </React.StrictMode>
+    );
+  }
 });

@@ -1,4 +1,4 @@
-import React, { JSX } from 'react';
+import React, { JSX } from "react";
 import {
   Button,
   Col,
@@ -7,31 +7,33 @@ import {
   Layout,
   notification,
   Row,
-  Tooltip
-} from 'antd';
-import { FormOutlined, LockTwoTone, LoginOutlined } from '@ant-design/icons';
-import { useIntl } from 'react-intl';
-import { useNavigate } from 'react-router-dom';
+  Tooltip,
+} from "antd";
+import { FormOutlined, LockTwoTone, LoginOutlined } from "@ant-design/icons";
+import { useIntl } from "react-intl";
+import { useNavigate } from "@tanstack/react-router";
 
-import { t, TIntl } from '/imports/utils/i18n.util';
-import { requiredField } from '/imports/utils/form.util';
-import { layout } from '/imports/utils/layout.util';
-import { catchErrorMsg, nCache, TError } from '/imports/utils/message.util';
+import { t, TIntl } from "/imports/utils/i18n.util";
+import { requiredField } from "/imports/utils/form.util";
+import { layout } from "/imports/utils/layout.util";
+import { catchErrorMsg, nCache, TError } from "/imports/utils/message.util";
 
-import { useAuthRedirect } from '/imports/ui/hooks/authRedirect.hook';
+import { useAuthRedirect } from "/imports/ui/hooks/authRedirect.hook";
 
-import { EmailField } from '/imports/ui/components/EmailField';
-import { Can } from '/imports/ui/components/Ability/can';
+import { EmailField } from "/imports/ui/components/EmailField";
+import { Can } from "/imports/ui/components/Ability/can";
 
-import LoginWithGoogle from '../providers/google.provider';
-import LoginWithGithub from '../providers/github.provider';
+import LoginWithGoogle from "../providers/google.provider";
+import LoginWithGithub from "../providers/github.provider";
 
-import './signin.module.less';
+import { TRouterTypes } from '/imports/config/types';
+
+import "./signin.module.less";
 
 const { Content } = Layout;
 
 /**
- * A react component that renders a sign in form.
+ * A React component that renders a sign-in form.
  *
  * @example
  * import Signin from '/imports/ui/authentication/signin/signin';
@@ -42,101 +44,102 @@ const { Content } = Layout;
  */
 const SignIn: React.FC = (): JSX.Element => {
   const intl: TIntl = useIntl();
-  const history = useNavigate();
+  const navigate = useNavigate();
 
   const [formRef] = Form.useForm();
 
   const [notificationApi, notificationHolder] = notification.useNotification({
-    stack: { threshold: 3 }
+    stack: { threshold: 3 },
   });
 
-  nCache.set('notificationApi', notificationApi);
+  nCache.set("notificationApi", notificationApi);
 
-  const passField = t(intl, 'auth.password');
+  const passField = t(intl, "auth.password");
 
-  useAuthRedirect('/dashboard');
+  useAuthRedirect(TRouterTypes.DASHBOARD);
 
   /**
    * Handles the successful form submission
+   * @async
    * @param {Object} values - The form values
    * @param {string} values.email - The email address
    * @param {string} values.password - The password
    * @example
    * <Signin onFinish={(values) => console.log(values)} />
    */
-  const onFinish = (values: { email: string; password: string }): void => {
-    Meteor.loginWithPassword(values.email, values.password, (err): void => {
+  const onFinish = async (values: { email: string; password: string }): Promise<void> => {
+    Meteor.loginWithPassword(values.email, values.password, async (err): Promise<void> => {
       if (err) {
         return catchErrorMsg(err as TError);
       }
 
       formRef.resetFields();
-      history('/dashboard');
+      await navigate({ to: TRouterTypes.DASHBOARD });
     });
   };
 
   return (
-    <Layout className={'lW'}>
+    <Layout className={"lW"}>
       <Content>
         <div>
-          <h1>{t(intl, 'auth.signInTitle')}</h1>
+          <h1>{t(intl, "auth.signInTitle")}</h1>
         </div>
         {notificationHolder}
         <Form
-          size={'large'}
-          layout={'vertical'}
+          size={"large"}
+          layout={"vertical"}
           onFinish={onFinish}
           form={formRef}
         >
           <Row gutter={8}>
             <Col {...layout.fullColumn}>
-              <EmailField size={'large'} />
+              <EmailField size={"large"} />
             </Col>
             <Col {...layout.fullColumn}>
               <Form.Item
-                name={'password'}
+                name={"password"}
                 label={passField}
                 hasFeedback
                 rules={[requiredField(intl, passField)]}
               >
                 <Input.Password
                   prefix={<LockTwoTone />}
-                  autoComplete={'new-password'}
-                  placeholder={t(intl, 'auth.password')}
+                  autoComplete={"new-password"}
+                  placeholder={t(intl, "auth.password")}
                 />
               </Form.Item>
             </Col>
           </Row>
           <Form.Item>
-            <div className={'loginBtns'}>
+            <div className={"loginBtns"}>
               <Row gutter={[16, 16]}>
                 <Col span={12}>
-                  <Can I={'read'} a={'signup'}>
-                    <Tooltip title={t(intl, 'auth.signUpTitle')}>
+                  <Can I={"read"} a={"signup"}>
+                    <Tooltip title={t(intl, "auth.signUpTitle")}>
                       <Button
-                        type={'text'}
+                        type={"text"}
                         icon={<LoginOutlined />}
                         disabled={false}
                         block
                         loading={false}
-                        onClick={() => history('/signup')}
+                        onClick={() => navigate({ to: "/signup" })}
                       >
-                        {t(intl, 'auth.signUp')}
+                        {t(intl, "auth.signUp")}
                       </Button>
                     </Tooltip>
                   </Can>
                 </Col>
                 <Col span={12}>
-                  <Can I={'access'} a={'signin'}>
-                    <Tooltip title={t(intl, 'auth.signInTitle')}>
+                  <Can I={"access"} a={"signin"}>
+                    <Tooltip title={t(intl, "auth.signInTitle")}>
                       <Button
-                        type={'primary'}
-                        htmlType={'submit'}
+                        type={"primary"}
+                        htmlType={"submit"}
                         block
                         loading={false}
                         icon={<FormOutlined />}
                       >
-                        {t(intl, 'auth.signIn')}
+                        {t(intl, "auth.signIn")}
                       </Button>
                     </Tooltip>
                   </Can>
@@ -145,11 +148,11 @@ const SignIn: React.FC = (): JSX.Element => {
             </div>
           </Form.Item>
         </Form>
-        <div className={'loginBtns'}>
-          <Can I={'access'} a={'google'}>
+        <div className={"loginBtns"}>
+          <Can I={"access"} a={"google"}>
             <LoginWithGoogle />
           </Can>
-          <Can I={'access'} a={'github'}>
+          <Can I={"access"} a={"github"}>
             <LoginWithGithub />
           </Can>
         </div>

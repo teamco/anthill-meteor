@@ -5,3 +5,5 @@ export * from './environment.type';
 export * from './layout.type';
 export * from './user.type';
 export * from './widget.type';
+export * from './auth.type';
+export * from './router.type';
