@@ -2,10 +2,11 @@ import React, { JSX, useContext } from "react";
 import { Button, Table } from 'antd';
 import { useSubscribe } from "meteor/react-meteor-data";
 import { TableProps } from "antd/lib/table";
+import { createFileRoute } from '@tanstack/react-router';
 
 import { UserLogsCollection } from "/imports/collections/userLogs.collection";
 
-import { ICommonDataType, IMetadata, TLayout, TStatus } from "/imports/config/types";
+import { ICommonDataType, IMetadata, TLayout, TRouterTypes, TStatus } from '/imports/config/types';
 
 import { I18nContext } from "/imports/ui/context/i18n.context";
 import { AbilityContext } from '/imports/ui/context/authentication.context';
@@ -15,8 +16,8 @@ import Page from "/imports/ui/components/Page/page.component";
 
 import { useTable } from "/imports/ui/hooks/table.hook";
 
+import { indexable } from '/imports/utils/table/table.util';
 import { t } from "/imports/utils/i18n.util";
-import { indexable } from "../../../../utils/table/table.util";
 
 import { metadataColumns } from "./columns.metadata";
 
@@ -102,4 +103,6 @@ const UserLogsPage: React.FC = (): JSX.Element => {
 	);
 }
 
-export default UserLogsPage;
+export const Route = createFileRoute(TRouterTypes.DASHBOARD_USER_LOGS)({
+  component: UserLogsPage,
+});

@@ -10,11 +10,6 @@ import { ArrowButtons } from "/imports/ui/components/Buttons/arrow.buttons";
 import { NotificationContext } from "/imports/ui/context/notification.context";
 
 import { t, TIntl } from "/imports/utils/i18n.util";
-import {
-  cleanPanel,
-  deletePanel,
-  replacePanel,
-} from "../../../../../../utils/splitter.util";
 
 import {
   TSplitter,
@@ -23,6 +18,7 @@ import {
 } from "/imports/config/types";
 
 import "./environment.preview.module.less";
+import { cleanPanel, deletePanel, replacePanel } from '/imports/utils/splitter.util';
 
 // import { splitterMock } from "./__tests__/splitter.mock";
 
@@ -113,7 +109,7 @@ const EnvironmentPreview: React.FC = (): JSX.Element => {
       });
       return;
     }
-		
+
     const nextId = uuidv4();
 
     /**

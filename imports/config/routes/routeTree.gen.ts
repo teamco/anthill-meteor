@@ -3,7 +3,8 @@ import { TRouterTypes } from '/imports/config/types';
 
 import { Route as AdminRouteImport } from './__adminRoot';
 import { Route as DashboardRouteImport } from '/imports/ui/pages/dashboard/dashboard.page';
-import { Route as EnvironmentsPageRouteImport } from '/imports/ui/pages/dashboard/environments/environments.page';
+import { Route as EnvironmentsRouteImport } from '/imports/ui/pages/dashboard/environments/environments.page';
+import { Route as UserLogsRouteImport } from '/imports/ui/pages/dashboard/userLogs/userLogs.page';
 
 /**
  * Creates or updates a route using the provided route import, path, and parent route.
@@ -23,7 +24,8 @@ function createRoute(RouteImport: any, path: TRouterTypes, parentRoute: RootRout
 
 // Create/Update Routes
 const DashboardRoute = createRoute(DashboardRouteImport, TRouterTypes.DASHBOARD);
-const DashboardEnvironmentsRoute = createRoute(EnvironmentsPageRouteImport, TRouterTypes.DASHBOARD_ENVIRONMENTS);
+const DashboardEnvironmentsRoute = createRoute(EnvironmentsRouteImport, TRouterTypes.DASHBOARD_ENVIRONMENTS);
+const UserLogsRoute = createRoute(UserLogsRouteImport, TRouterTypes.DASHBOARD_USER_LOGS);
 
 // Populate the FileRoutesByPath interface
 declare module '@tanstack/react-router' {
@@ -33,11 +35,15 @@ declare module '@tanstack/react-router' {
       parentRoute: typeof AdminRouteImport;
     };
     [TRouterTypes.DASHBOARD_ENVIRONMENTS]: {
-      preLoaderRoute: typeof EnvironmentsPageRouteImport;
+      preLoaderRoute: typeof EnvironmentsRouteImport;
+      parentRoute: typeof AdminRouteImport;
+    };
+    [TRouterTypes.DASHBOARD_USER_LOGS]: {
+      preLoaderRoute: typeof UserLogsRouteImport;
       parentRoute: typeof AdminRouteImport;
     };
   }
 }
 
 // Create and export the route tree
-export const routeTree = AdminRouteImport.addChildren([DashboardRoute, DashboardEnvironmentsRoute]);
+export const routeTree = AdminRouteImport.addChildren([DashboardRoute, DashboardEnvironmentsRoute, UserLogsRoute]);

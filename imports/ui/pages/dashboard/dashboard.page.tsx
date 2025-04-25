@@ -62,4 +62,4 @@ const DashboardPage: React.FC = (): JSX.Element => {
 
 export const Route = createFileRoute(TRouterTypes.DASHBOARD)({
   component: DashboardPage,
-})
+});
