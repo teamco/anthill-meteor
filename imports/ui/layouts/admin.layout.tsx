@@ -35,7 +35,6 @@ type TProps = {
  */
 const AdminLayout: FC<TProps> = (): JSX.Element => {
   const intl: TIntl = useIntl();
-  const navigate = useNavigate();
 
   const [ability, setAbility] = useState(defineAbilityFor(Meteor.user()));
   const [drawerPanelOpen, setDrawerPanelOpen] = useState(false);
@@ -67,9 +66,7 @@ const AdminLayout: FC<TProps> = (): JSX.Element => {
   };
 
   const menuProps = useMenu(
-    intl,
     ability,
-    navigate,
     drawerPanelOpen,
     setDrawerPanelOpen
   );

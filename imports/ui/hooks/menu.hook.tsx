@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
+import { useIntl } from 'react-intl';
 import { MenuProps } from 'antd';
 import {
   AppstoreAddOutlined,
@@ -8,7 +9,7 @@ import {
   UnorderedListOutlined,
 } from '@ant-design/icons';
 import { MongoAbility } from '@casl/ability/dist/types';
-import { NavigateOptions, useLocation } from '@tanstack/react-router';
+import { NavigateOptions, useLocation, useNavigate } from '@tanstack/react-router';
 
 import { t, TIntl } from '/imports/utils/i18n.util';
 import { TRouterTypes } from '/imports/config/types';
@@ -23,6 +24,13 @@ interface LevelKeysProps {
   disabled?: boolean;
   children?: LevelKeysProps[];
 }
+
+type TUseMenu = {
+  mItems: MenuItem[];
+  selectedMenuKeys: string[];
+  openedMenuKeys: string[];
+  onOpenChange: MenuProps['onOpenChange'];
+};
 
 /**
  * Generates an array of menu items based on the given i18n object, ability and navigate function.
@@ -160,31 +168,14 @@ const getLevelKeys = (items1: LevelKeysProps[]): Record<string, number> => {
 /**
  * Get the selected menu item keys based on the current pathname.
  * @param {MenuItem[]} mItems - The menu items.
+ * @param {string} pathname
  * @returns {string[]} The selected menu item keys.
  */
-const getSelectedKeys = (mItems: MenuItem[]): string[] => {
-  const { pathname } = useLocation();
-
+const getSelectedKeys = (mItems: MenuItem[], pathname: string): string[] => {
   const replaceMatchers = (path: string): string =>
     path === TRouterTypes.DASHBOARD ? path : path.replace(/\/dashboard/, '');
 
-  /**
-   * Recursively finds the selected menu item based on the given path and parent menu item keys.
-   * If the item has children, it recursively calls itself with the children and the parent keys.
-   * If the item does not have children, it uses matchPath to check if the item's label's href property matches the path.
-   * If a match is found, it returns the parent keys, the item's key, and the matched key.
-   * If no match is found, it returns null.
-   *
-   * @param {MenuItem} item - The menu item to check.
-   * @param {string} path - The path to check against.
-   * @param {string[] | null} [parentKeys=null] - The parent menu item keys.
-   * @returns {boolean} The selected menu item keys or null if no match is found.
-   */
-  const matcher = (
-    item: MenuItem,
-    path: string,
-    parentKeys: string[] | null = null,
-  ): boolean | any[] => {
+  const matcher = (item: MenuItem, path: string, parentKeys: string[] = []): boolean | any[] => {
     if (item['children']) {
       const current = item['children'].find((child: MenuItem) =>
         matcher(child, path, [...parentKeys, item.key.toString()]),
@@ -193,20 +184,12 @@ const getSelectedKeys = (mItems: MenuItem[]): string[] => {
     }
 
     const _path = replaceMatchers(item['label']['props']['href']);
-    const _pathname = replaceMatchers(pathname);
+    const _pathname = replaceMatchers(path);
 
     return _pathname.includes(_path);
   };
 
-  return mItems.flatMap((item: MenuItem) => matcher(item, pathname, []),
-  ) as unknown as string[];
-};
-
-type TUseMenu = {
-  mItems: MenuItem[];
-  selectedMenuKeys: string[];
-  openedMenuKeys: string[];
-  onOpenChange: MenuProps['onOpenChange'];
+  return mItems.flatMap((item: MenuItem) => matcher(item, pathname, [])) as unknown as string[];
 };
 
 /**
@@ -215,20 +198,19 @@ type TUseMenu = {
  * The selected menu item keys are determined based on the current pathname.
  * The opened menu item keys are determined based on the selected menu item keys.
  * The onOpenChange handler is used to handle the openChange event.
- * @param {TIntl} intl - The i18n object.
  * @param {MongoAbility} ability - The ability object.
- * @param {NavigateFunction} navigate - The navigate function.
  * @param {boolean} isOpen - Whether the menu is open.
  * @param setDrawerPanelOpen
  * @returns {TUseMenu}
  */
 export const useMenu = (
-  intl: TIntl,
   ability: MongoAbility,
-  navigate: NavigateFunction,
   isOpen: boolean,
   setDrawerPanelOpen: React.Dispatch<React.SetStateAction<boolean>>,
 ): TUseMenu => {
+  const intl: TIntl = useIntl();
+  const navigate = useNavigate();
+
   const [mItems, setMItems] = useState([]);
   const [selectedMenuKeys, setSelectedMenuKeys] = useState([]);
   const [openedMenuKeys, setOpenedMenuKeys] = useState([]);
@@ -237,13 +219,13 @@ export const useMenu = (
 
   useEffect(() => {
     isOpen && setMItems(menuItems(intl, ability, navigate, setDrawerPanelOpen));
-  }, [intl, ability, navigate, isOpen]);
+  }, [intl, ability, isOpen]);
 
   const levelKeys = getLevelKeys(mItems as LevelKeysProps[]);
 
   useEffect(() => {
     if (isOpen) {
-      const selectedKeys = getSelectedKeys(mItems);
+      const selectedKeys = getSelectedKeys(mItems, pathname);
       setSelectedMenuKeys(selectedKeys);
       setOpenedMenuKeys(selectedKeys);
     }
