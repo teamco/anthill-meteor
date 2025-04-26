@@ -9,7 +9,11 @@ import {
   UnorderedListOutlined,
 } from '@ant-design/icons';
 import { MongoAbility } from '@casl/ability/dist/types';
-import { NavigateOptions, useLocation, useNavigate } from '@tanstack/react-router';
+import {
+  NavigateOptions,
+  useLocation,
+  useNavigate,
+} from '@tanstack/react-router';
 
 import { t, TIntl } from '/imports/utils/i18n.util';
 import { TRouterTypes } from '/imports/config/types';
@@ -125,8 +129,6 @@ export const menuItems = (
             <UnorderedListOutlined />,
             TRouterTypes.DASHBOARD_USER_LOGS,
             dUserLogs,
-
-            
           ),
         },
       ],
@@ -177,7 +179,11 @@ const getSelectedKeys = (mItems: MenuItem[], pathname: string): string[] => {
   const replaceMatchers = (path: string): string =>
     path === TRouterTypes.DASHBOARD ? path : path.replace(/\/dashboard/, '');
 
-  const matcher = (item: MenuItem, path: string, parentKeys: string[] = []): boolean | any[] => {
+  const matcher = (
+    item: MenuItem,
+    path: string,
+    parentKeys: string[] = [],
+  ): boolean | any[] => {
     if (item['children']) {
       const current = item['children'].find((child: MenuItem) =>
         matcher(child, path, [...parentKeys, item.key.toString()]),
@@ -191,7 +197,9 @@ const getSelectedKeys = (mItems: MenuItem[], pathname: string): string[] => {
     return _pathname.includes(_path);
   };
 
-  return mItems.flatMap((item: MenuItem) => matcher(item, pathname, [])) as unknown as string[];
+  return mItems.flatMap((item: MenuItem) =>
+    matcher(item, pathname, []),
+  ) as unknown as string[];
 };
 
 /**
@@ -217,7 +225,7 @@ export const useMenu = (
   const [selectedMenuKeys, setSelectedMenuKeys] = useState([]);
   const [openedMenuKeys, setOpenedMenuKeys] = useState([]);
 
-  const { pathname } = window.location;
+  const { pathname } = useLocation();
 
   useEffect(() => {
     isOpen && setMItems(menuItems(intl, ability, navigate, setDrawerPanelOpen));
