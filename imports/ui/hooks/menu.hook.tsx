@@ -125,6 +125,8 @@ export const menuItems = (
             <UnorderedListOutlined />,
             TRouterTypes.DASHBOARD_USER_LOGS,
             dUserLogs,
+
+            
           ),
         },
       ],
