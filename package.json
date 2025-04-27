@@ -10,7 +10,6 @@
     "test-app": "TEST_WATCH=1 meteor test --full-app --driver-package meteortesting:mocha",
     "visualize": "meteor --production --extra-packages bundle-visualizer",
     "libs:update": "yarn upgrade-interactive",
-    "libs:check": "yarn outdated",
     "version:update": "yarn set version stable"
   },
   "dependencies": {
