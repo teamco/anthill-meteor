@@ -1,27 +1,27 @@
-import React, { JSX, useContext } from "react";
-import { Tabs, TabsProps } from "antd";
-import { useSubscribe, useTracker } from "meteor/react-meteor-data";
-import { useParams } from "@tanstack/react-router";
+import React, { JSX, useContext } from 'react';
+import { Tabs, TabsProps } from 'antd';
+import { useSubscribe, useTracker } from 'meteor/react-meteor-data';
+import { createFileRoute } from '@tanstack/react-router';
 
-import { TEnvironmentEdit } from "/imports/config/types";
+import { TEnvironmentEdit, TRouterTypes } from '/imports/config/types';
 
-import { I18nContext } from "/imports/ui/context/i18n.context";
-import { AbilityContext } from "/imports/ui/context/authentication.context";
+import { I18nContext } from '/imports/ui/context/i18n.context';
+import { AbilityContext } from '/imports/ui/context/authentication.context';
 
-import Page from "/imports/ui/components/Page/page.component";
+import Page from '/imports/ui/components/Page/page.component';
 
-import { t } from "/imports/utils/i18n.util";
+import { t } from '/imports/utils/i18n.util';
 
-import { getEnvironment } from "/imports/ui/services/environment.service";
+import { getEnvironment } from '/imports/ui/services/environment.service';
 
-import { useEnvironmentTabs } from "./metadata/tabs.metadata";
+import { useEnvironmentTabs } from './metadata/tabs.metadata';
 
-import "../environments.module.less";
+import '../environments.module.less';
 
 export type TField = {
   name?: string;
   description?: string;
-  status?: TEnvironmentEdit["status"];
+  status?: TEnvironmentEdit['status'];
 };
 
 /**
@@ -36,9 +36,9 @@ export type TField = {
  * @returns {JSX.Element} The JSX element representing the environments page
  */
 const EnvironmentEdit: React.FC = (): JSX.Element => {
-  const isEnvironmentLoading = useSubscribe("environments");
-  const isLayoutLoading = useSubscribe("layouts");
-  const isWidgetLoading = useSubscribe("widgets");
+  const isEnvironmentLoading = useSubscribe('environments');
+  const isLayoutLoading = useSubscribe('layouts');
+  const isWidgetLoading = useSubscribe('widgets');
 
   /**
    * isLoading
@@ -54,23 +54,23 @@ const EnvironmentEdit: React.FC = (): JSX.Element => {
   const intl = useContext(I18nContext);
   const ability = useContext(AbilityContext);
 
-  const { environmentId } = useParams();
+  const { environmentId } = Route.useParams();
 
   const environment: TEnvironmentEdit = useTracker(
     () => getEnvironment(environmentId),
-    [environmentId]
+    [environmentId],
   );
 
-  const itemTabs: TabsProps["items"] = useEnvironmentTabs(
+  const itemTabs: TabsProps['items'] = useEnvironmentTabs(
     environment,
-    isLoading()
+    isLoading(),
   );
 
   return (
     <Page
       ableFor={{ subject: environmentId }}
       loading={isLoading()}
-      title={t(intl, "actions.edit", { type: t(intl, "environment.title") })}
+      title={t(intl, 'actions.edit', { type: t(intl, 'environment.title') })}
     >
       <Tabs
         className="envTabs"
@@ -82,4 +82,6 @@ const EnvironmentEdit: React.FC = (): JSX.Element => {
   );
 };
 
-export default EnvironmentEdit;
+export const Route = createFileRoute(TRouterTypes.DASHBOARD_ENVIRONMENT_EDIT)({
+  component: EnvironmentEdit,
+});

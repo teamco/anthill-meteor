@@ -1,10 +1,10 @@
-import React, { JSX, useContext } from "react";
-import { Button, Table } from "antd";
-import { useSubscribe } from "meteor/react-meteor-data";
-import { TableProps } from "antd/lib/table";
+import React, { JSX, useContext } from 'react';
+import { Button, Table } from 'antd';
+import { useSubscribe } from 'meteor/react-meteor-data';
+import { TableProps } from 'antd/lib/table';
 import { createFileRoute, useNavigate } from '@tanstack/react-router';
 
-import { EnvironmentsCollection } from "/imports/collections/environments.collection";
+import { EnvironmentsCollection } from '/imports/collections/environments.collection';
 
 import {
   ICommonDataType,
@@ -13,29 +13,29 @@ import {
   TLayout,
   TStatus,
   TRouterTypes,
-} from "/imports/config/types";
+} from '/imports/config/types';
 
-import { I18nContext } from "/imports/ui/context/i18n.context";
-import { AbilityContext } from "/imports/ui/context/authentication.context";
-import { NotificationContext } from "/imports/ui/context/notification.context";
+import { I18nContext } from '/imports/ui/context/i18n.context';
+import { AbilityContext } from '/imports/ui/context/authentication.context';
+import { NotificationContext } from '/imports/ui/context/notification.context';
 
-import Page from "/imports/ui/components/Page/page.component";
+import Page from '/imports/ui/components/Page/page.component';
 
-import { useTable } from "/imports/ui/hooks/table.hook";
+import { useTable } from '/imports/ui/hooks/table.hook';
 
 import { indexable } from '/imports/utils/table/table.util';
-import { t } from "/imports/utils/i18n.util";
+import { t } from '/imports/utils/i18n.util';
 
 import {
   createEnvironment,
   deleteEnvironment,
-} from "/imports/ui/services/environment.service";
+} from '/imports/ui/services/environment.service';
 
-import { metadataColumns } from "./columns.metadata";
+import { metadataColumns } from './columns.metadata';
 
-import { EnvironmentNew } from "./environment/environment.new";
+import { EnvironmentNew } from './environment/environment.new';
 
-import "./environments.module.less";
+import './environments.module.less';
 
 export interface IDataType extends ICommonDataType {
   name: string;
@@ -58,9 +58,9 @@ export interface IDataType extends ICommonDataType {
  * @returns {JSX.Element} The JSX element representing the environments page
  */
 const EnvironmentsPage: React.FC = (): JSX.Element => {
-  const isEnvironmentsLoading = useSubscribe("environments");
-  const isLayoutsLoading = useSubscribe("layouts");
-  const isWidgetsLoading = useSubscribe("widgets");
+  const isEnvironmentsLoading = useSubscribe('environments');
+  const isLayoutsLoading = useSubscribe('layouts');
+  const isWidgetsLoading = useSubscribe('widgets');
 
   const intl = useContext(I18nContext);
   const ability = useContext(AbilityContext);
@@ -112,15 +112,15 @@ const EnvironmentsPage: React.FC = (): JSX.Element => {
     sortedInfo,
     handleRefresh,
     handleTableChange,
-  } = useTable("environmentsPaginate", EnvironmentsCollection as any);
+  } = useTable('environmentsPaginate', EnvironmentsCollection as any);
 
-  const columns: TableProps<IDataType>["columns"] = metadataColumns(
+  const columns: TableProps<IDataType>['columns'] = metadataColumns(
     intl,
     filteredInfo,
     sortedInfo,
     onDelete,
     onEdit,
-    entities
+    entities,
   );
 
   const tableProps = {
@@ -128,7 +128,7 @@ const EnvironmentsPage: React.FC = (): JSX.Element => {
     pagination,
     scroll: { x: 800 },
     bordered: true,
-    className: "gridList",
+    className: 'gridList',
     dataSource: indexable(entities, pagination?.current, pagination?.pageSize),
     loading: isLoading(),
     rowKey: (record: IDataType) => record._id,
@@ -136,9 +136,9 @@ const EnvironmentsPage: React.FC = (): JSX.Element => {
     title: () => (
       <div className="gridHeader">
         <Button
-          disabled={ability.cannot("create", "environment")}
+          disabled={ability.cannot('create', 'environment')}
           loading={isLoading()}
-          type={"primary"}
+          type={'primary'}
           onClick={handleCreateEnvironment}
         >
           Create Env
@@ -147,7 +147,7 @@ const EnvironmentsPage: React.FC = (): JSX.Element => {
     ),
     footer: () => (
       <div className="gridFooter">
-        {t(intl, "table.total", { amount: total.toString() })}
+        {t(intl, 'table.total', { amount: total.toString() })}
       </div>
     ),
   };
@@ -162,7 +162,7 @@ const EnvironmentsPage: React.FC = (): JSX.Element => {
   const handleCreateEnvironment = () => {
     modalApi.info({
       width: 600,
-      title: t(intl, "actions.addNew", { type: t(intl, "environment.title") }),
+      title: t(intl, 'actions.addNew', { type: t(intl, 'environment.title') }),
       content: (
         <EnvironmentNew
           disabled={isLoading()}
@@ -179,15 +179,15 @@ const EnvironmentsPage: React.FC = (): JSX.Element => {
 
   return (
     <Page
-      ableFor={{ subject: "dashboard.environments" }}
-      title={t(intl, "dashboard.environments.title")}
-      description={t(intl, "dashboard.environments.description")}
+      ableFor={{ subject: 'dashboard.environments' }}
+      title={t(intl, 'dashboard.environments.title')}
+      description={t(intl, 'dashboard.environments.description')}
     >
-       <Table<IDataType> {...tableProps} />
+      <Table<IDataType> {...tableProps} />
     </Page>
   );
 };
 
 export const Route = createFileRoute(TRouterTypes.DASHBOARD_ENVIRONMENTS)({
   component: EnvironmentsPage,
-})
+});

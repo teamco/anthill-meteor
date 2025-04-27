@@ -4,6 +4,8 @@ import { TRouterTypes } from '/imports/config/types';
 import { Route as AdminRouteImport } from './__adminRoot';
 import { Route as DashboardRouteImport } from '/imports/ui/pages/dashboard/dashboard.page';
 import { Route as EnvironmentsRouteImport } from '/imports/ui/pages/dashboard/environments/environments.page';
+import { Route as EnvironmentEditRouteImport } from '/imports/ui/pages/dashboard/environments/environment/environment.edit';
+import { Route as EnvironmentPreviewRouteImport } from '/imports/ui/pages/dashboard/environments/environment/preview/environment.preview';
 import { Route as UserLogsRouteImport } from '/imports/ui/pages/dashboard/userLogs/userLogs.page';
 
 /**
@@ -14,7 +16,11 @@ import { Route as UserLogsRouteImport } from '/imports/ui/pages/dashboard/userLo
  * @param parentRoute - The parent route to associate with the new route. Defaults to AdminRouteImport.
  * @returns The updated route object.
  */
-function createRoute(RouteImport: any, path: TRouterTypes, parentRoute: RootRoute = AdminRouteImport): Route {
+function createRoute(
+  RouteImport: any,
+  path: TRouterTypes,
+  parentRoute: RootRoute = AdminRouteImport,
+): Route {
   return RouteImport.update({
     id: path,
     path,
@@ -22,10 +28,30 @@ function createRoute(RouteImport: any, path: TRouterTypes, parentRoute: RootRout
   } as any);
 }
 
-// Create/Update Routes
-const DashboardRoute = createRoute(DashboardRouteImport, TRouterTypes.DASHBOARD);
-const DashboardEnvironmentsRoute = createRoute(EnvironmentsRouteImport, TRouterTypes.DASHBOARD_ENVIRONMENTS);
-const UserLogsRoute = createRoute(UserLogsRouteImport, TRouterTypes.DASHBOARD_USER_LOGS);
+const DashboardRoute = createRoute(
+  DashboardRouteImport,
+  TRouterTypes.DASHBOARD,
+);
+
+const DashboardEnvironmentsRoute = createRoute(
+  EnvironmentsRouteImport,
+  TRouterTypes.DASHBOARD_ENVIRONMENTS,
+);
+
+const DashboardEnvironmentEditRoute = createRoute(
+  EnvironmentEditRouteImport,
+  TRouterTypes.DASHBOARD_ENVIRONMENT_EDIT,
+);
+
+const DashboardEnvironmentPreviewRoute = createRoute(
+  EnvironmentPreviewRouteImport,
+  TRouterTypes.DASHBOARD_ENVIRONMENT_PREVIEW,
+);
+
+const UserLogsRoute = createRoute(
+  UserLogsRouteImport,
+  TRouterTypes.DASHBOARD_USER_LOGS,
+);
 
 // Populate the FileRoutesByPath interface
 declare module '@tanstack/react-router' {
@@ -38,6 +64,14 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EnvironmentsRouteImport;
       parentRoute: typeof AdminRouteImport;
     };
+    [TRouterTypes.DASHBOARD_ENVIRONMENT_EDIT]: {
+      preLoaderRoute: typeof DashboardEnvironmentEditRoute;
+      parentRoute: typeof AdminRouteImport;
+    };
+    [TRouterTypes.DASHBOARD_ENVIRONMENT_PREVIEW]: {
+      preLoaderRoute: typeof DashboardEnvironmentPreviewRoute;
+      parentRoute: typeof AdminRouteImport;
+    };
     [TRouterTypes.DASHBOARD_USER_LOGS]: {
       preLoaderRoute: typeof UserLogsRouteImport;
       parentRoute: typeof AdminRouteImport;
@@ -46,4 +80,10 @@ declare module '@tanstack/react-router' {
 }
 
 // Create and export the route tree
-export const routeTree = AdminRouteImport.addChildren([DashboardRoute, DashboardEnvironmentsRoute, UserLogsRoute]);
+export const routeTree = AdminRouteImport.addChildren([
+  DashboardRoute,
+  DashboardEnvironmentsRoute,
+  DashboardEnvironmentEditRoute,
+  DashboardEnvironmentPreviewRoute,
+  UserLogsRoute,
+]);

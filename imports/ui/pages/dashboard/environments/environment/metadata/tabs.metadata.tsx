@@ -1,31 +1,35 @@
-import React, { useContext, useState } from "react";
-import { Button, Descriptions, Form, FormProps, Table } from "antd";
-import { AppstoreAddOutlined, BlockOutlined, FormOutlined } from "@ant-design/icons";
-import { TabsProps } from "antd/lib/tabs";
-import { ColumnsType, TableProps } from "antd/es/table";
-import { useParams } from "@tanstack/react-router";
+import React, { useContext, useState } from 'react';
+import { Button, Descriptions, Form, FormProps, Table } from 'antd';
+import {
+  AppstoreAddOutlined,
+  BlockOutlined,
+  FormOutlined,
+} from '@ant-design/icons';
+import { TabsProps } from 'antd/lib/tabs';
+import { ColumnsType, TableProps } from 'antd/es/table';
+import { useParams } from '@tanstack/react-router';
 
-import { t } from "/imports/utils/i18n.util";
-import { indexable } from "../../../../../../utils/table/table.util";
-import { onFinishFailed, onValidate } from "/imports/utils/form.util";
-import { TUseTable, useTable } from "/imports/ui/hooks/table.hook";
+import { t } from '/imports/utils/i18n.util';
+import { indexable } from '../../../../../../utils/table/table.util';
+import { onFinishFailed, onValidate } from '/imports/utils/form.util';
+import { TUseTable, useTable } from '/imports/ui/hooks/table.hook';
 
-import { updateEnvironment } from "/imports/ui/services/environment.service";
+import { updateEnvironment } from '/imports/ui/services/environment.service';
 
-import { TEnvironment, TEnvironmentEdit } from "/imports/config/types";
+import { TEnvironment, TEnvironmentEdit } from '/imports/config/types';
 
-import { WidgetsCollection } from "/imports/collections/widgets.collection";
-import { LayoutsCollection } from "/imports/collections/layouts.collection";
+import { WidgetsCollection } from '/imports/collections/widgets.collection';
+import { LayoutsCollection } from '/imports/collections/layouts.collection';
 
-import { AbilityContext } from "/imports/ui/context/authentication.context";
-import { I18nContext } from "/imports/ui/context/i18n.context";
+import { AbilityContext } from '/imports/ui/context/authentication.context';
+import { I18nContext } from '/imports/ui/context/i18n.context';
 
-import { DescriptionMetadata } from "./description.metadata";
-import { metadataColumns as layoutsMetadataColumns } from "./columns.metadata";
-import { metadataColumns as widgetsMetadataColumns } from "/imports/ui/pages/dashboard/widgets/columns.metadata";
+import { DescriptionMetadata } from './description.metadata';
+import { metadataColumns as layoutsMetadataColumns } from './columns.metadata';
+import { metadataColumns as widgetsMetadataColumns } from '/imports/ui/pages/dashboard/widgets/columns.metadata';
 
-import { TField } from "../environment.edit";
-import { IDataType } from "../../environments.page";
+import { TField } from '../environment.edit';
+import { IDataType } from '../../environments.page';
 
 /**
  * @function useEnvironmentTabs
@@ -42,8 +46,11 @@ import { IDataType } from "../../environments.page";
  * @param {() => boolean} loading - A function that returns the loading state
  * @returns {TabsProps['items']}
  */
-export const useEnvironmentTabs = (environment: TEnvironmentEdit, loading: boolean): TabsProps['items'] => {
-  const { environmentId } = useParams();
+export const useEnvironmentTabs = (
+  environment: TEnvironmentEdit,
+  loading: boolean,
+): TabsProps['items'] => {
+  const { environmentId } = useParams({ strict: false });
   const [form] = Form.useForm();
 
   const intl = useContext(I18nContext);
@@ -67,7 +74,11 @@ export const useEnvironmentTabs = (environment: TEnvironmentEdit, loading: boole
    */
   const onFinish: FormProps<TField>['onFinish'] = (values: TField): void => {
     const { name, description } = values;
-    const data: Pick<TEnvironmentEdit, 'name' | 'description' | 'status'> = { name, description, status };
+    const data: Pick<TEnvironmentEdit, 'name' | 'description' | 'status'> = {
+      name,
+      description,
+      status,
+    };
 
     updateEnvironment(environmentId, data, intl);
     setUpdate(false);
@@ -81,8 +92,14 @@ export const useEnvironmentTabs = (environment: TEnvironmentEdit, loading: boole
     setUpdate(true);
   };
 
-  const layouts: TUseTable = useTable("layoutsPaginate", LayoutsCollection as any);
-  const widgets: TUseTable = useTable("widgetsPaginate", WidgetsCollection as any);
+  const layouts: TUseTable = useTable(
+    'layoutsPaginate',
+    LayoutsCollection as any,
+  );
+  const widgets: TUseTable = useTable(
+    'widgetsPaginate',
+    WidgetsCollection as any,
+  );
 
   /**
    * onDelete
@@ -102,18 +119,24 @@ export const useEnvironmentTabs = (environment: TEnvironmentEdit, loading: boole
    * It takes in a context object, metadata function, and an optional scrollX value.
    * It returns a props object that includes the columns, pagination, scroll, bordered, className, loading, rowKey, dataSource, onChange, and footer properties.
    * @param {TUseTable} ctx - The context object returned by the useTable hook
-   * @param {TMetadata} metadata - A function that returns an array of column definitions
+   * @param {any} metadata - A function that returns an array of column definitions
    * @param {number} [scrollX=800] - The horizontal scroll value
+   * @param onDelete
    * @returns {TableProps<any>}
    */
-  const tableProps = (ctx: TUseTable, metadata: any, scrollX: number, onDelete?: (id: string) => void): TableProps<any> => {
+  const tableProps = (
+    ctx: TUseTable,
+    metadata: any,
+    scrollX: number,
+    onDelete?: (id: string) => void,
+  ): TableProps<any> => {
     const {
       entities,
       sortedInfo,
       filteredInfo,
       total,
       tableParams: { pagination },
-      handleTableChange
+      handleTableChange,
     } = ctx;
 
     const columns: TableProps<any>['columns'] = metadata({
@@ -132,23 +155,36 @@ export const useEnvironmentTabs = (environment: TEnvironmentEdit, loading: boole
       bordered: true,
       className: 'gridList',
       rowKey: (record: IDataType) => record._id,
-      dataSource: indexable(entities, pagination?.current, pagination?.pageSize),
+      dataSource: indexable(
+        entities,
+        pagination?.current,
+        pagination?.pageSize,
+      ),
       onChange: handleTableChange,
       footer: () => (
         <div className="gridFooter">
           {t(intl, 'table.total', { amount: total.toString() })}
         </div>
-      )
-    }
-  }
+      ),
+    };
+  };
 
   const layoutsTableProps = {
-    ...tableProps(layouts, layoutsMetadataColumns as unknown as ColumnsType<any>, 800, onLayoutDelete),
+    ...tableProps(
+      layouts,
+      layoutsMetadataColumns as unknown as ColumnsType<any>,
+      800,
+      onLayoutDelete,
+    ),
   };
 
   const rowSelection: TableProps<IDataType>['rowSelection'] = {
     onChange: (selectedRowKeys: React.Key[], selectedRows: IDataType[]) => {
-      console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+      console.log(
+        `selectedRowKeys: ${selectedRowKeys}`,
+        'selectedRows: ',
+        selectedRows,
+      );
     },
     getCheckboxProps: (record: IDataType) => ({
       disabled: ability.cannot('assign', record._id),
@@ -157,7 +193,11 @@ export const useEnvironmentTabs = (environment: TEnvironmentEdit, loading: boole
   };
 
   const widgetsTableProps = {
-    ...tableProps(widgets, widgetsMetadataColumns as unknown as ColumnsType<any>, 1000)
+    ...tableProps(
+      widgets,
+      widgetsMetadataColumns as unknown as ColumnsType<any>,
+      1000,
+    ),
   };
 
   const itemTabs: TabsProps['items'] = [
@@ -167,8 +207,8 @@ export const useEnvironmentTabs = (environment: TEnvironmentEdit, loading: boole
       label: t(intl, 'environment.tabs.general'),
       children: (
         <Form
-          layout={"vertical"}
-          autoComplete={"off"}
+          layout={'vertical'}
+          autoComplete={'off'}
           form={form}
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}
@@ -176,7 +216,9 @@ export const useEnvironmentTabs = (environment: TEnvironmentEdit, loading: boole
           initialValues={{
             name: environment?.name,
             description: environment?.description,
-            status: Object.keys(environment?.status || {}).find(s => environment?.status[s])
+            status: Object.keys(environment?.status || {}).find(
+              (s) => environment?.status[s],
+            ),
           }}
         >
           <Descriptions
@@ -184,17 +226,22 @@ export const useEnvironmentTabs = (environment: TEnvironmentEdit, loading: boole
             size={'small'}
             bordered
             title={envName || environment?.name}
-            items={DescriptionMetadata(intl, environment, setEnvName, setStatus)}
-            extra={(
+            items={DescriptionMetadata(
+              intl,
+              environment,
+              setEnvName,
+              setStatus,
+            )}
+            extra={
               <Button
-                onClick={e => onValidate(e, form)}
+                onClick={(e) => onValidate(e, form)}
                 disabled={!_canUpdate}
                 loading={loading}
                 type="primary"
               >
                 {t(intl, 'actions.update')}
               </Button>
-            )}
+            }
           />
         </Form>
       ),
@@ -217,11 +264,14 @@ export const useEnvironmentTabs = (environment: TEnvironmentEdit, loading: boole
       children: (
         <div className="widgets">
           <h3>{t(intl, 'environment.list.widgets')}</h3>
-          <Table<any> {...widgetsTableProps} rowSelection={{ type: 'checkbox', ...rowSelection }} />
+          <Table<any>
+            {...widgetsTableProps}
+            rowSelection={{ type: 'checkbox', ...rowSelection }}
+          />
         </div>
       ),
     },
-  ]
+  ];
 
   return itemTabs;
-}
+};

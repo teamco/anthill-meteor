@@ -1,31 +1,37 @@
-import React, { JSX, useCallback, useContext, useMemo, useState } from "react";
-import { useIntl } from "react-intl";
-import { Button, Modal, Splitter } from "antd";
-import { SettingTwoTone } from "@ant-design/icons";
-import { v4 as uuidv4 } from "uuid";
-import classnames from "classnames";
+import React, { JSX, useCallback, useContext, useMemo, useState } from 'react';
+import { useIntl } from 'react-intl';
+import { Button, Modal, Splitter } from 'antd';
+import { SettingTwoTone } from '@ant-design/icons';
+import { v4 as uuidv4 } from 'uuid';
+import classnames from 'classnames';
 
-import { ArrowButtons } from "/imports/ui/components/Buttons/arrow.buttons";
+import { ArrowButtons } from '/imports/ui/components/Buttons/arrow.buttons';
 
-import { NotificationContext } from "/imports/ui/context/notification.context";
+import { NotificationContext } from '/imports/ui/context/notification.context';
 
-import { t, TIntl } from "/imports/utils/i18n.util";
+import { t, TIntl } from '/imports/utils/i18n.util';
 
 import {
+  TRouterTypes,
   TSplitter,
   TSplitterItem,
   TSplitterLayout,
-} from "/imports/config/types";
+} from '/imports/config/types';
 
-import "./environment.preview.module.less";
-import { cleanPanel, deletePanel, replacePanel } from '/imports/utils/splitter.util';
+import './environment.preview.module.less';
+import {
+  cleanPanel,
+  deletePanel,
+  replacePanel,
+} from '/imports/utils/splitter.util';
+import { createFileRoute } from '@tanstack/react-router';
 
 // import { splitterMock } from "./__tests__/splitter.mock";
 
 const DEFAULT_UUID = uuidv4();
-const DEFAULT_LAYOUT: TSplitterLayout = "vertical";
+const DEFAULT_LAYOUT: TSplitterLayout = 'vertical';
 
-type TDirection = "up" | "down" | "left" | "right";
+type TDirection = 'up' | 'down' | 'left' | 'right';
 type TAddPanelFn = (direction: TDirection, uuid: string) => void;
 
 /**
@@ -54,13 +60,13 @@ const EnvironmentPreview: React.FC = (): JSX.Element => {
   const initialSplitter = useMemo(
     () => ({
       items: [
-        { uuid: DEFAULT_UUID, size: "100%" }
+        { uuid: DEFAULT_UUID, size: '100%' },
         // ...splitterMock,
       ],
       layout: DEFAULT_LAYOUT,
       // parentId: uuidv4(),
     }),
-    []
+    [],
   );
 
   const [activePanel, setActivePanel] = useState<string>(null);
@@ -100,12 +106,12 @@ const EnvironmentPreview: React.FC = (): JSX.Element => {
    */
   const addPanel: TAddPanelFn = (
     direction: TDirection,
-    parentId: string
+    parentId: string,
   ): void => {
-		if (!parentId || parentId.trim() === '') {
+    if (!parentId || parentId.trim() === '') {
       modalApi.error({
-        title: t(intl, "error.invalidParent"),
-        content: t(intl, "error.invalidParentMessage"),
+        title: t(intl, 'error.invalidParent'),
+        content: t(intl, 'error.invalidParentMessage'),
       });
       return;
     }
@@ -121,42 +127,42 @@ const EnvironmentPreview: React.FC = (): JSX.Element => {
      */
     const updateSplitter = (
       layout: TSplitterLayout,
-      items: TSplitterItem[]
+      items: TSplitterItem[],
     ): void => {
       setSplitter((prev: TSplitter) =>
-        replacePanel(prev, parentId, { items }, layout)
+        replacePanel(prev, parentId, { items }, layout),
       );
     };
 
     switch (direction) {
-      case "up":
-        updateSplitter("vertical", [
-          { uuid: nextId, parentId, size: "100%" },
-          { uuid: parentId, parentId, size: "100%" },
+      case 'up':
+        updateSplitter('vertical', [
+          { uuid: nextId, parentId, size: '100%' },
+          { uuid: parentId, parentId, size: '100%' },
         ]);
         break;
-      case "down":
-        updateSplitter("vertical", [
-          { uuid: parentId, parentId, size: "100%" },
-          { uuid: nextId, parentId, size: "100%" },
+      case 'down':
+        updateSplitter('vertical', [
+          { uuid: parentId, parentId, size: '100%' },
+          { uuid: nextId, parentId, size: '100%' },
         ]);
         break;
-      case "left":
-        updateSplitter("horizontal", [
-          { uuid: nextId, parentId, size: "50%" },
-          { uuid: parentId, parentId, size: "50%" },
+      case 'left':
+        updateSplitter('horizontal', [
+          { uuid: nextId, parentId, size: '50%' },
+          { uuid: parentId, parentId, size: '50%' },
         ]);
         break;
-      case "right":
-        updateSplitter("horizontal", [
-          { uuid: parentId, parentId, size: "50%" },
-          { uuid: nextId, parentId, size: "50%" },
+      case 'right':
+        updateSplitter('horizontal', [
+          { uuid: parentId, parentId, size: '50%' },
+          { uuid: nextId, parentId, size: '50%' },
         ]);
         break;
       default:
         modalApi.error({
-          title: t(intl, "error.invalidDirection"),
-          content: t(intl, "error.invalidDirectionMessage", { direction }),
+          title: t(intl, 'error.invalidDirection'),
+          content: t(intl, 'error.invalidDirectionMessage', { direction }),
         });
     }
   };
@@ -173,40 +179,40 @@ const EnvironmentPreview: React.FC = (): JSX.Element => {
     (node: TSplitter): JSX.Element => (
       <Splitter.Panel
         key={node.uuid}
-				defaultSize={node?.size}
-        className={classnames("panel", {
-          ["pActive"]: node.uuid === activePanel,
+        defaultSize={node?.size}
+        className={classnames('panel', {
+          ['pActive']: node.uuid === activePanel,
         })}
       >
-        <div className={"pEdit"} onClick={() => setActivePanel(node.uuid)}>
+        <div className={'pEdit'} onClick={() => setActivePanel(node.uuid)}>
           {node.uuid}
           <br />
-          <span style={{ color: "red" }}>{node.parentId}</span>
+          <span style={{ color: 'red' }}>{node.parentId}</span>
           {node.size && (
             <div>
-              <span style={{ color: "blue" }}>Size: {node.size}</span>
+              <span style={{ color: 'blue' }}>Size: {node.size}</span>
             </div>
           )}
         </div>
         <Button
-          className={"pMgmt"}
-          type={"text"}
+          className={'pMgmt'}
+          type={'text'}
           icon={<SettingTwoTone />}
           onClick={handleSplitterSetting}
         />
       </Splitter.Panel>
     ),
-    [activePanel]
+    [activePanel],
   );
 
   const handleSplitterSetting = useCallback(() => {
     modalApi.info({
       width: 600,
-      title: t(intl, "actions.addNew", { type: t(intl, "widget.title") }),
+      title: t(intl, 'actions.addNew', { type: t(intl, 'widget.title') }),
       content: (
         <>
           <ArrowButtons
-            className={"pBtn"}
+            className={'pBtn'}
             panelId={activePanel}
             onClick={addPanel}
           />
@@ -214,8 +220,8 @@ const EnvironmentPreview: React.FC = (): JSX.Element => {
         </>
       ),
       footer: (
-        <Button key={"back"} onClick={Modal.destroyAll}>
-          {t(intl, "actions.close")}
+        <Button key={'back'} onClick={Modal.destroyAll}>
+          {t(intl, 'actions.close')}
         </Button>
       ),
     });
@@ -229,96 +235,99 @@ const EnvironmentPreview: React.FC = (): JSX.Element => {
    * @param {TSplitter} node - The splitter node whose children's sizes are being updated
    * @param {number[]} sizes - Array of new sizes for the child items
    */
-  const handleSizeChange = useCallback((node: TSplitter, sizes: number[]) => {
-    if (!node || !node.items || !sizes?.length) {
-      console.debug("Invalid input to handleSizeChange:", { node, sizes });
-      return;
-    }
+  const handleSizeChange = useCallback(
+    (node: TSplitter, sizes: number[]) => {
+      if (!node || !node.items || !sizes?.length) {
+        console.debug('Invalid input to handleSizeChange:', { node, sizes });
+        return;
+      }
 
-    console.debug("handleSizeChange called with:", {
-      layout: node.layout,
-      sizes,
-    });
+      console.debug('handleSizeChange called with:', {
+        layout: node.layout,
+        sizes,
+      });
 
-    // Store the node reference for the resize operation
-    setResizingNode({
-      uuid: node.uuid,
-      items: node.items.map((item, index) => ({
-        ...item,
-        uuid: item.uuid,
-      })),
-    });
+      // Store the node reference for the resize operation
+      setResizingNode({
+        uuid: node.uuid,
+        items: node.items.map((item, index) => ({
+          ...item,
+          uuid: item.uuid,
+        })),
+      });
 
-    setSplitter((prevSplitter) => {
-      // Create a deep copy to avoid mutation using structured clone
-      const updatedSplitter = structuredClone(prevSplitter);
+      setSplitter((prevSplitter) => {
+        // Create a deep copy to avoid mutation using structured clone
+        const updatedSplitter = structuredClone(prevSplitter);
 
-      // Function to find a node with matching items (by UUID)
-      const findAndUpdateNodeByItems = (
-        currentNode: TSplitter,
-        itemsToMatch: TSplitterItem[],
-        newSizes: number[]
-      ): boolean => {
-        // Check if this node has items that match the ones we're looking for
-        if (
-          currentNode.items &&
-          currentNode.items.length === itemsToMatch.length
-        ) {
-          // Check if the items match by comparing UUIDs
-          const itemsMatch = currentNode.items.every((item, index) => {
-            return (
-              itemsToMatch[index] && item.uuid === itemsToMatch[index].uuid
-            );
-          });
-
-          if (itemsMatch) {
-            // Update the sizes of the items
-            currentNode.items.forEach((item, index) => {
-              if (index < newSizes.length) {
-                item.size = newSizes[index];
-              }
+        // Function to find a node with matching items (by UUID)
+        const findAndUpdateNodeByItems = (
+          currentNode: TSplitter,
+          itemsToMatch: TSplitterItem[],
+          newSizes: number[],
+        ): boolean => {
+          // Check if this node has items that match the ones we're looking for
+          if (
+            currentNode.items &&
+            currentNode.items.length === itemsToMatch.length
+          ) {
+            // Check if the items match by comparing UUIDs
+            const itemsMatch = currentNode.items.every((item, index) => {
+              return (
+                itemsToMatch[index] && item.uuid === itemsToMatch[index].uuid
+              );
             });
-            return true; // Node found and updated
-          }
-        }
 
-        // If not found, recursively check child nodes
-        if (currentNode.items) {
-          for (const item of currentNode.items) {
-            if (item && typeof item === "object" && "items" in item) {
-              if (
-                findAndUpdateNodeByItems(
-                  item as TSplitter,
-                  itemsToMatch,
-                  newSizes
-                )
-              ) {
-                return true; // Node found in this branch
+            if (itemsMatch) {
+              // Update the sizes of the items
+              currentNode.items.forEach((item, index) => {
+                if (index < newSizes.length) {
+                  item.size = newSizes[index];
+                }
+              });
+              return true; // Node found and updated
+            }
+          }
+
+          // If not found, recursively check child nodes
+          if (currentNode.items) {
+            for (const item of currentNode.items) {
+              if (item && typeof item === 'object' && 'items' in item) {
+                if (
+                  findAndUpdateNodeByItems(
+                    item as TSplitter,
+                    itemsToMatch,
+                    newSizes,
+                  )
+                ) {
+                  return true; // Node found in this branch
+                }
               }
             }
           }
+
+          return false; // Node not found in this branch
+        };
+
+        // Find and update the node
+        const nodeFound = findAndUpdateNodeByItems(
+          updatedSplitter,
+          node.items,
+          sizes,
+        );
+
+        if (!nodeFound) {
+          console.warn('Could not find the node to update sizes for:', node);
+        } else {
+          console.debug('Successfully updated node sizes');
         }
 
-        return false; // Node not found in this branch
-      };
-
-      // Find and update the node
-      const nodeFound = findAndUpdateNodeByItems(
-        updatedSplitter,
-        node.items,
-        sizes
-      );
-
-      if (!nodeFound) {
-        console.warn("Could not find the node to update sizes for:", node);
-      } else {
-        console.debug("Successfully updated node sizes");
-      }
-
-      console.debug("Updated splitter structure:", updatedSplitter);
-      return updatedSplitter;
-    });
-  }, [splitter]);
+        console.debug('Updated splitter structure:', updatedSplitter);
+        return updatedSplitter;
+      });
+    },
+    [splitter],
+  );
 
   /**
    * A recursive function that renders a Splitter component based on the given node and layout.
@@ -337,7 +346,7 @@ const EnvironmentPreview: React.FC = (): JSX.Element => {
 
     if (node?.items) {
       const children = node.items.map((child: TSplitter) =>
-        renderer(child, node.layout)
+        renderer(child, node.layout),
       );
 
       _splitter = (
@@ -360,10 +369,14 @@ const EnvironmentPreview: React.FC = (): JSX.Element => {
   };
 
   return (
-    <div className="ePreview" key={"preview"}>
+    <div className="ePreview" key={'preview'}>
       {renderer(splitter, null)}
     </div>
   );
 };
 
-export default EnvironmentPreview;
+export const Route = createFileRoute(
+  TRouterTypes.DASHBOARD_ENVIRONMENT_PREVIEW,
+)({
+  component: EnvironmentPreview,
+});
