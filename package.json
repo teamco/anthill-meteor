@@ -5,6 +5,7 @@
   "license": "MIT",
   "scripts": {
     "start": "meteor run",
+    "precommit": "lint-staged",
     "test": "meteor test --once --driver-package meteortesting:mocha",
     "test-app": "TEST_WATCH=1 meteor test --full-app --driver-package meteortesting:mocha",
     "visualize": "meteor --production --extra-packages bundle-visualizer",
@@ -38,7 +39,7 @@
   },
   "lint-staged": {
     "*.{json,mdx}": "npx prettier --write",
-    "*.scss": [
+    "*.less": [
       "npx prettier --write",
       "stylelint -f --fix --color --validate verbose"
     ],
@@ -77,6 +78,7 @@
     "husky": "^9.1.7",
     "lint-staged": "^15.5.1",
     "stylelint": "^16.19.1",
+    "stylelint-config-standard-less": "^3.0.1",
     "stylelint-config-standard-scss": "^14.0.0",
     "stylelint-scss": "^6.11.1",
     "vitest": "^3.1.2",

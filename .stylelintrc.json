@@ -1,12 +1,12 @@
 {
-  "extends": "stylelint-config-standard-scss",
-  "plugins": ["stylelint-scss"],
+  "extends": "stylelint-config-standard-less",
+  "plugins": ["stylelint-less"],
   "defaultSeverity": "warning",
   "rules": {
     "keyframes-name-pattern": null,
     "custom-property-pattern": null,
     "selector-class-pattern": null,
-    "scss/double-slash-comment-whitespace-inside": [
+    "less/double-slash-comment-whitespace-inside": [
       "always",
       {
         "ignore": ["inside"]
