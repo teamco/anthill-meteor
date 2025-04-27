@@ -331,8 +331,8 @@ const EnvironmentPreview: React.FC = (): JSX.Element => {
 
   /**
    * A recursive function that renders a Splitter component based on the given node and layout.
-   * If the node has a uuid, it renders a Splitter.Panel with the uuid as key and the uuid as content.
-   * Otherwise it renders a Splitter component with the node's items as children.
+   * If the node has an uuid, it renders a Splitter.Panel with the uuid as key and the uuid as content.
+   * Otherwise, it renders a Splitter component with the node's items as children.
    * If the node has items, the children are rendered recursively with the node's layout.
    * If the layout is given, the children are rendered inside a Splitter.Panel.
    * @param {TSplitter} node - The node to render.
