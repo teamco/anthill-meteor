@@ -11,7 +11,7 @@ import {
 } from "antd";
 import { FormOutlined, LockTwoTone, LoginOutlined } from "@ant-design/icons";
 import { useIntl } from "react-intl";
-import { useNavigate } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 
 import { t, TIntl } from "/imports/utils/i18n.util";
 import { requiredField } from "/imports/utils/form.util";
@@ -161,4 +161,6 @@ const SignIn: React.FC = (): JSX.Element => {
   );
 };
 
-export default SignIn;
+export const Route = createFileRoute(TRouterTypes.SIGNIN)({
+  component: SignIn,
+});

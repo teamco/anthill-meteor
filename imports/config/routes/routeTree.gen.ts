@@ -1,6 +1,9 @@
 import { RootRoute, Route } from '@tanstack/react-router';
 import { TRouterTypes } from '/imports/config/types';
 
+import { Route as SigninRouteImport } from '/imports/ui/pages/authentication/signin/signin';
+import { Route as SignupRouteImport } from '/imports/ui/pages/authentication/signup/signup';
+
 import { Route as AdminRouteImport } from './__adminRoot';
 import { Route as DashboardRouteImport } from '/imports/ui/pages/dashboard/dashboard.page';
 import { Route as EnvironmentsRouteImport } from '/imports/ui/pages/dashboard/environments/environments.page';
@@ -27,6 +30,10 @@ function createRoute(
     getParentRoute: () => parentRoute,
   } as any);
 }
+
+const SigninRoute = createRoute(SigninRouteImport, TRouterTypes.SIGNIN);
+
+const SignupRoute = createRoute(SignupRouteImport, TRouterTypes.SIGNUP);
 
 const DashboardRoute = createRoute(
   DashboardRouteImport,
@@ -56,6 +63,24 @@ const UserLogsRoute = createRoute(
 // Populate the FileRoutesByPath interface
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    [TRouterTypes.SIGNIN]: {
+      preLoaderRoute: typeof SigninRouteImport;
+    };
+    [TRouterTypes.SIGNUP]: {
+      preLoaderRoute: typeof SignupRouteImport;
+    };
+    [TRouterTypes.DASHBOARD]: {
+      preLoaderRoute: typeof DashboardRouteImport;
+      parentRoute: typeof AdminRouteImport;
+    };
+    [TRouterTypes.DASHBOARD]: {
+      preLoaderRoute: typeof DashboardRouteImport;
+      parentRoute: typeof AdminRouteImport;
+    };
+    [TRouterTypes.DASHBOARD]: {
+      preLoaderRoute: typeof DashboardRouteImport;
+      parentRoute: typeof AdminRouteImport;
+    };
     [TRouterTypes.DASHBOARD]: {
       preLoaderRoute: typeof DashboardRouteImport;
       parentRoute: typeof AdminRouteImport;
@@ -81,6 +106,8 @@ declare module '@tanstack/react-router' {
 
 // Create and export the route tree
 export const routeTree = AdminRouteImport.addChildren([
+  SigninRoute,
+  SignupRoute,
   DashboardRoute,
   DashboardEnvironmentsRoute,
   DashboardEnvironmentEditRoute,

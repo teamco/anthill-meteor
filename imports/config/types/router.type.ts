@@ -1,7 +1,7 @@
 export enum TRouterTypes {
   ROOT = '/',
-  LOGIN = '/login',
   LOGOUT = '/logout',
+  SIGNUP = '/signup',
   SIGNIN = '/signin',
   DASHBOARD = '/dashboard',
   DASHBOARD_ENVIRONMENTS = '/dashboard/environments',

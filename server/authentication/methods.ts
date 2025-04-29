@@ -9,23 +9,6 @@ import './publish';
 
 Meteor.methods({
   
-  "posts.insert": (header, text, convertedImg, email,userImg) => {
-
-    if (!this.userId) { // "this.userId" is our current user 
-      throw new Meteor.Error("Not authorized.");
-    }
-
-    SocialMediaCollection.insert({
-      header,
-      text,
-      convertedImg,
-      createdAt: new Date(),
-      userId: this.userId,
-      email,
-      userImg
-    });
-  },
-
   /**
    * Creates a user profile with a password provider
    * @param data - Object with properties: email, password, name
