@@ -1,4 +1,4 @@
-import React, { FC, JSX, SetStateAction, useMemo, useState } from "react";
+import React, { FC, JSX, SetStateAction, useState } from "react";
 import dayjs from "dayjs";
 
 import { Locale } from "antd/es/locale";
@@ -18,7 +18,7 @@ import "@ant-design/v5-patch-for-react-19";
  *
  * @returns {JSX.Element} The App component.
  */
-const App: FC<{ children: JSX.Element }> = ({ children }): JSX.Element => {
+const App: FC<{ children: JSX.Element[] }> = ({ children }): JSX.Element => {
   const [locale, setLocal] = useState(enUs);
 
   const changeLocale = (e: React.ChangeEvent<HTMLSelectElement>) => {

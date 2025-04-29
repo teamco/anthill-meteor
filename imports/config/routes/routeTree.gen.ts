@@ -5,6 +5,8 @@ import { Route as SigninRouteImport } from '/imports/ui/pages/authentication/sig
 import { Route as SignupRouteImport } from '/imports/ui/pages/authentication/signup/signup';
 
 import { Route as AdminRouteImport } from './__adminRoot';
+import { Route as PublicRouteImport } from './__publicRoot';
+
 import { Route as DashboardRouteImport } from '/imports/ui/pages/dashboard/dashboard.page';
 import { Route as EnvironmentsRouteImport } from '/imports/ui/pages/dashboard/environments/environments.page';
 import { Route as EnvironmentEditRouteImport } from '/imports/ui/pages/dashboard/environments/environment/environment.edit';
@@ -65,9 +67,11 @@ declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
     [TRouterTypes.SIGNIN]: {
       preLoaderRoute: typeof SigninRouteImport;
+      parentRoute: typeof PublicRouteImport;
     };
     [TRouterTypes.SIGNUP]: {
       preLoaderRoute: typeof SignupRouteImport;
+      parentRoute: typeof PublicRouteImport;
     };
     [TRouterTypes.DASHBOARD]: {
       preLoaderRoute: typeof DashboardRouteImport;
