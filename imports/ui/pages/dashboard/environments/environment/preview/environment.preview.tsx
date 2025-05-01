@@ -1,9 +1,17 @@
-import React, { JSX, useCallback, useContext, useMemo, useState } from 'react';
+import React, {
+  JSX,
+  useCallback,
+  useContext,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import { useIntl } from 'react-intl';
 import { Button, Modal, Splitter } from 'antd';
 import { SettingTwoTone } from '@ant-design/icons';
 import { v4 as uuidv4 } from 'uuid';
 import classnames from 'classnames';
+import { createFileRoute } from '@tanstack/react-router';
 
 import { ArrowButtons } from '/imports/ui/components/Buttons/arrow.buttons';
 
@@ -22,9 +30,9 @@ import './environment.preview.module.less';
 import {
   cleanPanel,
   deletePanel,
+  findAndUpdateNodeByItems,
   replacePanel,
 } from '/imports/utils/splitter.util';
-import { createFileRoute } from '@tanstack/react-router';
 
 // import { splitterMock } from "./__tests__/splitter.mock";
 
@@ -72,11 +80,7 @@ const EnvironmentPreview: React.FC = (): JSX.Element => {
   const [activePanel, setActivePanel] = useState<string>(null);
   const [splitter, setSplitter] = useState<TSplitter>(initialSplitter);
 
-  // Store the currently resizing node's reference for use in handleSizeChange
-  const [resizingNode, setResizingNode] = useState<{
-    uuid: string;
-    items: TSplitterItem[];
-  } | null>(null);
+  const lastResizeRef = useRef<number>(0);
 
   /**
    * Handles the deletion of the panel with the given uuid in the Splitter component.
@@ -179,7 +183,7 @@ const EnvironmentPreview: React.FC = (): JSX.Element => {
     (node: TSplitter): JSX.Element => (
       <Splitter.Panel
         key={node.uuid}
-        defaultSize={node?.size}
+        size={node?.size}
         className={classnames('panel', {
           ['pActive']: node.uuid === activePanel,
         })}
@@ -237,77 +241,22 @@ const EnvironmentPreview: React.FC = (): JSX.Element => {
    */
   const handleSizeChange = useCallback(
     (node: TSplitter, sizes: number[]) => {
-      if (!node || !node.items || !sizes?.length) {
-        console.debug('Invalid input to handleSizeChange:', { node, sizes });
+      // Prevent duplicate call if sizes didn't actually change
+      if (lastResizeRef.current === 1) {
+        lastResizeRef.current = 0;
         return;
       }
+    
+      lastResizeRef.current = 1;
 
-      console.debug('handleSizeChange called with:', {
-        layout: node.layout,
-        sizes,
-      });
-
-      // Store the node reference for the resize operation
-      setResizingNode({
-        uuid: node.uuid,
-        items: node.items.map((item, index) => ({
-          ...item,
-          uuid: item.uuid,
-        })),
-      });
+      if (!node || !node.items || !sizes?.length) {
+        console.warn('Invalid input to handleSizeChange:', { node, sizes });
+        return;
+      }
 
       setSplitter((prevSplitter) => {
         // Create a deep copy to avoid mutation using structured clone
         const updatedSplitter = structuredClone(prevSplitter);
-
-        // Function to find a node with matching items (by UUID)
-        const findAndUpdateNodeByItems = (
-          currentNode: TSplitter,
-          itemsToMatch: TSplitterItem[],
-          newSizes: number[],
-        ): boolean => {
-          // Check if this node has items that match the ones we're looking for
-          if (
-            currentNode.items &&
-            currentNode.items.length === itemsToMatch.length
-          ) {
-            // Check if the items match by comparing UUIDs
-            const itemsMatch = currentNode.items.every((item, index) => {
-              return (
-                itemsToMatch[index] && item.uuid === itemsToMatch[index].uuid
-              );
-            });
-
-            if (itemsMatch) {
-              // Update the sizes of the items
-              currentNode.items.forEach((item, index) => {
-                if (index < newSizes.length) {
-                  item.size = newSizes[index];
-                }
-              });
-              return true; // Node found and updated
-            }
-          }
-
-          // If not found, recursively check child nodes
-          if (currentNode.items) {
-            for (const item of currentNode.items) {
-              if (item && typeof item === 'object' && 'items' in item) {
-                if (
-                  findAndUpdateNodeByItems(
-                    item as TSplitter,
-                    itemsToMatch,
-                    newSizes,
-                  )
-                ) {
-                  return true; // Node found in this branch
-                }
-              }
-            }
-          }
-
-          return false; // Node not found in this branch
-        };
 
         // Find and update the node
         const nodeFound = findAndUpdateNodeByItems(
@@ -318,11 +267,8 @@ const EnvironmentPreview: React.FC = (): JSX.Element => {
 
         if (!nodeFound) {
           console.warn('Could not find the node to update sizes for:', node);
-        } else {
-          console.debug('Successfully updated node sizes');
         }
 
-        console.debug('Updated splitter structure:', updatedSplitter);
         return updatedSplitter;
       });
     },
@@ -353,7 +299,9 @@ const EnvironmentPreview: React.FC = (): JSX.Element => {
         <Splitter
           lazy
           layout={node.layout}
-          onResizeEnd={(sizes) => handleSizeChange(node, sizes)}
+          onResizeEnd={(sizes) => {
+            handleSizeChange(node, sizes);
+          }}
           key={uuid}
         >
           {children}
