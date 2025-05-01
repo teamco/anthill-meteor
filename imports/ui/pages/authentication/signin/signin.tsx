@@ -161,6 +161,4 @@ const SignIn: React.FC = (): JSX.Element => {
   );
 };
 
-export const Route = createFileRoute(TRouterTypes.SIGNIN)({
-  component: SignIn,
-});
+export default SignIn;
