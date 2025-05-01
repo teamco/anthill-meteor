@@ -23,4 +23,6 @@ export default {
   'error.notAllowed': 'You are not allowed to access this {entity}',
   'error.invalidDirection': 'Invalid direction',
   'error.invalidDirectionMessage': 'Invalid direction: {direction}',
+  'error.cloneFailure': 'Failed to clone the node',
+  'error.cloneFailureMessage': 'Node id: {id}',
 }

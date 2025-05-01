@@ -246,7 +246,7 @@ const EnvironmentPreview: React.FC = (): JSX.Element => {
         lastResizeRef.current = 0;
         return;
       }
-    
+
       lastResizeRef.current = 1;
 
       if (!node || !node.items || !sizes?.length) {
@@ -256,7 +256,18 @@ const EnvironmentPreview: React.FC = (): JSX.Element => {
 
       setSplitter((prevSplitter) => {
         // Create a deep copy to avoid mutation using structured clone
-        const updatedSplitter = structuredClone(prevSplitter);
+        let updatedSplitter: TSplitter;
+        try {
+          // Create a deep copy to avoid mutation using structured clone
+          updatedSplitter = structuredClone(prevSplitter);
+        } catch (error) {
+          console.error('Failed to clone splitter structure:', error);
+          modalApi.error({
+            title: t(intl, 'error.cloneFailure'),
+            content: t(intl, 'error.cloneFailureMessage', { id: node.uuid }),
+          });
+          return prevSplitter; // Return unchanged state on error
+        }
 
         // Find and update the node
         const nodeFound = findAndUpdateNodeByItems(
