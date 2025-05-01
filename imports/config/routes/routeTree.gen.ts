@@ -1,6 +1,8 @@
-import { RootRoute, Route } from '@tanstack/react-router';
+import { createFileRoute, RootRoute, Route } from '@tanstack/react-router';
 import { TRouterTypes } from '/imports/config/types';
 
+
+import SignIn from '/imports/ui/pages/authentication/signin/signin';
 import { Route as SignupRouteImport } from '/imports/ui/pages/authentication/signup/signup';
 
 import { Route as AdminRouteImport } from './__adminRoot';
@@ -32,6 +34,13 @@ function createRoute(
   } as any);
 }
 
+
+export const SigninRouteImport = createFileRoute(TRouterTypes.SIGNIN)({
+  component: SignIn,
+});
+
+const SigninRoute = createRoute(SigninRouteImport, TRouterTypes.SIGNIN);
+
 const SignupRoute = createRoute(SignupRouteImport, TRouterTypes.SIGNUP);
 
 const DashboardRoute = createRoute(
@@ -62,6 +71,10 @@ const UserLogsRoute = createRoute(
 // Populate the FileRoutesByPath interface
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    [TRouterTypes.SIGNIN]: {
+      preLoaderRoute: typeof SigninRouteImport;
+      parentRoute: typeof PublicRouteImport;
+    };
     [TRouterTypes.SIGNUP]: {
       preLoaderRoute: typeof SignupRouteImport;
       parentRoute: typeof PublicRouteImport;
@@ -103,6 +116,7 @@ declare module '@tanstack/react-router' {
 
 // Create and export the route tree
 export const routeTree = AdminRouteImport.addChildren([
+  SigninRoute,
   SignupRoute,
   DashboardRoute,
   DashboardEnvironmentsRoute,
