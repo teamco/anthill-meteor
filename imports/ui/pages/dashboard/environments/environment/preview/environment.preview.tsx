@@ -183,7 +183,7 @@ const EnvironmentPreview: React.FC = (): JSX.Element => {
     (node: TSplitter): JSX.Element => (
       <Splitter.Panel
         key={node.uuid}
-        size={node?.size}
+        defaultSize={node?.size}
         className={classnames('panel', {
           ['pActive']: node.uuid === activePanel,
         })}
