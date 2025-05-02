@@ -15,7 +15,18 @@ export type TStatus = {
   isActive: boolean;
   isPending: boolean;
   isOnHold: boolean;
+  isDeleted: boolean;
+  isPublished: boolean;
+  isExpired: boolean;
+  isDisabled: boolean;
+  isPublic: boolean;
 };
+
+export enum EStatus {
+  DRAFT = 'draft',
+  ACTIVE = 'active',
+  PENDING = 'pending',
+}
 
 export type TTimestamp = {
   createdAt?: Date;
@@ -23,6 +34,8 @@ export type TTimestamp = {
 };
 
 export interface IMetadata extends TTimestamp {
+  status?: EStatus;
+  properties?: Partial<TStatus>;
   createdBy: IUser['_id'];
   updatedBy: IUser['_id'];
 }

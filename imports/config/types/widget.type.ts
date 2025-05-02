@@ -6,6 +6,17 @@ export type TWidgetContent = {
   params?: { [key: string]: any };
 };
 
+export type TWidgetConfig = {
+  isDraggable: boolean;
+  isResizable: boolean;
+  isRemovable: boolean;
+  isEditable: boolean;
+  isMovable: boolean;
+  isClonable: boolean;
+};
+
+export type TWidgetTags = string[];
+
 export type TWidget = {
   _id?: string;
   name: string;
@@ -18,5 +29,6 @@ export type TWidget = {
   content: TWidgetContent;
   category: string;
   resource: string;
+  config: TWidgetConfig;
   metadata: IMetadata;
 };

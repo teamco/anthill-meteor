@@ -91,4 +91,7 @@ export const getWidgets = (
  * @returns {TWidget} The widget found in the collection or undefined if not found.
  */
 export const getWidgetBy = (key: string, value: string): TWidget =>
-  WidgetsCollection.findOne({ [key]: value }) as TWidget;
+  WidgetsCollection.findOne({
+    [key]: value,
+    'metadata.createdBy': Meteor.userId(),
+  }) as TWidget;
