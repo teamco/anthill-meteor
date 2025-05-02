@@ -1,20 +1,53 @@
 import React, { FC, JSX } from 'react';
-import { Layout } from 'antd';
-import { Outlet } from '@tanstack/react-router';
+import { Layout, message, Modal, notification } from 'antd';
+import { useIntl } from 'react-intl';
+
+import { I18nContext } from '/imports/ui/context/i18n.context';
+import { NotificationContext } from '/imports/ui/context/notification.context';
+
+import { TIntl } from '/imports/utils/i18n.util';
+import { nCache } from '/imports/utils/message.util';
 
 // import './app.layout.module.less';
 
 const { Header, Footer, Content } = Layout;
 
-const AppLayout: FC = (): JSX.Element => {
-  
+type TProps = {
+  children: string | JSX.Element | JSX.Element[];
+};
+
+const AppLayout: FC<TProps> = ({ children }): JSX.Element => {
+  const intl: TIntl = useIntl();
+
+  const [modalApi, modalHolder] = Modal.useModal();
+  const [messageApi, messageHolder] = message.useMessage();
+  const [notificationApi, notificationHolder] = notification.useNotification({
+    stack: { threshold: 3 },
+  });
+
+  nCache.set('intl', intl);
+  nCache.set('messageApi', messageApi);
+  nCache.set('modalApi', modalApi);
+  nCache.set('notificationApi', notificationApi);
+
   return (
-    <Layout className={'layout'}>
-      <Header className={'header'}>Header</Header>
-      <Content className={'content'}><Outlet /></Content>
-      <Footer className={'footer'}>Footer</Footer>
-    </Layout>
-  )
+    <I18nContext.Provider value={intl}>
+      <NotificationContext.Provider
+        value={{ modalApi, messageApi, notificationApi }}
+      >
+        <Layout className={'layout'}>
+          <Header className={'header'}>Header</Header>
+          <Content className={'content'}>
+            {messageHolder}
+            {notificationHolder}
+            {modalHolder}
+            {children}
+          </Content>
+          <Footer className={'footer'}>Footer</Footer>
+        </Layout>
+      </NotificationContext.Provider>
+    </I18nContext.Provider>
+  );
 };
 
 export default AppLayout;

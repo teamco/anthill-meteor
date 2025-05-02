@@ -1,39 +1,51 @@
-import React from "react";
-import { Meteor } from "meteor/meteor";
-import { createRoot } from "react-dom/client";
-import { RouterProvider, createRouter } from "@tanstack/react-router";
+import React from 'react';
+import { Meteor } from 'meteor/meteor';
+import { Tracker } from 'meteor/tracker';
+import { createRoot } from 'react-dom/client';
+import { RouterProvider, createRouter } from '@tanstack/react-router';
 
-
-import { initLogger } from "/imports/utils/console.util";
-import { initDayjs } from "/imports/utils/dayjs.util";
+import { initLogger } from '/imports/utils/console.util';
+import { initDayjs } from '/imports/utils/dayjs.util';
 
 // Import the generated route tree
-import { routeTree } from "/imports/config/routes/routeTree.gen";
+import {
+  adminRouteTree,
+  publicRouteTree,
+} from '/imports/config/routes/routeTree.gen';
 
 initDayjs();
 
 // Create a new router instance
-const router = createRouter({ routeTree } as any);
+const adminRouter = createRouter({ routeTree: adminRouteTree } as any);
+const publicRouter = createRouter({ routeTree: publicRouteTree } as any);
 
 // Register the router instance for type safety
-declare module "@tanstack/react-router" {
+declare module '@tanstack/react-router' {
   interface Register {
-    router: typeof router;
+    router: typeof adminRouter | typeof publicRouter;
   }
 }
 
 Meteor.startup(() => {
-  const container = document.getElementById("react-target");
+  const container = document.getElementById('react-target');
 
   if (!container.innerHTML) {
     const root = createRoot(container);
 
     initLogger();
 
+    let router = publicRouter;
+
+    Tracker.autorun(function () {
+      if (Meteor.userId()) {
+        router = adminRouter;
+      }
+    });
+
     root.render(
       <React.StrictMode>
         <RouterProvider router={router} />
-      </React.StrictMode>
+      </React.StrictMode>,
     );
   }
 });
