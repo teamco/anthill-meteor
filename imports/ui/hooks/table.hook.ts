@@ -3,7 +3,7 @@ import { TableProps } from 'antd';
 import { useSearch, useRouter } from '@tanstack/react-router';
 import { useTracker } from 'meteor/react-meteor-data';
 
-import { ITableParams } from '/imports/config/types';
+import { ITableParams, TPaginateProps } from '/imports/config/types';
 
 type TOnChange = NonNullable<TableProps<any>['onChange']>;
 export type TFilters = Parameters<TOnChange>[1];
@@ -37,11 +37,7 @@ export const useTable = (
   getter: (
     method: string,
     setEntities: (entities: any[]) => void,
-    params: {
-      current: number;
-      pageSize: number;
-      sort: [string | undefined, string | undefined];
-    },
+    params: TPaginateProps,
   ) => void,
   Collection: Mongo.Collection<Document, Document>,
   defaults?: TDefaults,
