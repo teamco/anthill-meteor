@@ -52,8 +52,8 @@ export const metadataColumns = ({ intl, sortedInfo, onDelete }: TArgs): TablePro
       render(widgets: TWidget[]): JSX.Element {
         return (
           <div>
-            {widgets.map((widget, idx) => (
-              <Tag key={idx}>{widget.name}</Tag>
+            {Object.keys(widgets).map((widget, idx) => (
+              <Tag key={idx}>{widgets[widget].name}</Tag>
             ))}
           </div>
         )

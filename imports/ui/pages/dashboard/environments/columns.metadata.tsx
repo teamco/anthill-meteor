@@ -80,8 +80,8 @@ export const metadataColumns = (
       render(layout: TLayout): JSX.Element {
         return (
           <div>
-            {layout.widgets.map((widget, idx) => (
-              <Tag key={idx}>{widget.name}</Tag>
+            {Object.keys(layout.widgets).map((widget, idx) => (
+              <Tag key={idx}>{layout.widgets[widget].name}</Tag>
             ))}
           </div>
         );
