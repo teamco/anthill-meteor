@@ -14,7 +14,8 @@ import { onFinishFailed, onValidate } from '/imports/utils/form.util';
 import { indexable } from '/imports/utils/table/table.util';
 import { TUseTable, useTable } from '/imports/ui/hooks/table.hook';
 
-import { getEnvironments, updateEnvironment } from '/imports/ui/services/environment.service';
+import { updateEnvironment } from '/imports/ui/services/environment.service';
+import { getEntities } from '/imports/ui/services/shared.service';
 
 import { TEnvironment, TEnvironmentEdit } from '/imports/config/types';
 
@@ -100,13 +101,14 @@ export const useEnvironmentTabs = (
 
   const layouts: TUseTable = useTable(
     'layoutsPaginate',
-    getEnvironments,
+    getEntities,
     LayoutsCollection as any,
   );
   const widgets: TUseTable = useTable(
     'widgetsPaginate',
-    getEnvironments,
+    getEntities,
     WidgetsCollection as any,
+    {},
   );
 
   /**
@@ -213,7 +215,10 @@ export const useEnvironmentTabs = (
       key: TEnvironmentTabs.GENERAL,
       icon: <FormOutlined />,
       label: t(intl, 'environment.tabs.general'),
-      disabled: ability.cannot(`access.${TEnvironmentTabs.GENERAL}`, environmentId),
+      disabled: ability.cannot(
+        `access.${TEnvironmentTabs.GENERAL}`,
+        environmentId,
+      ),
       children: (
         <Form
           layout={'vertical'}
@@ -260,7 +265,10 @@ export const useEnvironmentTabs = (
       key: TEnvironmentTabs.LAYOUTS,
       icon: <BlockOutlined />,
       label: t(intl, 'environment.tabs.layouts'),
-      disabled: ability.cannot(`access.${TEnvironmentTabs.LAYOUTS}`, environmentId),
+      disabled: ability.cannot(
+        `access.${TEnvironmentTabs.LAYOUTS}`,
+        environmentId,
+      ),
       children: (
         <div className="layouts">
           <h3>{t(intl, 'environment.list.layouts')}</h3>
@@ -272,7 +280,10 @@ export const useEnvironmentTabs = (
       key: TEnvironmentTabs.WIDGETS,
       icon: <AppstoreAddOutlined />,
       label: t(intl, 'environment.tabs.widgets'),
-      disabled: ability.cannot(`access.${TEnvironmentTabs.WIDGETS}`, environmentId),
+      disabled: ability.cannot(
+        `access.${TEnvironmentTabs.WIDGETS}`,
+        environmentId,
+      ),
       children: (
         <div className="widgets">
           <h3>{t(intl, 'environment.list.widgets')}</h3>

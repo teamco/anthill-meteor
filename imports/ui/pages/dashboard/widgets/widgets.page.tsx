@@ -1,41 +1,44 @@
-import React, { JSX, useContext } from "react";
-import { Button, Table } from "antd";
-import { useSubscribe } from "meteor/react-meteor-data";
-import { TableProps } from "antd/lib/table";
+import React, { JSX, useContext } from 'react';
+import { Button, Table } from 'antd';
+import { useSubscribe } from 'meteor/react-meteor-data';
+import { TableProps } from 'antd/lib/table';
 
-import { WidgetsCollection } from "/imports/collections/widgets.collection";
+import { WidgetsCollection } from '/imports/collections/widgets.collection';
 
 import {
   ICommonDataType,
   IMetadata,
   TLayout,
+  TRouterTypes,
   TStatus,
-} from "/imports/config/types";
+} from '/imports/config/types';
 
-import { I18nContext } from "/imports/ui/context/i18n.context";
-import { AbilityContext } from "/imports/ui/context/authentication.context";
-import { NotificationContext } from "/imports/ui/context/notification.context";
+import { I18nContext } from '/imports/ui/context/i18n.context';
+import { AbilityContext } from '/imports/ui/context/authentication.context';
+import { NotificationContext } from '/imports/ui/context/notification.context';
 
-import Page from "/imports/ui/components/Page/page.component";
+import Page from '/imports/ui/components/Page/page.component';
 
-import { useTable } from "/imports/ui/hooks/table.hook";
+import { useTable } from '/imports/ui/hooks/table.hook';
 
-import { t } from "/imports/utils/i18n.util";
-import { indexable } from "../../../../utils/table/table.util";
-import { catchClassErrorMsg } from "/imports/utils/message.util";
+import { t } from '/imports/utils/i18n.util';
+import { indexable } from '../../../../utils/table/table.util';
+import { catchClassErrorMsg } from '/imports/utils/message.util';
 
 import {
   createWidget,
   deleteWidget,
-} from "/imports/ui/services/widget.service";
+} from '/imports/ui/services/widget.service';
+import { getEntities } from '/imports/ui/services/shared.service';
 
-import { metadataColumns } from "./columns.metadata";
+import { metadataColumns } from './columns.metadata';
 
-import { WidgetNew } from "./widget/widget.new";
+import { WidgetNew } from './widget/widget.new';
 
-import Widget from "/imports/api/environment/Widget";
+import Widget from '/imports/api/environment/Widget';
 
-import "./widgets.module.less";
+import './widgets.module.less';
+import { createFileRoute } from '@tanstack/react-router';
 
 export interface IDataType extends ICommonDataType {
   name: string;
@@ -58,7 +61,7 @@ export interface IDataType extends ICommonDataType {
  * @returns {JSX.Element} The JSX element representing the widgets page
  */
 const WidgetsPage: React.FC = (): JSX.Element => {
-  const isLoading = useSubscribe("widgets");
+  const isLoading = useSubscribe('widgets');
   const intl = useContext(I18nContext);
   const ability = useContext(AbilityContext);
   const { modalApi } = useContext(NotificationContext);
@@ -89,9 +92,9 @@ const WidgetsPage: React.FC = (): JSX.Element => {
     sortedInfo,
     handleRefresh,
     handleTableChange,
-  } = useTable("widgetsPaginate", WidgetsCollection as any);
+  } = useTable('widgetsPaginate', getEntities, WidgetsCollection as any);
 
-  const columns: TableProps<IDataType>["columns"] = metadataColumns({
+  const columns: TableProps<IDataType>['columns'] = metadataColumns({
     intl,
     filteredInfo,
     sortedInfo,
@@ -103,9 +106,9 @@ const WidgetsPage: React.FC = (): JSX.Element => {
   const tableProps = {
     columns,
     pagination,
-    scroll: { x: 800 },
+    scroll: { x: 1000 },
     bordered: true,
-    className: "gridList",
+    className: 'gridList',
     dataSource: indexable(entities, pagination?.current, pagination?.pageSize),
     loading: isLoading(),
     rowKey: (record: IDataType) => record._id,
@@ -113,9 +116,9 @@ const WidgetsPage: React.FC = (): JSX.Element => {
     title: () => (
       <div className="gridHeader">
         <Button
-          disabled={ability.cannot("create", "widget")}
+          disabled={ability.cannot('create', 'widget')}
           loading={isLoading()}
-          type={"primary"}
+          type={'primary'}
           onClick={handleCreateWidget}
         >
           Create Widget
@@ -124,7 +127,7 @@ const WidgetsPage: React.FC = (): JSX.Element => {
     ),
     footer: () => (
       <div className="gridFooter">
-        {t(intl, "table.total", { amount: total.toString() })}
+        {t(intl, 'table.total', { amount: total.toString() })}
       </div>
     ),
   };
@@ -139,7 +142,7 @@ const WidgetsPage: React.FC = (): JSX.Element => {
   const handleCreateWidget = () => {
     modalApi.info({
       width: 600,
-      title: t(intl, "actions.addNew", { type: t(intl, "widget.title") }),
+      title: t(intl, 'actions.addNew', { type: t(intl, 'widget.title') }),
       content: (
         <WidgetNew
           disabled={isLoading()}
@@ -149,7 +152,7 @@ const WidgetsPage: React.FC = (): JSX.Element => {
                 const Entity = module[values.name];
 
                 if (!Entity) {
-                  catchClassErrorMsg({ message: "Widget name is invalid" });
+                  catchClassErrorMsg({ message: 'Widget name is invalid' });
                 }
 
                 const widget = new Widget(Entity, user);
@@ -157,7 +160,7 @@ const WidgetsPage: React.FC = (): JSX.Element => {
                 createWidget(widget, handleRefresh);
               })
               .catch((e) => {
-                catchClassErrorMsg({ message: "Widget path is invalid" });
+                catchClassErrorMsg({ message: 'Widget path is invalid' });
               });
           }}
         />
@@ -168,13 +171,15 @@ const WidgetsPage: React.FC = (): JSX.Element => {
 
   return (
     <Page
-      ableFor={{ subject: "dashboard.widgets" }}
-      title={t(intl, "dashboard.widgets.title")}
-      description={t(intl, "dashboard.widgets.description")}
+      ableFor={{ subject: 'dashboard.widgets' }}
+      title={t(intl, 'dashboard.widgets.title')}
+      description={t(intl, 'dashboard.widgets.description')}
     >
       <Table<IDataType> {...tableProps} />
     </Page>
   );
 };
 
-export default WidgetsPage;
+export const Route = createFileRoute(TRouterTypes.DASHBOARD_WIDGETS)({
+  component: WidgetsPage,
+});

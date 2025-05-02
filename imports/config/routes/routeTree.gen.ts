@@ -8,6 +8,7 @@ import { Route as AdminRouteImport } from './__adminRoot';
 import { Route as PublicRouteImport } from './__publicRoot';
 
 import { Route as DashboardRouteImport } from '/imports/ui/pages/dashboard/dashboard.page';
+import { Route as WidgetsRouteImport } from '/imports/ui/pages/dashboard/widgets/widgets.page';
 import { Route as EnvironmentsRouteImport } from '/imports/ui/pages/dashboard/environments/environments.page';
 import { Route as EnvironmentEditRouteImport } from '/imports/ui/pages/dashboard/environments/environment/environment.edit';
 import { Route as EnvironmentPreviewRouteImport } from '/imports/ui/pages/dashboard/environments/environment/preview/environment.preview';
@@ -50,6 +51,11 @@ const DashboardEnvironmentsRoute = createRoute(
   TRouterTypes.DASHBOARD_ENVIRONMENTS,
 );
 
+const DashboardWidgetsRoute = createRoute(
+  WidgetsRouteImport,
+  TRouterTypes.DASHBOARD_WIDGETS,
+);
+
 const DashboardEnvironmentEditRoute = createRoute(
   EnvironmentEditRouteImport,
   TRouterTypes.DASHBOARD_ENVIRONMENT_EDIT,
@@ -80,18 +86,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardRouteImport;
       parentRoute: typeof AdminRouteImport;
     };
-    [TRouterTypes.DASHBOARD]: {
-      preLoaderRoute: typeof DashboardRouteImport;
-      parentRoute: typeof AdminRouteImport;
-    };
-    [TRouterTypes.DASHBOARD]: {
-      preLoaderRoute: typeof DashboardRouteImport;
-      parentRoute: typeof AdminRouteImport;
-    };
-    [TRouterTypes.DASHBOARD]: {
-      preLoaderRoute: typeof DashboardRouteImport;
-      parentRoute: typeof AdminRouteImport;
-    };
     [TRouterTypes.DASHBOARD_ENVIRONMENTS]: {
       preLoaderRoute: typeof EnvironmentsRouteImport;
       parentRoute: typeof AdminRouteImport;
@@ -102,6 +96,10 @@ declare module '@tanstack/react-router' {
     };
     [TRouterTypes.DASHBOARD_ENVIRONMENT_PREVIEW]: {
       preLoaderRoute: typeof DashboardEnvironmentPreviewRoute;
+      parentRoute: typeof AdminRouteImport;
+    };
+    [TRouterTypes.DASHBOARD_WIDGETS]: {
+      preLoaderRoute: typeof DashboardWidgetsRoute;
       parentRoute: typeof AdminRouteImport;
     };
     [TRouterTypes.DASHBOARD_USER_LOGS]: {
@@ -116,6 +114,7 @@ export const adminRouteTree = AdminRouteImport.addChildren([
   SignupRoute,
   SigninRoute,
   DashboardRoute,
+  DashboardWidgetsRoute,
   DashboardEnvironmentsRoute,
   DashboardEnvironmentEditRoute,
   DashboardEnvironmentPreviewRoute,

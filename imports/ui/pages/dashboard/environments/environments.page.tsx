@@ -26,10 +26,10 @@ import { indexable } from '/imports/utils/table/table.util';
 import { t } from '/imports/utils/i18n.util';
 
 import {
-  getEnvironments,
   createEnvironment,
   deleteEnvironment,
 } from '/imports/ui/services/environment.service';
+import { getEntities } from '/imports/ui/services/shared.service';
 
 import { metadataColumns } from './columns.metadata';
 
@@ -119,7 +119,7 @@ const EnvironmentsPage: React.FC = (): JSX.Element => {
     handleTableChange,
   } = useTable(
     'environmentsPaginate',
-    getEnvironments,
+    getEntities,
     EnvironmentsCollection as any,
   );
 

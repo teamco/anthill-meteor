@@ -31,4 +31,5 @@ export type TWidget = {
   resource: string;
   config: TWidgetConfig;
   metadata: IMetadata;
+  tags: TWidgetTags;
 };

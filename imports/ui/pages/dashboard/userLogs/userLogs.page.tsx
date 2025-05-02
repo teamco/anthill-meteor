@@ -1,34 +1,42 @@
-import React, { JSX, useContext } from "react";
+import React, { JSX, useContext } from 'react';
 import { Button, Table } from 'antd';
-import { useSubscribe } from "meteor/react-meteor-data";
-import { TableProps } from "antd/lib/table";
+import { useSubscribe } from 'meteor/react-meteor-data';
+import { TableProps } from 'antd/lib/table';
 import { createFileRoute } from '@tanstack/react-router';
 
-import { UserLogsCollection } from "/imports/collections/userLogs.collection";
+import { UserLogsCollection } from '/imports/collections/userLogs.collection';
 
-import { ICommonDataType, IMetadata, TLayout, TRouterTypes, TStatus } from '/imports/config/types';
+import {
+  ICommonDataType,
+  IMetadata,
+  TLayout,
+  TRouterTypes,
+  TStatus,
+} from '/imports/config/types';
 
-import { I18nContext } from "/imports/ui/context/i18n.context";
+import { I18nContext } from '/imports/ui/context/i18n.context';
 import { AbilityContext } from '/imports/ui/context/authentication.context';
 import { NotificationContext } from '/imports/ui/context/notification.context';
 
-import Page from "/imports/ui/components/Page/page.component";
+import Page from '/imports/ui/components/Page/page.component';
 
-import { useTable } from "/imports/ui/hooks/table.hook";
+import { useTable } from '/imports/ui/hooks/table.hook';
 
 import { indexable } from '/imports/utils/table/table.util';
-import { t } from "/imports/utils/i18n.util";
+import { t } from '/imports/utils/i18n.util';
 
-import { metadataColumns } from "./columns.metadata";
+import { getEntities } from '/imports/ui/services/shared.service';
+
+import { metadataColumns } from './columns.metadata';
 
 import './userLogs.module.less';
 
 export interface IDataType extends ICommonDataType {
-	name: string;
-	type: string;
-	status: TStatus;
-	metadata: IMetadata;
-	layout: TLayout;
+  name: string;
+  type: string;
+  status: TStatus;
+  metadata: IMetadata;
+  layout: TLayout;
 }
 
 /**
@@ -44,64 +52,69 @@ export interface IDataType extends ICommonDataType {
  * @returns {JSX.Element} The JSX element representing the userLogs page
  */
 const UserLogsPage: React.FC = (): JSX.Element => {
-	const isLoading = useSubscribe("userLogs");
-	const intl = useContext(I18nContext);
-	const ability = useContext(AbilityContext);
-	const { modalApi } = useContext(NotificationContext);
+  const isLoading = useSubscribe('userLogs');
+  const intl = useContext(I18nContext);
+  const ability = useContext(AbilityContext);
+  const { modalApi } = useContext(NotificationContext);
 
-	const user = Meteor.user();
+  const user = Meteor.user();
 
-	const {
-		total,
-		entities,
-		tableParams: { pagination },
-		filteredInfo,
-		sortedInfo,
-		handleRefresh,
-		handleTableChange
-	} = useTable("userLogsPaginate", UserLogsCollection as any);
+  const {
+    total,
+    entities,
+    tableParams: { pagination },
+    filteredInfo,
+    sortedInfo,
+    handleRefresh,
+    handleTableChange,
+  } = useTable('userLogsPaginate', getEntities, UserLogsCollection as any);
 
-	const columns: TableProps<IDataType>['columns'] = metadataColumns({ intl, filteredInfo, sortedInfo, entities });
+  const columns: TableProps<IDataType>['columns'] = metadataColumns({
+    intl,
+    filteredInfo,
+    sortedInfo,
+    entities,
+  });
 
-	const tableProps = {
-		columns,
-		pagination,
-		scroll: { x: 800 },
-		bordered: true,
-		className: 'gridList',
-		dataSource: indexable(entities, pagination?.current, pagination?.pageSize),
-		loading: isLoading(),
-		rowKey: (record: IDataType) => record._id,
-		onChange: handleTableChange,
-		title: () => (
-			<div className="gridHeader">
-				<Button
-					disabled={ability.cannot('create', 'userLog')}
-					loading={isLoading()}
-					type={"primary"}
-					// onClick={handleCreateUserLog}
-				>
-					Export UserLog
-				</Button>
-			</div>
-		),
-		footer: () => (
-			<div className="gridFooter">
-				{t(intl, 'table.total', { amount: total.toString() })}
-			</div>
-		)
-	};
+  const tableProps = {
+    columns,
+    pagination,
+    scroll: { x: 800 },
+    bordered: true,
+    className: 'gridList',
+    dataSource: indexable(entities, pagination?.current, pagination?.pageSize),
+    loading: isLoading(),
+    rowKey: (record: IDataType) => record._id,
+    onChange: handleTableChange,
+    title: () => (
+      <div className="gridHeader">
+        <Button
+          disabled={ability.cannot('create', 'userLog')}
+          loading={isLoading()}
+          type={'primary'}
+          // onClick={handleCreateUserLog}
+        >
+          Export UserLog
+        </Button>
+      </div>
+    ),
+    footer: () => (
+      <div className="gridFooter">
+        {t(intl, 'table.total', { amount: total.toString() })}
+      </div>
+    ),
+  };
 
-	return (
-		<Page
-			ableFor={{ subject: 'dashboard.userLogs' }}
-			title={t(intl, 'dashboard.userLogs.title')}
-			description={t(intl, 'dashboard.userLogs.description')}
-		>
-			<Table<IDataType> {...tableProps} />
-		</Page>
-	);
-}
+  return (
+    <Page
+      ableFor={{ subject: 'dashboard.userLogs' }}
+      title={t(intl, 'dashboard.userLogs.title')}
+      description={t(intl, 'dashboard.userLogs.description')}
+    >
+      <Table<IDataType> {...tableProps} />
+    </Page>
+  );
+};
 
 export const Route = createFileRoute(TRouterTypes.DASHBOARD_USER_LOGS)({
   component: UserLogsPage,

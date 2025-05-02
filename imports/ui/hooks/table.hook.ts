@@ -41,6 +41,7 @@ export const useTable = (
     params: TPaginateProps,
   ) => void,
   Collection: Mongo.Collection<Document, Document>,
+  args?: any,
   defaults?: TDefaults,
 ): TUseTable => {
   const DEFAULT_PAGE_CURRENT = defaults?.current || 1;
