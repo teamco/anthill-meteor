@@ -27,6 +27,7 @@ export type TUseTable = {
 /**
  * @description Hook for fetching data for a table. It fetches data by calling a server-side method (first argument).
  * @param {string} method Server-side method name.
+ * @param {function} getter Function to fetch data from the server.
  * @param Collection MongoDB collection instance.
  * @param {TDefaults} [defaults] Default values for current and pageSize.
  * @returns {TUseTable} Object with `entity`, `tableParams`, `handleRefresh` and `handleTableChange` properties.
