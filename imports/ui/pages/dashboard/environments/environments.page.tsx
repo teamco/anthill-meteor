@@ -36,6 +36,7 @@ import { metadataColumns } from './columns.metadata';
 import { EnvironmentNew } from './environment/environment.new';
 
 import './environments.module.less';
+import { TEnvironmentTabs } from './environment/metadata/tabs.metadata';
 
 export interface IDataType extends ICommonDataType {
   name: string;
@@ -101,7 +102,9 @@ const EnvironmentsPage: React.FC = (): JSX.Element => {
    * @param {string} id - The id of the environment to edit
    */
   const onEdit = async (id: string): Promise<void> => {
-    await navigate({ to: `/dashboard/environments/${id}` });
+    await navigate({
+      to: `${TRouterTypes.DASHBOARD_ENVIRONMENTS}/${id}#${TEnvironmentTabs.GENERAL}`,
+    });
   };
 
   const {

@@ -10,8 +10,8 @@ import { ColumnsType, TableProps } from 'antd/es/table';
 import { useParams } from '@tanstack/react-router';
 
 import { t } from '/imports/utils/i18n.util';
-import { indexable } from '../../../../../../utils/table/table.util';
 import { onFinishFailed, onValidate } from '/imports/utils/form.util';
+import { indexable } from '/imports/utils/table/table.util';
 import { TUseTable, useTable } from '/imports/ui/hooks/table.hook';
 
 import { updateEnvironment } from '/imports/ui/services/environment.service';
@@ -30,6 +30,12 @@ import { metadataColumns as widgetsMetadataColumns } from '/imports/ui/pages/das
 
 import { TField } from '../environment.edit';
 import { IDataType } from '../../environments.page';
+
+export enum TEnvironmentTabs {
+  GENERAL = 'general',
+  LAYOUTS = 'layouts',
+  WIDGETS = 'widgets',
+}
 
 /**
  * @function useEnvironmentTabs
@@ -202,7 +208,7 @@ export const useEnvironmentTabs = (
 
   const itemTabs: TabsProps['items'] = [
     {
-      key: 'general',
+      key: TEnvironmentTabs.GENERAL,
       icon: <FormOutlined />,
       label: t(intl, 'environment.tabs.general'),
       children: (
@@ -247,7 +253,7 @@ export const useEnvironmentTabs = (
       ),
     },
     {
-      key: 'layouts',
+      key: TEnvironmentTabs.LAYOUTS,
       icon: <BlockOutlined />,
       label: t(intl, 'environment.tabs.layouts'),
       children: (
@@ -258,7 +264,7 @@ export const useEnvironmentTabs = (
       ),
     },
     {
-      key: 'widgets',
+      key: TEnvironmentTabs.WIDGETS,
       icon: <AppstoreAddOutlined />,
       label: t(intl, 'environment.tabs.widgets'),
       children: (

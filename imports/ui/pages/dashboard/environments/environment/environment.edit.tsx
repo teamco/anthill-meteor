@@ -1,7 +1,12 @@
-import React, { JSX, useContext } from 'react';
+import React, { JSX, useContext, useEffect, useState } from 'react';
 import { Tabs, TabsProps } from 'antd';
 import { useSubscribe, useTracker } from 'meteor/react-meteor-data';
-import { createFileRoute } from '@tanstack/react-router';
+import {
+  createFileRoute,
+  useLocation,
+  useNavigate,
+  useParams,
+} from '@tanstack/react-router';
 
 import { TEnvironmentEdit, TRouterTypes } from '/imports/config/types';
 
@@ -14,7 +19,7 @@ import { t } from '/imports/utils/i18n.util';
 
 import { getEnvironment } from '/imports/ui/services/environment.service';
 
-import { useEnvironmentTabs } from './metadata/tabs.metadata';
+import { TEnvironmentTabs, useEnvironmentTabs } from './metadata/tabs.metadata';
 
 import '../environments.module.less';
 
@@ -23,6 +28,8 @@ export type TField = {
   description?: string;
   status?: TEnvironmentEdit['status'];
 };
+
+const DEFAULT_TAB = TEnvironmentTabs.GENERAL;
 
 /**
  * EnvironmentEdit component
@@ -40,6 +47,15 @@ const EnvironmentEdit: React.FC = (): JSX.Element => {
   const isLayoutLoading = useSubscribe('layouts');
   const isWidgetLoading = useSubscribe('widgets');
 
+  const [activeKey, setActiveKey] = useState<string>(DEFAULT_TAB);
+
+  const navigate = useNavigate();
+  const { hash } = useLocation();
+
+  useEffect(() => {
+    setActiveKey(hash ? hash : DEFAULT_TAB);
+  }, [hash]);
+
   /**
    * isLoading
    *
@@ -54,7 +70,7 @@ const EnvironmentEdit: React.FC = (): JSX.Element => {
   const intl = useContext(I18nContext);
   const ability = useContext(AbilityContext);
 
-  const { environmentId } = Route.useParams();
+  const { environmentId } = useParams({ strict: false });
 
   const environment: TEnvironmentEdit = useTracker(
     () => getEnvironment(environmentId),
@@ -75,8 +91,12 @@ const EnvironmentEdit: React.FC = (): JSX.Element => {
       <Tabs
         className="envTabs"
         type="card"
-        defaultActiveKey="general"
+        activeKey={activeKey}
         items={itemTabs}
+        onChange={(key: string) => {
+          setActiveKey(key ? key : DEFAULT_TAB);
+          navigate({ to: `#${key}` });
+        }}
       />
     </Page>
   );
