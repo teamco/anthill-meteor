@@ -4,20 +4,11 @@ import json from 'eslint-plugin-json';
 import * as importPlugin from 'eslint-plugin-import';
 import jsdoc from 'eslint-plugin-jsdoc';
 import * as mdx from 'eslint-plugin-mdx';
-import { FlatCompat } from '@eslint/eslintrc';
-
-const compat = new FlatCompat();
 
 export default [
   {
     root: true,
-    ignores: [
-      'node_modules',
-      '**/*',
-      'package.json',
-      'commitlint.config.ts',
-      'eslint.config.ts',
-    ],
+    ignores: ['node_modules', 'package.json', '*.config.ts'],
     plugins: {
       jsdoc,
       import: importPlugin,
