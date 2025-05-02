@@ -2,13 +2,13 @@ import React, { FC, JSX } from 'react';
 import { Layout, message, Modal, notification } from 'antd';
 import { useIntl } from 'react-intl';
 
+import '@ant-design/v5-patch-for-react-19';
+
 import { I18nContext } from '/imports/ui/context/i18n.context';
 import { NotificationContext } from '/imports/ui/context/notification.context';
 
 import { TIntl } from '/imports/utils/i18n.util';
 import { nCache } from '/imports/utils/message.util';
-
-// import './app.layout.module.less';
 
 const { Header, Footer, Content } = Layout;
 
@@ -36,14 +36,12 @@ const AppLayout: FC<TProps> = ({ children }): JSX.Element => {
         value={{ modalApi, messageApi, notificationApi }}
       >
         <Layout className={'layout'}>
-          <Header className={'header'}>Header</Header>
           <Content className={'content'}>
             {messageHolder}
             {notificationHolder}
             {modalHolder}
             {children}
           </Content>
-          <Footer className={'footer'}>Footer</Footer>
         </Layout>
       </NotificationContext.Provider>
     </I18nContext.Provider>

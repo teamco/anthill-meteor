@@ -69,7 +69,10 @@ export const useTable = (
       : {},
   };
 
-  const total = useTracker(() => Collection.find({}).count(), []);
+  const total = useTracker(
+    () => Collection.find({ 'metadata.createdBy': Meteor.userId() }).count(),
+    [],
+  );
 
   /**
    * Fetches data from the server by calling the `method` method and sets the `entities` state.

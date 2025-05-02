@@ -6,9 +6,9 @@ import {
 } from '@tanstack/react-router';
 import { Spin } from 'antd';
 
-import App from '/imports/ui/App';
 import AuthLayout from '/imports/ui/layouts/auth.layout';
 import AdminLayout from '/imports/ui/layouts/admin.layout';
+import AppLayout from '/imports/ui/layouts/app.layout';
 
 function RouterSpinner() {
   const isLoading = useRouterState({ select: (s) => s.status === 'pending' });
@@ -18,13 +18,13 @@ function RouterSpinner() {
 const AdminRootRoute = () => {
   return (
     <AuthLayout>
-      <App>
+      <AppLayout>
         <RouterSpinner />
         <AdminLayout>
           <RouterSpinner />
           <Outlet />
         </AdminLayout>
-      </App>
+      </AppLayout>
     </AuthLayout>
   );
 };

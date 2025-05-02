@@ -1,14 +1,22 @@
-import { TPaginateProps } from "/imports/config/types";
+import { TPaginateProps } from '/imports/config/types';
 
-const DEFAULT_SORT: TPaginateProps['sort'] = [['metadata', 'updatedAt'], 'descend'];
+const DEFAULT_SORT: TPaginateProps['sort'] = [
+  ['metadata', 'updatedAt'],
+  'descend',
+];
 
 type TLog = {
   location?: { pathname: string };
-  api?: { method: string, params: any };
-  navType?: string
-}
+  api?: { method: string; params: any };
+  navType?: string;
+};
 
-type TProps = { Collection: Mongo.Collection<Document, Document>, args: TPaginateProps, log: TLog };
+type TProps = {
+  Collection: Mongo.Collection<Document, Document>;
+  args: TPaginateProps;
+  log: TLog;
+  owner?: string;
+};
 
 /**
  * Paginates a specified MongoDB collection based on the provided arguments.
@@ -20,7 +28,12 @@ type TProps = { Collection: Mongo.Collection<Document, Document>, args: TPaginat
  * @param {TLog} param.log - Optional logging details, including pathname and method.
  * @returns {any[]} An array of documents from the specified collection, fetched according to the pagination parameters.
  */
-export const paginate = ({ Collection, args, log }: TProps): any[] => {
+export const paginate = ({
+  Collection,
+  args,
+  log,
+  owner = Meteor.userId(),
+}: TProps): any[] => {
   let [field, order] = args.sort;
 
   if (!field || field === 'metadata') field = DEFAULT_SORT[0];
@@ -34,15 +47,17 @@ export const paginate = ({ Collection, args, log }: TProps): any[] => {
         skip: (args.current - 1) * args.pageSize,
         limit: args.pageSize,
         sort: [
-          typeof field === "string" ? field : field.join('.'),
-          order === "ascend" ? 1 : -1
-        ]
-      }
+          typeof field === 'string' ? field : field.join('.'),
+          order === 'ascend' ? 1 : -1,
+        ],
+      },
     },
-    navType: log?.navType
-  }
+    navType: log?.navType,
+  };
 
   if (log) Meteor.call('userLogInsert', { ...data });
 
-  return Collection.find({}, data.api.params).fetch();
-}
+  const query = owner ? { 'metadata.createdBy': owner } : {};
+
+  return Collection.find(query, data.api.params).fetch();
+};

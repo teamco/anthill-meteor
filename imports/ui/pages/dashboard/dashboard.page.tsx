@@ -29,10 +29,11 @@ import { TRouterTypes } from '/imports/config/types';
 const DashboardPage: React.FC = (): JSX.Element => {
   const navigate = useNavigate();
   const isLoading = useSubscribe('environments');
-  const envs: any[] = useTracker(
-    () => EnvironmentsCollection.find({}).fetch(),
-    [],
-  );
+  const envs: number = useTracker(() => {
+    return EnvironmentsCollection.find({
+      'metadata.createdBy': Meteor.userId(),
+    }).count();
+  }, []);
 
   const intl = useContext(I18nContext);
 
@@ -52,7 +53,7 @@ const DashboardPage: React.FC = (): JSX.Element => {
             isLoading={isLoading()}
             title={'Environments'}
             onClick={navigateTo.environments}
-            description={envs.length.toString()}
+            description={envs.toString()}
           />
         </Col>
       </Row>

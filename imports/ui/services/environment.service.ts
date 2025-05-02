@@ -35,7 +35,7 @@ export const createEnvironment = (
   const env = new Environment(name, user, {
     description: optional.description,
   });
-
+  debugger;
   const layout = env.createLayout(user);
   const widget = getWidgetBy('resource', 'empty');
 
@@ -150,4 +150,7 @@ export const getEnvironments = (
  * @return {TEnvironmentEdit} - The environment object
  */
 export const getEnvironment = (_id: string): TEnvironmentEdit =>
-  EnvironmentsCollection.findOne({ _id }) as TEnvironmentEdit;
+  EnvironmentsCollection.findOne({
+    _id,
+    'metadata.createdBy': Meteor.userId(),
+  }) as TEnvironmentEdit;
