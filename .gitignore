@@ -14,3 +14,6 @@ Thumbs.db
 
 .yarn/*
 !.yarn/releases/
+
+jsconfig.json
+*.sublime-project
