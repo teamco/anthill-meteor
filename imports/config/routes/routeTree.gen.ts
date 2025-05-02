@@ -111,7 +111,6 @@ declare module '@tanstack/react-router' {
 
 // Create and export the route tree
 export const adminRouteTree = AdminRouteImport.addChildren([
-  SignupRoute,
   SigninRoute,
   DashboardRoute,
   DashboardWidgetsRoute,
