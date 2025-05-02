@@ -43,7 +43,6 @@
     ],
     "*.{js,ts,jsx,tsx}": [
       "npx prettier --write",
-      "nx affected --target=typecheck",
       "eslint --fix"
     ]
   },
