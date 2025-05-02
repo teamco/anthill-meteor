@@ -10,6 +10,8 @@ import { Dropdown, MenuProps } from "antd";
 import { useIntl } from "react-intl";
 import classnames from "classnames";
 
+import { TRouterTypes } from "/imports/config/types";
+
 import { t, TIntl } from "/imports/utils/i18n.util";
 
 import "./layoutHeader.module.less";
@@ -73,7 +75,7 @@ export const LayoutHeader: FC<THeaderProps> = (props: {
     <div className="lH">
       <div>
         <RightSquareTwoTone onClick={() => onMenuOpen(true)} />
-        <h2 onClick={() => navigate({ to: "/dashboard" })}>{title}</h2>
+        <h2 onClick={() => navigate({ to: TRouterTypes.DASHBOARD })}>{title}</h2>
       </div>
       <div className="lHA">
         <Dropdown menu={{ items }} trigger={["click"]}>

@@ -27,6 +27,7 @@ import { indexable } from '/imports/utils/table/table.util';
 import { t } from '/imports/utils/i18n.util';
 
 import {
+  getEnvironments,
   createEnvironment,
   deleteEnvironment,
 } from '/imports/ui/services/environment.service';
@@ -35,8 +36,10 @@ import { metadataColumns } from './columns.metadata';
 
 import { EnvironmentNew } from './environment/environment.new';
 
-import './environments.module.less';
 import { TEnvironmentTabs } from './environment/metadata/tabs.metadata';
+
+import './environments.module.less';
+
 
 export interface IDataType extends ICommonDataType {
   name: string;
@@ -66,6 +69,7 @@ const EnvironmentsPage: React.FC = (): JSX.Element => {
   const intl = useContext(I18nContext);
   const ability = useContext(AbilityContext);
   const { modalApi } = useContext(NotificationContext);
+
   const navigate = useNavigate();
 
   /**
@@ -102,7 +106,7 @@ const EnvironmentsPage: React.FC = (): JSX.Element => {
    * @param {string} id - The id of the environment to edit
    */
   const onEdit = async (id: string): Promise<void> => {
-    await navigate({
+    navigate({
       to: `${TRouterTypes.DASHBOARD_ENVIRONMENTS}/${id}#${TEnvironmentTabs.GENERAL}`,
     });
   };
@@ -115,7 +119,7 @@ const EnvironmentsPage: React.FC = (): JSX.Element => {
     sortedInfo,
     handleRefresh,
     handleTableChange,
-  } = useTable('environmentsPaginate', EnvironmentsCollection as any);
+  } = useTable('environmentsPaginate', getEnvironments, EnvironmentsCollection as any);
 
   const columns: TableProps<IDataType>['columns'] = metadataColumns(
     intl,

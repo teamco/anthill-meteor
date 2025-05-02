@@ -12,6 +12,7 @@ export type TPaginateProps = {
   current: number;
   pageSize: number;
   sort?: [string[] | string, "descend" | "ascend"];
+  filter?: [string[] | string, string[] | string];
 };
 
 export type TColumns<T extends object = object> = TableProps<T>["columns"];

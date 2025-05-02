@@ -5,8 +5,6 @@ import { useTracker } from 'meteor/react-meteor-data';
 
 import { ITableParams } from '/imports/config/types';
 
-import { getEnvironments } from '/imports/ui/services/environment.service';
-
 type TOnChange = NonNullable<TableProps<any>['onChange']>;
 export type TFilters = Parameters<TOnChange>[1];
 export type TSorts = Parameters<TOnChange>[2];
@@ -26,8 +24,6 @@ export type TUseTable = {
   handleTableChange: TOnChange;
 };
 
-type TAction = 'paginate' | 'sort' | 'filter';
-
 /**
  * @description Hook for fetching data for a table. It fetches data by calling a server-side method (first argument).
  * @param {string} method Server-side method name.
@@ -38,6 +34,15 @@ type TAction = 'paginate' | 'sort' | 'filter';
  */
 export const useTable = (
   method: string,
+  getter: (
+    method: string,
+    setEntities: (entities: any[]) => void,
+    params: {
+      current: number;
+      pageSize: number;
+      sort: [string | undefined, string | undefined];
+    },
+  ) => void,
   Collection: Mongo.Collection<Document, Document>,
   defaults?: TDefaults,
 ): TUseTable => {
@@ -60,8 +65,10 @@ export const useTable = (
     sortOrder: searchParams.s?.split(':')[1] || undefined,
     filters: searchParams.f
       ? Object.fromEntries(
-        searchParams.f.split('|').map((f: string) => f.split(':').map((v) => v.split(','))),
-      )
+          searchParams.f
+            .split('|')
+            .map((f: string) => f.split(':').map((v) => v.split(','))),
+        )
       : {},
   };
 
@@ -72,7 +79,7 @@ export const useTable = (
    * @returns {void}
    */
   const handleRefresh = (): void => {
-    getEnvironments(method, setEntities, {
+    getter(method, setEntities, {
       current: tableParams.pagination?.current,
       pageSize: tableParams.pagination?.pageSize,
       sort: [tableParams.sortField, tableParams.sortOrder],
@@ -87,7 +94,11 @@ export const useTable = (
    * @description
    * Sets the search params and the table params. If the `pageSize` changed, it clears the `entity` state.
    */
-  const handleTableChange: TOnChange = (pagination, filters, sorter: Record<string, any>) => {
+  const handleTableChange: TOnChange = (
+    pagination,
+    filters,
+    sorter: Record<string, any>,
+  ) => {
     router.navigate({
       // @ts-ignore
       search: (prev: Record<string, string | null>) => ({
@@ -96,8 +107,8 @@ export const useTable = (
         s: sorter.field ? `${sorter.field}:${sorter.order}` : null,
         f: filters
           ? Object.entries(filters)
-            .map(([key, value]) => `${key}:${value?.join(',')}`)
-            .join('|')
+              .map(([key, value]) => `${key}:${value?.join(',')}`)
+              .join('|')
           : null,
       }),
     });
