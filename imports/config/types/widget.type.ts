@@ -1,7 +1,7 @@
-import { IMetadata } from "./common.type";
+import { IMetadata } from './common.type';
 
 export type TWidgetContent = {
-  type: "Embedded" | "External" | "Internal" | "Script";
+  type: 'Embedded' | 'External' | 'Internal' | 'Script';
   value: string;
   params?: { [key: string]: any };
 };

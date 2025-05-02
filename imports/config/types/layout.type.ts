@@ -8,5 +8,11 @@ export type TLayout = {
   current: boolean;
   version: number;
   metadata: IMetadata;
-  widgets: TWidget[];
+  widgets: TLayoutWidget;
 };
+
+export type TWidgetWithId = Required<Pick<TWidget, "_id">> & TWidget;
+
+export type TLayoutWidget = {
+  [key: string]: TWidgetWithId
+} | {};

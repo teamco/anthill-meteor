@@ -33,7 +33,6 @@
     "react-intl": "^7.1.11",
     "speakeasy": "^2.0.0",
     "uglify-js": "^3.19.3",
-    "uuid": "^11.1.0",
     "zxcvbn": "^4.4.2"
   },
   "lint-staged": {

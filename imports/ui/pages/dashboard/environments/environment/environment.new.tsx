@@ -1,13 +1,19 @@
-import React, { JSX, useContext } from "react";
-import { Button, Col, Form, FormProps, Input, Row } from "antd";
+import React, { JSX, useContext } from 'react';
+import { Button, Col, Form, FormProps, Input, Row } from 'antd';
 
-import { I18nContext } from "/imports/ui/context/i18n.context";
+import { I18nContext } from '/imports/ui/context/i18n.context';
 
 import { onModalCancel } from '/imports/utils/modal.util';
-import { t } from "/imports/utils/i18n.util";
-import { onFinishFailed, onValidate, placeholderField, requiredField, TFieldRule } from "/imports/utils/form.util";
+import { t } from '/imports/utils/i18n.util';
+import {
+  onFinishFailed,
+  onValidate,
+  placeholderField,
+  requiredField,
+  TFieldRule,
+} from '/imports/utils/form.util';
 import { layout } from '/imports/utils/layout.util';
-import { stub } from "/imports/utils/functions.util";
+import { stub } from '/imports/utils/functions.util';
 
 import '../environments.module.less';
 
@@ -17,9 +23,9 @@ type TField = {
 };
 
 type TProps = {
-  disabled: boolean,
-  onSave?: (values: TField) => void
-}
+  disabled: boolean;
+  onSave?: (values: TField) => void;
+};
 
 /**
  * @component EnvironmentNew
@@ -35,7 +41,9 @@ type TProps = {
  * @example
  * <EnvironmentNew onSave={(values) => console.log(values)} disabled={false} />
  */
-export const EnvironmentNew: React.FC<TProps> = (props: TProps): JSX.Element => {
+export const EnvironmentNew: React.FC<TProps> = (
+  props: TProps,
+): JSX.Element => {
   const { onSave = stub, disabled = false } = props;
 
   const intl = useContext(I18nContext);
@@ -62,47 +70,51 @@ export const EnvironmentNew: React.FC<TProps> = (props: TProps): JSX.Element => 
   const inputProps = {
     disabled,
     autoComplete: 'off',
-    autofill: 'off'
+    autofill: 'off',
   };
 
   return (
-    <div className='form-container'>
+    <div className="form-container">
       <Form
-        layout={"vertical"}
+        layout={'vertical'}
         form={form}
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
-        autoComplete={"off"}
+        autoComplete={'off'}
       >
         <Row gutter={[24, 12]}>
           <Col {...layout.fullColumn}>
-            <Form.Item<TField>
-              label={nameMsg}
-              name="name"
-              rules={[nameRule]}
-            >
-              <Input {...inputProps} placeholder={placeholderField(intl, nameMsg, 'actions.enter')} />
+            <Form.Item<TField> label={nameMsg} name="name" rules={[nameRule]}>
+              <Input
+                {...inputProps}
+                placeholder={placeholderField(intl, nameMsg, 'actions.enter')}
+              />
             </Form.Item>
           </Col>
           <Col {...layout.fullColumn}>
-            <Form.Item<TField>
-              label={descriptionMsg}
-              name="description"
-            >
+            <Form.Item<TField> label={descriptionMsg} name="description">
               <Input.TextArea
                 showCount
                 {...inputProps}
                 maxLength={400}
-                placeholder={placeholderField(intl, descriptionMsg, 'actions.enter')}
+                placeholder={placeholderField(
+                  intl,
+                  descriptionMsg,
+                  'actions.enter',
+                )}
                 style={{ maxHeight: 250, height: 100 }}
               />
             </Form.Item>
           </Col>
         </Row>
       </Form>
-      <div className='form-footer'>
-        <Button type="default" onClick={onModalCancel}>{t(intl, 'actions.cancel')}</Button>
-        <Button type="primary" onClick={e => onValidate(e, form)}>{t(intl, 'actions.save')}</Button>
+      <div className="form-footer">
+        <Button type="default" onClick={onModalCancel}>
+          {t(intl, 'actions.cancel')}
+        </Button>
+        <Button type="primary" onClick={(e) => onValidate(e, form)}>
+          {t(intl, 'actions.save')}
+        </Button>
       </div>
     </div>
   );

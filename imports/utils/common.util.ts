@@ -1,3 +1,5 @@
+import { generateId } from "./generator.util";
+
 export default class CommonUtils {
   
   /**
@@ -6,5 +8,9 @@ export default class CommonUtils {
    */
   public static isDevelopment(): boolean {
     return process.env.NODE_ENV === 'development';
+  }
+
+  getObjectId(): string {
+    return generateId();
   }
 }

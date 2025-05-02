@@ -1,6 +1,7 @@
-import { IUser } from "./user.type";
+import { TSplitter } from './antd.type';
+import { IUser } from './user.type';
 
-export interface IObjectId  {
+export interface IObjectId {
   _id?: string;
 }
 
@@ -22,10 +23,8 @@ export type TTimestamp = {
 };
 
 export interface IMetadata extends TTimestamp {
-  createdBy: IUser["_id"];
-  updatedBy: IUser["_id"];
+  createdBy: IUser['_id'];
+  updatedBy: IUser['_id'];
 }
 
-export type TTemplate = {
-  [key: string]: any;
-};
+export type TTemplate = [{ items: [TSplitter[]] }] | [];

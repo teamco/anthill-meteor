@@ -9,7 +9,6 @@ import React, {
 import { useIntl } from 'react-intl';
 import { Button, Modal, Splitter } from 'antd';
 import { SettingTwoTone } from '@ant-design/icons';
-import { v4 as uuidv4 } from 'uuid';
 import classnames from 'classnames';
 import { createFileRoute } from '@tanstack/react-router';
 
@@ -33,10 +32,11 @@ import {
   findAndUpdateNodeByItems,
   replacePanel,
 } from '/imports/utils/splitter.util';
+import { generateId } from '/imports/utils/generator.util';
 
 // import { splitterMock } from "./__tests__/splitter.mock";
 
-const DEFAULT_UUID = uuidv4();
+const DEFAULT_UUID = generateId();
 const DEFAULT_LAYOUT: TSplitterLayout = 'vertical';
 
 type TDirection = 'up' | 'down' | 'left' | 'right';
@@ -120,7 +120,7 @@ const EnvironmentPreview: React.FC = (): JSX.Element => {
       return;
     }
 
-    const nextId = uuidv4();
+    const nextId = generateId();
 
     /**
      * Updates the Splitter component by replacing the panel with the given uuid with a new panel.
@@ -282,6 +282,8 @@ const EnvironmentPreview: React.FC = (): JSX.Element => {
 
         return updatedSplitter;
       });
+
+
     },
     [splitter],
   );
@@ -297,7 +299,7 @@ const EnvironmentPreview: React.FC = (): JSX.Element => {
    * @returns {JSX.Element} The rendered Splitter component.
    */
   const renderer = (node: TSplitter, layout: TSplitterLayout): JSX.Element => {
-    const uuid: string = node?.uuid || uuidv4();
+    const uuid: string = node?.uuid || generateId();
 
     let _splitter = node?.uuid ? renderPanel(node) : <>node</>;
 
