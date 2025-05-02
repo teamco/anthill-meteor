@@ -1,7 +1,6 @@
 import React, { JSX, useContext } from 'react';
-import { Button, Table } from 'antd';
+import { Button, Table, TableProps } from 'antd';
 import { useSubscribe } from 'meteor/react-meteor-data';
-import { TableProps } from 'antd/lib/table';
 import { createFileRoute, useNavigate } from '@tanstack/react-router';
 
 import { EnvironmentsCollection } from '/imports/collections/environments.collection';
@@ -39,7 +38,6 @@ import { EnvironmentNew } from './environment/environment.new';
 import { TEnvironmentTabs } from './environment/metadata/tabs.metadata';
 
 import './environments.module.less';
-
 
 export interface IDataType extends ICommonDataType {
   name: string;
@@ -119,7 +117,11 @@ const EnvironmentsPage: React.FC = (): JSX.Element => {
     sortedInfo,
     handleRefresh,
     handleTableChange,
-  } = useTable('environmentsPaginate', getEnvironments, EnvironmentsCollection as any);
+  } = useTable(
+    'environmentsPaginate',
+    getEnvironments,
+    EnvironmentsCollection as any,
+  );
 
   const columns: TableProps<IDataType>['columns'] = metadataColumns(
     intl,
