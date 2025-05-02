@@ -6124,6 +6124,7 @@ __metadata:
     lint-staged: "npm:^15.5.1"
     lodash: "npm:^4.17.21"
     meteor-node-stubs: "npm:1.2.17"
+    prettier: "npm:^3.5.3"
     qrcode: "npm:^1.5.4"
     react: "npm:19.1.0"
     react-dom: "npm:^19.1.0"
@@ -7429,7 +7430,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prettier@npm:^3.5.0":
+"prettier@npm:^3.5.0, prettier@npm:^3.5.3":
   version: 3.5.3
   resolution: "prettier@npm:3.5.3"
   bin:
