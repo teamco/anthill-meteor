@@ -1,19 +1,24 @@
-import React, { FC, JSX } from "react";
-import { CaretUpOutlined, CaretDownOutlined, CaretLeftOutlined, CaretRightOutlined } from "@ant-design/icons";
-import { Button } from "antd";
-import classnames from "classnames";
-import { ButtonProps } from "antd/lib/button";
+import React, { FC, JSX } from 'react';
+import {
+  CaretUpOutlined,
+  CaretDownOutlined,
+  CaretLeftOutlined,
+  CaretRightOutlined,
+} from '@ant-design/icons';
+import { Button } from 'antd';
+import classnames from 'classnames';
+import { ButtonProps } from 'antd/lib/button';
 
-import "./buttons.module.less";
+import './buttons.module.less';
 
 type TProps = {
   className?: string;
   onClick: (direction: string, panelId: string) => void;
-  panelId: string
-}
+  panelId: string;
+};
 
 type TBtn = {
-  type: "text" | "link" | "default" | "primary" | "dashed" | "ghost";
+  type: 'text' | 'link' | 'default' | 'primary' | 'dashed' | 'ghost';
   size: string;
 } & ButtonProps;
 
@@ -30,9 +35,9 @@ export const ArrowButtons: FC<TProps> = (props): JSX.Element => {
   const { className, onClick, panelId } = props;
 
   const btnProps: TBtn = {
-    type: "text",
-    size: "small"
-  }
+    type: 'text',
+    size: 'small',
+  };
 
   /**
    * handleAdd is a callback function that is called when one of the direction buttons is clicked.
@@ -41,17 +46,33 @@ export const ArrowButtons: FC<TProps> = (props): JSX.Element => {
    */
   const handleAdd: (direction: string) => void = (direction): void => {
     onClick(direction, panelId);
-  }
+  };
 
   return (
     <div className={classnames('addBtn', className)}>
       <div>
-        <Button {...btnProps} icon={<CaretUpOutlined />} onClick={() => handleAdd('up')} />
-        <Button {...btnProps} icon={<CaretDownOutlined />} onClick={() => handleAdd('down')} />
+        <Button
+          {...btnProps}
+          icon={<CaretUpOutlined />}
+          onClick={() => handleAdd('up')}
+        />
+        <Button
+          {...btnProps}
+          icon={<CaretDownOutlined />}
+          onClick={() => handleAdd('down')}
+        />
       </div>
       <div>
-        <Button {...btnProps} icon={<CaretLeftOutlined />} onClick={() => handleAdd('left')} />
-        <Button {...btnProps} icon={<CaretRightOutlined />} onClick={() => handleAdd('right')} />
+        <Button
+          {...btnProps}
+          icon={<CaretLeftOutlined />}
+          onClick={() => handleAdd('left')}
+        />
+        <Button
+          {...btnProps}
+          icon={<CaretRightOutlined />}
+          onClick={() => handleAdd('right')}
+        />
       </div>
     </div>
   );

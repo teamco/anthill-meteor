@@ -3,6 +3,7 @@ import { useContext, useEffect, useState } from 'react';
 import { TableProps } from 'antd';
 import { useSearch, useRouter } from '@tanstack/react-router';
 import { useTracker } from 'meteor/react-meteor-data';
+import { Mongo } from 'meteor/mongo';
 
 import { NotificationContext } from '/imports/ui/context/notification.context';
 
@@ -11,7 +12,10 @@ import { TMessageConfig } from '/imports/config/types/notification.type';
 
 type TOnChange = NonNullable<TableProps<any>['onChange']>;
 export type TFilters = Parameters<TOnChange>[1];
-export type TSorts = Parameters<TOnChange>[2];
+export type TSorts = {
+  order?: 'ascend' | 'descend' | null;
+  columnKey?: string;
+} & Parameters<TOnChange>[2];
 
 type TDefaults = {
   current: number;
@@ -113,7 +117,7 @@ export const useTable = (
     sorter: Record<string, any>,
   ) => {
     router.navigate({
-      // @ts-ignore
+      // @ts-expect-error - this is a bug in the library.
       search: (prev: Record<string, string | null>) => ({
         ...prev,
         p: `${pagination.current}:${pagination.pageSize}`,

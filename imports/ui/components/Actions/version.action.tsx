@@ -1,19 +1,19 @@
-import React, { JSX, useContext } from "react";
-import { Button } from "antd";
-import { EyeTwoTone } from "@ant-design/icons";
-import { useNavigate } from "@tanstack/react-router";
+import React, { JSX, useContext } from 'react';
+import { Button } from 'antd';
+import { EyeTwoTone } from '@ant-design/icons';
+import { useLocation, useNavigate } from '@tanstack/react-router';
 
-import { Can } from "/imports/ui/components/Ability/can";
+import { Can } from '/imports/ui/components/Ability/can';
 
-import { I18nContext } from "/imports/ui/context/i18n.context";
+import { I18nContext } from '/imports/ui/context/i18n.context';
 
-import { t } from "/imports/utils/i18n.util";
-import { COLORS } from "/imports/utils/colors.util";
+import { t } from '/imports/utils/i18n.util';
+import { COLORS } from '/imports/utils/colors.util';
 
 type TVersionAction = {
   version: string;
   entityId: string;
-  type?: "primary" | "dashed" | "text";
+  type?: 'primary' | 'dashed' | 'text';
   showLabel?: boolean;
   isLoading?: boolean;
   disabled?: boolean;
@@ -40,13 +40,13 @@ export const VersionAction: React.FC<TVersionAction> = (props): JSX.Element => {
   const {
     version,
     entityId,
-    type = "primary",
+    type = 'primary',
     showLabel = false,
     isLoading = false,
     disabled = false,
   } = props;
 
-  const { pathname } = window.location;
+  const { pathname } = useLocation();
 
   /**
    * @function aClick
@@ -62,9 +62,9 @@ export const VersionAction: React.FC<TVersionAction> = (props): JSX.Element => {
   };
 
   return (
-    <Can I={"preview"} a={entityId}>
+    <Can I={'preview'} a={entityId}>
       <a
-        title={t(intl, "actions.version", { type: "" })}
+        title={t(intl, 'actions.version', { type: '' })}
         onClick={aClick}
         href={`${pathname}/version/${version}`}
         rel="noopener noreferrer"
@@ -75,7 +75,7 @@ export const VersionAction: React.FC<TVersionAction> = (props): JSX.Element => {
           type={type}
           icon={<EyeTwoTone twoToneColor={COLORS.tags.green} />}
         >
-          {showLabel && t(intl, "actions.version", { type: "" })}
+          {showLabel && t(intl, 'actions.version', { type: '' })}
         </Button>
       </a>
     </Can>

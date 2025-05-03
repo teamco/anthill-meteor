@@ -1,20 +1,21 @@
-import React, { Dispatch, FC, JSX, SetStateAction } from "react";
+import { Meteor } from 'meteor/meteor';
+import React, { Dispatch, FC, JSX, SetStateAction } from 'react';
 import {
   LogoutOutlined,
   RightSquareTwoTone,
   SettingOutlined,
-} from "@ant-design/icons";
-import { useNavigate } from "@tanstack/react-router";
-import { useTracker } from "meteor/react-meteor-data";
-import { Dropdown, MenuProps } from "antd";
-import { useIntl } from "react-intl";
-import classnames from "classnames";
+} from '@ant-design/icons';
+import { useNavigate } from '@tanstack/react-router';
+import { useTracker } from 'meteor/react-meteor-data';
+import { Dropdown, MenuProps } from 'antd';
+import { useIntl } from 'react-intl';
+import classnames from 'classnames';
 
-import { TRouterTypes } from "/imports/config/types";
+import { TRouterTypes } from '/imports/config/types';
 
-import { t, TIntl } from "/imports/utils/i18n.util";
+import { t, TIntl } from '/imports/utils/i18n.util';
 
-import "./layoutHeader.module.less";
+import './layoutHeader.module.less';
 
 type THeaderProps = {
   title: string;
@@ -48,24 +49,24 @@ export const LayoutHeader: FC<THeaderProps> = (props: {
 
   const user: IUserProfile = useTracker(() => Meteor.user()) as IUserProfile;
 
-  const items: MenuProps["items"] = [
+  const items: MenuProps['items'] = [
     {
-      key: "name",
+      key: 'name',
       label: user?.profile?.name,
       disabled: true,
     },
     {
-      type: "divider",
+      type: 'divider',
     },
     {
-      key: "profile",
-      label: t(intl, "profile"),
+      key: 'profile',
+      label: t(intl, 'profile'),
       icon: <SettingOutlined />,
     },
     {
-      key: "signout",
+      key: 'signout',
       label: (
-        <div onClick={() => Meteor.logout()}>{t(intl, "auth.signOut")}</div>
+        <div onClick={() => Meteor.logout()}>{t(intl, 'auth.signOut')}</div>
       ),
       icon: <LogoutOutlined />,
     },
@@ -75,11 +76,13 @@ export const LayoutHeader: FC<THeaderProps> = (props: {
     <div className="lH">
       <div>
         <RightSquareTwoTone onClick={() => onMenuOpen(true)} />
-        <h2 onClick={() => navigate({ to: TRouterTypes.DASHBOARD })}>{title}</h2>
+        <h2 onClick={() => navigate({ to: TRouterTypes.DASHBOARD })}>
+          {title}
+        </h2>
       </div>
       <div className="lHA">
-        <Dropdown menu={{ items }} trigger={["click"]}>
-          <div className={classnames("avatar", { success: navigator.onLine })}>
+        <Dropdown menu={{ items }} trigger={['click']}>
+          <div className={classnames('avatar', { success: navigator.onLine })}>
             <img src={user?.profile?.picture} alt={user?.profile?.name} />
             <div />
           </div>

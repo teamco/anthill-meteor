@@ -4,11 +4,11 @@ export enum AuthStatus {
 }
 
 export type TAuth = {
-  login: (username: string) => void
-  logout: () => void
-  status: AuthStatus.LoggedIn | AuthStatus.LoggedOut
-  username?: string
-}
+  login: (username: string) => void;
+  logout: () => void;
+  status: AuthStatus.LoggedIn | AuthStatus.LoggedOut;
+  username?: string;
+};
 
 export const auth: TAuth = {
   status: AuthStatus.LoggedOut,

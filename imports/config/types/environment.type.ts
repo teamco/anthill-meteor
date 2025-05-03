@@ -1,6 +1,5 @@
 import { IMetadata, TStatus } from './common.type';
 import { TLayout } from './layout.type';
-import { TMessageConfig } from './notification.type';
 import { IUser } from './user.type';
 import { TWidget } from './widget.type';
 

@@ -1,25 +1,25 @@
-import React, { memo } from 'react';
-import { useIntl } from '@umijs/max';
+// import React, { memo } from 'react';
+// import { useIntl } from '@umijs/max';
 
-import { t } from '@/utils/i18n';
+// import { t } from '@/utils/i18n';
 
-import ErrorPage from '@/components/Page/Error';
+// import ErrorPage from '@/components/Page/Error';
 
-/**
- * @function
- * @param props
- * @return {JSX.Element}
- */
-function page500(props) {
-  const intl = useIntl();
+// /**
+//  * @function
+//  * @param props
+//  * @return {JSX.Element}
+//  */
+// function page500(props) {
+//   const intl = useIntl();
 
-  const { subject = 'page500' } = props;
+//   const { subject = 'page500' } = props;
 
-  return (
-      <ErrorPage title={t(intl, 'error.page500')}
-                 subject={subject}
-                 status={500}/>
-  );
-}
+//   return (
+//       <ErrorPage title={t(intl, 'error.page500')}
+//                  subject={subject}
+//                  status={500}/>
+//   );
+// }
 
-export default memo(page500);
+// export default memo(page500);

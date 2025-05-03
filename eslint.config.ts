@@ -19,6 +19,11 @@ const allowedExtensions = [
   '.widget',
   '.hook',
   '.test',
+  '.json',
+  '.context',
+  '.page',
+  '.provider',
+  '.new',
 ];
 
 export default [
@@ -53,6 +58,7 @@ export default [
       parserOptions: {
         ecmaVersion: 2020,
         sourceType: 'module',
+        project: 'tsconfig.json',
         ecmaFeatures: {
           jsx: true,
           tsx: true,
@@ -78,8 +84,17 @@ export default [
         },
       },
       globals: {
+        Meteor: 'readonly',
         process: 'readonly',
         console: 'readonly',
+        module: 'readonly',
+        require: 'readonly',
+        window: 'readonly',
+        document: 'readonly',
+        navigator: 'readonly',
+        localStorage: 'readonly',
+        sessionStorage: 'readonly',
+        fetch: 'readonly',
       },
     },
     plugins: {
@@ -99,7 +114,7 @@ export default [
       'no-duplicate-imports': 'warn',
       '@typescript-eslint/no-explicit-any': 'warn',
       // Enforce consistent indentation (4 spaces in this case)
-      indent: ['error', 2],
+      indent: ['warn', 2],
       // Enforce the use of single quotes for strings
       quotes: ['error', 'single'],
       // Enforce semicolons at the end of statements

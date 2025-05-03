@@ -1,6 +1,7 @@
 import React, { JSX, useContext } from 'react';
 import { Button } from 'antd';
 import { EditTwoTone } from '@ant-design/icons';
+import { useLocation } from '@tanstack/react-router';
 
 import { Can } from '/imports/ui/components/Ability/can';
 
@@ -42,10 +43,10 @@ export const EditAction: React.FC<TEditAction> = (props): JSX.Element => {
     showLabel = false,
     isLoading = false,
     disabled = false,
-    onEdit
+    onEdit,
   } = props;
 
-  const { pathname } = window.location;
+  const { pathname } = useLocation();
 
   /**
    * @function aClick
@@ -58,20 +59,21 @@ export const EditAction: React.FC<TEditAction> = (props): JSX.Element => {
     e.preventDefault();
   };
 
-  return onEdit ?(
+  return onEdit ? (
     <Can I={'update'} a={entityId}>
-      <a title={t(intl, 'actions.edit', { type: '' })}
+      <a
+        title={t(intl, 'actions.edit', { type: '' })}
         onClick={aClick}
         href={`${pathname}/${entityId}`}
         rel="noopener noreferrer"
       >
-        <Button disabled={disabled}
+        <Button
+          disabled={disabled}
           loading={isLoading}
           type={type}
-          icon={(
-            <EditTwoTone twoToneColor={COLORS.success} />
-          )}
-          onClick={() => onEdit(entityId)}>
+          icon={<EditTwoTone twoToneColor={COLORS.success} />}
+          onClick={() => onEdit(entityId)}
+        >
           {showLabel && t(intl, 'actions.edit', { type: '' })}
         </Button>
       </a>
