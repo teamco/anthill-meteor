@@ -39,6 +39,7 @@ import { WidgetNew } from './widget/widget.new';
 import Widget from '/imports/api/environment/Widget';
 
 import './widgets.module.less';
+import { TMessageConfig } from '/imports/config/types/notification.type';
 
 export interface IDataType extends ICommonDataType {
   name: string;
@@ -64,9 +65,16 @@ const WidgetsPage: React.FC = (): JSX.Element => {
   const isLoading = useSubscribe('widgets');
   const intl = useContext(I18nContext);
   const ability = useContext(AbilityContext);
-  const { modalApi, notificationApi } = useContext(NotificationContext);
+  const { modalApi, notificationApi, messageApi } =
+    useContext(NotificationContext);
 
   const user = Meteor.user();
+
+  const messageConfig: TMessageConfig = {
+    notificationApi,
+    messageApi,
+    intl,
+  };
 
   /**
    * onDelete
@@ -77,7 +85,7 @@ const WidgetsPage: React.FC = (): JSX.Element => {
    * @param {string} id - The id of the widget to delete
    */
   const onDelete = (id: string): void => {
-    deleteWidget(id, intl, handleRefresh);
+    deleteWidget(id, handleRefresh, messageConfig);
   };
 
   const onEdit = (id: string): void => {
@@ -157,9 +165,12 @@ const WidgetsPage: React.FC = (): JSX.Element => {
                   });
                 }
 
-                const widget = new Widget(Entity, user);
+                const widget = new Widget(Entity, user, {
+                  notificationApi,
+                  intl,
+                });
 
-                createWidget(widget, handleRefresh);
+                createWidget(widget, handleRefresh, messageConfig);
               })
               .catch((e) => {
                 catchClassErrorMsg(notificationApi, {
