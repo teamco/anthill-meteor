@@ -1,13 +1,17 @@
+import { NotificationInstance } from 'antd/es/notification/interface';
 import {
   EStatus,
   IMetadata,
   IUser,
+  TStatus,
   TWidget,
   TWidgetConfig,
   TWidgetTags,
 } from '/imports/config/types';
+import { TMessageConfig } from '/imports/config/types/notification.type';
 
 import { catchClassErrorMsg } from '/imports/utils/message.util';
+import { TIntl } from '/imports/utils/i18n.util';
 
 /**
  * Represents an EmptyWidget class that implements the TWidget interface.
@@ -68,19 +72,31 @@ export class EmptyWidget implements TWidget {
       isExpired: false,
       isDisabled: false,
       isPublic: true,
-    },
+    } as TStatus,
     createdAt: new Date(),
     updatedAt: new Date(),
     createdBy: '',
     updatedBy: '',
   };
 
-  constructor(user: IUser) {
+  readonly notificationApi: NotificationInstance;
+  readonly intl: TIntl;
+
+  constructor(
+    user: IUser,
+    config: Pick<TMessageConfig, 'notificationApi' | 'intl'>,
+  ) {
+    this.notificationApi = config.notificationApi;
+    this.intl = config.intl;
+
     this.create(user);
   }
 
   create(user?: IUser): void {
-    if (!user) return catchClassErrorMsg({ message: 'User is required' });
+    if (!user)
+      return catchClassErrorMsg(this.notificationApi, {
+        message: 'User is required',
+      });
 
     this.dimensions = { width: 100, height: 100 };
     this.content = { type: 'Internal', value: 'Empty' };

@@ -8,5 +8,5 @@ export default {
   'widget.list.category': 'Category',
   'widget.list.size': 'Size',
   'widget.working.path': 'Relative Path',
-  'widget.working.path.extra': 'eg. imports/api/widgets/...',
-}
+  'widget.working.path.extra': 'eg. /imports/api/widgets/...',
+};

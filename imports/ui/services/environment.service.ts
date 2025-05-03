@@ -11,7 +11,7 @@ import Widget from '/imports/api/environment/Widget';
 import { EmptyWidget } from '/imports/api/widgets/empty.widget';
 import { EnvironmentsCollection } from '/imports/collections/environments.collection';
 
-import { IUser, TEnvironmentEdit } from '/imports/config/types';
+import { IUser, TEnvironmentEdit, TWidget } from '/imports/config/types';
 import { t } from '/imports/utils/i18n.util';
 import {
   successSaveMsg,
@@ -23,6 +23,7 @@ import {
 } from '/imports/utils/message.util';
 
 import { getWidgetBy } from './widget.service';
+import { prepareToCreate } from './shared.service';
 
 /**
  * Creates a new environment with a single empty widget.
@@ -62,23 +63,30 @@ export const createEnvironment = (
   const layout = env.createLayout(user);
 
   layout.addWidget({
-    ...new Widget(EmptyWidget, user, {
-      notificationApi: config.notificationApi,
-      intl: config.intl,
-    }),
+    ...new Widget(
+      EmptyWidget as unknown as new (arg0: IUser) => TWidget,
+      user,
+      {
+        notificationApi: config.notificationApi,
+        intl: config.intl,
+      },
+    ),
     _id: widget._id,
   });
 
-  Meteor.callAsync('environmentInsert', { ...env })
+  Meteor.callAsync('environmentInsert', {
+    ...(prepareToCreate(env) as unknown as object),
+  })
     .then((_id: string) => {
       successSaveMsg(config.messageApi, config.intl, 'Environment');
       handleRefresh();
 
-      Meteor.callAsync('layoutInsert', { ...layout, environmentId: _id }).catch(
-        (err: TNotificationError) => {
-          catchErrorMsg(config.notificationApi, err);
-        },
-      );
+      Meteor.callAsync('layoutInsert', {
+        ...(prepareToCreate(layout) as unknown as object),
+        environmentId: _id,
+      }).catch((err: TNotificationError) => {
+        catchErrorMsg(config.notificationApi, err);
+      });
     })
     .catch((err: TNotificationError) => {
       catchErrorMsg(config.notificationApi, err);

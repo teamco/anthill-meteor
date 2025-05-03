@@ -6,6 +6,7 @@ import {
   IUser,
   TWidgetTags,
   EStatus,
+  TStatus,
   TWidgetConfig,
 } from '/imports/config/types';
 import { TMessageConfig } from '/imports/config/types/notification.type';
@@ -56,7 +57,7 @@ export default class Widget extends CommonUtils implements TWidget {
   readonly intl: TIntl;
 
   constructor(
-    Widget: new (arg0: IUser) => TWidget,
+    Entity: new (arg0: IUser) => TWidget,
     user: IUser,
     config: Pick<TMessageConfig, 'notificationApi' | 'intl'>,
   ) {
@@ -65,20 +66,30 @@ export default class Widget extends CommonUtils implements TWidget {
     this.notificationApi = config.notificationApi;
     this.intl = config.intl;
 
-    this.create(Widget, user);
+    this.create(Entity, user);
   }
 
-  create(Widget: new (arg0: IUser) => TWidget, user: IUser): void {
+  create(
+    Entity: new (
+      arg0: IUser,
+      config: Pick<TMessageConfig, 'notificationApi' | 'intl'>,
+    ) => TWidget,
+    user: IUser,
+  ): void {
     if (!user)
       return catchClassErrorMsg(this.notificationApi, {
         message: 'User is required',
       });
+
     if (!Widget)
       return catchClassErrorMsg(this.notificationApi, {
         message: 'Widget is required',
       });
 
-    const widget: TWidget = new Widget(user);
+    const widget: TWidget = new Entity(user, {
+      notificationApi: this.notificationApi,
+      intl: this.intl,
+    });
 
     this.name = widget.name;
     this.description = widget.description;

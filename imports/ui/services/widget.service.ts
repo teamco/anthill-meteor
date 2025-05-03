@@ -16,6 +16,8 @@ import {
   catchWarnMsg,
 } from '/imports/utils/message.util';
 
+import { prepareToCreate } from './shared.service';
+
 /**
  * Creates a new widget in the database.
  *
@@ -34,7 +36,9 @@ export const createWidget = (
   handleRefresh: () => void,
   config: TMessageConfig,
 ): void => {
-  Meteor.callAsync('widgetInsert', { ...widget })
+  Meteor.callAsync('widgetInsert', {
+    ...(prepareToCreate(widget) as unknown as object),
+  })
     .then((_id: string) => {
       successSaveMsg(config.messageApi, config.intl, 'Widget');
       handleRefresh();

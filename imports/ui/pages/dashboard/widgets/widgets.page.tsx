@@ -9,10 +9,13 @@ import { WidgetsCollection } from '/imports/collections/widgets.collection';
 import {
   ICommonDataType,
   IMetadata,
+  IUser,
   TLayout,
   TRouterTypes,
   TStatus,
+  TWidget,
 } from '/imports/config/types';
+import { TMessageConfig } from '/imports/config/types/notification.type';
 
 import { I18nContext } from '/imports/ui/context/i18n.context';
 import { AbilityContext } from '/imports/ui/context/authentication.context';
@@ -23,7 +26,7 @@ import Page from '/imports/ui/components/Page/page.component';
 import { useTable } from '/imports/ui/hooks/table.hook';
 
 import { t } from '/imports/utils/i18n.util';
-import { indexable } from '../../../../utils/table/table.util';
+import { indexable } from '/imports/utils/table/table.util';
 import { catchClassErrorMsg } from '/imports/utils/message.util';
 
 import {
@@ -39,7 +42,6 @@ import { WidgetNew } from './widget/widget.new';
 import Widget from '/imports/api/environment/Widget';
 
 import './widgets.module.less';
-import { TMessageConfig } from '/imports/config/types/notification.type';
 
 export interface IDataType extends ICommonDataType {
   name: string;
@@ -155,13 +157,15 @@ const WidgetsPage: React.FC = (): JSX.Element => {
         <WidgetNew
           disabled={isLoading()}
           onSave={(values) => {
-            import(`/${values.path}`)
+            import(values.path)
               .then((module) => {
-                const Entity = module[values.name];
+                const Entity = Object.values(module)[0] as new (
+                  arg0: IUser,
+                ) => TWidget;
 
-                if (!Entity) {
+                if (typeof Entity !== 'function') {
                   catchClassErrorMsg(notificationApi, {
-                    message: 'Widget name is invalid',
+                    message: 'Unable to load widget',
                   });
                 }
 
@@ -174,7 +178,7 @@ const WidgetsPage: React.FC = (): JSX.Element => {
               })
               .catch((e) => {
                 catchClassErrorMsg(notificationApi, {
-                  message: 'Widget path is invalid',
+                  message: e.message,
                 });
               });
           }}
