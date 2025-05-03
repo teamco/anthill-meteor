@@ -67,7 +67,6 @@ export default [
         typescript: {
           extensions: ['.ts', '.tsx'],
           alwaysTryTypes: true,
-          project: ['./apps/hub/tsconfig.json'],
         },
       },
       'import/parsers': {
@@ -78,5 +77,22 @@ export default [
   {
     files: ['*.spec.ts', '*.spec.tsx', '*.spec.js', '*.spec.jsx'],
     env: { jest: true },
+  },
+  {
+    files: ['.ts', '.tsx'],
+    parser: '@typescript-eslint/parser',
+    parserOptions: {
+      ecmaVersion: 2020,
+      sourceType: 'module',
+      ecmaFeatures: {
+        tsx: true,
+        modules: true,
+        experimentalObjectRestSpread: true,
+        impliedStrict: true,
+        types: true,
+        decorators: true,
+        'decorators-legacy': true,
+      },
+    },
   },
 ];
