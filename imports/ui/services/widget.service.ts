@@ -1,7 +1,14 @@
-import { WidgetsCollection } from '/imports/collections/widgets.collection';
-import { TWidget } from '/imports/config/types';
-import { t, TIntl } from '/imports/utils/i18n.util';
+import { Meteor } from 'meteor/meteor';
 
+import { WidgetsCollection } from '/imports/collections/widgets.collection';
+
+import { TWidget } from '/imports/config/types';
+import {
+  TMessageConfig,
+  TNotificationError,
+} from '/imports/config/types/notification.type';
+
+import { t } from '/imports/utils/i18n.util';
 import {
   successSaveMsg,
   catchErrorMsg,
@@ -19,14 +26,22 @@ import {
  *
  * @param {TWidget} widget - The widget object to create.
  * @param {() => void} handleRefresh - Callback function to refresh the widget list after creation.
+ * @param {TMessageConfig} config - Configuration object containing message and notification APIs and internationalization context.
+ * @returns {void}
  */
-export const createWidget = (widget: TWidget, handleRefresh: () => void) => {
+export const createWidget = (
+  widget: TWidget,
+  handleRefresh: () => void,
+  config: TMessageConfig,
+): void => {
   Meteor.callAsync('widgetInsert', { ...widget })
     .then((_id: string) => {
-      successSaveMsg();
+      successSaveMsg(config.messageApi, config.intl, 'Widget');
       handleRefresh();
     })
-    .catch(catchErrorMsg);
+    .catch((err: TNotificationError) => {
+      catchErrorMsg(config.notificationApi, err);
+    });
 };
 
 /**
@@ -38,29 +53,32 @@ export const createWidget = (widget: TWidget, handleRefresh: () => void) => {
  * a warning message is shown. Any errors during the process are caught and handled.
  *
  * @param {string} _id - The unique identifier of the widget to delete.
- * @param {TIntl} intl - The internationalization object for localization.
  * @param {() => void} handleRefresh - Callback function to refresh the widget list after deletion.
+ * @param {TMessageConfig} config - Configuration object containing message and notification APIs and internationalization context.
+ * @returns {void}
  */
 export const deleteWidget = (
   _id: string,
-  intl: TIntl,
   handleRefresh: () => void,
-) => {
+  config: TMessageConfig,
+): void => {
   Meteor.callAsync('widgetRemove', { _id })
     .then((res: number) => {
       if (res > 0) {
-        successDeleteMsg();
+        successDeleteMsg(config.messageApi, config.intl, 'Widget');
         handleRefresh();
       } else {
-        catchWarnMsg({
+        catchWarnMsg(config.notificationApi, {
           errorType: 'warning',
-          message: t(intl, 'error.warningMsg'),
+          message: t(config.intl, 'error.warningMsg'),
           error: 'Error 400',
           name: 'deleteWidget',
         });
       }
     })
-    .catch(catchErrorMsg);
+    .catch((err: TNotificationError) => {
+      catchErrorMsg(config.notificationApi, err);
+    });
 };
 
 /**
@@ -70,17 +88,22 @@ export const deleteWidget = (
  * @param {string} method - The name of the Meteor method to call.
  * @param {(res: any[]) => void} setEntities - The state callback to set the widget list.
  * @param {{}} opts - An object of options to pass to the Meteor method.
+ * @param {Pick<TMessageConfig, 'notificationApi'>} config - Configuration object containing notification API.
+ * @returns {void}
  */
 export const getWidgets = (
   method: string,
   setEntities: (res: any[]) => void,
   opts: {},
-) => {
+  config: Pick<TMessageConfig, 'notificationApi'>,
+): void => {
   Meteor.callAsync(method, opts)
     .then((res: any[]) => {
       setEntities(res);
     })
-    .catch((e) => catchErrorMsg(e, () => setEntities([])));
+    .catch((err: TNotificationError) => {
+      catchErrorMsg(config.notificationApi, err, () => setEntities([]));
+    });
 };
 
 /**

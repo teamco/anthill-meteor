@@ -5,20 +5,21 @@ import { DeleteOutlined } from '@ant-design/icons';
 import { Can } from '/imports/ui/components/Ability/can';
 
 import { I18nContext } from '/imports/ui/context/i18n.context';
+import { NotificationContext } from '/imports/ui/context/notification.context';
 
 import { t } from '/imports/utils/i18n.util';
 
 import { deleteWarning } from './modal.delete';
 
 type TDeleteAction = {
-  entityId: string,
-  modalMsg: string,
-  type?: "primary" | "link" | "text" | "default" | "dashed",
-  isLoading?: boolean,
-  showLabel?: boolean,
-  disabled?: boolean,
-  onDelete?: (id: string) => void
-}
+  entityId: string;
+  modalMsg: string;
+  type?: 'primary' | 'link' | 'text' | 'default' | 'dashed';
+  isLoading?: boolean;
+  showLabel?: boolean;
+  disabled?: boolean;
+  onDelete?: (id: string) => void;
+};
 
 /**
  * @function DeleteAction
@@ -39,6 +40,7 @@ type TDeleteAction = {
  */
 export const DeleteAction: React.FC<TDeleteAction> = (props): JSX.Element => {
   const intl = useContext(I18nContext);
+  const { modalApi } = useContext(NotificationContext);
 
   const {
     entityId,
@@ -47,20 +49,25 @@ export const DeleteAction: React.FC<TDeleteAction> = (props): JSX.Element => {
     showLabel = false,
     isLoading = false,
     disabled = false,
-    onDelete
+    onDelete,
   } = props;
 
   return onDelete ? (
     <Can I={'delete'} a={entityId}>
-      <Button disabled={disabled}
+      <Button
+        disabled={disabled}
         loading={isLoading}
         danger
         type={type}
         icon={<DeleteOutlined />}
-        onClick={() => deleteWarning({
-          entity: modalMsg,
-          onApprove: () => onDelete(entityId)
-        })}>
+        onClick={() =>
+          deleteWarning({
+            entity: modalMsg,
+            onApprove: () => onDelete(entityId),
+            config: { modalApi, intl },
+          })
+        }
+      >
         {showLabel && t(intl, 'actions.delete')}
       </Button>
     </Can>

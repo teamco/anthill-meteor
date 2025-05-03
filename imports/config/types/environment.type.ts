@@ -1,7 +1,8 @@
-import { IMetadata, TStatus } from "./common.type";
-import { TLayout } from "./layout.type";
-import { IUser } from "./user.type";
-import { TWidget } from "./widget.type";
+import { IMetadata, TStatus } from './common.type';
+import { TLayout } from './layout.type';
+import { TMessageConfig } from './notification.type';
+import { IUser } from './user.type';
+import { TWidget } from './widget.type';
 
 export type TEnvironment = {
   createLayout(user: IUser): TLayout;
@@ -12,10 +13,10 @@ export type TEnvironment = {
   description?: string;
   layout: TLayout;
   metadata: IMetadata;
-  status: Pick<TStatus, "isDraft" | "isActive">;
+  status: Pick<TStatus, 'isDraft' | 'isActive'>;
 };
 
 export type TEnvironmentEdit = Pick<
   TEnvironment,
-  "name" | "description" | "layout" | "status" | "metadata"
+  'name' | 'description' | 'layout' | 'status' | 'metadata'
 >;

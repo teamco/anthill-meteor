@@ -3,15 +3,8 @@ import { Modal, Button } from 'antd';
 
 import { t } from '/imports/utils/i18n.util';
 import { stub } from '/imports/utils/functions.util';
-import { nCache } from '/imports/utils/message.util';
 
-type TDeleteWarning = {
-  entity?: string,
-  styles?: any,
-  title?: string,
-  content?: string,
-  onApprove?: () => void
-}
+import { TDeleteWarning } from '/imports/config/types/notification.type';
 
 /**
  * Displays a modal warning the user about deleting an entity.
@@ -23,15 +16,15 @@ type TDeleteWarning = {
  * @param {function} props.onApprove The function to call when the user confirms the deletion.
  */
 export const deleteWarning = (props: TDeleteWarning): void => {
-  const modalApi = nCache.get('modalApi');
-  const intl = nCache.get('intl');
-
-  const { entity = '' } = props;
+  const {
+    config: { intl, modalApi },
+    entity = '',
+  } = props;
 
   const {
     title = t(intl, 'message.delete.warning', { type: entity }),
     content = t(intl, 'message.delete.confirm', { type: entity }),
-    onApprove = stub
+    onApprove = stub,
   } = props;
 
   modalApi.warning({
@@ -44,7 +37,8 @@ export const deleteWarning = (props: TDeleteWarning): void => {
         <Button key={'back'} onClick={Modal.destroyAll}>
           {t(intl, 'actions.cancel')}
         </Button>
-        <Button key={'confirm'}
+        <Button
+          key={'confirm'}
           type={'primary'}
           danger
           onClick={(e) => {
@@ -52,11 +46,11 @@ export const deleteWarning = (props: TDeleteWarning): void => {
 
             Modal.destroyAll();
             onApprove();
-          }}>
+          }}
+        >
           {t(intl, 'actions.confirm')}
         </Button>
       </div>
-    )
+    ),
   });
 };
-

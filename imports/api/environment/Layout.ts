@@ -1,3 +1,4 @@
+import { NotificationInstance } from 'antd/es/notification/interface';
 import {
   IMetadata,
   IUser,
@@ -6,9 +7,11 @@ import {
   TTemplate,
   TWidget,
 } from '/imports/config/types';
+import { TMessageConfig } from '/imports/config/types/notification.type';
 
 import CommonUtils from '/imports/utils/common.util';
 import { catchClassErrorMsg } from '/imports/utils/message.util';
+import { TIntl } from '/imports/utils/i18n.util';
 
 /**
  * Represents a layout that manages a collection of widgets and their metadata.
@@ -45,13 +48,27 @@ export default class Layout extends CommonUtils implements TLayout {
     updatedBy: '',
   };
 
-  constructor(user: IUser) {
+  readonly notificationApi: NotificationInstance;
+  readonly intl: TIntl;
+
+  constructor(
+    user: IUser,
+    config: Pick<TMessageConfig, 'notificationApi' | 'intl'>,
+  ) {
     super();
+
+    this.notificationApi = config.notificationApi;
+    this.intl = config.intl;
 
     this.create([], 1, user);
   }
 
-  create(template: TTemplate, version: number, user?: IUser): void {
+  create(template: TTemplate, version: number, user: IUser): void {
+    if (!user)
+      return catchClassErrorMsg(this.notificationApi, {
+        message: 'User is required',
+      });
+
     this.template = template;
     this.version = version;
     this.widgets = {};
@@ -63,13 +80,19 @@ export default class Layout extends CommonUtils implements TLayout {
   }
 
   addWidget(widget: TWidget): void {
-    if (!widget?._id) return catchClassErrorMsg({ message: 'Widget is required' });
+    if (!widget?._id)
+      return catchClassErrorMsg(this.notificationApi, {
+        message: 'Widget is required',
+      });
 
     this.widgets[this.getObjectId()] = widget;
   }
 
   removeWidget(widget: TWidget): void {
-    if (!widget) return catchClassErrorMsg({ message: 'Widget is required' });
+    if (!widget)
+      return catchClassErrorMsg(this.notificationApi, {
+        message: 'Widget is required',
+      });
 
     // this.widgets = this.widgets.filter((w) => w._id !== widget._id);
   }

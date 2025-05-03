@@ -1,9 +1,13 @@
-import { useEffect, useState } from 'react';
+import { Meteor } from 'meteor/meteor';
+import { useContext, useEffect, useState } from 'react';
 import { TableProps } from 'antd';
 import { useSearch, useRouter } from '@tanstack/react-router';
 import { useTracker } from 'meteor/react-meteor-data';
 
+import { NotificationContext } from '/imports/ui/context/notification.context';
+
 import { ITableParams, TPaginateProps } from '/imports/config/types';
+import { TMessageConfig } from '/imports/config/types/notification.type';
 
 type TOnChange = NonNullable<TableProps<any>['onChange']>;
 export type TFilters = Parameters<TOnChange>[1];
@@ -39,11 +43,14 @@ export const useTable = (
     method: string,
     setEntities: (entities: any[]) => void,
     params: TPaginateProps,
+    config: Pick<TMessageConfig, 'notificationApi'>,
   ) => void,
   Collection: Mongo.Collection<Document, Document>,
   args?: any,
   defaults?: TDefaults,
 ): TUseTable => {
+  const { notificationApi } = useContext(NotificationContext);
+
   const DEFAULT_PAGE_CURRENT = defaults?.current || 1;
   const DEFAULT_PAGE_SIZE = defaults?.pageSize || 10;
 
@@ -80,11 +87,16 @@ export const useTable = (
    * @returns {void}
    */
   const handleRefresh = (): void => {
-    getter(method, setEntities, {
-      current: tableParams.pagination?.current,
-      pageSize: tableParams.pagination?.pageSize,
-      sort: [tableParams.sortField, tableParams.sortOrder],
-    });
+    getter(
+      method,
+      setEntities,
+      {
+        current: tableParams.pagination?.current,
+        pageSize: tableParams.pagination?.pageSize,
+        sort: [tableParams.sortField, tableParams.sortOrder],
+      },
+      { notificationApi },
+    );
   };
 
   /**

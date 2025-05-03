@@ -3,6 +3,7 @@ import { Meteor } from 'meteor/meteor';
 import { Tracker } from 'meteor/tracker';
 import { createRoot } from 'react-dom/client';
 import { RouterProvider, createRouter } from '@tanstack/react-router';
+import { App as AntdApp } from 'antd';
 
 import { initLogger } from '/imports/utils/console.util';
 import { initDayjs } from '/imports/utils/dayjs.util';
@@ -44,7 +45,9 @@ Meteor.startup(() => {
 
     root.render(
       <React.StrictMode>
-        <RouterProvider router={router} />
+        <AntdApp>
+          <RouterProvider router={router} />
+        </AntdApp>
       </React.StrictMode>,
     );
   }

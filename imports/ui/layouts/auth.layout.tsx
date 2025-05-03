@@ -2,6 +2,7 @@ import React, { FC, JSX, SetStateAction, useEffect, useState } from 'react';
 import { useTracker } from 'meteor/react-meteor-data';
 import { IntlProvider } from 'react-intl';
 import dayjs from 'dayjs';
+import { App as AntdApp } from 'antd';
 
 import { Locale } from 'antd/es/locale';
 

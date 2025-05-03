@@ -2,6 +2,7 @@ import React, { JSX, useContext } from 'react';
 import { Button, Table } from 'antd';
 import { useSubscribe } from 'meteor/react-meteor-data';
 import { TableProps } from 'antd/lib/table';
+import { createFileRoute } from '@tanstack/react-router';
 
 import { WidgetsCollection } from '/imports/collections/widgets.collection';
 
@@ -38,7 +39,6 @@ import { WidgetNew } from './widget/widget.new';
 import Widget from '/imports/api/environment/Widget';
 
 import './widgets.module.less';
-import { createFileRoute } from '@tanstack/react-router';
 
 export interface IDataType extends ICommonDataType {
   name: string;
@@ -64,7 +64,7 @@ const WidgetsPage: React.FC = (): JSX.Element => {
   const isLoading = useSubscribe('widgets');
   const intl = useContext(I18nContext);
   const ability = useContext(AbilityContext);
-  const { modalApi } = useContext(NotificationContext);
+  const { modalApi, notificationApi } = useContext(NotificationContext);
 
   const user = Meteor.user();
 
@@ -152,7 +152,9 @@ const WidgetsPage: React.FC = (): JSX.Element => {
                 const Entity = module[values.name];
 
                 if (!Entity) {
-                  catchClassErrorMsg({ message: 'Widget name is invalid' });
+                  catchClassErrorMsg(notificationApi, {
+                    message: 'Widget name is invalid',
+                  });
                 }
 
                 const widget = new Widget(Entity, user);
@@ -160,7 +162,9 @@ const WidgetsPage: React.FC = (): JSX.Element => {
                 createWidget(widget, handleRefresh);
               })
               .catch((e) => {
-                catchClassErrorMsg({ message: 'Widget path is invalid' });
+                catchClassErrorMsg(notificationApi, {
+                  message: 'Widget path is invalid',
+                });
               });
           }}
         />

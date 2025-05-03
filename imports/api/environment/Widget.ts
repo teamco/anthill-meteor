@@ -1,3 +1,4 @@
+import { NotificationInstance } from 'antd/es/notification/interface';
 import {
   TWidget,
   IMetadata,
@@ -7,9 +8,11 @@ import {
   EStatus,
   TWidgetConfig,
 } from '/imports/config/types';
+import { TMessageConfig } from '/imports/config/types/notification.type';
 
 import CommonUtils from '/imports/utils/common.util';
 import { catchClassErrorMsg } from '/imports/utils/message.util';
+import { TIntl } from '/imports/utils/i18n.util';
 
 /**
  * Represents a Widget entity with properties and methods for managing widget data.
@@ -49,15 +52,31 @@ export default class Widget extends CommonUtils implements TWidget {
     updatedBy: '',
   };
 
-  constructor(Widget: new (arg0: IUser) => TWidget, user: IUser) {
+  readonly notificationApi: NotificationInstance;
+  readonly intl: TIntl;
+
+  constructor(
+    Widget: new (arg0: IUser) => TWidget,
+    user: IUser,
+    config: Pick<TMessageConfig, 'notificationApi' | 'intl'>,
+  ) {
     super();
+
+    this.notificationApi = config.notificationApi;
+    this.intl = config.intl;
 
     this.create(Widget, user);
   }
 
-  create(Widget: new (arg0: IUser) => TWidget, user?: IUser): void {
-    if (!user) return catchClassErrorMsg({ message: 'User is required' });
-    if (!Widget) return catchClassErrorMsg({ message: 'Widget is required' });
+  create(Widget: new (arg0: IUser) => TWidget, user: IUser): void {
+    if (!user)
+      return catchClassErrorMsg(this.notificationApi, {
+        message: 'User is required',
+      });
+    if (!Widget)
+      return catchClassErrorMsg(this.notificationApi, {
+        message: 'Widget is required',
+      });
 
     const widget: TWidget = new Widget(user);
 

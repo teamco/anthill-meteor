@@ -1,5 +1,12 @@
+import { Meteor } from 'meteor/meteor';
+
 import { TLayout } from '/imports/config/types';
-import { t, TIntl } from '/imports/utils/i18n.util';
+import {
+  TMessageConfig,
+  TNotificationError,
+} from '/imports/config/types/notification.type';
+
+import { t } from '/imports/utils/i18n.util';
 import {
   catchErrorMsg,
   successDeleteMsg,
@@ -16,48 +23,53 @@ import {
  * a warning message is shown. Any errors during the process are caught and handled.
  *
  * @param {string} _id - The unique identifier of the layout to delete.
- * @param {TIntl} intl - The internationalization object for localization.
  * @param {() => void} handleRefresh - Callback function to refresh the layout list after deletion.
+ * @param {TMessageConfig} config - Configuration object containing message and notification APIs and internationalization context.
+ * @returns {void}
  */
 export const deleteLayout = (
   _id: string,
-  intl: TIntl,
   handleRefresh: () => void,
-) => {
+  config: TMessageConfig,
+): void => {
   Meteor.callAsync('layoutRemove', { _id })
     .then((res: number) => {
       if (res > 0) {
-        successDeleteMsg();
+        successDeleteMsg(config.messageApi, config.intl, 'Layout');
         handleRefresh();
       } else {
-        catchWarnMsg({
+        catchWarnMsg(config.notificationApi, {
           errorType: 'warning',
-          message: t(intl, 'error.warningMsg'),
+          message: t(config.intl, 'error.warningMsg'),
           error: 'Error 400',
           name: 'deleteLayout',
         });
       }
     })
-    .catch(catchErrorMsg);
+    .catch((err: TNotificationError) => {
+      catchErrorMsg(config.notificationApi, err);
+    });
 };
 
 export const updateTemplate = (
   _id: string,
   doc: Pick<TLayout, 'template'>,
-  intl: TIntl,
+  config: TMessageConfig,
 ) => {
   Meteor.callAsync('layoutTemplateUpdate', { _id, doc })
     .then((res: number) => {
       if (res > 0) {
-        successUpdateMsg();
+        successUpdateMsg(config.messageApi, config.intl, 'Layout');
       } else {
-        catchWarnMsg({
+        catchWarnMsg(config.notificationApi, {
           errorType: 'warning',
-          message: t(intl, 'error.warningMsg'),
+          message: t(config.intl, 'error.warningMsg'),
           error: 'Error 400',
           name: '',
         });
       }
     })
-    .catch(catchErrorMsg);
+    .catch((err: TNotificationError) => {
+      catchErrorMsg(config.notificationApi, err);
+    });
 };

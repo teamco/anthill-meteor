@@ -13,6 +13,7 @@ import {
   TStatus,
   TRouterTypes,
 } from '/imports/config/types';
+import { TMessageConfig } from '/imports/config/types/notification.type';
 
 import { I18nContext } from '/imports/ui/context/i18n.context';
 import { AbilityContext } from '/imports/ui/context/authentication.context';
@@ -66,9 +67,16 @@ const EnvironmentsPage: React.FC = (): JSX.Element => {
 
   const intl = useContext(I18nContext);
   const ability = useContext(AbilityContext);
-  const { modalApi } = useContext(NotificationContext);
+  const { modalApi, notificationApi, messageApi } =
+    useContext(NotificationContext);
 
   const navigate = useNavigate();
+
+  const messageConfig: TMessageConfig = {
+    notificationApi,
+    messageApi,
+    intl,
+  };
 
   /**
    * isLoading
@@ -92,7 +100,7 @@ const EnvironmentsPage: React.FC = (): JSX.Element => {
    * @param {string} id - The id of the environment to delete
    */
   const onDelete = (id: string): void => {
-    deleteEnvironment(id, intl, handleRefresh);
+    deleteEnvironment(id, handleRefresh, messageConfig);
   };
 
   /**
@@ -178,6 +186,7 @@ const EnvironmentsPage: React.FC = (): JSX.Element => {
           onSave={(values) =>
             createEnvironment(values.name, user, handleRefresh, {
               description: values.description,
+              ...messageConfig,
             })
           }
         />

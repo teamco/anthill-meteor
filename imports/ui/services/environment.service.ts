@@ -1,3 +1,10 @@
+import { Meteor } from 'meteor/meteor';
+
+import {
+  TMessageConfig,
+  TNotificationError,
+} from '/imports/config/types/notification.type';
+
 import Environment from '/imports/api/environment/Environment';
 import Widget from '/imports/api/environment/Widget';
 
@@ -5,7 +12,7 @@ import { EmptyWidget } from '/imports/api/widgets/empty.widget';
 import { EnvironmentsCollection } from '/imports/collections/environments.collection';
 
 import { IUser, TEnvironmentEdit } from '/imports/config/types';
-import { t, TIntl } from '/imports/utils/i18n.util';
+import { t } from '/imports/utils/i18n.util';
 import {
   successSaveMsg,
   catchErrorMsg,
@@ -23,37 +30,59 @@ import { getWidgetBy } from './widget.service';
  * @param {string} name - The name of the environment
  * @param {IUser} user - The user creating the environment
  * @param {() => void} handleRefresh - Function to call after the environment is created
- * @param {Object} [optional] - An object containing optional description
- * @param {string} [optional.description] - The description of the environment
+ * @param {Object} config - Configuration object containing message and notification APIs and internationalization context
+ * @param {string} [config.description] - The description of the environment
+ * @returns {void}
  */
 export const createEnvironment = (
   name: string,
   user: IUser,
   handleRefresh: () => void,
-  optional: { description?: string },
-) => {
+  config: {
+    description?: string;
+  } & TMessageConfig,
+): void => {
   const env = new Environment(name, user, {
-    description: optional.description,
+    description: config.description,
+    notificationApi: config.notificationApi,
+    intl: config.intl,
   });
-  debugger;
-  const layout = env.createLayout(user);
+  if (!user)
+    return catchClassErrorMsg(config.notificationApi, {
+      message: 'User is required',
+    });
+
   const widget = getWidgetBy('resource', 'empty');
 
   if (!widget)
-    return catchClassErrorMsg({ message: 'EmptyWidget is required' });
+    return catchClassErrorMsg(config.notificationApi, {
+      message: 'EmptyWidget is required',
+    });
 
-  layout.addWidget({ ...new Widget(EmptyWidget, user), _id: widget._id });
+  const layout = env.createLayout(user);
+
+  layout.addWidget({
+    ...new Widget(EmptyWidget, user, {
+      notificationApi: config.notificationApi,
+      intl: config.intl,
+    }),
+    _id: widget._id,
+  });
 
   Meteor.callAsync('environmentInsert', { ...env })
     .then((_id: string) => {
-      successSaveMsg();
+      successSaveMsg(config.messageApi, config.intl, 'Environment');
       handleRefresh();
 
       Meteor.callAsync('layoutInsert', { ...layout, environmentId: _id }).catch(
-        catchErrorMsg,
+        (err: TNotificationError) => {
+          catchErrorMsg(config.notificationApi, err);
+        },
       );
     })
-    .catch(catchErrorMsg);
+    .catch((err: TNotificationError) => {
+      catchErrorMsg(config.notificationApi, err);
+    });
 };
 
 /**
@@ -65,29 +94,32 @@ export const createEnvironment = (
  * a warning message is shown. Any errors during the process are caught and handled.
  *
  * @param {string} _id - The unique identifier of the environment to delete.
- * @param {TIntl} intl - The internationalization object for localization.
  * @param {() => void} handleRefresh - Callback function to refresh the environment list after deletion.
+ * @param {TMessageConfig} config - Configuration object containing message and notification APIs and internationalization context.
+ * @returns {void}
  */
 export const deleteEnvironment = (
   _id: string,
-  intl: TIntl,
   handleRefresh: () => void,
-) => {
+  config: TMessageConfig,
+): void => {
   Meteor.callAsync('environmentRemove', { _id })
     .then((res: number) => {
       if (res > 0) {
-        successDeleteMsg();
+        successDeleteMsg(config.messageApi, config.intl, 'Environment');
         handleRefresh();
       } else {
-        catchWarnMsg({
+        catchWarnMsg(config.notificationApi, {
           errorType: 'warning',
-          message: t(intl, 'error.warningMsg'),
+          message: t(config.intl, 'error.warningMsg'),
           error: 'Error 400',
           name: '',
         });
       }
     })
-    .catch(catchErrorMsg);
+    .catch((err: TNotificationError) => {
+      catchErrorMsg(config.notificationApi, err);
+    });
 };
 
 /**
@@ -100,27 +132,30 @@ export const deleteEnvironment = (
  *
  * @param {string} _id - The unique identifier of the environment to update.
  * @param {Pick<TEnvironmentEdit, 'name' | 'description' | 'status'>} doc - The environment document with changes.
- * @param {TIntl} intl - The internationalization object for localization.
+ * @param {TMessageConfig} config - Configuration object containing message and notification APIs and internationalization context.
+ * @returns {void}
  */
 export const updateEnvironment = (
   _id: string,
   doc: Pick<TEnvironmentEdit, 'name' | 'description' | 'status'>,
-  intl: TIntl,
-) => {
+  config: TMessageConfig,
+): void => {
   Meteor.callAsync('environmentUpdate', { _id, doc })
     .then((res: number) => {
       if (res > 0) {
-        successUpdateMsg();
+        successUpdateMsg(config.messageApi, config.intl, 'Environment');
       } else {
-        catchWarnMsg({
+        catchWarnMsg(config.notificationApi, {
           errorType: 'warning',
-          message: t(intl, 'error.warningMsg'),
+          message: t(config.intl, 'error.warningMsg'),
           error: 'Error 400',
           name: '',
         });
       }
     })
-    .catch(catchErrorMsg);
+    .catch((err: TNotificationError) => {
+      catchErrorMsg(config.notificationApi, err);
+    });
 };
 
 /**

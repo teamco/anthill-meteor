@@ -8,9 +8,8 @@ import { I18nContext } from '/imports/ui/context/i18n.context';
 import { NotificationContext } from '/imports/ui/context/notification.context';
 
 import { TIntl } from '/imports/utils/i18n.util';
-import { nCache } from '/imports/utils/message.util';
 
-const { Header, Footer, Content } = Layout;
+const { Content } = Layout;
 
 type TProps = {
   children: string | JSX.Element | JSX.Element[];
@@ -25,23 +24,16 @@ const AppLayout: FC<TProps> = ({ children }): JSX.Element => {
     stack: { threshold: 3 },
   });
 
-  nCache.set('intl', intl);
-  nCache.set('messageApi', messageApi);
-  nCache.set('modalApi', modalApi);
-  nCache.set('notificationApi', notificationApi);
-
   return (
     <I18nContext.Provider value={intl}>
+      {messageHolder}
+      {notificationHolder}
+      {modalHolder}
       <NotificationContext.Provider
         value={{ modalApi, messageApi, notificationApi }}
       >
         <Layout className={'layout'}>
-          <Content className={'content'}>
-            {messageHolder}
-            {notificationHolder}
-            {modalHolder}
-            {children}
-          </Content>
+          <Content className={'content'}>{children}</Content>
         </Layout>
       </NotificationContext.Provider>
     </I18nContext.Provider>

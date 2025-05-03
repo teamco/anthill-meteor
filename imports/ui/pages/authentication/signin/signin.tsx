@@ -1,14 +1,5 @@
-import React, { JSX } from 'react';
-import {
-  Button,
-  Col,
-  Form,
-  Input,
-  Layout,
-  notification,
-  Row,
-  Tooltip,
-} from 'antd';
+import React, { JSX, useContext } from 'react';
+import { Button, Col, Form, Input, Layout, Row, Tooltip } from 'antd';
 import { FormOutlined, LockTwoTone, LoginOutlined } from '@ant-design/icons';
 import { useIntl } from 'react-intl';
 import { useNavigate } from '@tanstack/react-router';
@@ -16,9 +7,13 @@ import { useNavigate } from '@tanstack/react-router';
 import { t, TIntl } from '/imports/utils/i18n.util';
 import { requiredField } from '/imports/utils/form.util';
 import { layout } from '/imports/utils/layout.util';
-import { catchErrorMsg, nCache, TError } from '/imports/utils/message.util';
+import { catchErrorMsg } from '/imports/utils/message.util';
 
 import { useAuthRedirect } from '/imports/ui/hooks/authRedirect.hook';
+
+import { NotificationContext } from '/imports/ui/context/notification.context';
+
+import { TNotificationError } from '/imports/config/types/notification.type';
 
 import { EmailField } from '/imports/ui/components/EmailField';
 import { Can } from '/imports/ui/components/Ability/can';
@@ -48,11 +43,7 @@ const SignIn: React.FC = (): JSX.Element => {
 
   const [formRef] = Form.useForm();
 
-  const [notificationApi, notificationHolder] = notification.useNotification({
-    stack: { threshold: 3 },
-  });
-
-  nCache.set('notificationApi', notificationApi);
+  const { notificationApi } = useContext(NotificationContext);
 
   const passField = t(intl, 'auth.password');
 
@@ -74,9 +65,9 @@ const SignIn: React.FC = (): JSX.Element => {
     Meteor.loginWithPassword(
       values.email,
       values.password,
-      async (err): Promise<void> => {
+      async (err: TNotificationError): Promise<void> => {
         if (err) {
-          return catchErrorMsg(err as TError);
+          return catchErrorMsg(notificationApi, err);
         }
 
         formRef.resetFields();
@@ -91,7 +82,6 @@ const SignIn: React.FC = (): JSX.Element => {
         <div>
           <h1>{t(intl, 'auth.signInTitle')}</h1>
         </div>
-        {notificationHolder}
         <Form
           size={'large'}
           layout={'vertical'}
