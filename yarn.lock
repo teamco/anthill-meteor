@@ -6101,6 +6101,7 @@ __metadata:
     "@casl/react": "npm:^5.0.0"
     "@commitlint/cli": "npm:^19.8.0"
     "@commitlint/config-conventional": "npm:^19.8.0"
+    "@eslint/eslintrc": "npm:^3.3.1"
     "@tanstack/react-router": "npm:^1.119.0"
     "@tanstack/react-router-devtools": "npm:^1.119.1"
     "@tanstack/router-cli": "npm:^1.119.0"
@@ -6133,6 +6134,7 @@ __metadata:
     stylelint: "npm:^16.19.1"
     stylelint-config-standard-less: "npm:^3.0.1"
     stylelint-less: "npm:^3.0.1"
+    typescript: "npm:^5.8.3"
     uglify-js: "npm:^3.19.3"
     vitest: "npm:^3.1.2"
     vitest-canvas-mock: "npm:^0.3.3"
@@ -9650,6 +9652,26 @@ __metadata:
   version: 0.0.6
   resolution: "typedarray@npm:0.0.6"
   checksum: 10/2cc1bcf7d8c1237f6a16c04efc06637b2c5f2d74e58e84665445cf87668b85a21ab18dd751fa49eee6ae024b70326635d7b79ad37b1c370ed2fec6aeeeb52714
+  languageName: node
+  linkType: hard
+
+"typescript@npm:^5.8.3":
+  version: 5.8.3
+  resolution: "typescript@npm:5.8.3"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: 10/65c40944c51b513b0172c6710ee62e951b70af6f75d5a5da745cb7fab132c09ae27ffdf7838996e3ed603bb015dadd099006658046941bd0ba30340cc563ae92
+  languageName: node
+  linkType: hard
+
+"typescript@patch:typescript@npm%3A^5.8.3#optional!builtin<compat/typescript>":
+  version: 5.8.3
+  resolution: "typescript@patch:typescript@npm%3A5.8.3#optional!builtin<compat/typescript>::version=5.8.3&hash=5786d5"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: 10/b9b1e73dabac5dc730c041325dbd9c99467c1b0d239f1b74ec3b90d831384af3e2ba973946232df670519147eb51a2c20f6f96163cea2b359f03de1e2091cc4f
   languageName: node
   linkType: hard
 

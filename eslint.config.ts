@@ -1,41 +1,71 @@
-import js from '@eslint/js';
-import prettier from 'eslint-plugin-prettier';
+import jsLint from '@eslint/js';
+import tsLint from '@typescript-eslint/eslint-plugin';
+import tsParser from '@typescript-eslint/parser';
+import prettierPlugin from 'eslint-plugin-prettier';
+import prettierConfig from 'eslint-config-prettier';
 import json from 'eslint-plugin-json';
 import * as importPlugin from 'eslint-plugin-import';
 import jsdoc from 'eslint-plugin-jsdoc';
 import * as mdx from 'eslint-plugin-mdx';
 
 export default [
+  jsLint.configs.recommended,
   {
-    root: true,
-    ignores: ['node_modules', 'package.json', '*.config.ts'],
+    files: [
+      'client/**/*.ts',
+      'client/**/*.tsx',
+      'imports/**/*.ts',
+      'imports/**/*.tsx',
+      'server/**/*.ts',
+    ],
+    ignores: ['node_modules', 'package.json', '**/*.config.ts'],
+    languageOptions: {
+      parser: tsParser,
+      globals: {
+        process: 'readonly',
+        console: 'readonly',
+      },
+    },
     plugins: {
       jsdoc,
       import: importPlugin,
-      prettier,
       json,
       mdx,
+      '@typescript-eslint': tsLint,
+      prettier: prettierPlugin,
     },
-    extends: [
-      js.configs.recommended,
-      'plugin:json/recommended-legacy',
-      'plugin:import/typescript',
-      'plugin:prettier/recommended',
-      'plugin:mdx/recommended',
-    ],
     rules: {
+      ...tsLint.configs.recommended.rules,
+      ...prettierConfig.rules,
+      '@typescript-eslint/no-unused-vars': 'warn',
+      'no-console': 'warn',
+      // Enforce consistent indentation (4 spaces in this case)
+      indent: ['error', 2],
+      // Enforce the use of single quotes for strings
+      quotes: ['error', 'single'],
+      // Enforce semicolons at the end of statements
+      semi: ['error', 'always'],
+      // Enforce consistent line breaks (LF for Unix)
+      'linebreak-style': ['error', 'unix'],
+      // Require the use of === and !== (no implicit type conversions)
+      eqeqeq: ['error', 'always'],
+      // Enforce a maximum line length (usually 80 or 100 characters)
+      'max-len': ['warn', { code: 80 }],
+      // Enable Prettier as a lint rule
+      'prettier/prettier': [
+        'error',
+        {
+          trailingComma: 'all',
+          singleQuote: true,
+          semi: true,
+        },
+      ],
       'import/no-unresolved': 0,
       'import/extensions': 1,
       'import/named': 1,
       'import/namespace': 1,
       'import/default': 1,
       'import/export': 1,
-      'prettier/prettier': [
-        'error',
-        {
-          trailingComma: 'all',
-        },
-      ],
       'jsdoc/require-param': ['warn', { contexts: ['TSParameterProperty'] }],
       'jsdoc/require-param-description': [
         'warn',
@@ -58,41 +88,6 @@ export default [
         'warn',
         { contexts: ['TSPropertySignature'] },
       ],
-    },
-    settings: {
-      'import/resolver': {
-        node: {
-          extensions: ['.js', '.jsx', '.ts', '.tsx'],
-        },
-        typescript: {
-          extensions: ['.ts', '.tsx'],
-          alwaysTryTypes: true,
-        },
-      },
-      'import/parsers': {
-        '@typescript-eslint/parser': ['.ts', '.tsx'],
-      },
-    },
-  },
-  {
-    files: ['*.spec.ts', '*.spec.tsx', '*.spec.js', '*.spec.jsx'],
-    env: { jest: true },
-  },
-  {
-    files: ['.ts', '.tsx'],
-    parser: '@typescript-eslint/parser',
-    parserOptions: {
-      ecmaVersion: 2020,
-      sourceType: 'module',
-      ecmaFeatures: {
-        tsx: true,
-        modules: true,
-        experimentalObjectRestSpread: true,
-        impliedStrict: true,
-        types: true,
-        decorators: true,
-        'decorators-legacy': true,
-      },
     },
   },
 ];
