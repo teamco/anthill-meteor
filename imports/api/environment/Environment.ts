@@ -17,17 +17,23 @@ import { TMessageConfig } from '/imports/config/types/notification.type';
 import { TIntl } from '/imports/utils/i18n.util';
 
 /**
- * Represents an environment configuration that extends common utilities and implements the TEnvironment interface.
- * Manages the creation and updating of environment layouts and maintains metadata and status information.
+ * Represents an environment configuration that extends common utilities and
+ * implements the TEnvironment interface.
+ * Manages the creation and updating of environment layouts and maintains
+ * metadata and status information.
  *
  * @property {string} name - The name of the environment.
- * @property {string} [description] - An optional description of the environment.
+ * @property {string} [description] - An optional description of the
+ * environment.
  * @property {TLayout} layout - The layout associated with the environment.
  * @property {TStatus} status - The current status of the environment.
- * @property {IMetadata} metadata - Metadata containing creation and update information.
+ * @property {IMetadata} metadata - Metadata containing creation and update
+ * information.
  *
- * @method create - Initializes the environment with a name, type, and user, optionally including a description.
- * @method createLayout - Creates and initializes the environment layout with user information.
+ * @method create - Initializes the environment with a name, type, and user,
+ * optionally including a description.
+ * @method createLayout - Creates and initializes the environment layout with
+ * user information.
  * @method updateLayout - Updates the environment with a specified layout.
  */
 export default class Environment extends CommonUtils implements TEnvironment {
@@ -70,7 +76,8 @@ export default class Environment extends CommonUtils implements TEnvironment {
    *
    * @param {string} name - The name of the environment
    * @param {IUser} user - The user creating the environment
-   * @param {Object} config - Configuration object containing message and notification APIs and internationalization context
+   * @param {Object} config - Configuration object containing message and
+   * notification APIs and internationalization context
    * @param {string} [config.description] - The description of the environment
    * @returns {void}
    */

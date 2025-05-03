@@ -12,7 +12,7 @@ import { TIntl } from '/imports/utils/i18n.util';
 type TEntity = {
   notificationApi?: NotificationInstance;
   intl?: TIntl;
-  [key: string]: any;
+  [key: string]: unknown;
 };
 
 export const prepareToCreate = (Entity: TEntity) => {
@@ -27,19 +27,21 @@ export const prepareToCreate = (Entity: TEntity) => {
  * sets the provided state callback with the response.
  *
  * @param {string} method - The name of the Meteor method to call.
- * @param {(res: any[]) => void} setEntities - The state callback to set the environment list.
+ * @param {(res: any[]) => void} setEntities - The state callback to set the
+ * environment list.
  * @param {{}} opts - An object of options to pass to the Meteor method.
- * @param {Pick<TMessageConfig, 'notificationApi'>} config - Configuration object containing notification API.
+ * @param {Pick<TMessageConfig, 'notificationApi'>} config - Configuration
+ * object containing notification API.
  * @returns {void}
  */
 export const getEntities = (
   method: string,
-  setEntities: (res: any[]) => void,
-  opts: {},
+  setEntities: (res: unknown[]) => void,
+  opts: object,
   config: Pick<TMessageConfig, 'notificationApi'>,
 ): void => {
   Meteor.callAsync(method, opts)
-    .then((res: any[]) => {
+    .then((res: unknown[]) => {
       setEntities(res);
     })
     .catch((err: TNotificationError) => {

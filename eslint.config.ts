@@ -10,6 +10,17 @@ import jsdoc from 'eslint-plugin-jsdoc';
 import * as mdx from 'eslint-plugin-mdx';
 import { resolve } from 'eslint-import-resolver-typescript';
 
+const allowedExtensions = [
+  '.util',
+  '.type',
+  '.service',
+  '.config',
+  '.collection',
+  '.widget',
+  '.hook',
+  '.test',
+];
+
 export default [
   jsLint.configs.recommended,
   {
@@ -24,14 +35,14 @@ export default [
       'import/resolver': {
         typescript: {
           alwaysTryTypes: true,
-          project: './tsconfig.json',
           resolvePackagePath: (sourcePath: string) => {
-            if (sourcePath.endsWith('.util') || sourcePath.endsWith('.type')) {
-              return (
-                resolve(sourcePath, '.util') || resolve(sourcePath, '.type')
-              );
-            }
-            return null;
+            const matchedExtension = allowedExtensions.find((ext) =>
+              sourcePath.endsWith(ext),
+            );
+
+            return matchedExtension
+              ? resolve(sourcePath, matchedExtension)
+              : null;
           },
         },
       },
@@ -84,6 +95,9 @@ export default [
       ...prettierConfig.rules,
       '@typescript-eslint/no-unused-vars': 'warn',
       'no-console': 'warn',
+      'no-debugger': 'warn',
+      'no-duplicate-imports': 'warn',
+      '@typescript-eslint/no-explicit-any': 'warn',
       // Enforce consistent indentation (4 spaces in this case)
       indent: ['error', 2],
       // Enforce the use of single quotes for strings
@@ -95,7 +109,19 @@ export default [
       // Require the use of === and !== (no implicit type conversions)
       eqeqeq: ['error', 'always'],
       // Enforce a maximum line length (usually 80 or 100 characters)
-      'max-len': ['warn', { code: 80 }],
+      'max-len': [
+        'warn',
+        {
+          code: 80,
+          ignoreComments: true,
+          ignoreTrailingComments: true,
+          ignoreUrls: true,
+          ignoreStrings: true,
+          ignoreTemplateLiterals: true,
+          ignoreRegExpLiterals: true,
+          ignorePattern: '^\\s*import\\s+.*\\s+from\\s+["\'].*["\']',
+        },
+      ],
       // Enable Prettier as a lint rule
       'prettier/prettier': [
         'error',

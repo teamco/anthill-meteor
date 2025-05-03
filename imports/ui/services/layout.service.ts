@@ -19,12 +19,15 @@ import {
  *
  * This function makes an asynchronous call to remove the specified layout
  * from the collection. Upon successful deletion, a success message is displayed
- * and the handleRefresh function is called to update the UI. If the deletion fails,
- * a warning message is shown. Any errors during the process are caught and handled.
+ * and the handleRefresh function is called to update the UI. If the deletion
+ * fails, a warning message is shown. Any errors during the process are caught
+ * and handled.
  *
  * @param {string} _id - The unique identifier of the layout to delete.
- * @param {() => void} handleRefresh - Callback function to refresh the layout list after deletion.
- * @param {TMessageConfig} config - Configuration object containing message and notification APIs and internationalization context.
+ * @param {() => void} handleRefresh - Callback function to refresh the layout
+ * list after deletion.
+ * @param {TMessageConfig} config - Configuration object containing message and
+ * notification APIs and internationalization context.
  * @returns {void}
  */
 export const deleteLayout = (

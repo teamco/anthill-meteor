@@ -30,8 +30,9 @@ import { prepareToCreate } from './shared.service';
  *
  * @param {string} name - The name of the environment
  * @param {IUser} user - The user creating the environment
- * @param {() => void} handleRefresh - Function to call after the environment is created
- * @param {Object} config - Configuration object containing message and notification APIs and internationalization context
+ * @param {() => void} handleRefresh - Call after the environment is created
+ * @param {Object} config - Configuration object containing message and
+ * notification APIs and internationalization context
  * @param {string} [config.description] - The description of the environment
  * @returns {void}
  */
@@ -75,7 +76,7 @@ export const createEnvironment = (
   });
 
   Meteor.callAsync('environmentInsert', {
-    ...(prepareToCreate(env) as unknown as object),
+    ...(prepareToCreate(env as TEnvironmentEdit) as unknown as object),
   })
     .then((_id: string) => {
       successSaveMsg(config.messageApi, config.intl, 'Environment');
@@ -98,12 +99,15 @@ export const createEnvironment = (
  *
  * This function makes an asynchronous call to remove the specified environment
  * from the collection. Upon successful deletion, a success message is displayed
- * and the handleRefresh function is called to update the UI. If the deletion fails,
- * a warning message is shown. Any errors during the process are caught and handled.
+ * and the handleRefresh function is called to update the UI. If the deletion
+ * fails, a warning message is shown. Any errors during the process are caught
+ * and handled.
  *
  * @param {string} _id - The unique identifier of the environment to delete.
- * @param {() => void} handleRefresh - Callback function to refresh the environment list after deletion.
- * @param {TMessageConfig} config - Configuration object containing message and notification APIs and internationalization context.
+ * @param {() => void} handleRefresh - Callback function to refresh the
+ * environment list after deletion.
+ * @param {TMessageConfig} config - Configuration object containing message and
+ * notification APIs and internationalization context.
  * @returns {void}
  */
 export const deleteEnvironment = (
@@ -135,12 +139,15 @@ export const deleteEnvironment = (
  *
  * This function makes an asynchronous call to update the specified environment
  * in the collection. Upon successful update, a success message is displayed
- * and the handleRefresh function is called to update the UI. If the update fails,
- * a warning message is shown. Any errors during the process are caught and handled.
+ * and the handleRefresh function is called to update the UI.
+ * If the update fails, a warning message is shown. Any errors during the
+ * process are caught and handled.
  *
  * @param {string} _id - The unique identifier of the environment to update.
- * @param {Pick<TEnvironmentEdit, 'name' | 'description' | 'status'>} doc - The environment document with changes.
- * @param {TMessageConfig} config - Configuration object containing message and notification APIs and internationalization context.
+ * @param {Pick<TEnvironmentEdit, 'name' | 'description' | 'status'>} doc -
+ * The environment document with changes.
+ * @param {TMessageConfig} config - Configuration object containing message
+ * and notification APIs and internationalization context.
  * @returns {void}
  */
 export const updateEnvironment = (

@@ -19,13 +19,16 @@ import { TIntl } from '/imports/utils/i18n.util';
  *
  * @property {TTemplate} template - The template associated with the layout.
  * @property {number} version - The version number of the layout.
- * @property {TLayoutWidget} widgets - An array of widgets contained in the layout.
- * @property {IMetadata} metadata - Metadata information including creation and update details.
+ * @property {TLayoutWidget} widgets - An array of widgets contained in the
+ * layout.
+ * @property {IMetadata} metadata - Metadata information including creation
+ * and update details.
  *
  * @constructor
  * @param {IUser} user - The user responsible for creating the layout.
  *
- * @method create - Initializes the layout with a template, version, and user metadata.
+ * @method create - Initializes the layout with a template, version, and user
+ * metadata.
  * @param {TTemplate} template - The template to initialize the layout with.
  * @param {number} version - The version number to set for the layout.
  * @param {IUser} [user] - The user responsible for the creation of the layout.

@@ -15,11 +15,13 @@ import { Route as EnvironmentPreviewRouteImport } from '/imports/ui/pages/dashbo
 import { Route as UserLogsRouteImport } from '/imports/ui/pages/dashboard/userLogs/userLogs.page';
 
 /**
- * Creates or updates a route using the provided route import, path, and parent route.
+ * Creates or updates a route using the provided route import, path, and
+ * parent route.
  *
  * @param RouteImport - The route import object to be updated.
  * @param path - The path identifier for the route, based on TRouterTypes.
- * @param parentRoute - The parent route to associate with the new route. Defaults to AdminRouteImport.
+ * @param parentRoute - The parent route to associate with the new route.
+ * Defaults to AdminRouteImport.
  * @returns The updated route object.
  */
 function createRoute(
