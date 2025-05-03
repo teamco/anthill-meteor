@@ -10,8 +10,8 @@ import {
 } from '/imports/config/types';
 import { TMessageConfig } from '/imports/config/types/notification.type';
 
-import { catchClassErrorMsg } from '/imports/utils/message.util';
 import { TIntl } from '/imports/utils/i18n.util';
+import { catchClassErrorMsg } from '/imports/utils/message.util';
 
 /**
  * Represents an EmptyWidget class that implements the TWidget interface.

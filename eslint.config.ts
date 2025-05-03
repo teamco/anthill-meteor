@@ -1,5 +1,6 @@
 import jsLint from '@eslint/js';
 import tsLint from '@typescript-eslint/eslint-plugin';
+// @ts-ignore
 import tsParser from '@typescript-eslint/parser';
 import prettierPlugin from 'eslint-plugin-prettier';
 import prettierConfig from 'eslint-config-prettier';
@@ -7,6 +8,7 @@ import json from 'eslint-plugin-json';
 import * as importPlugin from 'eslint-plugin-import';
 import jsdoc from 'eslint-plugin-jsdoc';
 import * as mdx from 'eslint-plugin-mdx';
+import { resolve } from 'eslint-import-resolver-typescript';
 
 export default [
   jsLint.configs.recommended,
@@ -18,9 +20,52 @@ export default [
       'imports/**/*.tsx',
       'server/**/*.ts',
     ],
+    settings: {
+      'import/resolver': {
+        typescript: {
+          alwaysTryTypes: true,
+          project: './tsconfig.json',
+          resolvePackagePath: (sourcePath: string) => {
+            if (sourcePath.endsWith('.util') || sourcePath.endsWith('.type')) {
+              return (
+                resolve(sourcePath, '.util') || resolve(sourcePath, '.type')
+              );
+            }
+            return null;
+          },
+        },
+      },
+    },
     ignores: ['node_modules', 'package.json', '**/*.config.ts'],
     languageOptions: {
       parser: tsParser,
+      parserOptions: {
+        ecmaVersion: 2020,
+        sourceType: 'module',
+        ecmaFeatures: {
+          jsx: true,
+          tsx: true,
+          modules: true,
+          experimentalObjectRestSpread: true,
+          impliedStrict: true,
+          globalReturn: false,
+          allowImportExportEverywhere: false,
+          allowHashBang: false,
+          allowReserved: false,
+          allowReturnOutsideFunction: false,
+          allowSuperOutsideMethod: false,
+          allowUnderscoreBeforeProperties: false,
+          allowUnderscoreBeforeMethodProperties: false,
+          allowUnderscoreBeforeClassProperties: false,
+          allowUnderscoreBeforeFunctionProperties: false,
+          allowUnderscoreBeforePrivateProperties: false,
+          allowUnderscoreBeforeProtectedProperties: false,
+          allowUnderscoreBeforePublicProperties: false,
+          allowUnderscoreBeforeStaticProperties: false,
+          allowUnderscoreBeforeStaticMethods: false,
+          allowUnderscoreBeforeStaticClassProperties: false,
+        },
+      },
       globals: {
         process: 'readonly',
         console: 'readonly',
