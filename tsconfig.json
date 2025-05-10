@@ -28,7 +28,6 @@
     "noImplicitReturns": true,
     "noUncheckedIndexedAccess": true,
     "noImplicitOverride": true,
-    "suppressImplicitAnyIndexErrors": true,
     "paths": {
       "@/*": ["./imports"]
     }
