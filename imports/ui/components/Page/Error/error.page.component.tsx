@@ -1,14 +1,14 @@
-import React, { JSX, memo, useContext } from "react";
-import { Button, Result } from "antd";
-import { ResultStatusType } from "antd/es/result";
-import classnames from "classnames";
-import { useNavigate } from "@tanstack/react-router";
+import { JSX, memo, useContext } from 'react';
+import { Button, Result } from 'antd';
+import { ResultStatusType } from 'antd/es/result';
+import classnames from 'classnames';
+import { useNavigate } from '@tanstack/react-router';
 
-import Loader from "/imports/ui/components/Loader/loader.component";
-import { Can } from "/imports/ui/components/Ability/can";
+import Loader from '/imports/ui/components/Loader/loader.component';
+import { Can } from '/imports/ui/components/Ability/can';
 
-import { t } from "/imports/utils/i18n.util";
-import { I18nContext } from "/imports/ui/context/i18n.context";
+import { t } from '/imports/utils/i18n.util';
+import { I18nContext } from '/imports/ui/context/i18n.context';
 
 type TErrorProps = {
   loading?: boolean;
@@ -37,22 +37,22 @@ const ErrorPage = (props: TErrorProps): JSX.Element => {
     subject,
     className,
     loading = false,
-    title = t(intl, "error.warning"),
-    subTitle = t(intl, "error.warningMsg"),
+    title = t(intl, 'error.warning'),
+    subTitle = t(intl, 'error.warningMsg'),
   } = props;
 
   const { href } = window.location;
   const url = new URL(href);
-  const referrer = url.searchParams.get("referrer");
+  const referrer = url.searchParams.get('referrer');
 
   const extra = referrer ? (
-    <Button type={"default"} onClick={() => navigate({ to: referrer })}>
-      {t(intl, "actions.back")}
+    <Button type={'default'} onClick={() => navigate({ to: referrer })}>
+      {t(intl, 'actions.back')}
     </Button>
   ) : null;
 
   const _error = (
-    <Can I={"read"} a={subject}>
+    <Can I={'read'} a={subject}>
       <Loader loading={loading} />
       <div>
         <Result

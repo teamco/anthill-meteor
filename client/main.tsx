@@ -30,8 +30,8 @@ declare module '@tanstack/react-router' {
 Meteor.startup(() => {
   const container = document.getElementById('react-target');
 
-  if (!container.innerHTML) {
-    const root = createRoot(container);
+  if (!container?.innerHTML) {
+    const root = createRoot(container as Element);
 
     initLogger();
 

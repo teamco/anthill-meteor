@@ -7,4 +7,5 @@ export const generateId = (
   d = Date,
   h = 16,
   s = (s: number) => m.floor(s).toString(h),
-): string => s(d.now() / 1000) + ' '.repeat(h).replace(/./g, () => s(m.random() * h));
+): string =>
+  s(d.now() / 1000) + ' '.repeat(h).replace(/./g, () => s(m.random() * h));

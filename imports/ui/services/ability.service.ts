@@ -21,7 +21,7 @@ const ability = createMongoAbility<PossibleAbilities, Conditions>();
  * @returns {MongoAbility} The MongoAbility instance representing the user's
  * abilities.
  */
-export function defineAbilityFor(user: IUser): MongoAbility {
+export function defineAbilityFor(user: IUser | null): MongoAbility {
   const { can, cannot, build } = new AbilityBuilder(createMongoAbility);
 
   can('manage', 'all');

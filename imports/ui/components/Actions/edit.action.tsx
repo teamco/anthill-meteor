@@ -32,9 +32,11 @@ type TEditAction = {
  * @param props.isLoading Whether or not the component should be in a loading state
  * @param props.disabled Whether or not the component should be disabled
  * @param props.onEdit The callback function to be called when the button is clicked
- * @returns {JSX.Element} The JSX element of the component
+ * @returns {JSX.Element|null} The JSX element of the component
  */
-export const EditAction: React.FC<TEditAction> = (props): JSX.Element => {
+export const EditAction: React.FC<TEditAction> = (
+  props,
+): JSX.Element | null => {
   const intl = useContext(I18nContext);
 
   const {

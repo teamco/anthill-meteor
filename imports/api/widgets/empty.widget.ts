@@ -44,10 +44,16 @@ export class EmptyWidget implements TWidget {
   dimensions: {
     width: number;
     height: number;
+  } = {
+    width: 100,
+    height: 100,
   };
   content: {
     type: 'Internal';
     value: string;
+  } = {
+    type: 'Internal',
+    value: 'Empty',
   };
   category: string = 'regular';
   resource: string = 'empty';

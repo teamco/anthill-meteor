@@ -18,6 +18,7 @@ const allowedExtensions = [
   '.service',
   '.config',
   '.collection',
+  '.context',
   '.widget',
   '.hook',
   '.test',
@@ -96,6 +97,7 @@ export default [
         navigator: 'readonly',
         localStorage: 'readonly',
         sessionStorage: 'readonly',
+        structuredClone: 'readonly',
         fetch: 'readonly',
       },
     },
@@ -111,12 +113,12 @@ export default [
       ...tsLint.configs.recommended.rules,
       ...prettierConfig.rules,
       '@typescript-eslint/no-unused-vars': 'warn',
-      'no-console': 'warn',
+      // 'no-console': 'warn',
       'no-debugger': 'warn',
       'no-duplicate-imports': 'warn',
       '@typescript-eslint/no-explicit-any': 'warn',
       // Enforce consistent indentation (4 spaces in this case)
-      indent: ['warn', 2],
+      // indent: ['warn', 2],
       // Enforce the use of single quotes for strings
       quotes: ['error', 'single'],
       // Enforce semicolons at the end of statements

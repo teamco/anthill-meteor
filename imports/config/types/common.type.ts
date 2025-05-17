@@ -7,7 +7,7 @@ export interface IObjectId {
 
 export interface ICommonDataType extends IObjectId {
   key: string;
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 export type TStatus = {
@@ -29,8 +29,8 @@ export enum EStatus {
 }
 
 export type TTimestamp = {
-  createdAt?: Date;
-  updatedAt?: Date;
+  createdAt: Date;
+  updatedAt: Date;
 };
 
 export interface IMetadata extends TTimestamp {

@@ -1,17 +1,17 @@
-import { Menu } from "antd";
-import React, { JSX } from "react";
+import { Menu } from 'antd';
+import React, { JSX } from 'react';
 import classnames from 'classnames';
-import { ItemType } from "antd/es/menu/interface";
+import { ItemType } from 'antd/es/menu/interface';
 
 import './menu.module.less';
 
-type TMenuProps = { 
+type TMenuProps = {
   className?: string;
-  mItems: ItemType[]; 
-  selectedMenuKeys: string[]; 
-  openedMenuKeys: string[]; 
-  onOpenChange: (openKeys: string[]) => void; 
-}
+  mItems: ItemType[];
+  selectedMenuKeys: string[];
+  openedMenuKeys: string[];
+  onOpenChange: (openKeys: string[]) => void;
+};
 
 /**
  * @component MenuComponent
@@ -27,18 +27,21 @@ type TMenuProps = {
  *
  * @returns {JSX.Element} The rendered menu component
  */
-export const MenuComponent: React.FC<TMenuProps> = (props: TMenuProps): JSX.Element => {
-  const { className, mItems, selectedMenuKeys, onOpenChange, openedMenuKeys } = props;
+export const MenuComponent: React.FC<TMenuProps> = (
+  props: TMenuProps,
+): JSX.Element => {
+  const { className, mItems, selectedMenuKeys, onOpenChange, openedMenuKeys } =
+    props;
 
   return (
     <Menu
       className={classnames('menu', className)}
-      mode={"inline"}
+      mode={'inline'}
       items={mItems}
       defaultSelectedKeys={[...selectedMenuKeys]}
       onOpenChange={onOpenChange}
       openKeys={openedMenuKeys ? [...openedMenuKeys] : []}
       selectedKeys={[...selectedMenuKeys]}
     />
-  )
+  );
 };

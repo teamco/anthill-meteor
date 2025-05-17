@@ -13,7 +13,7 @@ export type TNotificationError = {
 
 export type TDeleteWarning = {
   entity?: string;
-  styles?: any;
+  styles?: unknown;
   title?: string;
   content?: string;
   onApprove?: () => void;

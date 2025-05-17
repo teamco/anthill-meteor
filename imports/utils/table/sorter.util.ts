@@ -7,7 +7,8 @@ import { TSorts } from '/imports/ui/hooks/table.hook';
  * @param {string} dateA - a date, represented in string format
  * @param {string} dateB - a date, represented in string format
  */
-const dateSort = (dateA: string, dateB: string) => dayjs(dateA).diff(dayjs(dateB));
+const dateSort = (dateA: string, dateB: string) =>
+  dayjs(dateA).diff(dayjs(dateB));
 
 /**
  * @param {number|string} a
@@ -25,7 +26,7 @@ const defaultSort = (a: number | string, b: number | string): number => {
  * @param a
  * @return {*}
  */
-const findInPath = (pathArray = [], a: any): any => {
+const findInPath = (pathArray: string[] = [], a: any): any => {
   let _a: any;
   for (let path of pathArray) {
     _a = _.get(a, path);
@@ -56,7 +57,7 @@ const nestedSort = (paths: string[], type: string = 'default'): any => {
 export const Sorter = {
   DEFAULT: defaultSort,
   NESTED: nestedSort,
-  DATE: dateSort
+  DATE: dateSort,
 };
 
 /**
@@ -67,10 +68,14 @@ export const Sorter = {
  * @param {string} [orderKey] - Optional key used to determine the sort order; defaults to `sorterKey` if not provided.
  * @returns { sorter: any; sortOrder: any } An object containing the sorter function and sortOrder for the column.
  */
-export const columnSorter = (sortedInfo: TSorts, sorterKey: string, orderKey?: string): { sorter: any; sortOrder: any } => {
+export const columnSorter = (
+  sortedInfo: TSorts,
+  sorterKey: string,
+  orderKey?: string,
+): { sorter: any; sortOrder: any } => {
   if (!orderKey) orderKey = sorterKey;
   return {
     sorter: Sorter.NESTED([sorterKey]),
     sortOrder: sortedInfo.columnKey === orderKey ? sortedInfo.order : null,
-  }
-}
+  };
+};

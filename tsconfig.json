@@ -1,35 +1,68 @@
 {
   "compilerOptions": {
+    /* Basic Options */
     "target": "esnext",
     "module": "esnext",
-    "moduleResolution": "node",
-    "strict": true,
     "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
-    "isolatedModules": true,
-    "noEmit": true,
     "jsx": "react-jsx",
-    "baseUrl": ".",
-    "lib": ["dom", "esnext"],
-    "resolveJsonModule": true,
-    "esModuleInterop": true,
+    "lib": ["esnext", "dom"],
+    "allowJs": true,
+    "checkJs": false,
+    //    "jsx": "preserve",
+    "incremental": true,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "isolatedModules": true,
+    // "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
-    "sourceMap": true,
-    "outDir": "./dist",
-    "rootDir": "./",
-    "strictNullChecks": true,
+
+    /* Strict Type-Checking Options */
+    "strict": true,
     "noImplicitAny": true,
-    "noImplicitThis": true,
+    "strictNullChecks": true,
+
+    /* Additional Checks */
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true,
-    "noImplicitReturns": true,
-    "noUncheckedIndexedAccess": true,
-    "noImplicitOverride": true,
+    "noImplicitReturns": false,
+    "noFallthroughCasesInSwitch": false,
+
+    /* Module Resolution Options */
+    "baseUrl": ".",
     "paths": {
-      "@/*": ["./imports"]
-    }
-  }
+      /* Support absolute /imports/* with a leading '/' */
+      "/*": ["*"],
+      "@common/types": ["/imports/config/types/*"],
+      "@common/utils": ["/imports/utils/*"],
+      "@common/collections": ["/imports/collections/*"],
+      "@common/locales": ["/imports/locales/*"],
+      "@common/ui": ["/imports/ui/*"],
+
+      "meteor/*": [
+        "node_modules/@types/meteor/*",
+        ".meteor/local/types/packages.d.ts"
+      ]
+    },
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "types": ["node", "jest"],
+    "esModuleInterop": true,
+    "preserveSymlinks": true
+    // "experimentalDecorators": true,
+    // "emitDecoratorMetadata": true,
+    // "sourceMap": true,
+    // "outDir": "./dist",
+    // "rootDir": "./",
+    // "strictNullChecks": true,
+    // "noImplicitAny": true,
+    // "noImplicitThis": true,
+    // "noUnusedLocals": true,
+    // "noUnusedParameters": true,
+    // "noFallthroughCasesInSwitch": true,
+    // "noImplicitReturns": true,
+    // "noUncheckedIndexedAccess": true,
+    // "noImplicitOverride": true,
+  },
+  "exclude": ["./.meteor/**", "./packages/**", "node_modules"],
+  "include": ["**/*.ts", "**/*.tsx"]
 }

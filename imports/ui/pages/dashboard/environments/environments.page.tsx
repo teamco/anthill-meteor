@@ -1,3 +1,4 @@
+import { Meteor } from 'meteor/meteor';
 import React, { JSX, useContext } from 'react';
 import { Button, Table, TableProps } from 'antd';
 import { useSubscribe } from 'meteor/react-meteor-data';
@@ -16,7 +17,7 @@ import {
 import { TMessageConfig } from '/imports/config/types/notification.type';
 
 import { I18nContext } from '/imports/ui/context/i18n.context';
-import { AbilityContext } from '/imports/ui/context/authentication.context';
+import { AbilityContext } from '../../../context/authentication.context';
 import { NotificationContext } from '/imports/ui/context/notification.context';
 
 import Page from '/imports/ui/components/Page/page.component';

@@ -1,5 +1,5 @@
-import { useEffect, useMemo } from "react";
-import { useLocation } from "@tanstack/react-router";
+import { useEffect, useMemo } from 'react';
+import { useLocation } from '@tanstack/react-router';
 
 /**
  * This hook is used to listen to route changes and write the history data to the server.
@@ -18,17 +18,14 @@ export const useHistoryListener = (): void => {
   const data = useMemo(() => ({ location }), [location.pathname]);
 
   useEffect(() => {
-    const skipOn = [
-      'userLogs',
-      'errorLogs',
-    ]
+    const skipOn = ['userLogs', 'errorLogs'];
 
-    if (location.pathname !== "default" &&
+    if (
+      location.pathname !== 'default' &&
       !skipOn.find((path: string) => location.pathname.match(path)) &&
-      window.location.hostname !== 'localhost') {
-
+      window.location.hostname !== 'localhost'
+    ) {
       // Meteor.call('userLogInsert', { ...data });
     }
-    
   }, [JSON.stringify(data)]);
 };

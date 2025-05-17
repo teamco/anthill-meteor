@@ -1,5 +1,5 @@
 import { Meteor } from 'meteor/meteor';
-import React, { Dispatch, FC, JSX, SetStateAction } from 'react';
+import { Dispatch, FC, JSX, SetStateAction } from 'react';
 import {
   LogoutOutlined,
   RightSquareTwoTone,

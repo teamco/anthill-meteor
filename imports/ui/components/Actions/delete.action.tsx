@@ -36,9 +36,11 @@ type TDeleteAction = {
  * @param props.showLabel Whether or not the component should show a label
  * @param props.disabled Whether or not the component should be disabled
  * @param props.onDelete The callback function to be called when the deletion is confirmed
- * @returns {JSX.Element} The JSX element of the component
+ * @returns {JSX.Element|null} The JSX element of the component
  */
-export const DeleteAction: React.FC<TDeleteAction> = (props): JSX.Element => {
+export const DeleteAction: React.FC<TDeleteAction> = (
+  props,
+): JSX.Element | null => {
   const intl = useContext(I18nContext);
   const { modalApi } = useContext(NotificationContext);
 

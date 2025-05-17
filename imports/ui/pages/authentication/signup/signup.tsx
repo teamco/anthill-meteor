@@ -1,3 +1,4 @@
+import { Meteor } from 'meteor/meteor';
 import React, { JSX, useContext, useState } from 'react';
 import { Button, Col, Form, Input, Layout, Row, Tooltip } from 'antd';
 import {
@@ -54,8 +55,7 @@ const SignUp: React.FC = (): JSX.Element => {
   const lastNameField = t(intl, 'profile.lastName');
   const passField = t(intl, 'auth.password');
 
-  const [meterText, setMeterText] = useState<string>('');
-  const [meterValue, setMeterValue] = useState<number>(null);
+  const [meterValue, setMeterValue] = useState<number>(0);
 
   useAuthRedirect(TRouterTypes.DASHBOARD);
 
@@ -168,7 +168,6 @@ const SignUp: React.FC = (): JSX.Element => {
             if (changedValues.password) {
               onUpdateMeter({
                 value: changedValues.password,
-                setMeterText,
                 setMeterValue,
               });
               formRef.setFieldsValue({ password_confirm: '' });
@@ -241,11 +240,7 @@ const SignUp: React.FC = (): JSX.Element => {
               </Form.Item>
             </Col>
           </Row>
-          <Strength
-            className={'pStrength'}
-            meterValue={meterValue}
-            meterText={meterText}
-          />
+          <Strength className={'pStrength'} meterValue={meterValue} />
           <Form.Item>
             <Row gutter={[16, 16]} className={'loginBtns'}>
               <Col span={12}>

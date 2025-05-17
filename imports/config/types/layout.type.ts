@@ -14,7 +14,5 @@ export type TLayout = {
 export type TWidgetWithId = Required<Pick<TWidget, '_id'>> & TWidget;
 
 export type TLayoutWidget =
-  | {
-      [key: string]: TWidgetWithId;
-    }
-  | object;
+  | { [key: string]: TWidgetWithId }
+  | { [key: string]: TWidget };

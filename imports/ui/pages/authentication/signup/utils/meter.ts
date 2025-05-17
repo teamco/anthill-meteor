@@ -10,15 +10,17 @@ import zxcvbn from 'zxcvbn';
  * @param {{ e: React.ChangeEvent<HTMLSelectElement>, setMeterValue: (value: string | number) => void, setMeterText: (value: string | number) => void }} props
  * @returns {void}
  */
-export const onUpdateMeter = ({ value, setMeterValue, setMeterText }: { value: string, setMeterValue: (value: number) => void, setMeterText: (value: string) => void }): void => {
+export const onUpdateMeter = ({
+  value,
+  setMeterValue,
+}: {
+  value: string;
+  setMeterValue: (value: number) => void;
+}): void => {
   const result = zxcvbn(value);
 
-  const meterValue = value.length ? result.score : null;
-  const meterText = value.length ? result.score : '';
+  const meterValue = value.length ? result.score : 0;
 
   // Update the password strength meter
   setMeterValue(meterValue);
-
-  // Update the text indicator
-  setMeterText(meterText.toString());
 };

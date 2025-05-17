@@ -6,19 +6,19 @@ import Loader from '/imports/ui/components/Loader/loader.component';
 
 import Page403 from '/imports/ui/pages/403';
 
-import { TAbility } from '/imports/config/types';
+import { EAbilityAction, TAbility } from '/imports/config/types';
 
 import './page.module.less';
 
 type TPageProps = {
-  testId?: string,
-  className?: string,
-  title: string,
-  description?: string,
-  loading?: boolean,
-  ableFor?: TAbility,
-  children?: React.ReactNode
-}
+  testId?: string;
+  className?: string;
+  title: string;
+  description?: string;
+  loading?: boolean;
+  ableFor: TAbility;
+  children?: React.ReactNode;
+};
 
 /**
  * @function Page
@@ -36,17 +36,14 @@ const Page: React.FC<TPageProps> = (props: TPageProps): JSX.Element => {
     testId,
     className,
     loading = false,
-    ableFor: {
-      action = 'read',
-      subject
-    },
+    ableFor: { action = EAbilityAction.READ, subject },
     title,
     description,
-    children
+    children,
   } = props;
 
   return (
-    <div className={classnames('page', className)} data-testid={testId}>      
+    <div className={classnames('page', className)} data-testid={testId}>
       <Can I={action} a={subject}>
         <div>
           <Loader loading={!!loading} />
@@ -58,6 +55,6 @@ const Page: React.FC<TPageProps> = (props: TPageProps): JSX.Element => {
       <Page403 ableFor={props.ableFor} />
     </div>
   );
-}
+};
 
 export default memo(Page);

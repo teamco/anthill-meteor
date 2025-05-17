@@ -19,6 +19,8 @@ import { NotificationContext } from '/imports/ui/context/notification.context';
 import { t, TIntl } from '/imports/utils/i18n.util';
 
 import {
+  TAddPanelFn,
+  TDirection,
   TRouterTypes,
   TSplitter,
   TSplitterItem,
@@ -38,9 +40,6 @@ import { generateId } from '/imports/utils/generator.util';
 
 const DEFAULT_UUID = generateId();
 const DEFAULT_LAYOUT: TSplitterLayout = 'vertical';
-
-type TDirection = 'up' | 'down' | 'left' | 'right';
-type TAddPanelFn = (direction: TDirection, uuid: string) => void;
 
 /**
  * A component that renders a Splitter component that can be edited by adding new panels.
@@ -77,7 +76,7 @@ const EnvironmentPreview: React.FC = (): JSX.Element => {
     [],
   );
 
-  const [activePanel, setActivePanel] = useState<string>(null);
+  const [activePanel, setActivePanel] = useState<string | null>(null);
   const [splitter, setSplitter] = useState<TSplitter>(initialSplitter);
 
   const lastResizeRef = useRef<number>(0);
@@ -92,10 +91,10 @@ const EnvironmentPreview: React.FC = (): JSX.Element => {
   const handleDelete = (): void => {
     //if (splitter.items.length === 1) return;
 
-    const updatedSplitter = deletePanel(splitter, activePanel);
+    const updatedSplitter = deletePanel(splitter, activePanel as string);
     const cleaned = cleanPanel(updatedSplitter);
 
-    if (cleaned.items.length) {
+    if (cleaned.items?.length) {
       setSplitter(cleaned);
     }
   };
@@ -180,32 +179,44 @@ const EnvironmentPreview: React.FC = (): JSX.Element => {
    * @returns {JSX.Element} The rendered Splitter.Panel component.
    */
   const renderPanel = useCallback(
-    (node: TSplitter): JSX.Element => (
-      <Splitter.Panel
-        key={node.uuid}
-        defaultSize={node?.size}
-        className={classnames('panel', {
-          ['pActive']: node.uuid === activePanel,
-        })}
-      >
-        <div className={'pEdit'} onClick={() => setActivePanel(node.uuid)}>
-          {node.uuid}
-          <br />
-          <span style={{ color: 'red' }}>{node.parentId}</span>
-          {node.size && (
-            <div>
-              <span style={{ color: 'blue' }}>Size: {node.size}</span>
-            </div>
-          )}
-        </div>
-        <Button
-          className={'pMgmt'}
-          type={'text'}
-          icon={<SettingTwoTone />}
-          onClick={handleSplitterSetting}
-        />
-      </Splitter.Panel>
-    ),
+    (node: TSplitter): JSX.Element => {
+      if (!node?.uuid) {
+        throw new Error(
+          'Invalid node provided to renderPanel',
+          node as Partial<ErrorOptions>,
+        );
+      }
+
+      return (
+        <Splitter.Panel
+          key={node.uuid}
+          defaultSize={node?.size}
+          className={classnames('panel', {
+            ['pActive']: node.uuid === activePanel,
+          })}
+        >
+          <div
+            className={'pEdit'}
+            onClick={() => setActivePanel(node?.uuid as string)}
+          >
+            {node.uuid}
+            <br />
+            <div style={{ color: 'red' }}>{node.parentId}</div>
+            {node.size && (
+              <div>
+                <div style={{ color: 'blue' }}>Size: {node.size}</div>
+              </div>
+            )}
+          </div>
+          <Button
+            className={'pMgmt'}
+            type={'text'}
+            icon={<SettingTwoTone />}
+            onClick={handleSplitterSetting}
+          />
+        </Splitter.Panel>
+      );
+    },
     [activePanel],
   );
 
@@ -217,7 +228,7 @@ const EnvironmentPreview: React.FC = (): JSX.Element => {
         <>
           <ArrowButtons
             className={'pBtn'}
-            panelId={activePanel}
+            panelId={activePanel as string}
             onClick={addPanel}
           />
           <Button onClick={handleDelete}>del</Button>
@@ -272,7 +283,7 @@ const EnvironmentPreview: React.FC = (): JSX.Element => {
         // Find and update the node
         const nodeFound = findAndUpdateNodeByItems(
           updatedSplitter,
-          node.items,
+          node.items as TSplitterItem[],
           sizes,
         );
 
@@ -282,8 +293,6 @@ const EnvironmentPreview: React.FC = (): JSX.Element => {
 
         return updatedSplitter;
       });
-
-
     },
     [splitter],
   );
@@ -305,13 +314,13 @@ const EnvironmentPreview: React.FC = (): JSX.Element => {
 
     if (node?.items) {
       const children = node.items.map((child: TSplitter) =>
-        renderer(child, node.layout),
+        renderer(child, node.layout as TSplitterLayout),
       );
 
       _splitter = (
         <Splitter
           lazy
-          layout={node.layout}
+          layout={node.layout as TSplitterLayout}
           onResizeEnd={(sizes) => {
             handleSizeChange(node, sizes);
           }}
@@ -331,7 +340,7 @@ const EnvironmentPreview: React.FC = (): JSX.Element => {
 
   return (
     <div className="ePreview" key={'preview'}>
-      {renderer(splitter, null)}
+      {renderer(splitter, undefined)}
     </div>
   );
 };

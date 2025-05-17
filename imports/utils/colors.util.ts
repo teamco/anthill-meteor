@@ -19,6 +19,6 @@ export const COLORS = {
     success: 'success',
     error: 'error',
     warning: 'warning',
-    default: 'default'
-  }
+    default: 'default',
+  },
 };

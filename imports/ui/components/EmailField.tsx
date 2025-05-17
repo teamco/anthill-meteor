@@ -4,7 +4,11 @@ import { Form, FormItemProps, Input } from 'antd';
 import { useIntl } from 'react-intl';
 
 import { t } from '/imports/utils/i18n.util';
-import { fieldName, placeholderField, requiredField } from '/imports/utils/form.util';
+import {
+  fieldName,
+  placeholderField,
+  requiredField,
+} from '/imports/utils/form.util';
 
 interface IEmailFieldProps extends FormItemProps {
   ns?: string;
@@ -45,7 +49,7 @@ export const EmailField: React.FC<IEmailFieldProps> = (props): JSX.Element => {
     size = 'middle',
     autoComplete = 'off',
     prefix = <MailTwoTone />,
-    suffix = null
+    suffix = null,
   } = props;
 
   const emailMsg = t(intl, 'form.email');
@@ -53,13 +57,13 @@ export const EmailField: React.FC<IEmailFieldProps> = (props): JSX.Element => {
   const emailProps: FormItemProps = {
     label: emailMsg,
     className,
-    name: fieldName(ns, name), 
+    name: fieldName(ns, name),
     extra: t(intl, 'auth.emailHelper'),
     rules: [
       { type: 'email', message: t(intl, 'auth.emailNotValid') },
-      requiredField(intl, emailMsg, required)
-    ]
-  }
+      requiredField(intl, emailMsg, required),
+    ],
+  };
 
   return (
     <Form.Item {...emailProps}>

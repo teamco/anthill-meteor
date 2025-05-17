@@ -1,9 +1,9 @@
-import _ from "lodash";
-import { FilterValue } from "antd/es/table/interface";
+import _ from 'lodash';
+import { FilterValue } from 'antd/es/table/interface';
 
-import { Sorter } from "./sorter.util";
+import { Sorter } from './sorter.util';
 
-import { TFilters } from "/imports/ui/hooks/table.hook";
+import { TFilters } from '/imports/ui/hooks/table.hook';
 
 /**
  * This function takes a data array and a nested string or array of strings.
@@ -34,14 +34,13 @@ type TColumn = {
   filterBy?: {
     nested?: string | string[];
     resolver?: (value: any) => any;
-  }
-}
+  };
+};
 
 type TGetFilters = {
-  text: string; 
-  value: string
-}
-
+  text: string;
+  value: string;
+};
 
 /**
  * Get filters for a given column.
@@ -50,12 +49,9 @@ type TGetFilters = {
  * @returns An array of filters. Each filter is an object with `text` and `value` properties.
  */
 export const getFilters = (column: TColumn, dataSource = []): TGetFilters[] => {
-  const {
-    dataIndex,
-    filterBy = {}
-  } = column;
+  const { dataIndex, filterBy = {} } = column;
 
-  const _filter = dataSource?.map(data => {
+  const _filter = dataSource?.map((data) => {
     const { nested, resolver } = filterBy;
     const value = getValue(data, nested ?? dataIndex);
 
@@ -64,8 +60,11 @@ export const getFilters = (column: TColumn, dataSource = []): TGetFilters[] => {
     return { text: resolved, value: resolved };
   });
 
-  const _sorted = [...(_filter.sort(Sorter.NESTED(['text'])))];
-  const _map: readonly [unknown, unknown][] = _sorted.map(item => [item['value'], item]);
+  const _sorted = [..._filter.sort(Sorter.NESTED(['text']))];
+  const _map: readonly [unknown, unknown][] = _sorted.map((item) => [
+    item['value'],
+    item,
+  ]);
   const values: MapIterator<unknown> = new Map(_map).values();
 
   return Array.from(values) as TGetFilters[];
@@ -82,14 +81,19 @@ export const getFilters = (column: TColumn, dataSource = []): TGetFilters[] => {
  *   - `filteredValue`: The current filtered values for the column, or null if not filtered.
  *   - `onFilter`: A function that determines if a record should be included based on the filter value.
  */
-export const columnFilter = (filteredInfo: TFilters, dataSource = [], key: string): { 
-  filters: TGetFilters[], 
-  filteredValue: FilterValue, 
-  onFilter: (value: string, record: Record<string, any>) => boolean 
+export const columnFilter = (
+  filteredInfo: TFilters,
+  dataSource = [],
+  key: string,
+): {
+  filters: TGetFilters[];
+  filteredValue: FilterValue;
+  onFilter: (value: string, record: Record<string, any>) => boolean;
 } => {
   return {
     filters: getFilters({ dataIndex: key }, dataSource) as TGetFilters[],
     filteredValue: filteredInfo?.[key] || null,
-    onFilter: (value: string, record: Record<string, any>) => record[key].includes(value as string),
-  }
+    onFilter: (value: string, record: Record<string, any>) =>
+      record[key].includes(value as string),
+  };
 };

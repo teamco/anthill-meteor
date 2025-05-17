@@ -1,24 +1,29 @@
+import React from 'react';
 import { FormInstance, FormProps, Rule } from 'antd/es/form';
 
 import { t, TIntl } from '/imports/utils/i18n.util';
 
 export type TFieldRule = {
-  required?: boolean,
-  message?: string
+  required?: boolean;
+  message?: string;
 } & Rule;
 
 /**
  * Generates a validation rule for a required field.
  *
  * @param {TIntl} intl - The internationalization object used for message translation.
- * @param {any} field - The field name to be included in the validation message.
+ * @param {string} field - The field name to be included in the validation message.
  * @param {boolean} [required=true] - Indicates whether the field is required.
  * @returns {TFieldRule} The validation rule object.
  */
-export const requiredField = (intl: TIntl, field: any, required: boolean = true): TFieldRule => {
+export const requiredField = (
+  intl: TIntl,
+  field: string,
+  required: boolean = true,
+): TFieldRule => {
   const rule: TFieldRule = {
     required,
-    message: t(intl, 'event.field.required', { field })
+    message: t(intl, 'event.field.required', { field }),
   };
 
   return rule;
@@ -26,7 +31,7 @@ export const requiredField = (intl: TIntl, field: any, required: boolean = true)
 
 export const urlFieldValidation = [
   { type: 'url', warningOnly: true },
-  { type: 'string', min: 6 }
+  { type: 'string', min: 6 },
 ];
 
 /**
@@ -37,10 +42,14 @@ export const urlFieldValidation = [
  * @param {string} msg - The message to use in the placeholder string.
  * @returns {string} The placeholder string.
  */
-export const placeholderField = (intl: TIntl, label: string, msg: string = 'actions.select'): string => {
+export const placeholderField = (
+  intl: TIntl,
+  label: string,
+  msg: string = 'actions.select',
+): string => {
   return t(intl, 'form.placeholder', {
     field: label,
-    type: t(intl, msg)
+    type: t(intl, msg),
   });
 };
 
@@ -62,7 +71,9 @@ export const placeholderField = (intl: TIntl, label: string, msg: string = 'acti
  *   outOfDate: false
  * }
  */
-export const onFinishFailed: FormProps<any>['onFinishFailed'] = (errorInfo: object): void => {
+export const onFinishFailed: FormProps<any>['onFinishFailed'] = (
+  errorInfo: object,
+): void => {
   console.warn(errorInfo);
 };
 
@@ -73,13 +84,19 @@ export const onFinishFailed: FormProps<any>['onFinishFailed'] = (errorInfo: obje
  * @example
  * <button onClick={onValidate}>Save</button>
  */
-export const onValidate = (e: React.MouseEvent<HTMLElement, MouseEvent>, form: FormInstance<any>): void => {
+export const onValidate = (
+  e: React.MouseEvent<HTMLElement, MouseEvent>,
+  form: FormInstance<unknown>,
+): void => {
   e.preventDefault();
-  
-  form.validateFields().then(() => {
-    form.submit();
-  }).catch(onFinishFailed);
-}
+
+  form
+    .validateFields()
+    .then(() => {
+      form.submit();
+    })
+    .catch(onFinishFailed);
+};
 
 /**
  * Constructs an array of field names by concatenating namespace(s) and name(s).
@@ -90,9 +107,12 @@ export const onValidate = (e: React.MouseEvent<HTMLElement, MouseEvent>, form: F
  * If namespaces are provided, they will be prepended to each name.
  * If no namespace is provided, only names are returned.
  */
-export const fieldName = (namespace: string | string[], names: string | string[]): string[] => {
+export const fieldName = (
+  namespace: string | string[],
+  names: string | string[],
+): string[] => {
   const fields = Array.isArray(names) ? names : [names];
   const ns = Array.isArray(namespace) ? namespace : [namespace];
-  
+
   return (ns ? [...ns, ...fields] : [...fields]).filter(Boolean);
 };

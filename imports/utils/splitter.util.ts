@@ -83,6 +83,10 @@ export const deletePanel = (
  * @returns {TSplitter} - The updated Splitter component.
  */
 export const cleanPanel = (splitter: TSplitter): TSplitter => {
+  if (!splitter.items) {
+    throw new Error('Panel error: splitter must be a valid Splitter');
+  }
+
   const updatedItems = splitter.items
     .map((item: TSplitterItem) => {
       if (typeof item === 'object' && 'items' in item) {
@@ -112,15 +116,18 @@ export const cleanPanel = (splitter: TSplitter): TSplitter => {
  *
  * @param {TSplitter} splitter - The Splitter component to search in.
  * @param {string} targetId - The uuid of the panel to replace.
- * @param {(item?: TSplitterItem) => TSplitterItem | null} callback - A callback function that takes the found panel or undefined
+ * @param {(item?: TSplitterItem) => TSplitterItem} callback - A callback function that takes the found panel or undefined
  * as argument and returns the new panel or null if the panel should be deleted.
- * @returns {(TSplitterItem | null)[]} - The updated Splitter component.
+ * @returns {TSplitterItem[]} - The updated Splitter component.
  */
 export const findPanel = (
   splitter: TSplitter,
   targetId: string,
-  callback: (item?: TSplitterItem) => TSplitterItem | null,
-): (TSplitterItem | null)[] => {
+  callback: (item?: TSplitterItem) => TSplitterItem,
+): TSplitterItem[] => {
+  if (!splitter.items) {
+    throw new Error('Panel error: splitter must be a valid Splitter');
+  }
   return splitter.items.map((item: TSplitterItem) => {
     if (typeof item.uuid === 'string' && item.uuid === targetId) {
       return callback(item);
@@ -154,13 +161,15 @@ export const findAndUpdateNodeByItems = (
   // Check if this node has items that match the ones we're looking for
   if (currentNode.items && currentNode.items.length === itemsToMatch.length) {
     // Check if the items match by comparing UUIDs
-    const itemsMatch = currentNode.items.every((item, index) => {
-      return itemsToMatch[index] && item.uuid === itemsToMatch[index].uuid;
-    });
+    const itemsMatch = currentNode.items.every(
+      (item: TSplitterItem, index: number) => {
+        return itemsToMatch[index] && item.uuid === itemsToMatch[index].uuid;
+      },
+    );
 
     if (itemsMatch) {
       // Update the sizes of the items
-      currentNode.items.forEach((item, index) => {
+      currentNode.items.forEach((item: TSplitterItem, index: number) => {
         if (index < newSizes.length) {
           item.size = newSizes[index];
         }

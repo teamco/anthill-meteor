@@ -3,8 +3,8 @@ import { GetProp, TableProps } from 'antd/lib';
 
 export interface ITableParams {
   pagination?: TablePaginationConfig;
-  sortField?: SorterResult<any>['field'];
-  sortOrder?: SorterResult<any>['order'];
+  sortField?: SorterResult<unknown>['field'];
+  sortOrder?: SorterResult<unknown>['order'];
   filters?: Parameters<GetProp<TableProps, 'onChange'>>[1];
 }
 
@@ -22,7 +22,7 @@ export type TTablePaginationConfig = Exclude<
   boolean
 >;
 
-export type TSplitterLayout = 'horizontal' | 'vertical';
+export type TSplitterLayout = 'horizontal' | 'vertical' | undefined;
 export type TSplitterItem = {
   uuid: string;
   parentId?: string;
@@ -35,3 +35,6 @@ export type TSplitter = {
   layout?: TSplitterLayout;
   size?: number | string;
 };
+
+export type TDirection = 'up' | 'down' | 'left' | 'right';
+export type TAddPanelFn = (direction: TDirection, uuid: string) => void;

@@ -1,4 +1,4 @@
-import React, { FC, JSX } from 'react';
+import { FC, JSX } from 'react';
 import {
   CaretUpOutlined,
   CaretDownOutlined,
@@ -9,11 +9,13 @@ import { Button } from 'antd';
 import classnames from 'classnames';
 import { ButtonProps } from 'antd/lib/button';
 
+import { TAddPanelFn, TDirection } from '/imports/config/types';
+
 import './buttons.module.less';
 
 type TProps = {
   className?: string;
-  onClick: (direction: string, panelId: string) => void;
+  onClick: TAddPanelFn;
   panelId: string;
 };
 
@@ -44,7 +46,9 @@ export const ArrowButtons: FC<TProps> = (props): JSX.Element => {
    * It calls the onClick handler with the direction and the panelId as arguments.
    * @param direction The direction of the new panel
    */
-  const handleAdd: (direction: string) => void = (direction): void => {
+  const handleAdd: (direction: TDirection) => void = (
+    direction: TDirection,
+  ): void => {
     onClick(direction, panelId);
   };
 

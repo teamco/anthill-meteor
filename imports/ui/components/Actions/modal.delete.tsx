@@ -1,10 +1,15 @@
-import React from 'react';
 import { Modal, Button } from 'antd';
 
-import { t } from '/imports/utils/i18n.util';
+import { t, TIntl } from '/imports/utils/i18n.util';
 import { stub } from '/imports/utils/functions.util';
 
 import { TDeleteWarning } from '/imports/config/types/notification.type';
+import { HookAPI } from 'antd/es/modal/useModal';
+
+type TConfig = {
+  intl: TIntl;
+  modalApi: HookAPI;
+};
 
 /**
  * Displays a modal warning the user about deleting an entity.
@@ -16,10 +21,9 @@ import { TDeleteWarning } from '/imports/config/types/notification.type';
  * @param {function} props.onApprove The function to call when the user confirms the deletion.
  */
 export const deleteWarning = (props: TDeleteWarning): void => {
-  const {
-    config: { intl, modalApi },
-    entity = '',
-  } = props;
+  const { config, entity = '' } = props;
+
+  const { modalApi, intl } = config as TConfig;
 
   const {
     title = t(intl, 'message.delete.warning', { type: entity }),

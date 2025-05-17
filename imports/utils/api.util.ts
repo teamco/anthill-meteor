@@ -1,10 +1,7 @@
 import { fetch, Headers } from 'meteor/fetch';
 
 import { catchErrorMsg } from './message.util';
-import {
-  TMessageConfig,
-  TNotificationError,
-} from '../config/types/notification.type';
+import { TMessageConfig } from '../config/types/notification.type';
 
 type TMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
 type TMode = 'cors' | 'same-origin' | 'no-cors';
@@ -41,7 +38,7 @@ type TFetchOptions = {
  *
  * @link https://docs.meteor.com/packages/fetch
  * @param {string} url - The URL to fetch data from.
- * @returns {Promise<Response>} A promise that resolves to the response of the fetch request.
+ * @returns {Promise<Response>|void} A promise that resolves to the response of the fetch request.
  *
  * The request is configured to use CORS, no-cache, same-origin credentials, and includes
  * JSON content headers. Redirects are followed and the referrer policy is set to no-referrer.
@@ -50,7 +47,7 @@ type TFetchOptions = {
 export const getData = (
   url: string,
   config: TMessageConfig,
-): Promise<Response> => {
+): Promise<Response> | void => {
   const options: TFetchOptions = {
     method: 'GET',
     mode: 'cors',
@@ -65,7 +62,7 @@ export const getData = (
 
   try {
     return fetch(url, options);
-  } catch (err: TNotificationError | any) {
+  } catch (err) {
     catchErrorMsg(config.notificationApi, err);
   }
 };

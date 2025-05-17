@@ -37,15 +37,29 @@ import { TIntl } from '/imports/utils/i18n.util';
  */
 export default class Widget extends CommonUtils implements TWidget {
   _id?: string;
-  name: string;
-  description: string;
-  thumbnail: string;
-  dimensions: { width: number; height: number };
-  content: TWidgetContent;
-  category: string;
-  resource: string;
-  tags: TWidgetTags;
-  config: TWidgetConfig;
+  name: string = 'Widget';
+  description: string = 'Widget description';
+  thumbnail: string = 'https://example.com/thumbnail.png';
+  dimensions: { width: number; height: number } = {
+    width: 300,
+    height: 200,
+  };
+  content: TWidgetContent = {
+    type: 'Embedded',
+    value: '',
+    params: {},
+  };
+  category: string = 'General';
+  resource: string = 'Resource';
+  tags: TWidgetTags = [];
+  config: TWidgetConfig = {
+    isDraggable: true,
+    isResizable: true,
+    isRemovable: true,
+    isEditable: true,
+    isMovable: true,
+    isClonable: true,
+  };
   metadata: IMetadata = {
     createdAt: new Date(),
     updatedAt: new Date(),

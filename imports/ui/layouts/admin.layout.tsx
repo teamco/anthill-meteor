@@ -1,7 +1,8 @@
-import React, { FC, JSX, useEffect, useState } from 'react';
+import { FC, JSX, useEffect, useState } from 'react';
 import { ConfigProvider, Layout } from 'antd';
 import { useIntl } from 'react-intl';
 import { useTracker } from 'meteor/react-meteor-data';
+import { Meteor } from 'meteor/meteor';
 
 import { defineAbilityFor } from '/imports/ui/services/ability.service';
 
@@ -39,7 +40,7 @@ const AdminLayout: FC<TProps> = ({ children }): JSX.Element => {
   useHistoryListener();
 
   useEffect(() => {
-    user?._id && setAbility(defineAbilityFor(user));
+    setAbility(defineAbilityFor(user));
   }, [user?._id]);
 
   const drawerProps = {

@@ -1,4 +1,4 @@
-import { t, TIntl } from "/imports/utils/i18n.util"
+import { t, TIntl } from '/imports/utils/i18n.util';
 
 export const actionField = (intl: TIntl, width: number = 100) => {
   return {
@@ -6,6 +6,6 @@ export const actionField = (intl: TIntl, width: number = 100) => {
     key: 'operation',
     fixed: 'right',
     align: 'center',
-    width
-  }
-}
+    width,
+  };
+};

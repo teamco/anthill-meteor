@@ -7,6 +7,8 @@ import {
   IMetadata,
   TStatus,
   TWidget,
+  TTemplate,
+  TLayoutWidget,
 } from '/imports/config/types';
 
 import CommonUtils from '/imports/utils/common.util';
@@ -37,9 +39,17 @@ import { TIntl } from '/imports/utils/i18n.util';
  * @method updateLayout - Updates the environment with a specified layout.
  */
 export default class Environment extends CommonUtils implements TEnvironment {
-  name: string;
+  name: string = 'Environment';
   description?: string;
-  layout: TLayout;
+  layout: TLayout = {
+    addWidget: () => {},
+    removeWidget: () => {},
+    template: {} as TTemplate,
+    current: false,
+    version: 1,
+    metadata: {} as IMetadata,
+    widgets: {} as TLayoutWidget,
+  };
   status: Pick<TStatus, 'isDraft' | 'isActive'> = {
     isDraft: false,
     isActive: false,

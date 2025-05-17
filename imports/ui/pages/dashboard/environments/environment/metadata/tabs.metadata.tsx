@@ -22,7 +22,7 @@ import { TEnvironment, TEnvironmentEdit } from '/imports/config/types';
 import { WidgetsCollection } from '/imports/collections/widgets.collection';
 import { LayoutsCollection } from '/imports/collections/layouts.collection';
 
-import { AbilityContext } from '/imports/ui/context/authentication.context';
+import { AbilityContext } from '../../../../../context/authentication.context';
 import { I18nContext } from '/imports/ui/context/i18n.context';
 
 import { DescriptionMetadata } from './description.metadata';

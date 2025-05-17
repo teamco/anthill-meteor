@@ -1,7 +1,6 @@
-import { generateId } from "./generator.util";
+import { generateId } from './generator.util';
 
 export default class CommonUtils {
-  
   /**
    * Check if the current environment is development.
    * @returns {boolean} If the current environment is development.

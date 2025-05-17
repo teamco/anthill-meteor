@@ -1,5 +1,5 @@
-import React, { JSX } from "react";
-import { Card, CardProps } from "antd";
+import React, { JSX } from 'react';
+import { Card, CardProps } from 'antd';
 import classnames from 'classnames';
 
 import './tile.module.less';
@@ -26,16 +26,18 @@ export const TileComponent: React.FC<TTileProps> = (props): JSX.Element => {
     isLoading = false,
     bordered = 'outlined',
     hoverable = true,
-    onClick
+    onClick,
   } = props;
 
   return (
-    <Card actions={actions}
-      onClick={onClick} 
+    <Card
+      actions={actions}
+      onClick={onClick}
       loading={isLoading}
       hoverable={hoverable}
       variant={bordered}
-      className={classnames('tile', className)}>
+      className={classnames('tile', className)}
+    >
       <Card.Meta title={title} description={description} />
     </Card>
   );
