@@ -228,7 +228,8 @@ export const useMenu = (
   const { pathname } = useLocation();
 
   useEffect(() => {
-    isOpen && setMItems(menuItems(intl, ability, navigate, setDrawerPanelOpen));
+    if (isOpen)
+      setMItems(menuItems(intl, ability, navigate, setDrawerPanelOpen));
   }, [intl, ability, isOpen]);
 
   const levelKeys = getLevelKeys(mItems as LevelKeysProps[]);
@@ -252,7 +253,7 @@ export const useMenu = (
   const onOpenChange: MenuProps['onOpenChange'] = useCallback(
     (openKeys: string[]): void => {
       const currentOpenKey = openKeys.find(
-        (key) => openedMenuKeys.indexOf(key) === -1,
+        (key: string) => openedMenuKeys.indexOf(key) === -1,
       );
 
       // Open

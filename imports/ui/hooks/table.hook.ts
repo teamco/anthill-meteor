@@ -7,13 +7,13 @@ import { Mongo } from 'meteor/mongo';
 
 import { NotificationContext } from '/imports/ui/context/notification.context';
 
-import { ITableParams, TPaginateProps } from '/imports/config/types';
+import { ESort, ITableParams, TPaginateProps } from '/imports/config/types';
 import { TMessageConfig } from '/imports/config/types/notification.type';
 
 type TOnChange = NonNullable<TableProps<any>['onChange']>;
 export type TFilters = Parameters<TOnChange>[1];
 export type TSorts = {
-  order?: 'ascend' | 'descend' | null;
+  order?: ESort | null;
   columnKey?: string;
 } & Parameters<TOnChange>[2];
 
@@ -50,7 +50,6 @@ export const useTable = (
     config: Pick<TMessageConfig, 'notificationApi'>,
   ) => void,
   Collection: Mongo.Collection<Document, Document>,
-  args?: any,
   defaults?: TDefaults,
 ): TUseTable => {
   const { notificationApi } = useContext(NotificationContext);
@@ -93,7 +92,7 @@ export const useTable = (
   const handleRefresh = (): void => {
     getter(
       method,
-      setEntities,
+      setEntities as (entities: any[]) => void,
       {
         current: tableParams.pagination?.current,
         pageSize: tableParams.pagination?.pageSize,

@@ -12,7 +12,7 @@ import { t } from '/imports/utils/i18n.util';
 import { deleteWarning } from './modal.delete';
 
 type TDeleteAction = {
-  entityId: string;
+  entityId: string | undefined;
   modalMsg: string;
   type?: 'primary' | 'link' | 'text' | 'default' | 'dashed';
   isLoading?: boolean;
@@ -53,6 +53,11 @@ export const DeleteAction: React.FC<TDeleteAction> = (
     disabled = false,
     onDelete,
   } = props;
+
+  if (!entityId) {
+    console.error('DeleteAction: entityId is required');
+    return null;
+  }
 
   return onDelete ? (
     <Can I={'delete'} a={entityId}>

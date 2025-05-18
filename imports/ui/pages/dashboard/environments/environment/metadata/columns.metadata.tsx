@@ -1,20 +1,20 @@
-import React, { JSX } from "react";
-import { TableProps } from "antd/es/table";
-import { Tag } from "antd";
+import { JSX } from 'react';
+import { TableProps } from 'antd/es/table';
+import { Tag } from 'antd';
 
-import { IDataType } from "../../environments.page";
+import { IDataType } from '../../environments.page';
 
-import { IMetadata, TColumns, TWidget } from "/imports/config/types";
+import { IMetadata, TColumns, TWidget } from '/imports/config/types';
 
-import { indexColumn } from "/imports/utils/table/table.util";
-import { tsToLocaleDateTime } from "/imports/utils/timestamp.util";
-import { columnSorter } from "/imports/utils/table/sorter.util";
-import { TSorts } from "/imports/ui/hooks/table.hook";
-import { t, TIntl } from "/imports/utils/i18n.util";
-import { actionField } from "/imports/utils/table/action.util";
+import { indexColumn } from '/imports/utils/table/table.util';
+import { tsToLocaleDateTime } from '/imports/utils/timestamp.util';
+import { columnSorter } from '/imports/utils/table/sorter.util';
+import { TSorts } from '/imports/ui/hooks/table.hook';
+import { t, TIntl } from '/imports/utils/i18n.util';
+import { actionField } from '/imports/utils/table/action.util';
 
-import { DeleteAction } from "/imports/ui/components/Actions/delete.action";
-import { VersionAction } from "/imports/ui/components/Actions/version.action";
+import { DeleteAction } from '/imports/ui/components/Actions/delete.action';
+import { VersionAction } from '/imports/ui/components/Actions/version.action';
 
 type TArgs = {
   intl: TIntl;
@@ -28,7 +28,11 @@ type TArgs = {
  * @param {{ intl: TIntl, sortedInfo: TSorts, onDelete: (id: string) => void }} props - The props object
  * @returns {TableProps<IDataType>['columns']} A column configuration for the metadata table
  */
-export const metadataColumns = ({ intl, sortedInfo, onDelete }: TArgs): TableProps<IDataType>['columns'] => {
+export const metadataColumns = ({
+  intl,
+  sortedInfo,
+  onDelete,
+}: TArgs): TableProps<IDataType>['columns'] => {
   const columns: TColumns<IDataType> = [
     indexColumn,
     {
@@ -43,7 +47,7 @@ export const metadataColumns = ({ intl, sortedInfo, onDelete }: TArgs): TablePro
       title: t(intl, 'environment.list.layout.screenshot'),
       dataIndex: 'screenshot',
       key: 'screenshot',
-      align: 'center'
+      align: 'center',
     },
     {
       title: t(intl, 'environment.list.widgets'),
@@ -56,8 +60,8 @@ export const metadataColumns = ({ intl, sortedInfo, onDelete }: TArgs): TablePro
               <Tag key={idx}>{widgets[widget].name}</Tag>
             ))}
           </div>
-        )
-      }
+        );
+      },
     },
     {
       title: t(intl, 'message.info.updatedAt'),
@@ -66,12 +70,8 @@ export const metadataColumns = ({ intl, sortedInfo, onDelete }: TArgs): TablePro
       key: 'metadata.updatedAt',
       ...columnSorter(sortedInfo, 'metadata.createdAt', 'metadata'),
       render: ({ updatedAt }: IMetadata): JSX.Element => {
-        return (
-          <div>
-            {tsToLocaleDateTime(updatedAt.toString())}
-          </div>
-        )
-      }
+        return <div>{tsToLocaleDateTime(updatedAt.toString())}</div>;
+      },
     },
     {
       ...actionField(intl),
@@ -80,16 +80,18 @@ export const metadataColumns = ({ intl, sortedInfo, onDelete }: TArgs): TablePro
           <VersionAction
             type={'text'}
             version={record.version}
-            entityId={record._id} />
+            entityId={record._id}
+          />
           <DeleteAction
             onDelete={onDelete}
             type={'text'}
             entityId={record._id}
-            modalMsg={t(intl, 'environment.layout')} />
+            modalMsg={t(intl, 'environment.layout')}
+          />
         </div>
       ),
-    }
+    },
   ];
 
   return columns;
-}
+};

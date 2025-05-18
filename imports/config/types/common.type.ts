@@ -30,7 +30,7 @@ export enum EStatus {
 
 export type TTimestamp = {
   createdAt: Date;
-  updatedAt: Date;
+  updatedAt?: Date;
 };
 
 export interface IMetadata extends TTimestamp {
@@ -41,3 +41,14 @@ export interface IMetadata extends TTimestamp {
 }
 
 export type TTemplate = [{ items: [TSplitter[]] }] | [];
+
+export enum ESort {
+  ASC = 'ascend',
+  DESC = 'descend',
+}
+
+export type ToRequired<T> = {
+  [P in keyof Required<T>]: Pick<T, P> extends Required<Pick<T, P>>
+    ? T[P]
+    : T[P] | undefined;
+};

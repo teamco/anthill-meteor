@@ -1,4 +1,7 @@
-import { TPaginateProps } from '/imports/config/types';
+import { Meteor } from 'meteor/meteor';
+import { Mongo } from 'meteor/mongo';
+
+import { ESort, TPaginateProps } from '/imports/config/types';
 
 const DEFAULT_SORT: TPaginateProps['sort'] = [
   ['metadata', 'updatedAt'],
@@ -15,7 +18,7 @@ type TProps = {
   Collection: Mongo.Collection<Document, Document>;
   args: TPaginateProps;
   log: TLog;
-  owner?: string;
+  owner?: string | null;
 };
 
 /**
@@ -34,7 +37,7 @@ export const paginate = ({
   log,
   owner = Meteor.userId(),
 }: TProps): any[] => {
-  let [field, order] = args.sort;
+  let [field, order] = args.sort ?? DEFAULT_SORT;
 
   if (!field || field === 'metadata') field = DEFAULT_SORT[0];
   if (!order) order = DEFAULT_SORT[1];
@@ -48,7 +51,7 @@ export const paginate = ({
         limit: args.pageSize,
         sort: [
           typeof field === 'string' ? field : field.join('.'),
-          order === 'ascend' ? 1 : -1,
+          order === ESort.ASC ? 1 : -1,
         ],
       },
     },

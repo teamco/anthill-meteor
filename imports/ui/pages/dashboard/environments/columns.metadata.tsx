@@ -1,24 +1,24 @@
-import React, { JSX } from "react";
-import { TableProps } from "antd/es/table";
-import { Tag, Tooltip } from "antd";
-import { QuestionCircleTwoTone } from "@ant-design/icons";
+import { JSX } from 'react';
+import { ColumnType, TableProps } from 'antd/es/table';
+import { Tag, Tooltip } from 'antd';
+import { QuestionCircleTwoTone } from '@ant-design/icons';
 
-import { IDataType } from "./environments.page";
+import { IDataType } from './environments.page';
 
-import { IMetadata, TColumns, TLayout, TStatus } from "/imports/config/types";
+import { IMetadata, TColumns, TLayout, TStatus } from '/imports/config/types';
 
-import { StatusComponent } from "/imports/ui/components/Status/status.component";
+import { StatusComponent } from '/imports/ui/components/Status/status.component';
 
-import { indexColumn } from "/imports/utils/table/table.util";
-import { tsToLocaleDateTime } from "/imports/utils/timestamp.util";
-import { columnSorter } from "/imports/utils/table/sorter.util";
-import { TFilters, TSorts } from "/imports/ui/hooks/table.hook";
-import { columnFilter } from "/imports/utils/table/filter.util";
-import { t, TIntl } from "/imports/utils/i18n.util";
-import { actionField } from "/imports/utils/table/action.util";
+import { indexColumn } from '/imports/utils/table/table.util';
+import { tsToLocaleDateTime } from '/imports/utils/timestamp.util';
+import { columnSorter } from '/imports/utils/table/sorter.util';
+import { TFilters, TSorts } from '/imports/ui/hooks/table.hook';
+import { columnFilter, TColumnFilter } from '/imports/utils/table/filter.util';
+import { t, TIntl } from '/imports/utils/i18n.util';
+import { actionField } from '/imports/utils/table/action.util';
 
-import { DeleteAction } from "/imports/ui/components/Actions/delete.action";
-import { EditAction } from "/imports/ui/components/Actions/edit.action";
+import { DeleteAction } from '/imports/ui/components/Actions/delete.action';
+import { EditAction } from '/imports/ui/components/Actions/edit.action';
 
 /**
  * Generates a column configuration for the environments table.
@@ -37,19 +37,27 @@ export const metadataColumns = (
   sortedInfo: TSorts,
   onDelete: (id: string) => void,
   onEdit: (id: string) => void,
-  entities: IDataType[]
-): TableProps<IDataType>["columns"] => {
+  entities: IDataType[],
+): TableProps<IDataType>['columns'] => {
+  const _columnFilter = columnFilter(
+    filteredInfo,
+    entities,
+    'name',
+  ) as TColumnFilter;
+
+  const _columnSorter = columnSorter(sortedInfo, 'name');
+
   const columns: TColumns<IDataType> = [
     indexColumn,
     {
-      title: t(intl, "environment.list.name"),
-      dataIndex: "name",
-      key: "name",
-      ...columnFilter(filteredInfo, entities, "name"),
-      ...columnSorter(sortedInfo, "name"),
+      title: t(intl, 'environment.list.name'),
+      dataIndex: 'name',
+      key: 'name',
+      // ..._columnFilter,
+      ..._columnSorter,
       render(name: string, record: IDataType): JSX.Element {
         return record?.description ? (
-          <Tooltip title={record?.description}>
+          <Tooltip title={record?.description.toString()}>
             <div className="eIconName">
               <QuestionCircleTwoTone />
               {name}
@@ -61,9 +69,9 @@ export const metadataColumns = (
       },
     },
     {
-      title: t(intl, "environment.list.status"),
-      dataIndex: "status",
-      key: "status",
+      title: t(intl, 'environment.list.status'),
+      dataIndex: 'status',
+      key: 'status',
       width: 100,
       render: (status: TStatus): JSX.Element => {
         return (
@@ -74,9 +82,9 @@ export const metadataColumns = (
       },
     },
     {
-      title: t(intl, "environment.list.widgets"),
-      dataIndex: "layout",
-      key: "layout.widgets",
+      title: t(intl, 'environment.list.widgets'),
+      dataIndex: 'layout',
+      key: 'layout.widgets',
       render(layout: TLayout): JSX.Element {
         return (
           <div>
@@ -88,25 +96,25 @@ export const metadataColumns = (
       },
     },
     {
-      title: t(intl, "message.info.updatedAt"),
+      title: t(intl, 'message.info.updatedAt'),
       width: 200,
-      dataIndex: "metadata",
-      key: "metadata.updatedAt",
-      ...columnSorter(sortedInfo, "metadata.createdAt", "metadata"),
+      dataIndex: 'metadata',
+      key: 'metadata.updatedAt',
+      ...columnSorter(sortedInfo, 'metadata.createdAt', 'metadata'),
       render: ({ updatedAt }: IMetadata): JSX.Element => {
         return <div>{tsToLocaleDateTime(updatedAt.toString())}</div>;
       },
     },
     {
-      ...actionField(intl),
+      ...(actionField(intl) as Partial<ColumnType<IDataType>>),
       render: (record: IDataType) => (
         <div className="eActions">
-          <EditAction onEdit={onEdit} type={"text"} entityId={record._id} />
+          <EditAction onEdit={onEdit} type={'text'} entityId={record._id} />
           <DeleteAction
             onDelete={onDelete}
-            type={"text"}
+            type={'text'}
             entityId={record._id}
-            modalMsg={t(intl, "environment.title")}
+            modalMsg={t(intl, 'environment.title')}
           />
         </div>
       ),

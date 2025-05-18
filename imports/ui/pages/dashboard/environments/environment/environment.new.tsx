@@ -18,7 +18,7 @@ import { stub } from '/imports/utils/functions.util';
 import '../environments.module.less';
 
 type TField = {
-  name?: string;
+  name: string;
   description?: string;
 };
 

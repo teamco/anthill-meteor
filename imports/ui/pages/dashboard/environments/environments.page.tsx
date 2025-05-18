@@ -3,6 +3,7 @@ import React, { JSX, useContext } from 'react';
 import { Button, Table, TableProps } from 'antd';
 import { useSubscribe } from 'meteor/react-meteor-data';
 import { createFileRoute, useNavigate } from '@tanstack/react-router';
+import { MongoAbility } from '@casl/ability';
 
 import { EnvironmentsCollection } from '/imports/collections/environments.collection';
 
@@ -36,6 +37,7 @@ import { getEntities } from '/imports/ui/services/shared.service';
 import { metadataColumns } from './columns.metadata';
 
 import { EnvironmentNew } from './environment/environment.new';
+import { TField } from './environment/environment.edit';
 
 import { TEnvironmentTabs } from './environment/metadata/tabs.metadata';
 
@@ -67,7 +69,7 @@ const EnvironmentsPage: React.FC = (): JSX.Element => {
   const isWidgetsLoading = useSubscribe('widgets');
 
   const intl = useContext(I18nContext);
-  const ability = useContext(AbilityContext);
+  const ability = useContext(AbilityContext) as unknown as MongoAbility;
   const { modalApi, notificationApi, messageApi } =
     useContext(NotificationContext);
 
@@ -149,7 +151,7 @@ const EnvironmentsPage: React.FC = (): JSX.Element => {
     className: 'gridList',
     dataSource: indexable(entities, pagination?.current, pagination?.pageSize),
     loading: isLoading(),
-    rowKey: (record: IDataType) => record._id,
+    rowKey: (record: IDataType) => record._id ?? `env-row-${Math.random()}`,
     onChange: handleTableChange,
     title: () => (
       <div className="gridHeader">
@@ -184,12 +186,16 @@ const EnvironmentsPage: React.FC = (): JSX.Element => {
       content: (
         <EnvironmentNew
           disabled={isLoading()}
-          onSave={(values) =>
+          onSave={(values: TField) => {
+            if (!values.name) {
+              console.error('Name is required');
+              return false;
+            }
             createEnvironment(values.name, user, handleRefresh, {
               description: values.description,
               ...messageConfig,
-            })
-          }
+            });
+          }}
         />
       ),
       footer: null,

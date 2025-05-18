@@ -1,4 +1,4 @@
-import React, { JSX, useContext } from 'react';
+import React, { FC, JSX, useContext } from 'react';
 import { Button } from 'antd';
 import { EditTwoTone } from '@ant-design/icons';
 import { useLocation } from '@tanstack/react-router';
@@ -11,7 +11,7 @@ import { t } from '/imports/utils/i18n.util';
 import { COLORS } from '/imports/utils/colors.util';
 
 type TEditAction = {
-  entityId: string;
+  entityId: string | undefined;
   type?: 'primary' | 'dashed' | 'text';
   showLabel?: boolean;
   isLoading?: boolean;
@@ -34,9 +34,7 @@ type TEditAction = {
  * @param props.onEdit The callback function to be called when the button is clicked
  * @returns {JSX.Element|null} The JSX element of the component
  */
-export const EditAction: React.FC<TEditAction> = (
-  props,
-): JSX.Element | null => {
+export const EditAction: FC<TEditAction> = (props): JSX.Element | null => {
   const intl = useContext(I18nContext);
 
   const {
@@ -47,6 +45,11 @@ export const EditAction: React.FC<TEditAction> = (
     disabled = false,
     onEdit,
   } = props;
+
+  if (!entityId) {
+    console.error('EditAction: entityId is required');
+    return null;
+  }
 
   const { pathname } = useLocation();
 

@@ -14,12 +14,15 @@ import { TFilters } from '/imports/ui/hooks/table.hook';
  * @param data
  * @param nested
  */
-function getValue(data: [], nested: string | string[]) {
+const getValue = (
+  data: IDataType[] = [],
+  nested: string | string[],
+): string => {
   if (Array.isArray(nested)) {
-    let value: string;
+    let value: string = '';
 
     for (let item of nested) {
-      value = getValue(data, item);
+      value = getValue(data, item) as string;
       if (value) break;
     }
 
@@ -27,13 +30,13 @@ function getValue(data: [], nested: string | string[]) {
   }
 
   return _.get(data, nested);
-}
+};
 
 type TColumn = {
   dataIndex: string;
   filterBy?: {
     nested?: string | string[];
-    resolver?: (value: any) => any;
+    resolver?: (value: unknown) => unknown;
   };
 };
 
@@ -42,18 +45,31 @@ type TGetFilters = {
   value: string;
 };
 
+export type TColumnFilter<TDataType = IDataType> = {
+  filters: TGetFilters[];
+  filteredValue: FilterValue | null;
+  onFilter: (value: string, record: TDataType) => boolean;
+};
+
+export type IDataType = {
+  [key: string]: unknown;
+};
+
 /**
  * Get filters for a given column.
  * @param column Column to be filtered.
  * @param dataSource Data to be filtered.
  * @returns An array of filters. Each filter is an object with `text` and `value` properties.
  */
-export const getFilters = (column: TColumn, dataSource = []): TGetFilters[] => {
+export const getFilters = (
+  column: TColumn,
+  dataSource: IDataType[] = [],
+): TGetFilters[] => {
   const { dataIndex, filterBy = {} } = column;
 
   const _filter = dataSource?.map((data) => {
     const { nested, resolver } = filterBy;
-    const value = getValue(data, nested ?? dataIndex);
+    const value = getValue(data as unknown as IDataType[], nested ?? dataIndex);
 
     const resolved = resolver ? resolver(value) : value;
 
@@ -74,26 +90,22 @@ export const getFilters = (column: TColumn, dataSource = []): TGetFilters[] => {
  * Generates a filter configuration for a table column.
  *
  * @param {TFilters} filteredInfo - Contains the current filter information.
- * @param {any[]} [dataSource=[]] - The data source for the table.
+ * @param {TDataType[]} [dataSource=[]] - The data source for the table.
  * @param {string} key - The key used for filtering the column.
  * @returns {Object} An object containing:
  *   - `filters`: An array of filters, each with `text` and `value` properties.
  *   - `filteredValue`: The current filtered values for the column, or null if not filtered.
  *   - `onFilter`: A function that determines if a record should be included based on the filter value.
  */
-export const columnFilter = (
+export const columnFilter = <TDataType extends IDataType>(
   filteredInfo: TFilters,
-  dataSource = [],
+  dataSource: TDataType[] = [],
   key: string,
-): {
-  filters: TGetFilters[];
-  filteredValue: FilterValue;
-  onFilter: (value: string, record: Record<string, any>) => boolean;
-} => {
+): TColumnFilter<TDataType> => {
   return {
     filters: getFilters({ dataIndex: key }, dataSource) as TGetFilters[],
-    filteredValue: filteredInfo?.[key] || null,
-    onFilter: (value: string, record: Record<string, any>) =>
-      record[key].includes(value as string),
+    filteredValue: filteredInfo?.[key] ?? null,
+    onFilter: (value: string, record: TDataType) =>
+      (record[key] as string[]).includes(value),
   };
 };

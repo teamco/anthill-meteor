@@ -2,6 +2,7 @@ import _ from 'lodash';
 import dayjs from 'dayjs';
 
 import { TSorts } from '/imports/ui/hooks/table.hook';
+import { ESort } from '/imports/config/types';
 
 /**
  * @param {string} dateA - a date, represented in string format
@@ -72,10 +73,12 @@ export const columnSorter = (
   sortedInfo: TSorts,
   sorterKey: string,
   orderKey?: string,
-): { sorter: any; sortOrder: any } => {
+): { sorter: any; sortOrder: ESort } => {
   if (!orderKey) orderKey = sorterKey;
   return {
     sorter: Sorter.NESTED([sorterKey]),
-    sortOrder: sortedInfo.columnKey === orderKey ? sortedInfo.order : null,
+    sortOrder: (sortedInfo.columnKey === orderKey
+      ? sortedInfo.order
+      : null) as ESort,
   };
 };

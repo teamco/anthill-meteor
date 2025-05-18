@@ -1,12 +1,7 @@
-import React, { FC, JSX, SetStateAction, useEffect, useState } from 'react';
+import { FC, JSX, useEffect, useState } from 'react';
 import { useTracker } from 'meteor/react-meteor-data';
 import { IntlProvider } from 'react-intl';
-import dayjs from 'dayjs';
-import { App as AntdApp } from 'antd';
 
-import { Locale } from 'antd/es/locale';
-
-import enUs from 'antd/locale/en_US';
 // ... more locales
 
 import 'dayjs/locale/en';
@@ -14,11 +9,13 @@ import 'dayjs/locale/en';
 import {
   AbilityContext,
   AuthenticationContext,
-} from '/imports/ui/context/authentication.context';
+} from '../context/authentication.context';
 
 import { defineAbilityFor } from '/imports/ui/services/ability.service';
 
 import { localeData } from '/imports/locales';
+import { Meteor } from 'meteor/meteor';
+import { IUser } from '/imports/config/types';
 
 type TProps = {
   children: string | JSX.Element | JSX.Element[];
@@ -29,26 +26,36 @@ type TProps = {
  * @returns {JSX.Element} The auth layout for the admin pages
  */
 const AuthLayout: FC<TProps> = ({ children }): JSX.Element => {
-  const [locale, setLocal] = useState(enUs);
+  // const [locale, setLocal] = useState<Locale>(enUs);
 
-  const changeLocale = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const localeValue = e.target.value;
-    setLocal(localeValue as unknown as SetStateAction<Locale>);
-    if (!localeValue) {
-      dayjs.locale('en');
-    } else {
-      //dayjs.locale('zh-cn');
-    }
-  };
+  // const changeLocale = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  //   const localeValue = e.target.value;
+  //   setLocal(localeValue as unknown as SetStateAction<Locale>);
+  //   if (!localeValue) {
+  //     dayjs.locale('en');
+  //   } else {
+  //     //dayjs.locale('zh-cn');
+  //   }
+  // };
 
-  const intlLocale = locale === enUs ? 'en-US' : 'zh-CN';
+  const intlLocale = 'en-US';
+  // Only allow supported locales
+  // const supportedLocales = Object.keys(localeData) as Array<'en-US' | 'zh-CN'>;
+  // const selectedLocale = locale === enUs ? 'en-US' : 'zh-CN';
+  // const intlLocale: 'en-US' | 'zh-CN' = supportedLocales.includes(
+  //   selectedLocale,
+  // )
+  //   ? selectedLocale
+  //   : 'en-US';
 
-  const [ability, setAbility] = useState(defineAbilityFor(Meteor.user()));
+  const [ability, setAbility] = useState(
+    defineAbilityFor(Meteor.user() as IUser),
+  );
 
-  const user = useTracker(() => Meteor.user());
+  const user = useTracker(() => Meteor.user()) as IUser;
 
   useEffect(() => {
-    user?._id && setAbility(defineAbilityFor(user));
+    setAbility(defineAbilityFor(user));
   }, [user?._id]);
 
   return (
