@@ -17,6 +17,7 @@ import {
 
 import { t, TIntl } from '/imports/utils/i18n.util';
 import { TRouterTypes } from '/imports/config/types';
+import { ItemType, MenuItemType } from 'antd/es/menu/interface';
 
 type NavigateFunction = (options: NavigateOptions) => Promise<void>;
 type MenuItem = Required<MenuProps>['items'][number];
@@ -88,50 +89,53 @@ export const menuItems = (
     label: _childLabel(label, path),
   });
 
+  const _dashboard = {
+    ..._child(
+      '10',
+      'dashboard.title',
+      <BlockOutlined />,
+      TRouterTypes.DASHBOARD,
+      dDashboard,
+    ),
+  } as ItemType<MenuItemType>;
+
+  const _environments = {
+    ..._child(
+      '11',
+      'dashboard.environments.title',
+      <SlidersOutlined />,
+      TRouterTypes.DASHBOARD_ENVIRONMENTS,
+      dEnvironments,
+    ),
+  } as ItemType<MenuItemType>;
+
+  const _widgets = {
+    ..._child(
+      '12',
+      'dashboard.widgets.title',
+      <AppstoreAddOutlined />,
+      TRouterTypes.DASHBOARD_WIDGETS,
+      dWidgets,
+    ),
+  } as ItemType<MenuItemType>;
+
+  const _userLogs = {
+    ..._child(
+      '15',
+      'dashboard.userLogs.title',
+      <UnorderedListOutlined />,
+      TRouterTypes.DASHBOARD_USER_LOGS,
+      dUserLogs,
+    ),
+  } as ItemType<MenuItemType>;
+
   return [
     {
       key: '1',
       disabled: dPages,
       icon: <BookOutlined />,
       label: t(intl, 'menu.pages'),
-      children: [
-        {
-          ..._child(
-            '10',
-            'dashboard.title',
-            <BlockOutlined />,
-            TRouterTypes.DASHBOARD,
-            dDashboard,
-          ),
-        },
-        {
-          ..._child(
-            '11',
-            'dashboard.environments.title',
-            <SlidersOutlined />,
-            TRouterTypes.DASHBOARD_ENVIRONMENTS,
-            dEnvironments,
-          ),
-        },
-        {
-          ..._child(
-            '12',
-            'dashboard.widgets.title',
-            <AppstoreAddOutlined />,
-            TRouterTypes.DASHBOARD_WIDGETS,
-            dWidgets,
-          ),
-        },
-        {
-          ..._child(
-            '13',
-            'dashboard.userLogs.title',
-            <UnorderedListOutlined />,
-            TRouterTypes.DASHBOARD_USER_LOGS,
-            dUserLogs,
-          ),
-        },
-      ],
+      children: [_dashboard, _environments, _widgets, _userLogs],
     },
   ];
 };
@@ -179,16 +183,39 @@ const getSelectedKeys = (mItems: MenuItem[], pathname: string): string[] => {
   const replaceMatchers = (path: string): string =>
     path === TRouterTypes.DASHBOARD ? path : path.replace(/\/dashboard/, '');
 
+  type TMatcherItem = {
+    key: string;
+    children?: TMatcherItem[] | undefined;
+    label: {
+      props: {
+        href: string;
+      };
+    };
+  };
+
   const matcher = (
-    item: MenuItem,
+    item: TMatcherItem,
     path: string,
     parentKeys: string[] = [],
-  ): boolean | any[] => {
-    if (item['children']) {
-      const current = item['children'].find((child: MenuItem) =>
-        matcher(child, path, [...parentKeys, item.key.toString()]),
-      );
-      return current ? [...parentKeys, item.key.toString(), current.key] : null;
+  ): boolean | null | any[] => {
+    if (!item) {
+      console.error('MenuItem is undefined');
+      return false;
+    }
+
+    const children = item.children as MenuItem[] | undefined;
+    if (children?.length) {
+      if (children) {
+        const current = children.find((child: MenuItem) =>
+          matcher(child as TMatcherItem, path, [
+            ...parentKeys,
+            item.key.toString(),
+          ]),
+        );
+        return current
+          ? [...parentKeys, item.key.toString(), current.key]
+          : null;
+      }
     }
 
     const _path = replaceMatchers(item['label']['props']['href']);
@@ -198,7 +225,7 @@ const getSelectedKeys = (mItems: MenuItem[], pathname: string): string[] => {
   };
 
   return mItems.flatMap((item: MenuItem) =>
-    matcher(item, pathname, []),
+    matcher(item as TMatcherItem, pathname, []),
   ) as unknown as string[];
 };
 
@@ -221,9 +248,9 @@ export const useMenu = (
   const intl: TIntl = useIntl();
   const navigate = useNavigate();
 
-  const [mItems, setMItems] = useState([]);
-  const [selectedMenuKeys, setSelectedMenuKeys] = useState([]);
-  const [openedMenuKeys, setOpenedMenuKeys] = useState([]);
+  const [mItems, setMItems] = useState<ItemType[]>([]);
+  const [selectedMenuKeys, setSelectedMenuKeys] = useState<string[]>([]);
+  const [openedMenuKeys, setOpenedMenuKeys] = useState<string[]>([]);
 
   const { pathname } = useLocation();
 
