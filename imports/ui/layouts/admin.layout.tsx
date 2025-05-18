@@ -9,13 +9,16 @@ import { defineAbilityFor } from '/imports/ui/services/ability.service';
 import DrawerPanelComponent from '/imports/ui/components/DrawerPanel/drawerPanel.component';
 import { LayoutHeader } from '/imports/ui/components/Layout/layoutHeader.component';
 import { MenuComponent } from '/imports/ui/components/Menu/menu.component';
-import { useMenu } from '/imports/ui/hooks/menu.hook';
+import { TUseMenu, useMenu } from '/imports/ui/hooks/menu.hook';
+import { ItemType } from 'antd/es/menu/interface';
 
 import { t, TIntl } from '/imports/utils/i18n.util';
 
 import { useHistoryListener } from '/imports/ui/hooks/history.hook';
 
 import SignIn from '/imports/ui/pages/authentication/signin/signin';
+
+import { IUser } from '/imports/config/types';
 
 import './admin.layout.module.less';
 
@@ -32,10 +35,12 @@ type TProps = {
 const AdminLayout: FC<TProps> = ({ children }): JSX.Element => {
   const intl: TIntl = useIntl();
 
-  const [ability, setAbility] = useState(defineAbilityFor(Meteor.user()));
+  const [ability, setAbility] = useState(
+    defineAbilityFor(Meteor.user() as IUser),
+  );
   const [drawerPanelOpen, setDrawerPanelOpen] = useState(false);
 
-  const user = useTracker(() => Meteor.user());
+  const user = useTracker(() => Meteor.user()) as IUser;
 
   useHistoryListener();
 
@@ -50,7 +55,11 @@ const AdminLayout: FC<TProps> = ({ children }): JSX.Element => {
     footer: <div className="drawerFooter">test</div>,
   };
 
-  const menuProps = useMenu(ability, drawerPanelOpen, setDrawerPanelOpen);
+  const menuProps: TUseMenu = useMenu(
+    ability,
+    drawerPanelOpen,
+    setDrawerPanelOpen,
+  );
 
   return user ? (
     <>

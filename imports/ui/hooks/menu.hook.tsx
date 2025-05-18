@@ -30,11 +30,11 @@ interface LevelKeysProps {
   children?: LevelKeysProps[];
 }
 
-type TUseMenu = {
+export type TUseMenu = {
   mItems: MenuItem[];
   selectedMenuKeys: string[];
   openedMenuKeys: string[];
-  onOpenChange: MenuProps['onOpenChange'];
+  onOpenChange: (openKeys: string[]) => void;
 };
 
 /**
@@ -277,32 +277,29 @@ export const useMenu = (
    * When a menu item is closed, it will add all of its child keys to the stateOpenKeys.
    * @return {void} No return value.
    */
-  const onOpenChange: MenuProps['onOpenChange'] = useCallback(
-    (openKeys: string[]): void => {
-      const currentOpenKey = openKeys.find(
-        (key: string) => openedMenuKeys.indexOf(key) === -1,
-      );
-
-      // Open
-      if (currentOpenKey !== undefined) {
-        const repeatIndex = openKeys
-          .filter((key) => key !== currentOpenKey)
-          .findIndex((key) => levelKeys[key] === levelKeys[currentOpenKey]);
-
-        setOpenedMenuKeys(
-          openKeys
-            // Remove repeat key
-            .filter((_, index) => index !== repeatIndex)
-            // Remove current level all child
-            .filter((key) => levelKeys[key] <= levelKeys[currentOpenKey]),
+  const onOpenChange: MenuProps['onOpenChange'] =
+    useCallback(
+      (openKeys: string[]): void => {
+        const currentOpenKey = openKeys.find(
+          (key: string) => openedMenuKeys.indexOf(key) === -1,
         );
-      } else {
-        // Close
-        setOpenedMenuKeys(openKeys);
-      }
-    },
-    [levelKeys, openedMenuKeys],
-  );
+
+        if (currentOpenKey !== undefined) {
+          const repeatIndex = openKeys
+            .filter((key) => key !== currentOpenKey)
+            .findIndex((key) => levelKeys[key] === levelKeys[currentOpenKey]);
+
+          setOpenedMenuKeys(
+            openKeys
+              .filter((_, index) => index !== repeatIndex)
+              .filter((key) => levelKeys[key] <= levelKeys[currentOpenKey]),
+          );
+        } else {
+          setOpenedMenuKeys(openKeys);
+        }
+      },
+      [levelKeys, openedMenuKeys],
+    ) ?? (() => {});
 
   return { mItems, selectedMenuKeys, openedMenuKeys, onOpenChange };
 };
