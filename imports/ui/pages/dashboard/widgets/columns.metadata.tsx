@@ -85,7 +85,7 @@ export const metadataColumns = ({
       ...columnSorter(sortedInfo, 'name'),
       render(name: string, record: IDataType): JSX.Element {
         return record?.description ? (
-          <Tooltip title={record?.description}>
+          <Tooltip title={record?.description.toString()}>
             <div className="eIconName">
               <QuestionCircleTwoTone />
               {name}
