@@ -4,6 +4,7 @@ import { FilterValue } from 'antd/es/table/interface';
 import { Sorter } from './sorter.util';
 
 import { TFilters } from '/imports/ui/hooks/table.hook';
+import { Key } from 'react';
 
 /**
  * This function takes a data array and a nested string or array of strings.
@@ -45,10 +46,10 @@ type TGetFilters = {
   value: string;
 };
 
-export type TColumnFilter<TDataType = IDataType> = {
+export type TColumnFilter<T = IDataType> = {
   filters: TGetFilters[];
   filteredValue: FilterValue | null;
-  onFilter: (value: string, record: TDataType) => boolean;
+  onFilter: (value: boolean | Key, record: T) => boolean;
 };
 
 export type IDataType = {
@@ -97,15 +98,20 @@ export const getFilters = (
  *   - `filteredValue`: The current filtered values for the column, or null if not filtered.
  *   - `onFilter`: A function that determines if a record should be included based on the filter value.
  */
-export const columnFilter = <TDataType extends IDataType>(
+export const columnFilter = <T extends IDataType>(
   filteredInfo: TFilters,
-  dataSource: TDataType[] = [],
+  dataSource: T[] = [],
   key: string,
-): TColumnFilter<TDataType> => {
+): TColumnFilter<T> => {
   return {
     filters: getFilters({ dataIndex: key }, dataSource) as TGetFilters[],
     filteredValue: filteredInfo?.[key] ?? null,
-    onFilter: (value: string, record: TDataType) =>
-      (record[key] as string[]).includes(value),
+    onFilter: (value: boolean | Key, record: T) => {
+      const recordValue = record[key];
+      if (Array.isArray(recordValue)) {
+        return recordValue.includes(value);
+      }
+      return recordValue === value;
+    },
   };
 };

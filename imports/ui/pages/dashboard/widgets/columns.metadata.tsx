@@ -1,22 +1,22 @@
-import React, { JSX } from "react";
-import { TableProps } from "antd/es/table";
-import { Tag, Tooltip } from "antd";
-import { QuestionCircleTwoTone } from "@ant-design/icons";
+import React, { JSX } from 'react';
+import { TableProps } from 'antd/es/table';
+import { Tag, Tooltip } from 'antd';
+import { QuestionCircleTwoTone } from '@ant-design/icons';
 
-import { IDataType } from "./widgets.page";
+import { IDataType } from './widgets.page';
 
-import { IMetadata, TColumns } from "/imports/config/types";
+import { IMetadata, TColumns } from '/imports/config/types';
 
-import { indexColumn } from "/imports/utils/table/table.util";
-import { tsToLocaleDateTime } from "/imports/utils/timestamp.util";
-import { columnSorter } from "/imports/utils/table/sorter.util";
-import { TFilters, TSorts } from "/imports/ui/hooks/table.hook";
-import { columnFilter } from "/imports/utils/table/filter.util";
-import { t, TIntl } from "/imports/utils/i18n.util";
-import { actionField } from "/imports/utils/table/action.util";
+import { indexColumn } from '/imports/utils/table/table.util';
+import { tsToLocaleDateTime } from '/imports/utils/timestamp.util';
+import { columnSorter } from '/imports/utils/table/sorter.util';
+import { TFilters, TSorts } from '/imports/ui/hooks/table.hook';
+import { columnFilter } from '/imports/utils/table/filter.util';
+import { t, TIntl } from '/imports/utils/i18n.util';
+import { actionField } from '/imports/utils/table/action.util';
 
-import { DeleteAction } from "/imports/ui/components/Actions/delete.action";
-import { EditAction } from "/imports/ui/components/Actions/edit.action";
+import { DeleteAction } from '/imports/ui/components/Actions/delete.action';
+import { EditAction } from '/imports/ui/components/Actions/edit.action';
 
 type TArgs = {
   intl: TIntl;
@@ -42,19 +42,19 @@ export const metadataColumns = ({
   onDelete,
   onEdit,
   entities,
-}: TArgs): TableProps<IDataType>["columns"] => {
+}: TArgs): TableProps<IDataType>['columns'] => {
   const actionsColumn =
     onEdit || onDelete
       ? {
           ...actionField(intl),
           render: (record: IDataType) => (
             <div>
-              <EditAction onEdit={onEdit} type={"text"} entityId={record._id} />
+              <EditAction onEdit={onEdit} type={'text'} entityId={record._id} />
               <DeleteAction
                 onDelete={onDelete}
-                type={"text"}
+                type={'text'}
                 entityId={record._id}
-                modalMsg={t(intl, "environment.title")}
+                modalMsg={t(intl, 'environment.title')}
               />
             </div>
           ),
@@ -64,11 +64,11 @@ export const metadataColumns = ({
   const columns: TColumns<IDataType> = [
     indexColumn,
     {
-      title: t(intl, "widget.list.image"),
-      dataIndex: "thumbnail",
-      key: "thumbnail",
+      title: t(intl, 'widget.list.image'),
+      dataIndex: 'thumbnail',
+      key: 'thumbnail',
       width: 80,
-      align: "center",
+      align: 'center',
       render(thumbnail: string, record: IDataType): JSX.Element {
         return (
           <div className="eThumbnail">
@@ -78,11 +78,11 @@ export const metadataColumns = ({
       },
     },
     {
-      title: t(intl, "widget.list.name"),
-      dataIndex: "name",
-      key: "name",
-      ...columnFilter(filteredInfo, entities, "name"),
-      ...columnSorter(sortedInfo, "name"),
+      title: t(intl, 'widget.list.name'),
+      dataIndex: 'name',
+      key: 'name',
+      ...columnFilter(filteredInfo, entities, 'name'),
+      ...columnSorter(sortedInfo, 'name'),
       render(name: string, record: IDataType): JSX.Element {
         return record?.description ? (
           <Tooltip title={record?.description}>
@@ -97,21 +97,21 @@ export const metadataColumns = ({
       },
     },
     {
-      title: t(intl, "widget.list.category"),
-      dataIndex: "category",
-      key: "category",
-      ...columnFilter(filteredInfo, entities, "category"),
-      ...columnSorter(sortedInfo, "category"),
+      title: t(intl, 'widget.list.category'),
+      dataIndex: 'category',
+      key: 'category',
+      ...columnFilter(filteredInfo, entities, 'category'),
+      ...columnSorter(sortedInfo, 'category'),
       render: (category: string): JSX.Element => (
         <Tag>{category.toUpperCase()}</Tag>
       ),
     },
     {
-      title: t(intl, "widget.list.size"),
-      dataIndex: "dimensions",
-      key: "dimensions",
+      title: t(intl, 'widget.list.size'),
+      dataIndex: 'dimensions',
+      key: 'dimensions',
       width: 100,
-      align: "center",
+      align: 'center',
       render: ({ width, height }): JSX.Element => (
         <>
           {width}x{height}
@@ -119,21 +119,26 @@ export const metadataColumns = ({
       ),
     },
     {
-      title: t(intl, "widget.list.type"),
+      title: t(intl, 'widget.list.type'),
       width: 100,
-      dataIndex: "content",
-      key: "content.type",
-      ...columnSorter(sortedInfo, "content.type", "content"),
+      dataIndex: 'content',
+      key: 'content.type',
+      ...columnSorter(sortedInfo, 'content.type', 'content'),
       render: ({ type }): string => type,
     },
     {
-      title: t(intl, "message.info.updatedAt"),
+      title: t(intl, 'message.info.updatedAt'),
       width: 200,
-      dataIndex: "metadata",
-      key: "metadata.updatedAt",
-      ...columnSorter(sortedInfo, "metadata.updatedAt", "metadata"),
-      render: ({ updatedAt }: IMetadata): string =>
-        tsToLocaleDateTime(updatedAt.toString()),
+      dataIndex: 'metadata',
+      key: 'metadata.updatedAt',
+      ...columnSorter(sortedInfo, 'metadata.updatedAt', 'metadata'),
+      render: ({ updatedAt }: IMetadata): JSX.Element => {
+        return (
+          <div>
+            {updatedAt ? tsToLocaleDateTime(updatedAt.toString()) : null}
+          </div>
+        );
+      },
     },
     actionsColumn,
   ];

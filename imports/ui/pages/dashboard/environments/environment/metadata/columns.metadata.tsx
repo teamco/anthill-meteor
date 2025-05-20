@@ -70,7 +70,11 @@ export const metadataColumns = ({
       key: 'metadata.updatedAt',
       ...columnSorter(sortedInfo, 'metadata.createdAt', 'metadata'),
       render: ({ updatedAt }: IMetadata): JSX.Element => {
-        return <div>{tsToLocaleDateTime(updatedAt.toString())}</div>;
+        return (
+          <div>
+            {updatedAt ? tsToLocaleDateTime(updatedAt.toString()) : null}
+          </div>
+        );
       },
     },
     {

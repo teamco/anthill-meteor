@@ -53,7 +53,7 @@ export const metadataColumns = (
       title: t(intl, 'environment.list.name'),
       dataIndex: 'name',
       key: 'name',
-      // ..._columnFilter,
+      ..._columnFilter,
       ..._columnSorter,
       render(name: string, record: IDataType): JSX.Element {
         return record?.description ? (
@@ -102,7 +102,11 @@ export const metadataColumns = (
       key: 'metadata.updatedAt',
       ...columnSorter(sortedInfo, 'metadata.createdAt', 'metadata'),
       render: ({ updatedAt }: IMetadata): JSX.Element => {
-        return <div>{tsToLocaleDateTime(updatedAt.toString())}</div>;
+        return (
+          <div>
+            {updatedAt ? tsToLocaleDateTime(updatedAt.toString()) : null}
+          </div>
+        );
       },
     },
     {

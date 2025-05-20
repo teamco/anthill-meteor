@@ -7,10 +7,10 @@ export const DEFAULT_DATE_TIME_FORMAT = `${DEFAULT_DATE_FORMAT} ${DEFAULT_TIME_F
 /**
  * Converts a timestamp to a Date object.
  *
- * @param {number | string} ts - The timestamp to convert, which can be a number or a string.
+ * @param {string | number} ts - The timestamp to convert, which can be a number or a string.
  * @returns {Date} A Date object representing the given timestamp.
  */
-const toDate = (ts: number | string): Date => {
+const toDate = (ts: string | number): Date => {
   if (isNaN(new Date(ts).getDate())) {
     ts = parseInt(ts?.toString(), 10);
   }

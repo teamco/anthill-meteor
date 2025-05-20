@@ -66,9 +66,10 @@ const SignIn: React.FC = (): JSX.Element => {
     Meteor.loginWithPassword(
       values.email,
       values.password,
-      async (err: TNotificationError): Promise<void> => {
-        if (err) {
-          return catchErrorMsg(notificationApi, err);
+      async (e): Promise<void> => {
+        const error = e as TNotificationError;
+        if (error) {
+          return catchErrorMsg(notificationApi, error);
         }
 
         formRef.resetFields();
