@@ -1,4 +1,5 @@
 import React, { JSX, useContext } from 'react';
+import { Meteor } from 'meteor/meteor';
 import { Button, Table } from 'antd';
 import { useSubscribe } from 'meteor/react-meteor-data';
 import { TableProps } from 'antd/lib/table';
@@ -121,12 +122,12 @@ const WidgetsPage: React.FC = (): JSX.Element => {
     className: 'gridList',
     dataSource: indexable(entities, pagination?.current, pagination?.pageSize),
     loading: isLoading(),
-    rowKey: (record: IDataType) => record._id,
+    rowKey: (record: IDataType) => record._id ?? `row-${Math.random()}`,
     onChange: handleTableChange,
     title: () => (
       <div className="gridHeader">
         <Button
-          disabled={ability.cannot('create', 'widget')}
+          disabled={ability?.cannot('create', 'widget')}
           loading={isLoading()}
           type={'primary'}
           onClick={handleCreateWidget}
@@ -157,6 +158,13 @@ const WidgetsPage: React.FC = (): JSX.Element => {
         <WidgetNew
           disabled={isLoading()}
           onSave={(values) => {
+            if (!values?.path) {
+              catchClassErrorMsg(notificationApi, {
+                message: 'Widget path is required',
+              });
+              return;
+            }
+
             import(values.path)
               .then((module) => {
                 const Entity = Object.values(module)[0] as new (
@@ -169,7 +177,7 @@ const WidgetsPage: React.FC = (): JSX.Element => {
                   });
                 }
 
-                const widget = new Widget(Entity, user, {
+                const widget = new Widget(Entity, user as IUser, {
                   notificationApi,
                   intl,
                 });

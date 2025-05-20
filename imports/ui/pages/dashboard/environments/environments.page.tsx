@@ -42,6 +42,7 @@ import { TField } from './environment/environment.edit';
 import { TEnvironmentTabs } from './environment/metadata/tabs.metadata';
 
 import './environments.module.less';
+import { Mongo } from 'meteor/mongo';
 
 export interface IDataType extends ICommonDataType {
   _id?: string;
@@ -133,7 +134,7 @@ const EnvironmentsPage: React.FC = (): JSX.Element => {
   } = useTable(
     'environmentsPaginate',
     getEntities,
-    EnvironmentsCollection as any,
+    EnvironmentsCollection as unknown as Mongo.Collection<Document, Document>,
   );
 
   const columns: TableProps<IDataType>['columns'] = metadataColumns(
@@ -153,7 +154,7 @@ const EnvironmentsPage: React.FC = (): JSX.Element => {
     className: 'gridList',
     dataSource: indexable(entities, pagination?.current, pagination?.pageSize),
     loading: isLoading(),
-    rowKey: (record: IDataType) => record._id ?? `env-row-${Math.random()}`,
+    rowKey: (record: IDataType) => record._id ?? `row-${Math.random()}`,
     onChange: handleTableChange,
     title: () => (
       <div className="gridHeader">

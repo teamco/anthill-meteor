@@ -13,7 +13,7 @@ Meteor.methods({
    * @throws Meteor.Error with reason 'email-exists' if email already exists
    */
   passwordProfile: async (data): Promise<void> => {
-    const user: IUser = Accounts.findUserByEmail(data?.email);
+    const user: IUser = Accounts.findUserByEmail(data?.email) as IUser;
 
     if (user) {
       throw new Meteor.Error('email-exists', 'Email already exists');

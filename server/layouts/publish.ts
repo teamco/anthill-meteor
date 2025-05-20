@@ -1,6 +1,6 @@
-import { Meteor } from "meteor/meteor";
-import { LayoutsCollection } from "/imports/collections/layouts.collection";
+import { Meteor } from 'meteor/meteor';
+import { LayoutsCollection } from '/imports/collections/layouts.collection';
 
-Meteor.publish("layouts", () => {
+Meteor.publish('layouts', () => {
   return LayoutsCollection.find();
 });

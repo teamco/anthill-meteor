@@ -15,9 +15,9 @@ export const indexable = (
   pageSize: number = 1,
 ): any[] => {
   return items.map((item: ICommonDataType, idx: number) => ({
+    ...item,
     idx: (current === 1 ? idx : (current - 1) * pageSize + idx) + 1,
     key: item._id,
-    ...item,
   }));
 };
 

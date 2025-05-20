@@ -164,7 +164,7 @@ export const useEnvironmentTabs = (
       scroll: { x: scrollX },
       bordered: true,
       className: 'gridList',
-      rowKey: (record: IDataType) => record._id,
+      rowKey: (record: IDataType) => record._id ?? `row-${Math.random()}`,
       dataSource: indexable(
         entities,
         pagination?.current,

@@ -1,7 +1,10 @@
 import { fetch, Headers } from 'meteor/fetch';
 
 import { catchErrorMsg } from './message.util';
-import { TMessageConfig } from '../config/types/notification.type';
+import {
+  TMessageConfig,
+  TNotificationError,
+} from '/imports/config/types/notification.type';
 
 type TMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
 type TMode = 'cors' | 'same-origin' | 'no-cors';
@@ -63,6 +66,6 @@ export const getData = (
   try {
     return fetch(url, options);
   } catch (err) {
-    catchErrorMsg(config.notificationApi, err);
+    catchErrorMsg(config.notificationApi, err as TNotificationError);
   }
 };

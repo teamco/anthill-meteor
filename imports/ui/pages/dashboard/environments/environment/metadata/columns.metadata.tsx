@@ -35,7 +35,7 @@ export const metadataColumns = ({
 }: TArgs): TableProps<IDataType>['columns'] => {
   const actionsColumn: ColumnType<IDataType> = {
     ...(actionField(intl) as ColumnType<IDataType>),
-    render: (_: any, record: IDataType) => (
+    render: (_: unknown, record: IDataType) => (
       <div className="eActions">
         <VersionAction
           type={'text'}

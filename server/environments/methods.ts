@@ -1,4 +1,5 @@
 import { Meteor } from 'meteor/meteor';
+import { Mongo } from 'meteor/mongo';
 
 import { EnvironmentsCollection } from '/imports/collections/environments.collection';
 import {
@@ -23,7 +24,7 @@ Meteor.methods({
     sort,
   }: TPaginateProps): any[] => {
     return paginate({
-      Collection: EnvironmentsCollection as Mongo.Collection<
+      Collection: EnvironmentsCollection as unknown as Mongo.Collection<
         Document,
         Document
       >,
@@ -83,9 +84,9 @@ Meteor.methods({
         params: {
           ...doc,
           metadata: {
-            ...environment.metadata,
+            ...environment?.metadata,
             updatedAt: new Date(),
-            updatedBy: user._id,
+            updatedBy: user?._id,
           },
         },
       },

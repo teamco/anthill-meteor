@@ -35,7 +35,7 @@ export const initLogger = (): void => {
      * @returns {void}
      */
     log(...args: unknown[]): void {
-      logger({ type: TConsoleType.log, args, echo: oldCons });
+      logger({ type: EConsoleType.log, args, echo: oldCons });
     },
 
     /**
@@ -45,7 +45,7 @@ export const initLogger = (): void => {
      * @returns {void}
      */
     info(...args: unknown[]): void {
-      logger({ type: TConsoleType.info, args, echo: oldCons });
+      logger({ type: EConsoleType.info, args, echo: oldCons });
     },
 
     /**
@@ -55,7 +55,7 @@ export const initLogger = (): void => {
      * @returns {void}
      */
     warn(...args: unknown[]): void {
-      logger({ type: TConsoleType.warn, args, echo: oldCons });
+      logger({ type: EConsoleType.warn, args, echo: oldCons });
     },
 
     /**
@@ -65,7 +65,7 @@ export const initLogger = (): void => {
      * @returns {void}
      */
     error(...args: unknown[]): void {
-      logger({ type: TConsoleType.error, args, echo: oldCons });
+      logger({ type: EConsoleType.error, args, echo: oldCons });
     },
   }))(window.console);
 
@@ -78,7 +78,7 @@ type TLogger = {
   [key: string]: unknown;
 };
 
-enum TConsoleType {
+export enum EConsoleType {
   log = 'log',
   info = 'info',
   error = 'error',
@@ -86,10 +86,10 @@ enum TConsoleType {
 }
 
 type TIcons = {
-  [TConsoleType.log]: number;
-  [TConsoleType.info]: number;
-  [TConsoleType.error]: number;
-  [TConsoleType.warn]: number;
+  [EConsoleType.log]: number;
+  [EConsoleType.info]: number;
+  [EConsoleType.error]: number;
+  [EConsoleType.warn]: number;
 };
 
 /**
@@ -102,7 +102,7 @@ type TIcons = {
  * @returns {void}
  */
 export const logger = (props: TLogger): void => {
-  const { type = TConsoleType.info, echo = window?.console, ...args } = props;
+  const { type = EConsoleType.info, echo = window?.console, ...args } = props;
 
   const ICONS: TIcons = {
     log: 0x1f7e2,

@@ -9,8 +9,8 @@ type TProps = {
   ableFor?: {
     action?: string;
     subject?: string;
-  }
-}
+  };
+};
 
 /**
  * Page403 component is a special page that is used to display an error page when user doesn't have enough permissions to access a page.
@@ -26,16 +26,18 @@ const page403: React.FC<TProps> = (props: TProps): JSX.Element => {
   const { action = 'read', subject = 'page403' } = ableFor;
 
   const page = (
-    <ErrorPage title={status.toString()}
-      subject={'page403'}
-      status={status} />
+    <ErrorPage title={status.toString()} subject={'page403'} status={status} />
   );
 
   const isRedirect = subject === 'page403';
 
-  return isRedirect ? page : (
-    <Can not I={action} a={subject}>{page}</Can>
+  return isRedirect ? (
+    page
+  ) : (
+    <Can not I={action} a={subject}>
+      {page}
+    </Can>
   );
-}
+};
 
 export default memo(page403);

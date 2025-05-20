@@ -1,6 +1,6 @@
-import { Meteor } from "meteor/meteor";
-import { UserLogsCollection } from "/imports/collections/userLogs.collection";
+import { Meteor } from 'meteor/meteor';
+import { UserLogsCollection } from '/imports/collections/userLogs.collection';
 
-Meteor.publish("userLogs", () => {
+Meteor.publish('userLogs', () => {
   return UserLogsCollection.find();
 });

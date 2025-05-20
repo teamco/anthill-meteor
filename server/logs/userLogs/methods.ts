@@ -1,24 +1,31 @@
-import { Meteor } from "meteor/meteor";
+import { Meteor } from 'meteor/meteor';
+import { Mongo } from 'meteor/mongo';
 
-import { TPaginateProps } from "/imports/config/types";
-import { UserLogsCollection } from "/imports/collections/userLogs.collection";
+import { TPaginateProps } from '/imports/config/types';
+import { UserLogsCollection } from '/imports/collections/userLogs.collection';
 
-import { paginate } from "/server/generics/paginate";
+import { paginate, TLog } from '/server/generics/paginate';
 
 import './publish';
 
 Meteor.methods({
-
   /**
    * Fetches a range of user logs from the collection based on pagination criteria.
    * @param {Object} param - An object with three properties: current (the current page number), pageSize (the number of items per page) and sort (the sort criteria).
    * @returns {any[]} An array of UserLogs objects.
    */
-  userLogsPaginate: ({ current = 1, pageSize = 10, sort }: TPaginateProps): any[] => {
+  userLogsPaginate: ({
+    current = 1,
+    pageSize = 10,
+    sort,
+  }: TPaginateProps): any[] => {
     return paginate({
-      Collection: UserLogsCollection as Mongo.Collection<Document, Document>,
+      Collection: UserLogsCollection as unknown as Mongo.Collection<
+        Document,
+        Document
+      >,
       args: { current, pageSize, sort },
-      log: null
+      log: null as unknown as TLog,
     });
   },
 
@@ -36,8 +43,8 @@ Meteor.methods({
         createdAt: new Date(),
         updatedAt: new Date(),
         createdBy: user?._id || null,
-        updatedBy: user?._id || null
-      }
+        updatedBy: user?._id || null,
+      },
     });
   },
 
@@ -59,4 +66,4 @@ Meteor.methods({
   userLogRemove: ({ _id }: { _id: string }): Promise<number> => {
     return UserLogsCollection.removeAsync({ _id });
   },
-}); 
+});

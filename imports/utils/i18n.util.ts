@@ -1,5 +1,5 @@
 import { MessageFormatElement } from 'react-intl';
-import { logger } from './console.util';
+import { EConsoleType, logger } from './console.util';
 
 export type TIntl = {
   messages: Record<string, string> | Record<string, MessageFormatElement[]>;
@@ -24,10 +24,10 @@ export const t = (intl: TIntl, id: string, params: object = {}): string => {
   } catch (e) {
     if (e instanceof Error) {
       logger({
-        type: 'warn',
+        type: EConsoleType.warn,
         msg: `Unable to find translation for [${id}], used default message.`,
       });
-      logger({ type: 'error', msg: e.message });
+      logger({ type: EConsoleType.error, msg: e.message });
     }
 
     return id;

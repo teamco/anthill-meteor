@@ -1,30 +1,38 @@
-import { Meteor } from "meteor/meteor";
-import { LayoutsCollection } from "/imports/collections/layouts.collection";
+import { Meteor } from 'meteor/meteor';
+import { Mongo } from 'meteor/mongo';
+
+import { LayoutsCollection } from '/imports/collections/layouts.collection';
 import { TPaginateProps, TRouterTypes, TLayout } from '/imports/config/types';
 
-import { paginate } from "../generics/paginate";
+import { paginate } from '../generics/paginate';
 
 import './publish';
 
 Meteor.methods({
-
   /**
    * Fetches a range of layouts from the collection based on pagination criteria.
    * @param {Object} param - An object with two properties: current (the current page number) and pageSize (the number of items per page).
    * @returns {TLayout[]} An array of Layout objects.
    */
-  layoutsPaginate: ({ current = 1, pageSize = 10, sort }: TPaginateProps): TLayout[] => {
+  layoutsPaginate: ({
+    current = 1,
+    pageSize = 10,
+    sort,
+  }: TPaginateProps): TLayout[] => {
     return paginate({
-      Collection: LayoutsCollection as Mongo.Collection<Document, Document>,
+      Collection: LayoutsCollection as unknown as Mongo.Collection<
+        Document,
+        Document
+      >,
       args: { current, pageSize, sort },
       log: {
         location: { pathname: TRouterTypes.DASHBOARD_LAYOUTS },
         api: {
           method: 'layoutsPaginate',
-          params: { current, pageSize, sort }
+          params: { current, pageSize, sort },
         },
-        navType: 'API'
-      }
+        navType: 'API',
+      },
     });
   },
 
@@ -38,10 +46,10 @@ Meteor.methods({
       location: { pathname: TRouterTypes.DASHBOARD_LAYOUTS },
       api: {
         method: 'layoutInsert',
-        params: { ...doc }
+        params: { ...doc },
       },
-      navType: 'API'
-    }
+      navType: 'API',
+    };
 
     Meteor.call('userLogInsert', { ...data });
 
@@ -65,19 +73,22 @@ Meteor.methods({
         params: {
           ...doc,
           metadata: {
-            ...layout.metadata,
+            ...layout?.metadata,
             updatedAt: new Date(),
-            updatedBy: user._id
-          }
-        }
+            updatedBy: user?._id,
+          },
+        },
       },
-      navType: 'API'
-    }
+      navType: 'API',
+    };
 
     Meteor.call('userLogInsert', { ...data });
 
     if (layout) {
-      return LayoutsCollection.updateAsync({ _id }, { $set: { ...data.api.params } });
+      return LayoutsCollection.updateAsync(
+        { _id },
+        { $set: { ...data.api.params } },
+      );
     }
 
     return 0;
@@ -93,10 +104,10 @@ Meteor.methods({
       location: { pathname: TRouterTypes.DASHBOARD_LAYOUTS },
       api: {
         method: 'layoutRemove',
-        params: { _id }
+        params: { _id },
       },
-      navType: 'API'
-    }
+      navType: 'API',
+    };
 
     Meteor.call('userLogInsert', { ...data });
 

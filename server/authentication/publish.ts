@@ -1,6 +1,6 @@
-import { Meteor } from "meteor/meteor";
-import { SocialCollection } from "/imports/collections/social.collection";
+import { Meteor } from 'meteor/meteor';
+import { SocialCollection } from '/imports/collections/social.collection';
 
-Meteor.publish("social", () => {
+Meteor.publish('social', () => {
   return SocialCollection.find();
 });

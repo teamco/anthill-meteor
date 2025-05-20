@@ -1,5 +1,6 @@
 import { MessageInstance } from 'antd/es/message/interface';
 import { NotificationInstance } from 'antd/es/notification/interface';
+import { Meteor } from 'meteor/meteor';
 
 import {
   TNotificationConfig,
@@ -72,7 +73,7 @@ export const catchErrorMsg = (
   e: TNotificationError,
   fallback?: () => void,
 ): void => {
-  typeof fallback === 'function' && fallback();
+  if (typeof fallback === 'function') fallback();
 
   notificationApi.error({
     message: `${e.error}: ${e.errorType}`,
@@ -94,7 +95,7 @@ export const catchClassErrorMsg = (
   e: { message: string },
 ): void => {
   notificationApi.error({
-    message: `400: Bad Request`,
+    message: '400: Bad Request',
     description: e.message,
     ...TNotificationConfig,
   });

@@ -29,7 +29,7 @@ export const replacePanel = (
   const updatedItems: TSplitterItem[] = findPanel(
     splitter,
     targetId,
-    (item: TSplitterItem) => {
+    (item?: TSplitterItem) => {
       if (item) {
         panelFound = true;
         return { ...replacement, layout } as TSplitterItem;
@@ -58,7 +58,7 @@ export const deletePanel = (
   splitter: TSplitter,
   targetId: string,
 ): TSplitter => {
-  const updatedItems = splitter.items
+  const updatedItems = (splitter?.items ?? [])
     .map((item: TSplitterItem) => {
       if (typeof item === 'object' && 'items' in item) {
         return deletePanel(item as TSplitter, targetId);
@@ -70,7 +70,7 @@ export const deletePanel = (
 
       return item;
     })
-    .filter((item: TSplitterItem) => item !== null);
+    .filter((item): item is TSplitterItem => item !== null);
 
   return { ...splitter, items: updatedItems as TSplitterItem[] };
 };
@@ -95,7 +95,7 @@ export const cleanPanel = (splitter: TSplitter): TSplitter => {
 
       return item;
     })
-    .filter((item: TSplitterItem) => {
+    .filter((item) => {
       if (
         typeof item === 'object' &&
         'items' in item &&
@@ -116,34 +116,36 @@ export const cleanPanel = (splitter: TSplitter): TSplitter => {
  *
  * @param {TSplitter} splitter - The Splitter component to search in.
  * @param {string} targetId - The uuid of the panel to replace.
- * @param {(item?: TSplitterItem) => TSplitterItem} callback - A callback function that takes the found panel or undefined
- * as argument and returns the new panel or null if the panel should be deleted.
+ * @param {(item?: TSplitterItem) => TSplitterItem | undefined} callback - A callback function that takes the found panel or undefined
+ * as argument and returns the new panel or undefined if the panel should be deleted.
  * @returns {TSplitterItem[]} - The updated Splitter component.
  */
 export const findPanel = (
   splitter: TSplitter,
   targetId: string,
-  callback: (item?: TSplitterItem) => TSplitterItem,
+  callback: (item?: TSplitterItem) => TSplitterItem | undefined,
 ): TSplitterItem[] => {
   if (!splitter.items) {
     throw new Error('Panel error: splitter must be a valid Splitter');
   }
-  return splitter.items.map((item: TSplitterItem) => {
-    if (typeof item.uuid === 'string' && item.uuid === targetId) {
-      return callback(item);
-    }
+  return splitter.items
+    .map((item: TSplitterItem) => {
+      if (typeof item.uuid === 'string' && item.uuid === targetId) {
+        return callback(item);
+      }
 
-    if ('items' in item) {
-      const updatedNestedItems = findPanel(
-        item as TSplitter,
-        targetId,
-        callback,
-      );
-      return { ...item, items: updatedNestedItems };
-    }
+      if ('items' in item) {
+        const updatedNestedItems = findPanel(
+          item as TSplitter,
+          targetId,
+          callback,
+        );
+        return { ...item, items: updatedNestedItems };
+      }
 
-    return item;
-  });
+      return item;
+    })
+    .filter((item): item is TSplitterItem => item !== undefined);
 };
 
 /**

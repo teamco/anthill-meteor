@@ -8,7 +8,7 @@ const DEFAULT_SORT: TPaginateProps['sort'] = [
   'descend',
 ];
 
-type TLog = {
+export type TLog = {
   location?: { pathname: string };
   api?: { method: string; params: any };
   navType?: string;

@@ -1,4 +1,5 @@
 import React, { JSX, useContext } from 'react';
+import { Meteor } from 'meteor/meteor';
 import { Button, Table } from 'antd';
 import { useSubscribe } from 'meteor/react-meteor-data';
 import { TableProps } from 'antd/lib/table';
@@ -84,12 +85,12 @@ const UserLogsPage: React.FC = (): JSX.Element => {
     className: 'gridList',
     dataSource: indexable(entities, pagination?.current, pagination?.pageSize),
     loading: isLoading(),
-    rowKey: (record: IDataType) => record._id,
+    rowKey: (record: IDataType) => record._id ?? `row-${Math.random()}`,
     onChange: handleTableChange,
     title: () => (
       <div className="gridHeader">
         <Button
-          disabled={ability.cannot('create', 'userLog')}
+          disabled={ability?.cannot('create', 'userLog')}
           loading={isLoading()}
           type={'primary'}
           // onClick={handleCreateUserLog}

@@ -1,31 +1,38 @@
-import { Meteor } from "meteor/meteor";
+import { Meteor } from 'meteor/meteor';
+import { Mongo } from 'meteor/mongo';
 
-import { WidgetsCollection } from "/imports/collections/widgets.collection";
+import { WidgetsCollection } from '/imports/collections/widgets.collection';
 import { TPaginateProps, TRouterTypes } from '/imports/config/types';
 
-import { paginate } from "../generics/paginate";
+import { paginate } from '../generics/paginate';
 
 import './publish';
 
 Meteor.methods({
-
   /**
    * Fetches a range of widgets from the collection based on pagination criteria.
    * @param {Object} param - An object with three properties: current (the current page number), pageSize (the number of items per page) and sort (the sort criteria).
    * @returns {any[]} An array of Widget objects.
    */
-  widgetsPaginate: ({ current = 1, pageSize = 10, sort }: TPaginateProps): any[] => {
+  widgetsPaginate: ({
+    current = 1,
+    pageSize = 10,
+    sort,
+  }: TPaginateProps): any[] => {
     return paginate({
-      Collection: WidgetsCollection as Mongo.Collection<Document, Document>,
+      Collection: WidgetsCollection as unknown as Mongo.Collection<
+        Document,
+        Document
+      >,
       args: { current, pageSize, sort },
       log: {
         location: { pathname: TRouterTypes.DASHBOARD_WIDGETS },
         api: {
           method: 'widgetsPaginate',
-          params: { current, pageSize, sort }
+          params: { current, pageSize, sort },
         },
-        navType: 'API'
-      }
+        navType: 'API',
+      },
     });
   },
 
@@ -39,10 +46,10 @@ Meteor.methods({
       location: { pathname: TRouterTypes.DASHBOARD_WIDGETS },
       api: {
         method: 'widgetInsert',
-        params: { ...doc }
+        params: { ...doc },
       },
-      navType: 'API'
-    }
+      navType: 'API',
+    };
 
     Meteor.call('userLogInsert', { ...data });
 
@@ -66,19 +73,22 @@ Meteor.methods({
         params: {
           ...doc,
           metadata: {
-            ...widget.metadata,
+            ...widget?.metadata,
             updatedAt: new Date(),
-            updatedBy: user._id
-          }
-        }
+            updatedBy: user?._id,
+          },
+        },
       },
-      navType: 'API'
-    }
+      navType: 'API',
+    };
 
     Meteor.call('userLogInsert', { ...data });
 
     if (widget) {
-      return WidgetsCollection.updateAsync({ _id }, { $set: { ...data.api.params } });
+      return WidgetsCollection.updateAsync(
+        { _id },
+        { $set: { ...data.api.params } },
+      );
     }
 
     return 0;
@@ -94,10 +104,10 @@ Meteor.methods({
       location: { pathname: TRouterTypes.DASHBOARD_WIDGETS },
       api: {
         method: 'widgetRemove',
-        params: { _id }
+        params: { _id },
       },
-      navType: 'API'
-    }
+      navType: 'API',
+    };
 
     Meteor.call('userLogInsert', { ...data });
 
