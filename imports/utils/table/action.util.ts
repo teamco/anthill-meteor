@@ -1,4 +1,5 @@
 import { ColumnType } from 'antd/es/table';
+
 import { t, TIntl } from '/imports/utils/i18n.util';
 
 export const actionField = (

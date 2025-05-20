@@ -1,5 +1,5 @@
 import { JSX } from 'react';
-import { TableProps } from 'antd/es/table';
+import { ColumnType, TableProps } from 'antd/es/table';
 import { Tag } from 'antd';
 
 import { IDataType } from '../../environments.page';
@@ -33,6 +33,25 @@ export const metadataColumns = ({
   sortedInfo,
   onDelete,
 }: TArgs): TableProps<IDataType>['columns'] => {
+  const actionsColumn: ColumnType<IDataType> = {
+    ...(actionField(intl) as ColumnType<IDataType>),
+    render: (_: any, record: IDataType) => (
+      <div className="eActions">
+        <VersionAction
+          type={'text'}
+          version={record.version}
+          entityId={record._id?.toString() || ''}
+        />
+        <DeleteAction
+          onDelete={onDelete}
+          type={'text'}
+          entityId={record._id}
+          modalMsg={t(intl, 'environment.layout')}
+        />
+      </div>
+    ),
+  };
+
   const columns: TColumns<IDataType> = [
     indexColumn,
     {
@@ -56,8 +75,8 @@ export const metadataColumns = ({
       render(widgets: TWidget[]): JSX.Element {
         return (
           <div>
-            {Object.keys(widgets).map((widget, idx) => (
-              <Tag key={idx}>{widgets[widget].name}</Tag>
+            {widgets.map((widget, idx) => (
+              <Tag key={idx}>{widget.name}</Tag>
             ))}
           </div>
         );
@@ -77,24 +96,7 @@ export const metadataColumns = ({
         );
       },
     },
-    {
-      ...actionField(intl),
-      render: (record: IDataType) => (
-        <div className="eActions">
-          <VersionAction
-            type={'text'}
-            version={record.version}
-            entityId={record._id}
-          />
-          <DeleteAction
-            onDelete={onDelete}
-            type={'text'}
-            entityId={record._id}
-            modalMsg={t(intl, 'environment.layout')}
-          />
-        </div>
-      ),
-    },
+    actionsColumn,
   ];
 
   return columns;

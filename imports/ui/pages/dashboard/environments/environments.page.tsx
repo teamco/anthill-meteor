@@ -44,8 +44,10 @@ import { TEnvironmentTabs } from './environment/metadata/tabs.metadata';
 import './environments.module.less';
 
 export interface IDataType extends ICommonDataType {
+  _id?: string;
   name: string;
   type: string;
+  version: string;
   status: TStatus;
   metadata: IMetadata;
   layout: TLayout;

@@ -48,6 +48,10 @@ export const VersionAction: React.FC<TVersionAction> = (props): JSX.Element => {
 
   const { pathname } = useLocation();
 
+  if (!entityId) {
+    console.error('No entityId provided to VersionAction');
+  }
+
   /**
    * @function aClick
    * @description Prevents the default link behavior and stops the event propagation.
