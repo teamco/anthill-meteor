@@ -1,4 +1,5 @@
-import { FC, JSX, useEffect, useState } from 'react';
+// @ts-expect-error - Expected issue with react import
+import React, { FC, JSX, useEffect, useState } from 'react';
 import { useTracker } from 'meteor/react-meteor-data';
 import { IntlProvider } from 'react-intl';
 

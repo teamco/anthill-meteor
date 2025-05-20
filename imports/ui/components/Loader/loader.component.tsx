@@ -1,4 +1,5 @@
-import { JSX } from 'react';
+// @ts-expect-error - Expected issue with react import
+import React, { JSX } from 'react';
 import { Spin } from 'antd';
 
 type TLoaderProps = {

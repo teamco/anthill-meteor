@@ -1,5 +1,6 @@
+// @ts-expect-error - Expected issue with react import
+import React, { Dispatch, FC, JSX, SetStateAction } from 'react';
 import { Meteor } from 'meteor/meteor';
-import { Dispatch, FC, JSX, SetStateAction } from 'react';
 import {
   LogoutOutlined,
   RightSquareTwoTone,

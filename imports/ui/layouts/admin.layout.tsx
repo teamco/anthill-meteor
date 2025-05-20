@@ -1,4 +1,5 @@
-import { FC, JSX, useEffect, useState } from 'react';
+// @ts-expect-error - Expected issue with react import
+import React, { FC, JSX, useEffect, useState } from 'react';
 import { ConfigProvider, Layout } from 'antd';
 import { useIntl } from 'react-intl';
 import { useTracker } from 'meteor/react-meteor-data';
@@ -10,7 +11,6 @@ import DrawerPanelComponent from '/imports/ui/components/DrawerPanel/drawerPanel
 import { LayoutHeader } from '/imports/ui/components/Layout/layoutHeader.component';
 import { MenuComponent } from '/imports/ui/components/Menu/menu.component';
 import { TUseMenu, useMenu } from '/imports/ui/hooks/menu.hook';
-import { ItemType } from 'antd/es/menu/interface';
 
 import { t, TIntl } from '/imports/utils/i18n.util';
 
