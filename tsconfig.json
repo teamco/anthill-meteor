@@ -32,11 +32,6 @@
     "paths": {
       /* Support absolute /imports/* with a leading '/' */
       "/*": ["*"],
-      "@common/types": ["/imports/config/types/*"],
-      "@common/utils": ["/imports/utils/*"],
-      "@common/collections": ["/imports/collections/*"],
-      "@common/locales": ["/imports/locales/*"],
-      "@common/ui": ["/imports/ui/*"],
 
       "meteor/*": [
         "node_modules/@types/meteor/*",
@@ -47,17 +42,15 @@
     "resolveJsonModule": true,
     "types": ["node", "jest"],
     "esModuleInterop": true,
-    "preserveSymlinks": true
-    // "experimentalDecorators": true,
-    // "emitDecoratorMetadata": true,
-    // "sourceMap": true,
+    "preserveSymlinks": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "sourceMap": true
     // "outDir": "./dist",
     // "rootDir": "./",
     // "strictNullChecks": true,
     // "noImplicitAny": true,
     // "noImplicitThis": true,
-    // "noUnusedLocals": true,
-    // "noUnusedParameters": true,
     // "noFallthroughCasesInSwitch": true,
     // "noImplicitReturns": true,
     // "noUncheckedIndexedAccess": true,

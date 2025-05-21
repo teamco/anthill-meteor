@@ -7,8 +7,12 @@ import { Mongo } from 'meteor/mongo';
 
 import { NotificationContext } from '/imports/ui/context/notification.context';
 
-import { ESort, ITableParams, TPaginateProps } from '/imports/config/types';
-import { TMessageConfig } from '/imports/config/types/notification.type';
+import {
+  ESort,
+  ITableParams,
+  TPaginateProps,
+  TMessageConfig,
+} from '/imports/config/types';
 
 type TOnChange = NonNullable<TableProps<any>['onChange']>;
 export type TFilters = Parameters<TOnChange>[1];

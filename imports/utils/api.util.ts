@@ -1,10 +1,8 @@
 import { fetch, Headers } from 'meteor/fetch';
 
+import { TMessageConfig, TNotificationError } from '/imports/config/types';
+
 import { catchErrorMsg } from './message.util';
-import {
-  TMessageConfig,
-  TNotificationError,
-} from '/imports/config/types/notification.type';
 
 type TMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
 type TMode = 'cors' | 'same-origin' | 'no-cors';

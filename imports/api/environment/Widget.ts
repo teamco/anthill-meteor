@@ -6,8 +6,8 @@ import {
   IUser,
   TWidgetTags,
   TWidgetConfig,
+  TMessageConfig,
 } from '/imports/config/types';
-import { TMessageConfig } from '/imports/config/types/notification.type';
 
 import CommonUtils from '/imports/utils/common.util';
 import { catchClassErrorMsg } from '/imports/utils/message.util';

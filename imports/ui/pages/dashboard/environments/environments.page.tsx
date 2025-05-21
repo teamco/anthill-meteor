@@ -14,8 +14,8 @@ import {
   TLayout,
   TStatus,
   TRouterTypes,
+  TMessageConfig,
 } from '/imports/config/types';
-import { TMessageConfig } from '/imports/config/types/notification.type';
 
 import { I18nContext } from '/imports/ui/context/i18n.context';
 import { AbilityContext } from '../../../context/authentication.context';

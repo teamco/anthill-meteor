@@ -3,7 +3,7 @@ import { Modal, Button } from 'antd';
 import { t, TIntl } from '/imports/utils/i18n.util';
 import { stub } from '/imports/utils/functions.util';
 
-import { TDeleteWarning } from '/imports/config/types/notification.type';
+import { TDeleteWarning } from '/imports/config/types';
 import { HookAPI } from 'antd/es/modal/useModal';
 
 type TConfig = {

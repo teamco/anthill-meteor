@@ -1,10 +1,10 @@
 import { Meteor } from 'meteor/meteor';
 
-import { TLayout } from '/imports/config/types';
 import {
+  TLayout,
   TMessageConfig,
   TNotificationError,
-} from '/imports/config/types/notification.type';
+} from '/imports/config/types';
 
 import { t } from '/imports/utils/i18n.util';
 import {

@@ -7,8 +7,8 @@ import {
   TWidget,
   TWidgetConfig,
   TWidgetTags,
+  TMessageConfig,
 } from '/imports/config/types';
-import { TMessageConfig } from '/imports/config/types/notification.type';
 
 import { TIntl } from '/imports/utils/i18n.util';
 import { catchClassErrorMsg } from '/imports/utils/message.util';

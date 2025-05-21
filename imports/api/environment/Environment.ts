@@ -9,13 +9,13 @@ import {
   TWidget,
   TTemplate,
   TLayoutWidget,
+  TMessageConfig,
 } from '/imports/config/types';
 
 import CommonUtils from '/imports/utils/common.util';
 import { catchClassErrorMsg } from '/imports/utils/message.util';
 
 import Layout from './Layout';
-import { TMessageConfig } from '/imports/config/types/notification.type';
 import { TIntl } from '/imports/utils/i18n.util';
 
 /**

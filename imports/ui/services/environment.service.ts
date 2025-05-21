@@ -1,17 +1,19 @@
 import { Meteor } from 'meteor/meteor';
 
-import {
-  TMessageConfig,
-  TNotificationError,
-} from '/imports/config/types/notification.type';
-
 import Environment from '/imports/api/environment/Environment';
 import Widget from '/imports/api/environment/Widget';
 
 import { EmptyWidget } from '/imports/api/widgets/empty.widget';
 import { EnvironmentsCollection } from '/imports/collections/environments.collection';
 
-import { IUser, TEnvironmentEdit, TWidget } from '/imports/config/types';
+import {
+  IUser,
+  TEnvironmentEdit,
+  TWidget,
+  TMessageConfig,
+  TNotificationError,
+} from '/imports/config/types';
+
 import { t } from '/imports/utils/i18n.util';
 import {
   successSaveMsg,

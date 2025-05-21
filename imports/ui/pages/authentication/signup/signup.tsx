@@ -10,7 +10,6 @@ import {
 import { useIntl } from 'react-intl';
 import { createFileRoute, useNavigate } from '@tanstack/react-router';
 
-import { TNotificationError } from '/imports/config/types/notification.type';
 import { NotificationContext } from '/imports/ui/context/notification.context';
 
 import { t, TIntl } from '/imports/utils/i18n.util';
@@ -26,7 +25,7 @@ import { useAuthRedirect } from '/imports/ui/hooks/authRedirect.hook';
 import { EmailField } from '/imports/ui/components/EmailField';
 import { Can } from '/imports/ui/components/Ability/can';
 
-import { TRouterTypes } from '/imports/config/types';
+import { TRouterTypes, TNotificationError } from '/imports/config/types';
 
 import './signup.module.less';
 

@@ -2,11 +2,11 @@ import { Meteor } from 'meteor/meteor';
 
 import { WidgetsCollection } from '/imports/collections/widgets.collection';
 
-import { TWidget } from '/imports/config/types';
 import {
   TMessageConfig,
   TNotificationError,
-} from '/imports/config/types/notification.type';
+  TWidget,
+} from '/imports/config/types';
 
 import { t } from '/imports/utils/i18n.util';
 import {
@@ -43,6 +43,7 @@ export const createWidget = (
     ...(prepareToCreate(widget) as unknown as object),
   })
     .then((_id: string) => {
+      console.log('Widget created', _id);
       successSaveMsg(config.messageApi, config.intl, 'Widget');
       handleRefresh();
     })

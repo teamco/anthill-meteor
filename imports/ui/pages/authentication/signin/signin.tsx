@@ -14,15 +14,13 @@ import { useAuthRedirect } from '/imports/ui/hooks/authRedirect.hook';
 
 import { NotificationContext } from '/imports/ui/context/notification.context';
 
-import { TNotificationError } from '/imports/config/types/notification.type';
-
 import { EmailField } from '/imports/ui/components/EmailField';
 import { Can } from '/imports/ui/components/Ability/can';
 
 import LoginWithGoogle from '../providers/google.provider';
 import LoginWithGithub from '../providers/github.provider';
 
-import { TRouterTypes } from '/imports/config/types';
+import { TRouterTypes, TNotificationError } from '/imports/config/types';
 
 import './signin.module.less';
 

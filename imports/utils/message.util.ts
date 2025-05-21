@@ -2,10 +2,7 @@ import { MessageInstance } from 'antd/es/message/interface';
 import { NotificationInstance } from 'antd/es/notification/interface';
 import { Meteor } from 'meteor/meteor';
 
-import {
-  TNotificationConfig,
-  TNotificationError,
-} from '/imports/config/types/notification.type';
+import { TNotificationConfig, TNotificationError } from '/imports/config/types';
 
 import { t, TIntl } from './i18n.util';
 
