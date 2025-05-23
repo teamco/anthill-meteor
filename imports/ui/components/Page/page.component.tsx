@@ -3,7 +3,10 @@ import classnames from 'classnames';
 
 import { Can } from '/imports/ui/components/Ability/can';
 import Loader from '/imports/ui/components/Loader/loader.component';
-import { HelmetComponent } from '/imports/ui/components/Helmet/helmet.component';
+import {
+  HelmetComponent,
+  IHelmetProps,
+} from '/imports/ui/components/Helmet/helmet.component';
 
 import Page403 from '/imports/ui/pages/403';
 
@@ -49,24 +52,26 @@ const Page: React.FC<TPageProps> = (props: TPageProps): JSX.Element => {
     descKey = description.replace(/ /g, '_');
   }
 
+  const helmetProps: IHelmetProps = {
+    title,
+    links: [],
+    meta: [
+      { name: 'description', content: description },
+      {
+        name: 'keywords',
+        content: ['AntHill', title, descKey].join(','),
+      },
+      { name: 'og:description', content: description },
+      { name: 'og:image', content: '/images/logo.png' },
+      { name: 'twitter:description', content: description },
+      { name: 'twitter:image', content: '/images/logo.png' },
+    ],
+  };
+
   return (
     <div className={classnames('page', className)} data-testid={testId}>
       <Can I={action} a={subject}>
-        <HelmetComponent
-          title={title}
-          links={[{ rel: 'canonical', href: window.location.href }]}
-          meta={[
-            { name: 'description', content: description },
-            {
-              name: 'keywords',
-              content: ['AntHill', title, descKey].join(','),
-            },
-            { name: 'og:description', content: description },
-            { name: 'og:image', content: '/images/logo.png' },
-            { name: 'twitter:description', content: description },
-            { name: 'twitter:image', content: '/images/logo.png' },
-          ]}
-        />
+        <HelmetComponent {...helmetProps} />
         <div>
           <Loader loading={!!loading} />
           <h1>{title}</h1>
