@@ -26,7 +26,7 @@ export const HelmetComponent: React.FC<IHelmetProps> = (
     meta = [],
     themeColor = '#ffffff',
     href = window.location.href,
-    name = 'AntHill',
+    name = 'AntHill Dashboard',
   } = props;
 
   const appleSizes = [
@@ -76,7 +76,7 @@ export const HelmetComponent: React.FC<IHelmetProps> = (
         { name: 'googlebot', content: 'index, follow' },
         { name: 'google', content: 'notranslate' },
         { name: 'format-detection', content: 'telephone=no' },
-        { name: 'apple-mobile-web-app-capable', content: 'yes' },
+        { name: 'mobile-web-app-capable', content: 'yes' },
         { name: 'apple-mobile-web-app-status-bar-style', content: 'black' },
         { name: 'apple-mobile-web-app-title', content: title },
         { name: 'msapplication-TileColor', content: themeColor },
@@ -90,8 +90,14 @@ export const HelmetComponent: React.FC<IHelmetProps> = (
         { name: 'theme-color', content: themeColor },
         { name: 'og:title', content: title },
         { name: 'twitter:url', content: href },
-        { name: 'twitter:site', content: `@${name.toLowerCase()}` },
-        { name: 'twitter:creator', content: `@${name.toLowerCase()}` },
+        {
+          name: 'twitter:site',
+          content: `@${name.replace(/ /g, '_').toLowerCase()}`,
+        },
+        {
+          name: 'twitter:creator',
+          content: `@${name.replace(/ /g, '_').toLowerCase()}`,
+        },
         { name: 'twitter:image:alt', content: title },
         {
           name: 'viewport',
