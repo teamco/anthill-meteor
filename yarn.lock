@@ -2518,6 +2518,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tsconfig/recommended@npm:^1.0.8":
+  version: 1.0.8
+  resolution: "@tsconfig/recommended@npm:1.0.8"
+  checksum: 10/042c543554520359a8f21ed3a18c0c23e5deee1cea3acd8d407892634354a322d42c2e378f4b3b4c9fe391f61a5701cd4e628d5b4cc60f9f17dfb817f3d46a7a
+  languageName: node
+  linkType: hard
+
 "@tybys/wasm-util@npm:^0.9.0":
   version: 0.9.0
   resolution: "@tybys/wasm-util@npm:0.9.0"
@@ -7223,6 +7230,7 @@ __metadata:
     "@eslint/eslintrc": "npm:^3.3.1"
     "@tanstack/react-router": "npm:^1.120.8"
     "@tanstack/router-cli": "npm:^1.120.8"
+    "@tsconfig/recommended": "npm:^1.0.8"
     "@types/gravatar": "npm:^1.8.6"
     "@types/jest": "npm:^29.5.14"
     "@types/lodash": "npm:^4.17.17"
