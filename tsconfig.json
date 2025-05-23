@@ -57,5 +57,6 @@
     // "noImplicitOverride": true,
   },
   "exclude": ["./.meteor/**", "./packages/**", "node_modules"],
-  "include": ["**/*.ts", "**/*.tsx"]
+  "include": ["**/*.ts", "**/*.tsx"],
+  "extends": "@tsconfig/recommended/tsconfig.json"
 }
