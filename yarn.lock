@@ -931,6 +931,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@dr.pogodin/react-helmet@npm:^3.0.2":
+  version: 3.0.2
+  resolution: "@dr.pogodin/react-helmet@npm:3.0.2"
+  dependencies:
+    "@babel/runtime": "npm:^7.27.1"
+  peerDependencies:
+    react: 19
+  checksum: 10/9a9510d89da1fdd6ae11f803538d78718455d9cb407d0a42c9f3a80a72725eb41b874a002697011a92e80e28a2064e844df9ace8afd366c51bb764a087119813
+  languageName: node
+  linkType: hard
+
 "@dual-bundle/import-meta-resolve@npm:^4.1.0":
   version: 4.1.0
   resolution: "@dual-bundle/import-meta-resolve@npm:4.1.0"
@@ -1472,7 +1483,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@meteorjs/crypto-browserify@npm:^3.12.4":
+"@meteorjs/crypto-browserify@npm:^3.12.1":
   version: 3.12.4
   resolution: "@meteorjs/crypto-browserify@npm:3.12.4"
   dependencies:
@@ -2422,20 +2433,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tanstack/react-router@npm:^1.120.5":
-  version: 1.120.5
-  resolution: "@tanstack/react-router@npm:1.120.5"
+"@tanstack/react-router@npm:^1.120.8":
+  version: 1.120.8
+  resolution: "@tanstack/react-router@npm:1.120.8"
   dependencies:
     "@tanstack/history": "npm:1.115.0"
     "@tanstack/react-store": "npm:^0.7.0"
-    "@tanstack/router-core": "npm:1.120.5"
+    "@tanstack/router-core": "npm:1.120.8"
     jsesc: "npm:^3.1.0"
     tiny-invariant: "npm:^1.3.3"
     tiny-warning: "npm:^1.0.3"
   peerDependencies:
     react: ">=18.0.0 || >=19.0.0"
     react-dom: ">=18.0.0 || >=19.0.0"
-  checksum: 10/f2f1f10a5f6156413f5fa0b262817b86df64cdf438b93728e4796fab57828f86cd982cf7c635eaf8194ca4f89c88c8e2eef8ceacf3284da3b8ff035e7be85a37
+  checksum: 10/81521acac5de02364c43f0b09eb266136b18262827ab273eda2520d35bdef42eceeca4c5aa115b5bf73386fa73b95e577b7c66946ddb41548945de24013e1fb6
   languageName: node
   linkType: hard
 
@@ -2452,44 +2463,44 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tanstack/router-cli@npm:^1.120.5":
-  version: 1.120.5
-  resolution: "@tanstack/router-cli@npm:1.120.5"
+"@tanstack/router-cli@npm:^1.120.8":
+  version: 1.120.8
+  resolution: "@tanstack/router-cli@npm:1.120.8"
   dependencies:
-    "@tanstack/router-generator": "npm:^1.120.5"
+    "@tanstack/router-generator": "npm:^1.120.8"
     chokidar: "npm:^3.6.0"
     yargs: "npm:^17.7.2"
   bin:
     tsr: bin/tsr.cjs
-  checksum: 10/0461424ee76b55d707e89ec89d4a0ce53086b7157ab3f3aafc2d1f23c8beb1d664f872ad24b0e7830fdd2478fa63a23d57ce69315aebfbc03ea3763c7cc5c2ff
+  checksum: 10/d4e82a4ecd2881e2c1dba5fc07cc513c1368793714d66e6042d327df1f40c43e596a043f8606b58cdf33e4ee5cbbc142f4f51297b23a6f0b2bff9632c933fed5
   languageName: node
   linkType: hard
 
-"@tanstack/router-core@npm:1.120.5":
-  version: 1.120.5
-  resolution: "@tanstack/router-core@npm:1.120.5"
+"@tanstack/router-core@npm:1.120.8":
+  version: 1.120.8
+  resolution: "@tanstack/router-core@npm:1.120.8"
   dependencies:
     "@tanstack/history": "npm:1.115.0"
     "@tanstack/store": "npm:^0.7.0"
     tiny-invariant: "npm:^1.3.3"
-  checksum: 10/9121762ba9ecf6b39141de661eaff40781757579435fb64354d99a8b381ca4a01e33cbfdd77c300158e0350af152d611ba9215812f7fde5bf5c5fc0a4f4142ca
+  checksum: 10/5f96f10ddaf124e427f948b5441b1fdbc158b33ad9de67039d9ecbdae5fbd1eefc0cda4a57316b7c634aa0637fe794607b333546019955956ec63f7d507a3636
   languageName: node
   linkType: hard
 
-"@tanstack/router-generator@npm:^1.120.5":
-  version: 1.120.5
-  resolution: "@tanstack/router-generator@npm:1.120.5"
+"@tanstack/router-generator@npm:^1.120.8":
+  version: 1.120.8
+  resolution: "@tanstack/router-generator@npm:1.120.8"
   dependencies:
     "@tanstack/virtual-file-routes": "npm:^1.115.0"
     prettier: "npm:^3.5.0"
     tsx: "npm:^4.19.2"
     zod: "npm:^3.24.2"
   peerDependencies:
-    "@tanstack/react-router": ^1.120.5
+    "@tanstack/react-router": ^1.120.8
   peerDependenciesMeta:
     "@tanstack/react-router":
       optional: true
-  checksum: 10/cf32ea2005d68426cecb6a13a034e4f42284728752efd775c7d6218b73b2a9c3b0e8d5409b7e5a74bac9e06f02b00c5bd129d2e6dc11b8b74e823a4d8d282405
+  checksum: 10/6e26aacaad275e52dcda29d4108fe33e763575f0e730f6dfb8cb8026a360eb80c61bf51b2eb1542bd643eb3b7a41685bb7145697a981f576585d4fc77123ef44
   languageName: node
   linkType: hard
 
@@ -7208,9 +7219,10 @@ __metadata:
     "@casl/react": "npm:^5.0.0"
     "@commitlint/cli": "npm:^19.8.1"
     "@commitlint/config-conventional": "npm:^19.8.1"
+    "@dr.pogodin/react-helmet": "npm:^3.0.2"
     "@eslint/eslintrc": "npm:^3.3.1"
-    "@tanstack/react-router": "npm:^1.120.5"
-    "@tanstack/router-cli": "npm:^1.120.5"
+    "@tanstack/react-router": "npm:^1.120.8"
+    "@tanstack/router-cli": "npm:^1.120.8"
     "@types/gravatar": "npm:^1.8.6"
     "@types/jest": "npm:^29.5.14"
     "@types/lodash": "npm:^4.17.17"
@@ -7236,7 +7248,7 @@ __metadata:
     husky: "npm:^9.1.7"
     lint-staged: "npm:^16.0.0"
     lodash: "npm:^4.17.21"
-    meteor-node-stubs: "npm:1.2.17"
+    meteor-node-stubs: "npm:1.2.19"
     prettier: "npm:^3.5.3"
     qrcode: "npm:^1.5.4"
     react: "npm:19.1.0"
@@ -7254,18 +7266,17 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"meteor-node-stubs@npm:1.2.17":
-  version: 1.2.17
-  resolution: "meteor-node-stubs@npm:1.2.17"
+"meteor-node-stubs@npm:1.2.19":
+  version: 1.2.19
+  resolution: "meteor-node-stubs@npm:1.2.19"
   dependencies:
-    "@meteorjs/crypto-browserify": "npm:^3.12.4"
+    "@meteorjs/crypto-browserify": "npm:^3.12.1"
     assert: "npm:^2.1.0"
     browserify-zlib: "npm:^0.2.0"
     buffer: "npm:^5.7.1"
     console-browserify: "npm:^1.2.0"
     constants-browserify: "npm:^1.0.0"
     domain-browser: "npm:^4.23.0"
-    elliptic: "npm:^6.6.1"
     events: "npm:^3.3.0"
     https-browserify: "npm:^1.0.0"
     os-browserify: "npm:^0.3.0"
@@ -7282,7 +7293,7 @@ __metadata:
     url: "npm:^0.11.4"
     util: "npm:^0.12.5"
     vm-browserify: "npm:^1.1.2"
-  checksum: 10/e44441eeaacdb5db17e160eff676b705d759b6798398f255efd6463ebf3bd914206496be789bf8ca8d520a9b3f82ff73f5ae75871775189512b4e571d96a3843
+  checksum: 10/4c719b6c2bb47c6d6b8853a1bb8dc8814011e9fd459b09154d3b224c7490c27ac37514815d2620b9ea40637a39c111ed1373f69bd0b7ae28e432a033b3b18af2
   languageName: node
   linkType: hard
 

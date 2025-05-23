@@ -4,6 +4,7 @@ import { Tracker } from 'meteor/tracker';
 import { createRoot } from 'react-dom/client';
 import { RouterProvider, createRouter } from '@tanstack/react-router';
 import { App as AntdApp } from 'antd';
+import { HelmetProvider } from '@dr.pogodin/react-helmet';
 
 import { initLogger } from '/imports/utils/console.util';
 import { initDayjs } from '/imports/utils/dayjs.util';
@@ -15,6 +16,11 @@ import {
 } from '/imports/config/routes/routeTree.gen';
 
 initDayjs();
+
+type TWindow = Window &
+  typeof globalThis & {
+    preRenderReady: boolean;
+  };
 
 // Create a new router instance
 const adminRouter = createRouter({ routeTree: adminRouteTree } as any);
@@ -41,13 +47,17 @@ Meteor.startup(() => {
       if (Meteor.userId()) {
         router = adminRouter;
       }
+
+      (window as TWindow).preRenderReady = true;
     });
 
     root.render(
       <React.StrictMode>
-        <AntdApp>
-          <RouterProvider router={router} />
-        </AntdApp>
+        <HelmetProvider>
+          <AntdApp>
+            <RouterProvider router={router} />
+          </AntdApp>
+        </HelmetProvider>
       </React.StrictMode>,
     );
   }
