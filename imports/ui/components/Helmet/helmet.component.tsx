@@ -29,6 +29,30 @@ export const HelmetComponent: React.FC<IHelmetProps> = (
     name = 'AntHill',
   } = props;
 
+  const appleSizes = [
+    '180x180',
+    '167x167',
+    '152x152',
+    '120x120',
+    '76x76',
+    '60x60',
+    '57x57',
+  ];
+
+  const iconSizes = ['192x192', '128x128', '96x96', '32x32', '16x16'];
+
+  const appleTouchIcons = appleSizes.map((sizes) => ({
+    sizes,
+    rel: 'apple-touch-icon',
+    href: '/favicon.ico',
+  }));
+
+  const icons = iconSizes.map((sizes) => ({
+    sizes,
+    rel: 'icon',
+    href: '/favicon.ico',
+  }));
+
   return (
     <Helmet
       title={title}
@@ -36,18 +60,8 @@ export const HelmetComponent: React.FC<IHelmetProps> = (
         { rel: 'canonical', href: window.location.href },
         { rel: 'shortcut icon', href: '/favicon.ico' },
         { rel: 'apple-touch-icon', href: '/favicon.ico' },
-        { rel: 'apple-touch-icon', sizes: '180x180', href: '/favicon.ico' },
-        { rel: 'apple-touch-icon', sizes: '167x167', href: '/favicon.ico' },
-        { rel: 'apple-touch-icon', sizes: '152x152', href: '/favicon.ico' },
-        { rel: 'apple-touch-icon', sizes: '120x120', href: '/favicon.ico' },
-        { rel: 'apple-touch-icon', sizes: '76x76', href: '/favicon.ico' },
-        { rel: 'apple-touch-icon', sizes: '60x60', href: '/favicon.ico' },
-        { rel: 'apple-touch-icon', sizes: '57x57', href: '/favicon.ico' },
-        { rel: 'icon', sizes: '192x192', href: '/favicon.ico' },
-        { rel: 'icon', sizes: '128x128', href: '/favicon.ico' },
-        { rel: 'icon', sizes: '96x96', href: '/favicon.ico' },
-        { rel: 'icon', sizes: '32x32', href: '/favicon.ico' },
-        { rel: 'icon', sizes: '16x16', href: '/favicon.ico' },
+        ...appleTouchIcons,
+        ...icons,
         { rel: 'manifest', href: '/manifest.json' },
         { rel: 'shortcut icon', href: '/favicon.ico' },
         { rel: 'apple-touch-startup-image', href: '/favicon.ico' },
