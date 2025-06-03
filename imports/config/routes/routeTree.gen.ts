@@ -4,7 +4,7 @@ import { TRouterTypes } from '/imports/config/types';
 import SignIn from '/imports/ui/pages/authentication/signin/signin';
 import { Route as SignupRouteImport } from '/imports/ui/pages/authentication/signup/signup';
 
-import { Route as AdminRouteImport } from './__adminRoot';
+import { Route as AdminRouteImport } from './__root';
 import { Route as PublicRouteImport } from './__publicRoot';
 
 import { Route as DashboardRouteImport } from '/imports/ui/pages/dashboard/dashboard.page';
