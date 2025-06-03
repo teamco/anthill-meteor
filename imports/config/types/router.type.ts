@@ -1,5 +1,8 @@
 export enum TRouterTypes {
   ROOT = '/',
+  ERROR_403 = '/errors/403',
+  ERROR_404 = '/errors/404',
+  ERROR_500 = '/errors/500',
   LOGOUT = '/logout',
   SIGNUP = '/signup',
   SIGNIN = '/signin',

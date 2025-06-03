@@ -1,4 +1,4 @@
-import { JSX, memo, useContext } from 'react';
+import React, { JSX, memo, useContext } from 'react';
 import { Button, Result } from 'antd';
 import { ResultStatusType } from 'antd/es/result';
 import classnames from 'classnames';
@@ -28,7 +28,7 @@ type TErrorProps = {
  * @example
  * <ErrorPage status={'warning'} subject={'pageWarning'} />
  */
-const ErrorPage = (props: TErrorProps): JSX.Element => {
+const ErrorPage: React.FC<TErrorProps> = (props: TErrorProps): JSX.Element => {
   const navigate = useNavigate();
   const intl = useContext(I18nContext);
 

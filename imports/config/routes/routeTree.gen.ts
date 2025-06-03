@@ -14,6 +14,8 @@ import { Route as EnvironmentEditRouteImport } from '/imports/ui/pages/dashboard
 import { Route as EnvironmentPreviewRouteImport } from '/imports/ui/pages/dashboard/environments/environment/preview/environment.preview';
 import { Route as UserLogsRouteImport } from '/imports/ui/pages/dashboard/userLogs/userLogs.page';
 
+import { Route as Error404RouteImport } from '/imports/ui/pages/404';
+
 /**
  * Creates or updates a route using the provided route import, path, and
  * parent route.
@@ -42,6 +44,8 @@ export const SigninRouteImport = createFileRoute(TRouterTypes.SIGNIN)({
 
 const SigninRoute = createRoute(SigninRouteImport, TRouterTypes.SIGNIN);
 const SignupRoute = createRoute(SignupRouteImport, TRouterTypes.SIGNUP);
+
+const Error404Route = createRoute(Error404RouteImport, TRouterTypes.ERROR_404);
 
 const DashboardRoute = createRoute(
   DashboardRouteImport,
@@ -76,6 +80,10 @@ const UserLogsRoute = createRoute(
 // Populate the FileRoutesByPath interface
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    [TRouterTypes.ERROR_404]: {
+      preLoaderRoute: typeof Error404RouteImport;
+      parentRoute: typeof PublicRouteImport | typeof AdminRouteImport;
+    };
     [TRouterTypes.SIGNIN]: {
       preLoaderRoute: typeof SigninRouteImport;
       parentRoute: typeof PublicRouteImport;
@@ -113,6 +121,7 @@ declare module '@tanstack/react-router' {
 
 // Create and export the route tree
 export const adminRouteTree = AdminRouteImport.addChildren([
+  Error404Route,
   SigninRoute,
   DashboardRoute,
   DashboardWidgetsRoute,
@@ -123,6 +132,7 @@ export const adminRouteTree = AdminRouteImport.addChildren([
 ]);
 
 export const publicRouteTree = PublicRouteImport.addChildren([
+  Error404Route,
   SignupRoute,
   SigninRoute,
 ]);

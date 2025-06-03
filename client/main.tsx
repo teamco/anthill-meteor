@@ -9,11 +9,15 @@ import { HelmetProvider } from '@dr.pogodin/react-helmet';
 import { initLogger } from '/imports/utils/console.util';
 import { initDayjs } from '/imports/utils/dayjs.util';
 
+import { TRouterTypes } from '/imports/config/types';
+
 // Import the generated route tree
 import {
   adminRouteTree,
   publicRouteTree,
 } from '/imports/config/routes/routeTree.gen';
+
+import Page404 from '/imports/ui/pages/404';
 
 initDayjs();
 
@@ -23,8 +27,20 @@ type TWindow = Window &
   };
 
 // Create a new router instance
-const adminRouter = createRouter({ routeTree: adminRouteTree } as any);
-const publicRouter = createRouter({ routeTree: publicRouteTree } as any);
+const adminRouter = createRouter({
+  routeTree: adminRouteTree,
+  defaultNotFoundComponent: () => {
+    return <Page404 />;
+  },
+} as any);
+
+// Create a new public router instance
+const publicRouter = createRouter({
+  routeTree: publicRouteTree,
+  defaultNotFoundComponent: () => {
+    return <Page404 />;
+  },
+} as any);
 
 // Register the router instance for type safety
 declare module '@tanstack/react-router' {
@@ -55,7 +71,7 @@ Meteor.startup(() => {
       <React.StrictMode>
         <HelmetProvider>
           <AntdApp>
-            <RouterProvider router={router} />
+            <RouterProvider router={router} key={window.location.pathname} />
           </AntdApp>
         </HelmetProvider>
       </React.StrictMode>,
