@@ -1,1 +1,1 @@
-npx lint-staged -v -d --concurrent false --relative
+yarn lint-staged -v -d --concurrent false --relative
