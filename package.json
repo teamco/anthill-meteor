@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "start": "yarn run routes:watch && meteor run",
+    "start": "yarn run routes:watch & meteor run",
     "precommit": "lint-staged",
     "routes:generate": "tsr generate",
     "routes:watch": "tsr watch",
@@ -12,6 +12,7 @@
     "test-app": "TEST_WATCH=1 meteor test --full-app --driver-package meteortesting:mocha",
     "visualize": "meteor --production --extra-packages bundle-visualizer",
     "libs:update": "yarn upgrade-interactive",
+    "audit": "yarn audit",
     "version:update": "yarn set version stable"
   },
   "dependencies": {
@@ -25,7 +26,6 @@
     "@tanstack/router-cli": "^1.121.34",
     "antd": "^5.26.2",
     "bcrypt": "^6.0.0",
-    "dotenv": "^16.5.0",
     "gravatar": "^1.8.2",
     "lodash": "^4.17.21",
     "meteor-node-stubs": "1.2.19",
@@ -82,6 +82,7 @@
     "eslint-plugin-mdx": "^3.5.0",
     "eslint-plugin-prettier": "^5.5.0",
     "eslint-plugin-react": "^7.37.5",
+    "dotenv": "^16.5.0",
     "husky": "^9.1.7",
     "lint-staged": "^16.1.2",
     "prettier": "^3.6.0",
