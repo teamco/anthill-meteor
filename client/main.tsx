@@ -1,15 +1,12 @@
 import React from 'react';
 import { Meteor } from 'meteor/meteor';
-import { Tracker } from 'meteor/tracker';
 import { createRoot } from 'react-dom/client';
-import { RouterProvider, createRouter } from '@tanstack/react-router';
+import { createRouter } from '@tanstack/react-router';
 import { App as AntdApp } from 'antd';
 import { HelmetProvider } from '@dr.pogodin/react-helmet';
 
 import { initLogger } from '/imports/utils/console.util';
 import { initDayjs } from '/imports/utils/dayjs.util';
-
-import { TRouterTypes } from '/imports/config/types';
 
 // Import the generated route tree
 import {
@@ -18,13 +15,9 @@ import {
 } from '/imports/config/routes/routeTree.gen';
 
 import Page404 from '/imports/ui/pages/404';
+import { Navigator } from './navigator';
 
 initDayjs();
-
-type TWindow = Window &
-  typeof globalThis & {
-    preRenderReady: boolean;
-  };
 
 // Create a new router instance
 const adminRouter = createRouter({
@@ -57,21 +50,11 @@ Meteor.startup(() => {
 
     initLogger();
 
-    let router = publicRouter;
-
-    Tracker.autorun(function () {
-      if (Meteor.userId()) {
-        router = adminRouter;
-      }
-
-      (window as TWindow).preRenderReady = true;
-    });
-
     root.render(
       <React.StrictMode>
         <HelmetProvider>
           <AntdApp>
-            <RouterProvider router={router} key={window.location.pathname} />
+            <Navigator adminRouter={adminRouter} publicRouter={publicRouter} />
           </AntdApp>
         </HelmetProvider>
       </React.StrictMode>,

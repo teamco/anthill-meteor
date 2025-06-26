@@ -1,5 +1,4 @@
-// @ts-expect-error - Expected issue with react import
-import React, { FC, JSX, useEffect, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { ConfigProvider, Layout } from 'antd';
 import { useIntl } from 'react-intl';
 import { useTracker } from 'meteor/react-meteor-data';
@@ -25,14 +24,14 @@ import './admin.layout.module.less';
 const { Header, Footer, Content } = Layout;
 
 type TProps = {
-  children: string | JSX.Element | JSX.Element[];
+  children: string | React.JSX.Element | React.JSX.Element[];
 };
 
 /**
  * @description The main layout for the admin pages
  * @returns {JSX.Element} The main layout for the admin pages
  */
-const AdminLayout: FC<TProps> = ({ children }): JSX.Element => {
+const AdminLayout: FC<TProps> = ({ children }): React.JSX.Element => {
   const intl: TIntl = useIntl();
 
   const [ability, setAbility] = useState(
