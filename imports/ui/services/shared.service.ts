@@ -1,5 +1,4 @@
 import { Meteor } from 'meteor/meteor';
-import { NotificationInstance } from 'antd/es/notification/interface';
 
 import {
   TCommonAPI,
@@ -10,13 +9,10 @@ import {
 } from '/imports/config/types';
 
 import { catchErrorMsg } from '/imports/utils/message.util';
-import { TIntl } from '/imports/utils/i18n.util';
 
 type TEntity = {
-  notificationApi?: NotificationInstance;
-  intl?: TIntl;
   [key: string]: unknown;
-};
+} & Partial<TCommonAPI>;
 
 export const prepareToCreate = (Entity: TEntity) => {
   delete Entity.notificationApi;
