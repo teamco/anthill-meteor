@@ -12,28 +12,20 @@ import { catchErrorMsg } from '/imports/utils/message.util';
 
 type TEntity = {
   [key: string]: unknown;
+  layout: TLayout & Partial<TCommonAPI>;
 } & Partial<TCommonAPI>;
 
 export const prepareToCreate = (Entity: TEntity) => {
   delete Entity.notificationApi;
   delete Entity.intl;
 
-  delete (Entity?.layout as TLayout & Partial<TCommonAPI>).notificationApi;
-  delete (Entity?.layout as TLayout & Partial<TCommonAPI>).intl;
+  delete Entity?.layout.notificationApi;
+  delete Entity?.layout.intl;
 
-  Object.keys(
-    (Entity?.layout as TLayout & Partial<TCommonAPI>).widgets,
-  ).forEach((key) => {
-    delete (
-      (Entity?.layout as TLayout & Partial<TCommonAPI>).widgets[
-        key
-      ] as TWidget & Partial<TCommonAPI>
-    ).notificationApi;
-    delete (
-      (Entity?.layout as TLayout & Partial<TCommonAPI>).widgets[
-        key
-      ] as TWidget & Partial<TCommonAPI>
-    ).intl;
+  Object.keys(Entity?.layout.widgets).forEach((key) => {
+    delete (Entity?.layout.widgets[key] as TWidget & Partial<TCommonAPI>).intl;
+    delete (Entity?.layout.widgets[key] as TWidget & Partial<TCommonAPI>)
+      .notificationApi;
   });
 
   return Entity;
