@@ -44,12 +44,15 @@ export interface IMetadata extends TTimestamp {
   updatedBy: IUser['_id'];
 }
 
+export type TNotification = {
+  modalApi: HookAPI;
+  messageApi: MessageInstance;
+  notificationApi: NotificationInstance;
+};
+
 export type TCommonAPI = {
   intl?: TIntl;
-  notificationApi?: NotificationInstance;
-  messageApi?: MessageInstance;
-  modalApi?: HookAPI;
-};
+} & TNotification;
 
 export type TTemplate = [{ items: [TSplitter[]] }] | [];
 
