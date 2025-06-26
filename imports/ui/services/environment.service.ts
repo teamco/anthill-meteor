@@ -77,8 +77,10 @@ export const createEnvironment = (
     _id: widget._id,
   });
 
+  const environment = prepareToCreate(env as TEnvironmentEdit);
+
   Meteor.callAsync('environmentInsert', {
-    ...(prepareToCreate(env as TEnvironmentEdit) as unknown as object),
+    ...(environment as unknown as object),
   })
     .then((_id: string) => {
       successSaveMsg(config.messageApi, config.intl, 'Environment');

@@ -1,5 +1,9 @@
+import { NotificationInstance } from 'antd/es/notification/interface';
 import { TSplitter } from './antd.type';
 import { IUser } from './user.type';
+import { TIntl } from '/imports/utils/i18n.util';
+import { MessageInstance } from 'antd/es/message/interface';
+import { HookAPI } from 'antd/es/modal/useModal';
 
 export interface IObjectId {
   _id?: string;
@@ -39,6 +43,13 @@ export interface IMetadata extends TTimestamp {
   createdBy: IUser['_id'];
   updatedBy: IUser['_id'];
 }
+
+export type TCommonAPI = {
+  intl?: TIntl;
+  notificationApi?: NotificationInstance;
+  messageApi?: MessageInstance;
+  modalApi?: HookAPI;
+};
 
 export type TTemplate = [{ items: [TSplitter[]] }] | [];
 

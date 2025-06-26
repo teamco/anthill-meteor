@@ -1,7 +1,13 @@
 import { Meteor } from 'meteor/meteor';
 import { NotificationInstance } from 'antd/es/notification/interface';
 
-import { TMessageConfig, TNotificationError } from '/imports/config/types';
+import {
+  TCommonAPI,
+  TLayout,
+  TMessageConfig,
+  TNotificationError,
+  TWidget,
+} from '/imports/config/types';
 
 import { catchErrorMsg } from '/imports/utils/message.util';
 import { TIntl } from '/imports/utils/i18n.util';
@@ -15,6 +21,24 @@ type TEntity = {
 export const prepareToCreate = (Entity: TEntity) => {
   delete Entity.notificationApi;
   delete Entity.intl;
+
+  delete (Entity?.layout as TLayout & Partial<TCommonAPI>).notificationApi;
+  delete (Entity?.layout as TLayout & Partial<TCommonAPI>).intl;
+
+  Object.keys(
+    (Entity?.layout as TLayout & Partial<TCommonAPI>).widgets,
+  ).forEach((key) => {
+    delete (
+      (Entity?.layout as TLayout & Partial<TCommonAPI>).widgets[
+        key
+      ] as TWidget & Partial<TCommonAPI>
+    ).notificationApi;
+    delete (
+      (Entity?.layout as TLayout & Partial<TCommonAPI>).widgets[
+        key
+      ] as TWidget & Partial<TCommonAPI>
+    ).intl;
+  });
 
   return Entity;
 };
