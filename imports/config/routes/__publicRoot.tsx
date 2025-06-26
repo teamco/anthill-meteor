@@ -1,3 +1,5 @@
+// @ts-expect-error - Expected issue with react import.
+import React from 'react';
 import {
   createRootRoute,
   Outlet,

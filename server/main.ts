@@ -1,5 +1,4 @@
 import { Meteor } from 'meteor/meteor';
-import dotenv from 'dotenv';
 
 import './environments/methods';
 import './widgets/methods';
@@ -9,8 +8,6 @@ import './logs/userLogs/methods';
 import './authentication/methods';
 
 import './social.settings';
-
-dotenv.config();
 
 type TProviders = 'google' | 'github';
 const providers: TProviders[] = ['google', 'github'];

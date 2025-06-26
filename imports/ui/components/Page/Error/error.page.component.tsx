@@ -1,5 +1,6 @@
 import React, { JSX, memo, useContext } from 'react';
 import { Button, Result } from 'antd';
+import { WarningOutlined } from '@ant-design/icons';
 import { ResultStatusType } from 'antd/es/result';
 import classnames from 'classnames';
 import { useNavigate } from '@tanstack/react-router';
@@ -56,6 +57,7 @@ const ErrorPage: React.FC<TErrorProps> = (props: TErrorProps): JSX.Element => {
       <Loader loading={loading} />
       <div>
         <Result
+          icon={<WarningOutlined />}
           extra={extra}
           status={status}
           title={title}
