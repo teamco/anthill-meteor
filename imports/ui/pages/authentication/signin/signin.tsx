@@ -19,7 +19,6 @@ import { EmailField } from '/imports/ui/components/EmailField';
 import { Can } from '/imports/ui/components/Ability/can';
 
 import LoginWithGoogle from '../providers/google.provider';
-import LoginWithGithub from '../providers/github.provider';
 
 import { TRouterTypes, TNotificationError } from '/imports/config/types';
 
@@ -120,7 +119,7 @@ const SignIn: React.FC = (): JSX.Element => {
                         disabled={false}
                         block
                         loading={false}
-                        onClick={() => navigate({ to: '/signup' })}
+                        onClick={() => navigate({ to: TRouterTypes.SIGNUP })}
                       >
                         {t(intl, 'auth.signUp')}
                       </Button>
@@ -149,9 +148,6 @@ const SignIn: React.FC = (): JSX.Element => {
         <div className={'loginBtns'}>
           <Can I={'access'} a={'google'}>
             <LoginWithGoogle />
-          </Can>
-          <Can I={'access'} a={'github'}>
-            <LoginWithGithub />
           </Can>
         </div>
       </Content>

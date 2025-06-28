@@ -30,6 +30,7 @@ import { TRouterTypes, TNotificationError } from '/imports/config/types';
 import './signup.module.less';
 import { NotificationInstance } from 'antd/es/notification/interface';
 import { MessageInstance } from 'antd/es/message/interface';
+import { Rule } from 'antd/es/form';
 
 const { Content } = Layout;
 
@@ -112,15 +113,17 @@ const SignUp: React.FC = (): JSX.Element => {
     getFieldValue,
   }: {
     getFieldValue: (field: string) => string;
-  }): { validator: (rule: any, value: string) => Promise<void> } => {
+  }): { validator: (_: Rule, value: string) => Promise<void> } => {
     const notValid: boolean =
       getFieldValue('password').length < MIN_PASSWORD_LENGTH;
 
     return {
-      validator(_: any, value: string): Promise<void> {
+      validator(_: Rule, value: string): Promise<void> {
         if (value && notValid) {
           return Promise.reject(
-            t(intl, 'auth.passwordTooEasy', { length: MIN_PASSWORD_LENGTH }),
+            t(intl, 'auth.passwordTooEasy', {
+              length: MIN_PASSWORD_LENGTH.toString(),
+            }),
           );
         }
         return Promise.resolve();
@@ -141,9 +144,9 @@ const SignUp: React.FC = (): JSX.Element => {
     getFieldValue,
   }: {
     getFieldValue: (field: string) => string;
-  }): { validator: (rule: any, value: string) => Promise<void> } => {
+  }): { validator: (_: Rule, value: string) => Promise<void> } => {
     return {
-      validator(_: any, value: string): Promise<void> {
+      validator(_: Rule, value: string): Promise<void> {
         if (!value || getFieldValue('password') === value) {
           return Promise.resolve();
         }
