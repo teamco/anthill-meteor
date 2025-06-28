@@ -14,6 +14,7 @@ import { I18nContext } from '/imports/ui/context/i18n.context';
 import { AbilityContext } from '/imports/ui/context/authentication.context';
 
 import Page from '/imports/ui/components/Page/page.component';
+import Page404 from '/imports/ui/pages/404';
 
 import { t } from '/imports/utils/i18n.util';
 
@@ -84,6 +85,7 @@ const EnvironmentEdit: React.FC = (): JSX.Element => {
 
   return (
     <Page
+      raiseOn404={!environment}
       ableFor={{ subject: environmentId }}
       loading={isLoading()}
       title={t(intl, 'actions.edit', { type: t(intl, 'environment.title') })}

@@ -92,9 +92,13 @@ export const createEnvironment = (
       Meteor.callAsync('layoutInsert', {
         ..._layout,
         environmentId: _id,
-      }).catch((err: TNotificationError) => {
-        catchErrorMsg(config.notificationApi, err);
-      });
+      })
+        .then((_id: string) => {
+          successSaveMsg(config.messageApi, config.intl, 'Layout');
+        })
+        .catch((err: TNotificationError) => {
+          catchErrorMsg(config.notificationApi, err);
+        });
     })
     .catch((err: TNotificationError) => {
       catchErrorMsg(config.notificationApi, err);
