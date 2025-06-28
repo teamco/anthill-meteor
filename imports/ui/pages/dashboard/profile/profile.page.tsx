@@ -40,6 +40,6 @@ const UserProfilePage: React.FC = () => {
   );
 };
 
-export const Route = createFileRoute(TRouterTypes.DASHBOARD_PROFILE)({
+export const Route = createFileRoute(TRouterTypes.PROFILE)({
   component: UserProfilePage,
 });

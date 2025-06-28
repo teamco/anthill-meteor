@@ -80,7 +80,7 @@ export const UserLogsRoute = createRoute(
 
 export const ProfileRoute = createRoute(
   ProfileRouteImport,
-  TRouterTypes.DASHBOARD_PROFILE,
+  TRouterTypes.PROFILE,
 );
 
 // Create and export the route tree

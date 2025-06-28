@@ -48,6 +48,10 @@ export const LayoutHeader: FC<THeaderProps> = (props: {
     });
   };
 
+  const handleProfile = () => {
+    navigate({ to: TRouterTypes.PROFILE });
+  };
+
   const items: MenuProps['items'] = [
     {
       key: 'name',
@@ -59,7 +63,7 @@ export const LayoutHeader: FC<THeaderProps> = (props: {
     },
     {
       key: 'profile',
-      label: t(intl, 'profile'),
+      label: <div onClick={handleProfile}>{t(intl, 'profile')}</div>,
       icon: <SettingOutlined />,
     },
     {

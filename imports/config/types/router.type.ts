@@ -13,7 +13,7 @@ export enum TRouterTypes {
   DASHBOARD_WIDGETS = '/dashboard/widgets',
   DASHBOARD_LAYOUTS = '/dashboard/layouts',
   DASHBOARD_USER_LOGS = '/dashboard/userLogs',
-  DASHBOARD_PROFILE = '/profile',
+  PROFILE = '/profile',
 }
 
 export type TRouterType = keyof typeof TRouterTypes;
