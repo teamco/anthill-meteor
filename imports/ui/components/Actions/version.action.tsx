@@ -68,7 +68,7 @@ export const VersionAction: React.FC<TVersionAction> = (props): JSX.Element => {
   return (
     <Can I={'preview'} a={entityId}>
       <a
-        title={t(intl, 'actions.version', { type: '' })}
+        title={t(intl, 'actions.version', { type: '' }) as string}
         onClick={aClick}
         href={`${pathname}/version/${version}`}
         rel="noopener noreferrer"

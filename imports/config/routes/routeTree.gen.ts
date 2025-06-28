@@ -7,6 +7,7 @@ import {
   environmentPreviewRouteImport,
   environmentsRouteImport,
   error404RouteImport,
+  profileRouteImport,
   publicRouteImport,
   signinRouteImport,
   signupRouteImport,
@@ -53,6 +54,10 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof userLogsRouteImport;
       parentRoute: typeof adminRouteImport;
     };
+    [TRouterTypes.DASHBOARD_PROFILE]: {
+      preLoaderRoute: typeof profileRouteImport;
+      parentRoute: typeof adminRouteImport;
+    };
   }
 }
 
@@ -66,6 +71,7 @@ export interface FileRoutesByFullPath {
   [TRouterTypes.DASHBOARD_ENVIRONMENT_PREVIEW]: typeof environmentPreviewRouteImport;
   [TRouterTypes.DASHBOARD_WIDGETS]: typeof widgetsRouteImport;
   [TRouterTypes.DASHBOARD_USER_LOGS]: typeof userLogsRouteImport;
+  [TRouterTypes.DASHBOARD_PROFILE]: typeof profileRouteImport;
 }
 
 export interface FileRoutesByTo {
@@ -78,6 +84,7 @@ export interface FileRoutesByTo {
   [TRouterTypes.DASHBOARD_ENVIRONMENT_PREVIEW]: typeof environmentPreviewRouteImport;
   [TRouterTypes.DASHBOARD_WIDGETS]: typeof widgetsRouteImport;
   [TRouterTypes.DASHBOARD_USER_LOGS]: typeof userLogsRouteImport;
+  [TRouterTypes.DASHBOARD_PROFILE]: typeof profileRouteImport;
 }
 
 export interface FileRoutesById {
@@ -89,7 +96,7 @@ export interface FileRoutesById {
   [TRouterTypes.DASHBOARD_ENVIRONMENT_EDIT]: typeof environmentEditRouteImport;
   [TRouterTypes.DASHBOARD_ENVIRONMENT_PREVIEW]: typeof environmentPreviewRouteImport;
   [TRouterTypes.DASHBOARD_WIDGETS]: typeof widgetsRouteImport;
-  [TRouterTypes.DASHBOARD_USER_LOGS]: typeof userLogsRouteImport;
+  [TRouterTypes.DASHBOARD_PROFILE]: typeof profileRouteImport;
 }
 
 export interface FileRouteTypes {
@@ -111,6 +118,7 @@ export interface RootRouteChildren {
   [TRouterTypes.DASHBOARD_ENVIRONMENT_PREVIEW]: typeof environmentPreviewRouteImport;
   [TRouterTypes.DASHBOARD_WIDGETS]: typeof widgetsRouteImport;
   [TRouterTypes.DASHBOARD_USER_LOGS]: typeof userLogsRouteImport;
+  [TRouterTypes.DASHBOARD_PROFILE]: typeof profileRouteImport;
 }
 
 export interface RootRoute {
@@ -130,5 +138,6 @@ export const rootRoute: RootRoute = {
     [TRouterTypes.DASHBOARD_ENVIRONMENT_PREVIEW]: environmentPreviewRouteImport,
     [TRouterTypes.DASHBOARD_WIDGETS]: widgetsRouteImport,
     [TRouterTypes.DASHBOARD_USER_LOGS]: userLogsRouteImport,
+    [TRouterTypes.DASHBOARD_PROFILE]: profileRouteImport,
   },
 };

@@ -202,7 +202,7 @@ const WidgetsPage: React.FC = (): JSX.Element => {
     <Page
       ableFor={{ subject: 'dashboard.widgets' }}
       title={t(intl, 'dashboard.widgets.title')}
-      description={t(intl, 'dashboard.widgets.description')}
+      description={t(intl, 'dashboard.widgets.description') as string}
     >
       <Table<IDataType> {...tableProps} />
     </Page>

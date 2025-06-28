@@ -67,7 +67,7 @@ export const EditAction: FC<TEditAction> = (props): JSX.Element | null => {
   return onEdit ? (
     <Can I={'update'} a={entityId}>
       <a
-        title={t(intl, 'actions.edit', { type: '' })}
+        title={t(intl, 'actions.edit', { type: '' }) as string}
         onClick={aClick}
         href={`${pathname}/${entityId}`}
         rel="noopener noreferrer"

@@ -11,7 +11,7 @@ import { Dropdown, MenuProps } from 'antd';
 import { useIntl } from 'react-intl';
 import classnames from 'classnames';
 
-import { TRouterTypes } from '/imports/config/types';
+import { IUserProfile, TRouterTypes } from '/imports/config/types';
 
 import { t, TIntl } from '/imports/utils/i18n.util';
 
@@ -21,13 +21,6 @@ type THeaderProps = {
   title: string;
   onMenuOpen: Dispatch<SetStateAction<boolean>>;
 };
-
-interface IUserProfile extends Meteor.User {
-  profile: {
-    name: string;
-    picture: string;
-  };
-}
 
 /**
  * A functional component that renders a layout header

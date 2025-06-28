@@ -1,4 +1,5 @@
 import { Meteor } from 'meteor/meteor';
+import React from 'react';
 import { NotificationInstance } from 'antd/es/notification/interface';
 import { MessageInstance } from 'antd/lib/message/interface';
 import { HookAPI } from 'antd/es/modal/useModal';
@@ -12,7 +13,7 @@ export type TNotificationError = {
 } & Meteor.Error;
 
 export type TDeleteWarning = {
-  entity?: string;
+  entity?: string | React.ReactNode;
   styles?: unknown;
   title?: string;
   content?: string;

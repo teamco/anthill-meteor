@@ -13,7 +13,7 @@ import { deleteWarning } from './modal.delete';
 
 type TDeleteAction = {
   entityId: string | undefined;
-  modalMsg: string;
+  modalMsg: string | React.ReactNode;
   type?: 'primary' | 'link' | 'text' | 'default' | 'dashed';
   isLoading?: boolean;
   showLabel?: boolean;

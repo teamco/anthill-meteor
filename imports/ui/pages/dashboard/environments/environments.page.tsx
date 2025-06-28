@@ -209,7 +209,7 @@ const EnvironmentsPage: React.FC = (): JSX.Element => {
     <Page
       ableFor={{ subject: 'dashboard.environments' }}
       title={t(intl, 'dashboard.environments.title')}
-      description={t(intl, 'dashboard.environments.description')}
+      description={t(intl, 'dashboard.environments.description') as string}
     >
       <Table<IDataType> {...tableProps} />
     </Page>

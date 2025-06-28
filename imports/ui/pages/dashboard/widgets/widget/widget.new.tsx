@@ -46,7 +46,7 @@ export const WidgetNew: React.FC<TProps> = (props): JSX.Element => {
 
   const pathMsg = t(intl, 'widget.working.path');
 
-  const pathRule: TFieldRule = requiredField(intl, pathMsg);
+  const pathRule: TFieldRule = requiredField(intl, pathMsg as string);
 
   /**
    * @function onFinish
@@ -112,7 +112,13 @@ export const WidgetNew: React.FC<TProps> = (props): JSX.Element => {
             >
               <Input
                 {...inputProps}
-                placeholder={placeholderField(intl, pathMsg, 'actions.enter')}
+                placeholder={
+                  placeholderField(
+                    intl,
+                    pathMsg as string,
+                    'actions.enter',
+                  ) as string
+                }
               />
             </Form.Item>
           </Col>

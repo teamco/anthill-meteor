@@ -25,7 +25,7 @@ const Page404: React.FC<TProps> = (props): JSX.Element => {
 
   return (
     <ErrorPage
-      subTitle={t(intl, 'error.page404')}
+      subTitle={t(intl, 'error.page404') as string}
       subject={subject}
       status={status || (routerState.statusCode as ResultStatusType)}
     />

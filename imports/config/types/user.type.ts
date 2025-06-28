@@ -1,3 +1,4 @@
+import { Meteor } from 'meteor/meteor';
 import { TTimestamp } from './common.type';
 
 export interface IUser extends TTimestamp {
@@ -7,5 +8,12 @@ export interface IUser extends TTimestamp {
     password?: {
       bcrypt?: string;
     };
+  };
+}
+
+export interface IUserProfile extends Meteor.User {
+  profile: {
+    name: string;
+    picture: string;
   };
 }

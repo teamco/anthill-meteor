@@ -36,7 +36,7 @@ export const DescriptionMetadata = (
   const nameMsg = t(intl, 'form.name', { entity: '' });
   const descriptionMsg = t(intl, 'form.description', { entity: '' });
 
-  const nameRule: TFieldRule = requiredField(intl, nameMsg);
+  const nameRule: TFieldRule = requiredField(intl, nameMsg as string);
 
   const inputProps = {
     disabled: false,
@@ -58,7 +58,13 @@ export const DescriptionMetadata = (
           <Input
             onChange={(e) => setEnvName(e.target.value)}
             {...inputProps}
-            placeholder={placeholderField(intl, nameMsg, 'actions.enter')}
+            placeholder={
+              placeholderField(
+                intl,
+                nameMsg as string,
+                'actions.enter',
+              ) as string
+            }
           />
         </Form.Item>
       ) as React.ReactNode,
@@ -73,11 +79,13 @@ export const DescriptionMetadata = (
             showCount
             {...inputProps}
             maxLength={400}
-            placeholder={placeholderField(
-              intl,
-              descriptionMsg,
-              'actions.enter',
-            )}
+            placeholder={
+              placeholderField(
+                intl,
+                descriptionMsg as string,
+                'actions.enter',
+              ) as string
+            }
             style={{ maxHeight: 250, height: 100, marginBottom: 30 }}
           />
         </Form.Item>

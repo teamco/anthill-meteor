@@ -19,7 +19,7 @@ type TPageProps = {
   raiseOn404?: boolean;
   testId?: string;
   className?: string;
-  title: string;
+  title: string | React.ReactNode;
   description?: string;
   loading?: boolean;
   ableFor: TAbility;
@@ -57,7 +57,7 @@ const Page: React.FC<TPageProps> = (props: TPageProps): JSX.Element => {
   }
 
   const helmetProps: IHelmetProps = {
-    title,
+    title: title as string,
     links: [],
     meta: [
       { name: 'description', content: description },

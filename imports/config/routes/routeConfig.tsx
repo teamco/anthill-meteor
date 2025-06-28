@@ -14,6 +14,7 @@ import { Route as EnvironmentsRouteImport } from '/imports/ui/pages/dashboard/en
 import { Route as EnvironmentEditRouteImport } from '/imports/ui/pages/dashboard/environments/environment/environment.edit';
 import { Route as EnvironmentPreviewRouteImport } from '/imports/ui/pages/dashboard/environments/environment/preview/environment.preview';
 import { Route as UserLogsRouteImport } from '/imports/ui/pages/dashboard/userLogs/userLogs.page';
+import { Route as ProfileRouteImport } from '/imports/ui/pages/dashboard/profile/profile.page';
 
 import { Route as Error404RouteImport } from '/imports/ui/pages/404';
 
@@ -77,6 +78,11 @@ export const UserLogsRoute = createRoute(
   TRouterTypes.DASHBOARD_USER_LOGS,
 );
 
+export const ProfileRoute = createRoute(
+  ProfileRouteImport,
+  TRouterTypes.DASHBOARD_PROFILE,
+);
+
 // Create and export the route tree
 export const adminRouteTree = AdminRouteImport.addChildren([
   Error404Route,
@@ -87,6 +93,7 @@ export const adminRouteTree = AdminRouteImport.addChildren([
   DashboardEnvironmentEditRoute,
   DashboardEnvironmentPreviewRoute,
   UserLogsRoute,
+  ProfileRoute,
 ]);
 
 export const publicRouteTree = PublicRouteImport.addChildren([
@@ -106,3 +113,4 @@ export const environmentsRouteImport = EnvironmentsRouteImport;
 export const environmentEditRouteImport = EnvironmentEditRouteImport;
 export const environmentPreviewRouteImport = EnvironmentPreviewRouteImport;
 export const userLogsRouteImport = UserLogsRouteImport;
+export const profileRouteImport = ProfileRouteImport;

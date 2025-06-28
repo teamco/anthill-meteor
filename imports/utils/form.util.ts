@@ -23,7 +23,7 @@ export const requiredField = (
 ): TFieldRule => {
   const rule: TFieldRule = {
     required,
-    message: t(intl, 'event.field.required', { field }),
+    message: t(intl, 'event.field.required', { field }) as string,
   };
 
   return rule;
@@ -40,13 +40,13 @@ export const urlFieldValidation = [
  * @param {TIntl} intl - The intl object to use for translation.
  * @param {string} label - The label to use in the placeholder string.
  * @param {string} msg - The message to use in the placeholder string.
- * @returns {string} The placeholder string.
+ * @returns {string | React.ReactNode} The placeholder string.
  */
 export const placeholderField = (
   intl: TIntl,
   label: string,
   msg: string = 'actions.select',
-): string => {
+): string | React.ReactNode => {
   return t(intl, 'form.placeholder', {
     field: label,
     type: t(intl, msg),

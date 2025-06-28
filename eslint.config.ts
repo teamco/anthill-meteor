@@ -120,7 +120,7 @@ export default [
       // Enforce consistent indentation (4 spaces in this case)
       // indent: ['warn', 2],
       // Enforce the use of single quotes for strings
-      quotes: ['error', 'single'],
+      quotes: ['warn', 'single'],
       // Enforce semicolons at the end of statements
       semi: ['error', 'always'],
       // Enforce consistent line breaks (LF for Unix)
@@ -146,8 +146,8 @@ export default [
         'error',
         {
           trailingComma: 'all',
-          singleQuote: true,
           semi: true,
+          singleQuote: true,
         },
       ],
       'import/no-unresolved': 0,

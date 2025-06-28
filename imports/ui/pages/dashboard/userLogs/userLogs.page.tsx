@@ -109,8 +109,8 @@ const UserLogsPage: React.FC = (): JSX.Element => {
   return (
     <Page
       ableFor={{ subject: 'dashboard.userLogs' }}
-      title={t(intl, 'dashboard.userLogs.title')}
-      description={t(intl, 'dashboard.userLogs.description')}
+      title={t(intl, 'dashboard.userLogs.title') as string}
+      description={t(intl, 'dashboard.userLogs.description') as string}
     >
       <Table<IDataType> {...tableProps} />
     </Page>

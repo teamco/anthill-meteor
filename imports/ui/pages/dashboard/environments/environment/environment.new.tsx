@@ -53,7 +53,7 @@ export const EnvironmentNew: React.FC<TProps> = (
   const nameMsg = t(intl, 'form.name', { entity: entityMsg });
   const descriptionMsg = t(intl, 'form.description', { entity: entityMsg });
 
-  const nameRule: TFieldRule = requiredField(intl, nameMsg);
+  const nameRule: TFieldRule = requiredField(intl, nameMsg as string);
 
   /**
    * @function onFinish
@@ -87,7 +87,13 @@ export const EnvironmentNew: React.FC<TProps> = (
             <Form.Item<TField> label={nameMsg} name="name" rules={[nameRule]}>
               <Input
                 {...inputProps}
-                placeholder={placeholderField(intl, nameMsg, 'actions.enter')}
+                placeholder={
+                  placeholderField(
+                    intl,
+                    nameMsg as string,
+                    'actions.enter',
+                  ) as string
+                }
               />
             </Form.Item>
           </Col>
@@ -97,11 +103,13 @@ export const EnvironmentNew: React.FC<TProps> = (
                 showCount
                 {...inputProps}
                 maxLength={400}
-                placeholder={placeholderField(
-                  intl,
-                  descriptionMsg,
-                  'actions.enter',
-                )}
+                placeholder={
+                  placeholderField(
+                    intl,
+                    descriptionMsg as string,
+                    'actions.enter',
+                  ) as string
+                }
                 style={{ maxHeight: 250, height: 100 }}
               />
             </Form.Item>

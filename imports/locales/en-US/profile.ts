@@ -1,5 +1,5 @@
 export default {
-  'profile': 'Profile',
+  profile: 'Profile',
   'profile.firstName': 'First Name',
   'profile.lastName': 'Last Name',
   'profile.services': 'Services',
@@ -7,5 +7,6 @@ export default {
   'profile.subscriptions': 'Subscriptions Manager',
   'profile.contacts': 'Contacts',
   'profile.favorites': 'Favorites',
-  'profile.welcome.hello': 'Hello there, <span>{name}!</span><br/>We\'re thrilled to see you here.'
+  'profile.welcome':
+    "Hello there, <span>{name}!</span><p>We're thrilled to see you here.</p>",
 };
