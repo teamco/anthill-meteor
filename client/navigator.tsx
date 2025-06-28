@@ -20,16 +20,24 @@ export const Navigator: React.FC<INavigateProps> = (
 ): React.JSX.Element => {
   const { adminRouter, publicRouter } = props;
 
-  const user = useTracker(() => Meteor.user()) as IUser;
+  // Track both user and loggingIn state
+  const { user, loggingIn } = useTracker(() => ({
+    user: Meteor.user() as IUser | null,
+    loggingIn: Meteor.loggingIn(),
+  }));
+
   const [router, setRouter] = useState(publicRouter);
 
   useEffect(() => {
+    // Only switch routers when not logging in
+    if (loggingIn) return;
+
     if (user) {
       setRouter(adminRouter);
     } else {
       setRouter(publicRouter);
     }
-  }, [user, router]);
+  }, [user, loggingIn, adminRouter, publicRouter]);
 
   return <RouterProvider router={router} key={window.location.pathname} />;
 };

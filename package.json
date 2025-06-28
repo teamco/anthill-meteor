@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "start": "yarn run routes:watch & meteor run",
+    "start": "meteor --settings settings.json run --port 3005",
     "precommit": "lint-staged",
     "routes:generate": "tsr generate",
     "routes:watch": "tsr watch",

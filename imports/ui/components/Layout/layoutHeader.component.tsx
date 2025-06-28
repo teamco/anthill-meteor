@@ -1,5 +1,4 @@
-// @ts-expect-error - Expected issue with react import
-import React, { Dispatch, FC, JSX, SetStateAction } from 'react';
+import React, { Dispatch, FC, SetStateAction } from 'react';
 import { Meteor } from 'meteor/meteor';
 import {
   LogoutOutlined,
@@ -42,13 +41,19 @@ interface IUserProfile extends Meteor.User {
 export const LayoutHeader: FC<THeaderProps> = (props: {
   title: string;
   onMenuOpen: Dispatch<SetStateAction<boolean>>;
-}): JSX.Element => {
+}): React.JSX.Element => {
   const { title, onMenuOpen } = props;
 
   const intl: TIntl = useIntl();
   const navigate = useNavigate();
 
   const user: IUserProfile = useTracker(() => Meteor.user()) as IUserProfile;
+
+  const handleSignOut = () => {
+    Meteor.logout(() => {
+      navigate({ to: TRouterTypes.SIGNIN });
+    });
+  };
 
   const items: MenuProps['items'] = [
     {
@@ -67,8 +72,8 @@ export const LayoutHeader: FC<THeaderProps> = (props: {
     {
       key: 'signout',
       label: (
-        <div onClick={() => Meteor.logout()}>{t(intl, 'auth.signOut')}</div>
-      ),
+        <div onClick={handleSignOut}>{t(intl, 'auth.signOut')}</div>
+      ) as React.ReactNode,
       icon: <LogoutOutlined />,
     },
   ];

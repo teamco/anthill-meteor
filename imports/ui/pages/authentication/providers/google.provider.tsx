@@ -5,16 +5,20 @@ import { GoogleOutlined } from '@ant-design/icons';
 
 import '../signin/signin.module.less';
 
-const LoginWithGoogle = () => {
+const LoginWithGoogle = (): React.JSX.Element => {
   const handleGoogleLogin = () => {
     Meteor.loginWithGoogle({
       requestPermissions: ['email', 'profile'],
-      loginStyle: 'popup'
+      loginStyle: 'popup',
     });
   };
 
   return (
-    <Button type='primary' icon={<GoogleOutlined />} onClick={handleGoogleLogin}/>
+    <Button
+      type="primary"
+      icon={<GoogleOutlined />}
+      onClick={handleGoogleLogin}
+    />
   );
 };
 

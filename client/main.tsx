@@ -12,7 +12,7 @@ import { initDayjs } from '/imports/utils/dayjs.util';
 import {
   adminRouteTree,
   publicRouteTree,
-} from '/imports/config/routes/routeTree.gen';
+} from '/imports/config/routes/routeConfig';
 
 import Page404 from '/imports/ui/pages/404';
 import { Navigator } from './navigator';

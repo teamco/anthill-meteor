@@ -1,9 +1,10 @@
 import { Meteor } from 'meteor/meteor';
 import React, { JSX, useContext } from 'react';
 import { Button, Col, Form, Input, Layout, Row, Tooltip } from 'antd';
+import { NotificationInstance } from 'antd/es/notification/interface';
 import { FormOutlined, LockTwoTone, LoginOutlined } from '@ant-design/icons';
 import { useIntl } from 'react-intl';
-import { useNavigate } from '@tanstack/react-router';
+import { createFileRoute, useNavigate } from '@tanstack/react-router';
 
 import { t, TIntl } from '/imports/utils/i18n.util';
 import { requiredField } from '/imports/utils/form.util';
@@ -67,7 +68,7 @@ const SignIn: React.FC = (): JSX.Element => {
       async (e): Promise<void> => {
         const error = e as TNotificationError;
         if (error) {
-          return catchErrorMsg(notificationApi, error);
+          return catchErrorMsg(notificationApi as NotificationInstance, error);
         }
 
         formRef.resetFields();
@@ -159,3 +160,7 @@ const SignIn: React.FC = (): JSX.Element => {
 };
 
 export default SignIn;
+
+export const Route = createFileRoute(TRouterTypes.SIGNIN)({
+  component: SignIn,
+});

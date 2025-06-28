@@ -1,138 +1,134 @@
-import { createFileRoute, RootRoute, Route } from '@tanstack/react-router';
 import { TRouterTypes } from '/imports/config/types';
 
-import SignIn from '/imports/ui/pages/authentication/signin/signin';
-import { Route as SignupRouteImport } from '/imports/ui/pages/authentication/signup/signup';
-
-import { Route as AdminRouteImport } from './__root';
-import { Route as PublicRouteImport } from './__publicRoot';
-
-import { Route as DashboardRouteImport } from '/imports/ui/pages/dashboard/dashboard.page';
-import { Route as WidgetsRouteImport } from '/imports/ui/pages/dashboard/widgets/widgets.page';
-import { Route as EnvironmentsRouteImport } from '/imports/ui/pages/dashboard/environments/environments.page';
-import { Route as EnvironmentEditRouteImport } from '/imports/ui/pages/dashboard/environments/environment/environment.edit';
-import { Route as EnvironmentPreviewRouteImport } from '/imports/ui/pages/dashboard/environments/environment/preview/environment.preview';
-import { Route as UserLogsRouteImport } from '/imports/ui/pages/dashboard/userLogs/userLogs.page';
-
-import { Route as Error404RouteImport } from '/imports/ui/pages/404';
-
-/**
- * Creates or updates a route using the provided route import, path, and
- * parent route.
- *
- * @param RouteImport - The route import object to be updated.
- * @param path - The path identifier for the route, based on TRouterTypes.
- * @param parentRoute - The parent route to associate with the new route.
- * Defaults to AdminRouteImport.
- * @returns The updated route object.
- */
-function createRoute(
-  RouteImport: any,
-  path: TRouterTypes,
-  parentRoute: RootRoute = AdminRouteImport,
-): Route {
-  return RouteImport.update({
-    id: path,
-    path,
-    getParentRoute: () => parentRoute,
-  } as any);
-}
-
-export const SigninRouteImport = createFileRoute(TRouterTypes.SIGNIN)({
-  component: SignIn,
-});
-
-const SigninRoute = createRoute(SigninRouteImport, TRouterTypes.SIGNIN);
-const SignupRoute = createRoute(SignupRouteImport, TRouterTypes.SIGNUP);
-
-const Error404Route = createRoute(Error404RouteImport, TRouterTypes.ERROR_404);
-
-const DashboardRoute = createRoute(
-  DashboardRouteImport,
-  TRouterTypes.DASHBOARD,
-);
-
-const DashboardEnvironmentsRoute = createRoute(
-  EnvironmentsRouteImport,
-  TRouterTypes.DASHBOARD_ENVIRONMENTS,
-);
-
-const DashboardWidgetsRoute = createRoute(
-  WidgetsRouteImport,
-  TRouterTypes.DASHBOARD_WIDGETS,
-);
-
-const DashboardEnvironmentEditRoute = createRoute(
-  EnvironmentEditRouteImport,
-  TRouterTypes.DASHBOARD_ENVIRONMENT_EDIT,
-);
-
-const DashboardEnvironmentPreviewRoute = createRoute(
-  EnvironmentPreviewRouteImport,
-  TRouterTypes.DASHBOARD_ENVIRONMENT_PREVIEW,
-);
-
-const UserLogsRoute = createRoute(
-  UserLogsRouteImport,
-  TRouterTypes.DASHBOARD_USER_LOGS,
-);
+import {
+  adminRouteImport,
+  dashboardRouteImport,
+  environmentEditRouteImport,
+  environmentPreviewRouteImport,
+  environmentsRouteImport,
+  error404RouteImport,
+  publicRouteImport,
+  signinRouteImport,
+  signupRouteImport,
+  userLogsRouteImport,
+  widgetsRouteImport,
+} from './routeConfig';
 
 // Populate the FileRoutesByPath interface
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
     [TRouterTypes.ERROR_404]: {
-      preLoaderRoute: typeof Error404RouteImport;
-      parentRoute: typeof PublicRouteImport | typeof AdminRouteImport;
+      preLoaderRoute: typeof error404RouteImport;
+      parentRoute: typeof publicRouteImport | typeof adminRouteImport;
     };
     [TRouterTypes.SIGNIN]: {
-      preLoaderRoute: typeof SigninRouteImport;
-      parentRoute: typeof PublicRouteImport;
+      preLoaderRoute: typeof signinRouteImport;
+      parentRoute: typeof publicRouteImport;
     };
     [TRouterTypes.SIGNUP]: {
-      preLoaderRoute: typeof SignupRouteImport;
-      parentRoute: typeof PublicRouteImport;
+      preLoaderRoute: typeof signupRouteImport;
+      parentRoute: typeof publicRouteImport;
     };
     [TRouterTypes.DASHBOARD]: {
-      preLoaderRoute: typeof DashboardRouteImport;
-      parentRoute: typeof AdminRouteImport;
+      preLoaderRoute: typeof dashboardRouteImport;
+      parentRoute: typeof adminRouteImport;
     };
     [TRouterTypes.DASHBOARD_ENVIRONMENTS]: {
-      preLoaderRoute: typeof EnvironmentsRouteImport;
-      parentRoute: typeof AdminRouteImport;
+      preLoaderRoute: typeof environmentsRouteImport;
+      parentRoute: typeof adminRouteImport;
     };
     [TRouterTypes.DASHBOARD_ENVIRONMENT_EDIT]: {
-      preLoaderRoute: typeof DashboardEnvironmentEditRoute;
-      parentRoute: typeof AdminRouteImport;
+      preLoaderRoute: typeof environmentEditRouteImport;
+      parentRoute: typeof adminRouteImport;
     };
     [TRouterTypes.DASHBOARD_ENVIRONMENT_PREVIEW]: {
-      preLoaderRoute: typeof DashboardEnvironmentPreviewRoute;
-      parentRoute: typeof AdminRouteImport;
+      preLoaderRoute: typeof environmentPreviewRouteImport;
+      parentRoute: typeof adminRouteImport;
     };
     [TRouterTypes.DASHBOARD_WIDGETS]: {
-      preLoaderRoute: typeof DashboardWidgetsRoute;
-      parentRoute: typeof AdminRouteImport;
+      preLoaderRoute: typeof widgetsRouteImport;
+      parentRoute: typeof adminRouteImport;
     };
     [TRouterTypes.DASHBOARD_USER_LOGS]: {
-      preLoaderRoute: typeof UserLogsRouteImport;
-      parentRoute: typeof AdminRouteImport;
+      preLoaderRoute: typeof userLogsRouteImport;
+      parentRoute: typeof adminRouteImport;
     };
   }
 }
 
-// Create and export the route tree
-export const adminRouteTree = AdminRouteImport.addChildren([
-  Error404Route,
-  SigninRoute,
-  DashboardRoute,
-  DashboardWidgetsRoute,
-  DashboardEnvironmentsRoute,
-  DashboardEnvironmentEditRoute,
-  DashboardEnvironmentPreviewRoute,
-  UserLogsRoute,
-]);
+export interface FileRoutesByFullPath {
+  [TRouterTypes.DASHBOARD]: typeof adminRouteImport;
+  [TRouterTypes.ERROR_404]: typeof error404RouteImport;
+  [TRouterTypes.SIGNIN]: typeof signinRouteImport;
+  [TRouterTypes.SIGNUP]: typeof signupRouteImport;
+  [TRouterTypes.DASHBOARD_ENVIRONMENTS]: typeof environmentsRouteImport;
+  [TRouterTypes.DASHBOARD_ENVIRONMENT_EDIT]: typeof environmentEditRouteImport;
+  [TRouterTypes.DASHBOARD_ENVIRONMENT_PREVIEW]: typeof environmentPreviewRouteImport;
+  [TRouterTypes.DASHBOARD_WIDGETS]: typeof widgetsRouteImport;
+  [TRouterTypes.DASHBOARD_USER_LOGS]: typeof userLogsRouteImport;
+}
 
-export const publicRouteTree = PublicRouteImport.addChildren([
-  Error404Route,
-  SignupRoute,
-  SigninRoute,
-]);
+export interface FileRoutesByTo {
+  [TRouterTypes.DASHBOARD]: typeof adminRouteImport;
+  [TRouterTypes.ERROR_404]: typeof error404RouteImport;
+  [TRouterTypes.SIGNIN]: typeof signinRouteImport;
+  [TRouterTypes.SIGNUP]: typeof signupRouteImport;
+  [TRouterTypes.DASHBOARD_ENVIRONMENTS]: typeof environmentsRouteImport;
+  [TRouterTypes.DASHBOARD_ENVIRONMENT_EDIT]: typeof environmentEditRouteImport;
+  [TRouterTypes.DASHBOARD_ENVIRONMENT_PREVIEW]: typeof environmentPreviewRouteImport;
+  [TRouterTypes.DASHBOARD_WIDGETS]: typeof widgetsRouteImport;
+  [TRouterTypes.DASHBOARD_USER_LOGS]: typeof userLogsRouteImport;
+}
+
+export interface FileRoutesById {
+  [TRouterTypes.DASHBOARD]: typeof adminRouteImport;
+  [TRouterTypes.ERROR_404]: typeof error404RouteImport;
+  [TRouterTypes.SIGNIN]: typeof signinRouteImport;
+  [TRouterTypes.SIGNUP]: typeof signupRouteImport;
+  [TRouterTypes.DASHBOARD_ENVIRONMENTS]: typeof environmentsRouteImport;
+  [TRouterTypes.DASHBOARD_ENVIRONMENT_EDIT]: typeof environmentEditRouteImport;
+  [TRouterTypes.DASHBOARD_ENVIRONMENT_PREVIEW]: typeof environmentPreviewRouteImport;
+  [TRouterTypes.DASHBOARD_WIDGETS]: typeof widgetsRouteImport;
+  [TRouterTypes.DASHBOARD_USER_LOGS]: typeof userLogsRouteImport;
+}
+
+export interface FileRouteTypes {
+  fileRoutesByFullPath: FileRoutesByFullPath;
+  fullPaths: never;
+  fileRoutesByTo: FileRoutesByTo;
+  to: never;
+  id: '__root__';
+  fileRoutesById: FileRoutesById;
+}
+
+export interface RootRouteChildren {
+  [TRouterTypes.DASHBOARD]: typeof adminRouteImport;
+  [TRouterTypes.ERROR_404]: typeof error404RouteImport;
+  [TRouterTypes.SIGNIN]: typeof signinRouteImport;
+  [TRouterTypes.SIGNUP]: typeof signupRouteImport;
+  [TRouterTypes.DASHBOARD_ENVIRONMENTS]: typeof environmentsRouteImport;
+  [TRouterTypes.DASHBOARD_ENVIRONMENT_EDIT]: typeof environmentEditRouteImport;
+  [TRouterTypes.DASHBOARD_ENVIRONMENT_PREVIEW]: typeof environmentPreviewRouteImport;
+  [TRouterTypes.DASHBOARD_WIDGETS]: typeof widgetsRouteImport;
+  [TRouterTypes.DASHBOARD_USER_LOGS]: typeof userLogsRouteImport;
+}
+
+export interface RootRoute {
+  preLoaderRoute: typeof adminRouteImport;
+  children: RootRouteChildren;
+}
+
+export const rootRoute: RootRoute = {
+  preLoaderRoute: adminRouteImport,
+  children: {
+    [TRouterTypes.DASHBOARD]: adminRouteImport,
+    [TRouterTypes.ERROR_404]: error404RouteImport,
+    [TRouterTypes.SIGNIN]: signinRouteImport,
+    [TRouterTypes.SIGNUP]: signupRouteImport,
+    [TRouterTypes.DASHBOARD_ENVIRONMENTS]: environmentsRouteImport,
+    [TRouterTypes.DASHBOARD_ENVIRONMENT_EDIT]: environmentEditRouteImport,
+    [TRouterTypes.DASHBOARD_ENVIRONMENT_PREVIEW]: environmentPreviewRouteImport,
+    [TRouterTypes.DASHBOARD_WIDGETS]: widgetsRouteImport,
+    [TRouterTypes.DASHBOARD_USER_LOGS]: userLogsRouteImport,
+  },
+};
