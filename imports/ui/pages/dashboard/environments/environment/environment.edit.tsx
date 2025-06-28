@@ -14,7 +14,6 @@ import { I18nContext } from '/imports/ui/context/i18n.context';
 import { AbilityContext } from '/imports/ui/context/authentication.context';
 
 import Page from '/imports/ui/components/Page/page.component';
-import Page404 from '/imports/ui/pages/404';
 
 import { t } from '/imports/utils/i18n.util';
 

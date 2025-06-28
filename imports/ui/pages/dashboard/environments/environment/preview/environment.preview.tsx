@@ -112,7 +112,7 @@ const EnvironmentPreview: React.FC = (): JSX.Element => {
     parentId: string,
   ): void => {
     if (!parentId || parentId.trim() === '') {
-      modalApi.error({
+      modalApi?.error({
         title: t(intl, 'error.invalidParent'),
         content: t(intl, 'error.invalidParentMessage'),
       });
@@ -163,7 +163,7 @@ const EnvironmentPreview: React.FC = (): JSX.Element => {
         ]);
         break;
       default:
-        modalApi.error({
+        modalApi?.error({
           title: t(intl, 'error.invalidDirection'),
           content: t(intl, 'error.invalidDirectionMessage', { direction }),
         });
@@ -221,7 +221,7 @@ const EnvironmentPreview: React.FC = (): JSX.Element => {
   );
 
   const handleSplitterSetting = useCallback(() => {
-    modalApi.info({
+    modalApi?.info({
       width: 600,
       title: t(intl, 'actions.addNew', { type: t(intl, 'widget.title') }),
       content: (
@@ -273,7 +273,7 @@ const EnvironmentPreview: React.FC = (): JSX.Element => {
           updatedSplitter = structuredClone(prevSplitter);
         } catch (error) {
           console.error('Failed to clone splitter structure:', error);
-          modalApi.error({
+          modalApi?.error({
             title: t(intl, 'error.cloneFailure'),
             content: t(intl, 'error.cloneFailureMessage', { id: node.uuid }),
           });

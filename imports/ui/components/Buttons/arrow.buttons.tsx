@@ -1,4 +1,4 @@
-import { FC, JSX } from 'react';
+import React, { FC } from 'react';
 import {
   CaretUpOutlined,
   CaretDownOutlined,
@@ -33,7 +33,7 @@ type TBtn = {
  * The buttons are of type text and size small.
  * The component also logs the panelId to the console.
  */
-export const ArrowButtons: FC<TProps> = (props): JSX.Element => {
+export const ArrowButtons: FC<TProps> = (props): React.JSX.Element => {
   const { className, onClick, panelId } = props;
 
   const btnProps: TBtn = {
