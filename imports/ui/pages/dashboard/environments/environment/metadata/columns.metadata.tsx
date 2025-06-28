@@ -75,8 +75,8 @@ export const metadataColumns = ({
       render(widgets: TWidget[]): JSX.Element {
         return (
           <div>
-            {widgets.map((widget, idx) => (
-              <Tag key={idx}>{widget.name}</Tag>
+            {Object.values(widgets).map((widget: TWidget, idx: number) => (
+              <Tag key={widget._id || idx}>{widget.name}</Tag>
             ))}
           </div>
         );
