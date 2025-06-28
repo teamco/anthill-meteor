@@ -98,12 +98,12 @@ const SignIn: React.FC = (): JSX.Element => {
                 name={'password'}
                 label={passField}
                 hasFeedback
-                rules={[requiredField(intl, passField)]}
+                rules={[requiredField(intl, passField as string)]}
               >
                 <Input.Password
                   prefix={<LockTwoTone />}
                   autoComplete={'new-password'}
-                  placeholder={t(intl, 'auth.password')}
+                  placeholder={t(intl, 'auth.password') as string}
                 />
               </Form.Item>
             </Col>

@@ -28,6 +28,8 @@ import { Can } from '/imports/ui/components/Ability/can';
 import { TRouterTypes, TNotificationError } from '/imports/config/types';
 
 import './signup.module.less';
+import { NotificationInstance } from 'antd/es/notification/interface';
+import { MessageInstance } from 'antd/es/message/interface';
 
 const { Content } = Layout;
 
@@ -85,12 +87,12 @@ const SignUp: React.FC = (): JSX.Element => {
       },
       async (error: TNotificationError): Promise<void> => {
         if (error) {
-          return catchErrorMsg(notificationApi, error);
+          return catchErrorMsg(notificationApi as NotificationInstance, error);
         }
 
         formRef.resetFields();
 
-        successSaveMsg(messageApi, intl, 'User');
+        successSaveMsg(messageApi as MessageInstance, intl, 'User');
 
         await navigate({ to: TRouterTypes.SIGNIN });
       },
@@ -178,11 +180,11 @@ const SignUp: React.FC = (): JSX.Element => {
               <Form.Item
                 name={'firstName'}
                 label={firstNameField}
-                rules={[requiredField(intl, firstNameField)]}
+                rules={[requiredField(intl, firstNameField as string)]}
               >
                 <Input
                   prefix={<ProfileTwoTone />}
-                  placeholder={firstNameField}
+                  placeholder={firstNameField as string}
                 />
               </Form.Item>
             </Col>
@@ -190,11 +192,11 @@ const SignUp: React.FC = (): JSX.Element => {
               <Form.Item
                 name={'lastName'}
                 label={lastNameField}
-                rules={[requiredField(intl, lastNameField)]}
+                rules={[requiredField(intl, lastNameField as string)]}
               >
                 <Input
                   prefix={<ProfileTwoTone />}
-                  placeholder={lastNameField}
+                  placeholder={lastNameField as string}
                 />
               </Form.Item>
             </Col>
@@ -209,14 +211,17 @@ const SignUp: React.FC = (): JSX.Element => {
                 label={passField}
                 hasFeedback
                 extra={t(intl, 'auth.passwordHelper', {
-                  length: MIN_PASSWORD_LENGTH,
+                  length: MIN_PASSWORD_LENGTH.toString(),
                 })}
-                rules={[requiredField(intl, passField), passwordValidate]}
+                rules={[
+                  requiredField(intl, passField as string),
+                  passwordValidate,
+                ]}
               >
                 <Input.Password
                   prefix={<LockTwoTone />}
                   autoComplete={'new-password'}
-                  placeholder={t(intl, 'auth.password')}
+                  placeholder={t(intl, 'auth.password') as string}
                 />
               </Form.Item>
             </Col>
@@ -227,14 +232,14 @@ const SignUp: React.FC = (): JSX.Element => {
                 dependencies={['password']}
                 hasFeedback
                 rules={[
-                  requiredField(intl, passConfirmationField),
+                  requiredField(intl, passConfirmationField as string),
                   passwordConfirmValidate,
                 ]}
               >
                 <Input.Password
                   prefix={<LockTwoTone />}
                   autoComplete={'new-password'}
-                  placeholder={t(intl, 'auth.passwordConfirm')}
+                  placeholder={t(intl, 'auth.passwordConfirm') as string}
                 />
               </Form.Item>
             </Col>

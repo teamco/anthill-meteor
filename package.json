@@ -5,6 +5,7 @@
   "license": "MIT",
   "scripts": {
     "start": "meteor --settings settings.json run --port 3005",
+    "debug": "meteor --inspect --settings settings.json run --port 3005",
     "precommit": "lint-staged",
     "routes:generate": "tsr generate",
     "routes:watch": "tsr watch",

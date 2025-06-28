@@ -82,7 +82,11 @@ export const LayoutHeader: FC<THeaderProps> = (props: {
       <div className="lHA">
         <Dropdown menu={{ items }} trigger={['click']}>
           <div className={classnames('avatar', { success: navigator.onLine })}>
-            <img src={user?.profile?.picture} alt={user?.profile?.name} />
+            <img
+              src={user?.profile?.picture}
+              alt={user?.profile?.name}
+              referrerPolicy="no-referrer"
+            />
             <div />
           </div>
         </Dropdown>
