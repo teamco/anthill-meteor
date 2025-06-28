@@ -1,6 +1,7 @@
 import { Accounts } from 'meteor/accounts-base';
-import { IUserProfile, TProviders } from '/imports/config/types/user.type';
 import { Meteor } from 'meteor/meteor';
+
+import { IUserProfile, TProviders } from '/imports/config/types/user.type';
 import { EProviders, TProvidersType } from '/server/types/provider.type';
 
 Accounts.onCreateUser((options, user: Meteor.User) => {

@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
 import gravatar from 'gravatar';
 
-import { IUser, IUserProfile } from '/imports/config/types';
+import { IUserProfile } from '/imports/config/types';
 
 import { EProviders } from '../types/provider.type';
 
