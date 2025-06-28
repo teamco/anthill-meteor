@@ -9,11 +9,15 @@ import { t } from '/imports/utils/i18n.util';
 import { TRouterTypes } from '/imports/config/types';
 
 type TProps = {
-  subject?: string;
+  status?: ResultStatusType;
+  ableFor?: {
+    subject?: string;
+  };
 };
 
 const Page404: React.FC<TProps> = (props): JSX.Element => {
-  const { subject = 'page404' } = props;
+  const { ableFor = {}, status = 404 } = props;
+  const { subject = 'page404' } = ableFor;
 
   const routerState = useRouterState();
 
@@ -23,7 +27,7 @@ const Page404: React.FC<TProps> = (props): JSX.Element => {
     <ErrorPage
       subTitle={t(intl, 'error.page404')}
       subject={subject}
-      status={routerState.statusCode as ResultStatusType}
+      status={status || (routerState.statusCode as ResultStatusType)}
     />
   );
 };

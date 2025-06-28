@@ -9,12 +9,14 @@ import {
 } from '/imports/ui/components/Helmet/helmet.component';
 
 import Page403 from '/imports/ui/pages/403';
+import Page404 from '/imports/ui/pages/404';
 
 import { EAbilityAction, TAbility } from '/imports/config/types';
 
 import './page.module.less';
 
 type TPageProps = {
+  raiseOn404?: boolean;
   testId?: string;
   className?: string;
   title: string;
@@ -27,6 +29,7 @@ type TPageProps = {
 /**
  * @function Page
  * @param props.testId The id of the div container of the page (used in tests only)
+ * @param props.raiseOn404 Whether or not to raise an error if the page is not found
  * @param props.className The class of the div container of the page
  * @param props.loading Whether or not the page should display a spinner
  * @param props.ableFor The ability of the page. If the user doesn't have enough permissions to access the page, the page will be redirected to the page403 page with the given status (default is 403).
@@ -39,6 +42,7 @@ const Page: React.FC<TPageProps> = (props: TPageProps): JSX.Element => {
   const {
     testId,
     className,
+    raiseOn404 = false,
     loading = false,
     ableFor: { action = EAbilityAction.READ, subject },
     title,
@@ -72,13 +76,16 @@ const Page: React.FC<TPageProps> = (props: TPageProps): JSX.Element => {
     <div className={classnames('page', className)} data-testid={testId}>
       <Can I={action} a={subject}>
         <HelmetComponent {...helmetProps} />
-        <div>
-          <Loader loading={!!loading} />
-          <h1>{title}</h1>
-          <h4>{description}</h4>
-        </div>
-        {loading ? 'Loading...' : <div>{children}</div>}
+        {raiseOn404 ? null : (
+          <div>
+            <Loader loading={!!loading} />
+            <h1>{title}</h1>
+            <h4>{description}</h4>
+          </div>
+        )}
+        {loading ? 'Loading...' : raiseOn404 ? null : <div>{children}</div>}
       </Can>
+      {raiseOn404 && <Page404 ableFor={props.ableFor} />}
       <Page403 ableFor={props.ableFor} />
     </div>
   );
