@@ -1,3 +1,4 @@
+import React from 'react';
 import { DescriptionsItemType, DescriptionsProps } from 'antd/es/descriptions';
 import { Form, Input, Segmented } from 'antd';
 import { PauseCircleTwoTone, PlayCircleTwoTone } from '@ant-design/icons';
@@ -60,7 +61,7 @@ export const DescriptionMetadata = (
             placeholder={placeholderField(intl, nameMsg, 'actions.enter')}
           />
         </Form.Item>
-      ),
+      ) as React.ReactNode,
     },
     {
       key: 'description',
@@ -80,7 +81,7 @@ export const DescriptionMetadata = (
             style={{ maxHeight: 250, height: 100, marginBottom: 30 }}
           />
         </Form.Item>
-      ),
+      ) as React.ReactNode,
     },
     {
       key: 'envStatus',
@@ -117,7 +118,7 @@ export const DescriptionMetadata = (
             ]}
           />
         </Form.Item>
-      ),
+      ) as React.ReactNode,
     },
     {
       key: 'createdAt',
@@ -128,7 +129,9 @@ export const DescriptionMetadata = (
       key: 'updatedAt',
       span: 'filled',
       label: t(intl, 'message.info.updatedAt'),
-      children: tsToLocaleDateTime(environment?.metadata.updatedAt.toString()),
+      children: tsToLocaleDateTime(
+        environment?.metadata?.updatedAt?.toString(),
+      ),
     },
     {
       key: 'createdBy',

@@ -44,16 +44,6 @@ export interface IMetadata extends TTimestamp {
   updatedBy: IUser['_id'];
 }
 
-export type TNotification = {
-  modalApi: HookAPI;
-  messageApi: MessageInstance;
-  notificationApi: NotificationInstance;
-};
-
-export type TCommonAPI = {
-  intl?: TIntl;
-} & TNotification;
-
 export type TTemplate = [{ items: [TSplitter[]] }] | [];
 
 export enum ESort {

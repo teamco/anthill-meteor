@@ -91,7 +91,7 @@ export const catchClassErrorMsg = (
   notificationApi: NotificationInstance,
   e: { message: string },
 ): void => {
-  notificationApi.error({
+  notificationApi?.error({
     message: '400: Bad Request',
     description: e.message,
     ...TNotificationConfig,

@@ -73,9 +73,11 @@ const WidgetsPage: React.FC = (): JSX.Element => {
 
   const user = Meteor.user();
 
-  const messageConfig: TMessageConfig = {
-    notificationApi,
-    messageApi,
+  const messageConfig: Required<
+    Pick<TMessageConfig, 'notificationApi' | 'messageApi' | 'intl'>
+  > = {
+    notificationApi: notificationApi!,
+    messageApi: messageApi!,
     intl,
   };
 
@@ -151,7 +153,7 @@ const WidgetsPage: React.FC = (): JSX.Element => {
    * the addition of a new widget.
    */
   const handleCreateWidget = () => {
-    modalApi.info({
+    modalApi?.info({
       width: 600,
       title: t(intl, 'actions.addNew', { type: t(intl, 'widget.title') }),
       content: (
@@ -159,7 +161,7 @@ const WidgetsPage: React.FC = (): JSX.Element => {
           disabled={isLoading()}
           onSave={(values) => {
             if (!values?.path) {
-              catchClassErrorMsg(notificationApi, {
+              catchClassErrorMsg(notificationApi!, {
                 message: 'Widget path is required',
               });
               return;
@@ -172,20 +174,20 @@ const WidgetsPage: React.FC = (): JSX.Element => {
                 ) => TWidget;
 
                 if (typeof Entity !== 'function') {
-                  catchClassErrorMsg(notificationApi, {
+                  catchClassErrorMsg(notificationApi!, {
                     message: 'Unable to load widget',
                   });
                 }
 
                 const widget = new Widget(Entity, user as IUser, {
-                  notificationApi,
+                  notificationApi: notificationApi!,
                   intl,
                 });
 
                 createWidget(widget, handleRefresh, messageConfig);
               })
               .catch((e) => {
-                catchClassErrorMsg(notificationApi, {
+                catchClassErrorMsg(notificationApi!, {
                   message: e.message,
                 });
               });

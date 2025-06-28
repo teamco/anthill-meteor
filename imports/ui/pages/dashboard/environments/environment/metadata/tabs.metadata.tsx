@@ -22,7 +22,7 @@ import { TEnvironment, TEnvironmentEdit } from '/imports/config/types';
 import { WidgetsCollection } from '/imports/collections/widgets.collection';
 import { LayoutsCollection } from '/imports/collections/layouts.collection';
 
-import { AbilityContext } from '../../../../../context/authentication.context';
+import { AbilityContext } from '/imports/ui/context/authentication.context';
 import { I18nContext } from '/imports/ui/context/i18n.context';
 
 import { DescriptionMetadata } from './description.metadata';
@@ -70,16 +70,18 @@ export const useEnvironmentTabs = (
     isDraft: false,
   });
 
-  const _canUpdate = ability.can('update', environmentId) && canUpdate;
+  const _canUpdate = ability?.can('update', environmentId) && canUpdate;
 
   /**
    * @function onFinish
    * @description Handles the successful form submission
-   * @param {TField} values - The form values
+   * @param {Required<TField>} values - The form values
    * @example
    * <EnvironmentNew onSave={(values) => console.log(values)} />
    */
-  const onFinish: FormProps<TField>['onFinish'] = (values: TField): void => {
+  const onFinish: FormProps<Required<TField>>['onFinish'] = (
+    values: Required<TField>,
+  ): void => {
     const { name, description } = values;
     const data: Pick<TEnvironmentEdit, 'name' | 'description' | 'status'> = {
       name,
@@ -87,7 +89,7 @@ export const useEnvironmentTabs = (
       status,
     };
 
-    updateEnvironment(environmentId, data, intl);
+    updateEnvironment(environmentId, data, { intl });
     setUpdate(false);
   };
 
@@ -104,11 +106,12 @@ export const useEnvironmentTabs = (
     getEntities,
     LayoutsCollection as any,
   );
+
   const widgets: TUseTable = useTable(
     'widgetsPaginate',
     getEntities,
     WidgetsCollection as any,
-    {},
+    {} as any,
   );
 
   /**
@@ -197,7 +200,7 @@ export const useEnvironmentTabs = (
       );
     },
     getCheckboxProps: (record: IDataType) => ({
-      disabled: ability.cannot('assign', record._id),
+      disabled: ability?.cannot('assign', record._id as string),
       name: record.name,
     }),
   };
@@ -215,7 +218,7 @@ export const useEnvironmentTabs = (
       key: TEnvironmentTabs.GENERAL,
       icon: <FormOutlined />,
       label: t(intl, 'environment.tabs.general'),
-      disabled: ability.cannot(
+      disabled: ability?.cannot(
         `access.${TEnvironmentTabs.GENERAL}`,
         environmentId,
       ),
@@ -224,16 +227,21 @@ export const useEnvironmentTabs = (
           layout={'vertical'}
           autoComplete={'off'}
           form={form}
-          disabled={ability.cannot('update', environmentId)}
+          disabled={ability?.cannot('update', environmentId)}
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}
           onFieldsChange={onFieldsChange}
           initialValues={{
             name: environment?.name,
             description: environment?.description,
-            status: Object.keys(environment?.status || {}).find(
-              (s) => environment?.status[s],
-            ),
+            status: {
+              ...(environment?.status?.isDraft && {
+                isDraft: environment.status.isDraft,
+              }),
+              ...(environment?.status?.isActive && {
+                isActive: environment.status.isActive,
+              }),
+            },
           }}
         >
           <Descriptions
@@ -259,13 +267,13 @@ export const useEnvironmentTabs = (
             }
           />
         </Form>
-      ),
+      ) as React.ReactNode,
     },
     {
       key: TEnvironmentTabs.LAYOUTS,
       icon: <BlockOutlined />,
       label: t(intl, 'environment.tabs.layouts'),
-      disabled: ability.cannot(
+      disabled: ability?.cannot(
         `access.${TEnvironmentTabs.LAYOUTS}`,
         environmentId,
       ),
@@ -280,7 +288,7 @@ export const useEnvironmentTabs = (
       key: TEnvironmentTabs.WIDGETS,
       icon: <AppstoreAddOutlined />,
       label: t(intl, 'environment.tabs.widgets'),
-      disabled: ability.cannot(
+      disabled: ability?.cannot(
         `access.${TEnvironmentTabs.WIDGETS}`,
         environmentId,
       ),

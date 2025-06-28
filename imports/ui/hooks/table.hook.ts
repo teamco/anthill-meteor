@@ -1,5 +1,5 @@
 import { Meteor } from 'meteor/meteor';
-import { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { TableProps } from 'antd';
 import { useSearch, useRouter } from '@tanstack/react-router';
 import { useTracker } from 'meteor/react-meteor-data';
@@ -56,7 +56,7 @@ export const useTable = (
   Collection: Mongo.Collection<Document, Document>,
   defaults?: TDefaults,
 ): TUseTable => {
-  const { notificationApi } = useContext(NotificationContext);
+  const { notificationApi } = React.useContext(NotificationContext);
 
   const DEFAULT_PAGE_CURRENT = defaults?.current || 1;
   const DEFAULT_PAGE_SIZE = defaults?.pageSize || 10;
@@ -102,7 +102,7 @@ export const useTable = (
         pageSize: tableParams.pagination?.pageSize,
         sort: [tableParams.sortField, tableParams.sortOrder],
       },
-      { notificationApi },
+      { notificationApi: notificationApi! },
     );
   };
 

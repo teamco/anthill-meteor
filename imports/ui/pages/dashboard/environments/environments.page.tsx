@@ -79,8 +79,8 @@ const EnvironmentsPage: React.FC = (): JSX.Element => {
   const navigate = useNavigate();
 
   const messageConfig: TMessageConfig = {
-    notificationApi,
-    messageApi,
+    notificationApi: notificationApi!,
+    messageApi: messageApi!,
     intl,
   };
 
@@ -183,7 +183,7 @@ const EnvironmentsPage: React.FC = (): JSX.Element => {
    * the addition of a new environment.
    */
   const handleCreateEnvironment = () => {
-    modalApi.info({
+    modalApi?.info({
       width: 600,
       title: t(intl, 'actions.addNew', { type: t(intl, 'environment.title') }),
       content: (

@@ -1,4 +1,4 @@
-import { JSX } from 'react';
+import React, { JSX } from 'react';
 import { ColumnType, TableProps } from 'antd/es/table';
 import { Tag } from 'antd';
 
@@ -88,12 +88,8 @@ export const metadataColumns = ({
       dataIndex: 'metadata',
       key: 'metadata.updatedAt',
       ...columnSorter(sortedInfo, 'metadata.createdAt', 'metadata'),
-      render: ({ updatedAt }: IMetadata): JSX.Element => {
-        return (
-          <div>
-            {updatedAt ? tsToLocaleDateTime(updatedAt.toString()) : null}
-          </div>
-        );
+      render: ({ updatedAt }: IMetadata): React.JSX.Element => {
+        return <div>{tsToLocaleDateTime(updatedAt?.toString())}</div>;
       },
     },
     actionsColumn,

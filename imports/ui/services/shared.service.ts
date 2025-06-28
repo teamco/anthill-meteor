@@ -1,8 +1,8 @@
 import { Meteor } from 'meteor/meteor';
 
 import {
-  TCommonAPI,
   TLayout,
+  TLayoutWidget,
   TMessageConfig,
   TNotificationError,
   TWidget,
@@ -12,21 +12,43 @@ import { catchErrorMsg } from '/imports/utils/message.util';
 
 type TEntity = {
   [key: string]: unknown;
-  layout: TLayout & Partial<TCommonAPI>;
-} & Partial<TCommonAPI>;
+  layout?: (TLayout & Partial<TMessageConfig>) & {
+    widgets?: TLayoutWidget | Record<string, TWidget & Partial<TMessageConfig>>;
+  };
+} & Partial<TMessageConfig>;
 
-export const prepareToCreate = (Entity: TEntity) => {
+/**
+ * Prepare an entity to be created.
+ *
+ * Removes notificationApi and intl properties from the entity itself and all
+ * its widgets.
+ *
+ * @param {TEntity} Entity The entity to prepare.
+ *
+ * @returns {TEntity} The same entity, but with notificationApi and intl removed.
+ */
+export const prepareToCreate = <T extends TEntity>(Entity: T): T => {
+  // Remove notificationApi and intl from the entity itself
   delete Entity.notificationApi;
   delete Entity.intl;
 
-  delete Entity?.layout.notificationApi;
-  delete Entity?.layout.intl;
+  // Remove notificationApi and intl from the layout, if present
+  if (Entity.layout) {
+    delete Entity.layout.notificationApi;
+    delete Entity.layout.intl;
 
-  Object.keys(Entity?.layout.widgets).forEach((key) => {
-    delete (Entity?.layout.widgets[key] as TWidget & Partial<TCommonAPI>).intl;
-    delete (Entity?.layout.widgets[key] as TWidget & Partial<TCommonAPI>)
-      .notificationApi;
-  });
+    // Remove notificationApi and intl from each widget, if widgets exist
+    if (Entity.layout.widgets && typeof Entity.layout.widgets === 'object') {
+      Object.keys(Entity.layout.widgets).forEach((key) => {
+        const widget = Entity.layout!.widgets![key] as TWidget &
+          Partial<TMessageConfig>;
+        if (widget) {
+          delete widget.intl;
+          delete widget.notificationApi;
+        }
+      });
+    }
+  }
 
   return Entity;
 };

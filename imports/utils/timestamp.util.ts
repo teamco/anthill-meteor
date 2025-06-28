@@ -4,6 +4,8 @@ export const DEFAULT_TIME_FORMAT = 'HH:mm';
 export const DEFAULT_DATE_FORMAT = 'YYYY-MM-DD';
 export const DEFAULT_DATE_TIME_FORMAT = `${DEFAULT_DATE_FORMAT} ${DEFAULT_TIME_FORMAT}:ss`;
 
+export const NADate = '-';
+
 /**
  * Converts a timestamp to a Date object.
  *
@@ -17,12 +19,12 @@ const toDate = (ts: string | number): Date => {
   return new Date(ts);
 };
 
-export const tsToDate = (ts: string | number): string =>
-  toDate(ts).toLocaleDateString();
-export const tsToTime = (ts: string | number): string =>
-  toDate(ts).toLocaleTimeString();
-export const tsToLocaleDateTime = (ts: string | number): string =>
-  `${tsToDate(ts)} ${tsToTime(ts)}`;
+export const tsToDate = (ts: string | number | undefined): string =>
+  ts ? toDate(ts).toLocaleDateString() : NADate;
+export const tsToTime = (ts: string | number | undefined): string =>
+  ts ? toDate(ts).toLocaleTimeString() : NADate;
+export const tsToLocaleDateTime = (ts: string | number | undefined): string =>
+  ts ? `${tsToDate(ts)} ${tsToTime(ts)}` : NADate;
 
 export const dateFormat = (
   date: string | number | dayjs.Dayjs | Date,

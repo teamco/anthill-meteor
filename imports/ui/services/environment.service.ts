@@ -12,9 +12,10 @@ import {
   TWidget,
   TMessageConfig,
   TNotificationError,
+  TLayout,
 } from '/imports/config/types';
 
-import { t } from '/imports/utils/i18n.util';
+import { t, TIntl } from '/imports/utils/i18n.util';
 import {
   successSaveMsg,
   catchErrorMsg,
@@ -26,6 +27,8 @@ import {
 
 import { getWidgetBy } from './widget.service';
 import { prepareToCreate } from './shared.service';
+import { MessageInstance } from 'antd/es/message/interface';
+import { NotificationInstance } from 'antd/es/notification/interface';
 
 /**
  * Creates a new environment with a single empty widget.
@@ -77,17 +80,17 @@ export const createEnvironment = (
     _id: widget._id,
   });
 
-  const environment = prepareToCreate(env as TEnvironmentEdit);
+  const _environment = prepareToCreate(env as TEnvironmentEdit);
 
-  Meteor.callAsync('environmentInsert', {
-    ...(environment as unknown as object),
-  })
+  Meteor.callAsync('environmentInsert', { ..._environment })
     .then((_id: string) => {
       successSaveMsg(config.messageApi, config.intl, 'Environment');
       handleRefresh();
 
+      const _layout = prepareToCreate(layout as TLayout);
+
       Meteor.callAsync('layoutInsert', {
-        ...(prepareToCreate(layout) as unknown as object),
+        ..._layout,
         environmentId: _id,
       }).catch((err: TNotificationError) => {
         catchErrorMsg(config.notificationApi, err);
@@ -157,23 +160,27 @@ export const deleteEnvironment = (
 export const updateEnvironment = (
   _id: string,
   doc: Pick<TEnvironmentEdit, 'name' | 'description' | 'status'>,
-  config: TMessageConfig,
+  config: Partial<TMessageConfig>,
 ): void => {
   Meteor.callAsync('environmentUpdate', { _id, doc })
     .then((res: number) => {
       if (res > 0) {
-        successUpdateMsg(config.messageApi, config.intl, 'Environment');
+        successUpdateMsg(
+          config.messageApi as MessageInstance,
+          config.intl as TIntl,
+          'Environment',
+        );
       } else {
-        catchWarnMsg(config.notificationApi, {
+        catchWarnMsg(config.notificationApi as NotificationInstance, {
           errorType: 'warning',
-          message: t(config.intl, 'error.warningMsg'),
+          message: t(config.intl as TIntl, 'error.warningMsg'),
           error: 'Error 400',
           name: '',
         });
       }
     })
     .catch((err: TNotificationError) => {
-      catchErrorMsg(config.notificationApi, err);
+      catchErrorMsg(config.notificationApi as NotificationInstance, err);
     });
 };
 

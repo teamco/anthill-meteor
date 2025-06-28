@@ -69,7 +69,7 @@ export const metadataColumns = ({
       key: 'thumbnail',
       width: 80,
       align: 'center',
-      render(thumbnail: string, record: IDataType): JSX.Element {
+      render(thumbnail: string, record: IDataType): React.JSX.Element {
         return (
           <div className="eThumbnail">
             <img src={thumbnail} alt={record.name} />

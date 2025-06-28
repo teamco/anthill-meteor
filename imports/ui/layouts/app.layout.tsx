@@ -8,7 +8,7 @@ import { I18nContext } from '/imports/ui/context/i18n.context';
 import { NotificationContext } from '/imports/ui/context/notification.context';
 
 import { TIntl } from '/imports/utils/i18n.util';
-import { TNotification } from '/imports/config/types';
+import { TMessageConfig } from '/imports/config/types';
 
 const { Content } = Layout;
 
@@ -31,7 +31,9 @@ const AppLayout: React.FC<TProps> = ({ children }): JSX.Element => {
       {notificationHolder}
       {modalHolder}
       <NotificationContext.Provider
-        value={{ modalApi, messageApi, notificationApi } as TNotification}
+        value={
+          { modalApi, messageApi, notificationApi } as Partial<TMessageConfig>
+        }
       >
         <Layout className={'layout'}>
           <Content className={'content'}>{children}</Content>

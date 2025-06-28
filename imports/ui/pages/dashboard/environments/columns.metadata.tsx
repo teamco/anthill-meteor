@@ -1,4 +1,4 @@
-import { JSX } from 'react';
+import React, { JSX } from 'react';
 import { ColumnType, TableProps } from 'antd/es/table';
 import { Tag, Tooltip } from 'antd';
 import { QuestionCircleTwoTone } from '@ant-design/icons';
@@ -55,7 +55,7 @@ export const metadataColumns = (
       key: 'name',
       ..._columnFilter,
       ..._columnSorter,
-      render(name: string, record: IDataType): JSX.Element {
+      render(name: string, record: IDataType): React.JSX.Element {
         return record?.description ? (
           <Tooltip title={record?.description.toString()}>
             <div className="eIconName">
