@@ -7,12 +7,10 @@ import React, {
   useState,
 } from 'react';
 import { useIntl } from 'react-intl';
-import { Button, Modal, Splitter } from 'antd';
+import { Button, Splitter } from 'antd';
 import { SettingTwoTone } from '@ant-design/icons';
 import classnames from 'classnames';
 import { createFileRoute } from '@tanstack/react-router';
-
-import { ArrowButtons } from '/imports/ui/components/Buttons/arrow.buttons';
 
 import { NotificationContext } from '/imports/ui/context/notification.context';
 
@@ -25,9 +23,9 @@ import {
   TSplitter,
   TSplitterItem,
   TSplitterLayout,
+  TWidget,
 } from '/imports/config/types';
 
-import './environment.preview.module.less';
 import {
   cleanPanel,
   deletePanel,
@@ -35,6 +33,9 @@ import {
   replacePanel,
 } from '/imports/utils/splitter.util';
 import { generateId } from '/imports/utils/generator.util';
+
+import './environment.preview.module.less';
+import { SplitterSetting } from './splitter.setting';
 
 // import { splitterMock } from "./__tests__/splitter.mock";
 
@@ -176,10 +177,11 @@ const EnvironmentPreview: React.FC = (): JSX.Element => {
    * It includes a clickable div that sets the active panel and a button that opens the splitter settings.
    *
    * @param {TSplitter} node - The node to render as a Splitter.Panel.
+   * @param {TWidget} widget - The widget associated with the node.
    * @returns {JSX.Element} The rendered Splitter.Panel component.
    */
   const renderPanel = useCallback(
-    (node: TSplitter): JSX.Element => {
+    (node: TSplitter, widget?: TWidget): JSX.Element => {
       if (!node?.uuid) {
         throw new Error(
           'Invalid node provided to renderPanel',
@@ -199,48 +201,20 @@ const EnvironmentPreview: React.FC = (): JSX.Element => {
             className={'pEdit'}
             onClick={() => setActivePanel(node?.uuid as string)}
           >
-            {node.uuid}
-            <br />
-            <div style={{ color: 'red' }}>{node.parentId}</div>
-            {node.size && (
-              <div>
-                <div style={{ color: 'blue' }}>Size: {node.size}</div>
-              </div>
-            )}
+            {widget?.name && <div>{widget.name}</div>}
           </div>
-          <Button
-            className={'pMgmt'}
-            type={'text'}
-            icon={<SettingTwoTone />}
-            onClick={handleSplitterSetting}
+          <SplitterSetting
+            node={node}
+            activePanel={activePanel as string}
+            splitter={splitter}
+            addPanel={addPanel}
+            handleDelete={handleDelete}
           />
         </Splitter.Panel>
       );
     },
     [activePanel],
   );
-
-  const handleSplitterSetting = useCallback(() => {
-    modalApi?.info({
-      width: 600,
-      title: t(intl, 'actions.addNew', { type: t(intl, 'widget.title') }),
-      content: (
-        <>
-          <ArrowButtons
-            className={'pBtn'}
-            panelId={activePanel as string}
-            onClick={addPanel}
-          />
-          <Button onClick={handleDelete}>del</Button>
-        </>
-      ),
-      footer: (
-        <Button key={'back'} onClick={Modal.destroyAll}>
-          {t(intl, 'actions.close')}
-        </Button>
-      ),
-    });
-  }, [activePanel, splitter]);
 
   /**
    * Handles the size change of a splitter panel.

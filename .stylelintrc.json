@@ -1,17 +1,17 @@
 {
-  "extends": "stylelint-config-standard-less",
+  "extends": ["stylelint-config-standard-less"],
   "plugins": ["stylelint-less"],
   "defaultSeverity": "warning",
+  "overrides": [
+    {
+      "files": ["**/*.less"],
+      "customSyntax": "postcss-less"
+    }
+  ],
   "rules": {
     "keyframes-name-pattern": null,
     "custom-property-pattern": null,
     "selector-class-pattern": null,
-    "less/double-slash-comment-whitespace-inside": [
-      "always",
-      {
-        "ignore": ["inside"]
-      }
-    ],
     "rule-empty-line-before": [
       "always",
       {

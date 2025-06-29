@@ -18,3 +18,7 @@ Thumbs.db
 jsconfig.json
 settings.json
 *.sublime-project
+
+__tests__/.cache
+__tests__/coverage
+__tests__/reports

@@ -3,7 +3,7 @@ import { Meteor } from 'meteor/meteor';
 import Environment from '/imports/api/environment/Environment';
 import Widget from '/imports/api/environment/Widget';
 
-import { EmptyWidget } from '/imports/api/widgets/empty.widget';
+import { EmptyWidget } from '../../api/widgets/empty/empty.widget';
 import { EnvironmentsCollection } from '/imports/collections/environments.collection';
 
 import {
@@ -134,7 +134,7 @@ export const deleteEnvironment = (
       } else {
         catchWarnMsg(config.notificationApi, {
           errorType: 'warning',
-          message: t(config.intl, 'error.warningMsg'),
+          message: t(config.intl as TIntl, 'error.warningMsg') as string,
           error: 'Error 400',
           name: '',
         });
@@ -177,7 +177,7 @@ export const updateEnvironment = (
       } else {
         catchWarnMsg(config.notificationApi as NotificationInstance, {
           errorType: 'warning',
-          message: t(config.intl as TIntl, 'error.warningMsg'),
+          message: t(config.intl as TIntl, 'error.warningMsg') as string,
           error: 'Error 400',
           name: '',
         });
