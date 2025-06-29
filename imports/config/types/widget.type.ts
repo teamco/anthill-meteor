@@ -20,6 +20,7 @@ export type TWidgetTags = string[];
 export type TWidget = {
   _id?: string;
   name: string;
+  path: string;
   description: string;
   thumbnail: string;
   dimensions: {

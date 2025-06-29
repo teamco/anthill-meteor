@@ -6,9 +6,9 @@ import React, {
   useRef,
   useState,
 } from 'react';
+import { Meteor } from 'meteor/meteor';
 import { useIntl } from 'react-intl';
-import { Button, Splitter } from 'antd';
-import { SettingTwoTone } from '@ant-design/icons';
+import { Splitter } from 'antd';
 import classnames from 'classnames';
 import { createFileRoute } from '@tanstack/react-router';
 
@@ -17,6 +17,7 @@ import { NotificationContext } from '/imports/ui/context/notification.context';
 import { t, TIntl } from '/imports/utils/i18n.util';
 
 import {
+  IUser,
   TAddPanelFn,
   TDirection,
   TRouterTypes,
@@ -34,8 +35,10 @@ import {
 } from '/imports/utils/splitter.util';
 import { generateId } from '/imports/utils/generator.util';
 
-import './environment.preview.module.less';
 import { SplitterSetting } from './splitter.setting';
+import { importWidget } from '/imports/utils/widget.util';
+
+import './environment.preview.module.less';
 
 // import { splitterMock } from "./__tests__/splitter.mock";
 
@@ -177,16 +180,30 @@ const EnvironmentPreview: React.FC = (): JSX.Element => {
    * It includes a clickable div that sets the active panel and a button that opens the splitter settings.
    *
    * @param {TSplitter} node - The node to render as a Splitter.Panel.
-   * @param {TWidget} widget - The widget associated with the node.
    * @returns {JSX.Element} The rendered Splitter.Panel component.
    */
   const renderPanel = useCallback(
-    (node: TSplitter, widget?: TWidget): JSX.Element => {
+    (node: TSplitter): JSX.Element => {
       if (!node?.uuid) {
         throw new Error(
           'Invalid node provided to renderPanel',
           node as Partial<ErrorOptions>,
         );
+      }
+
+      let Widget = () => <></>;
+
+      if (!node?.widget) {
+        node.widget = '/imports/api/widgets/empty/empty.widget';
+      }
+
+      if (node?.widget) {
+        const widget = importWidget(
+          node?.widget as string,
+          Meteor.user() as IUser,
+        ) as Promise<TWidget>;
+
+        widget.then((entity) => console.debug('entity', entity));
       }
 
       return (
@@ -201,7 +218,7 @@ const EnvironmentPreview: React.FC = (): JSX.Element => {
             className={'pEdit'}
             onClick={() => setActivePanel(node?.uuid as string)}
           >
-            {widget?.name && <div>{widget.name}</div>}
+            <Widget />
           </div>
           <SplitterSetting
             node={node}

@@ -1,3 +1,4 @@
+import React from 'react';
 import { SorterResult, TablePaginationConfig } from 'antd/es/table/interface';
 import { GetProp, TableProps } from 'antd/lib';
 
@@ -34,6 +35,7 @@ export type TSplitter = {
   items?: TSplitterItem[];
   layout?: TSplitterLayout;
   size?: number | string;
+  widget?: string;
 };
 
 export type TDirection = 'up' | 'down' | 'left' | 'right';

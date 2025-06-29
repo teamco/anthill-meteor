@@ -14,7 +14,7 @@ import { Route as EnvironmentsRouteImport } from '/imports/ui/pages/dashboard/en
 import { Route as EnvironmentEditRouteImport } from '/imports/ui/pages/dashboard/environments/environment/environment.edit';
 import { Route as EnvironmentPreviewRouteImport } from '/imports/ui/pages/dashboard/environments/environment/preview/environment.preview';
 import { Route as UserLogsRouteImport } from '/imports/ui/pages/dashboard/userLogs/userLogs.page';
-import { Route as ProfileRouteImport } from '/imports/ui/pages/dashboard/profile/profile.page';
+import { Route as ProfileRouteImport } from '/imports/ui/pages/profile/profile.page';
 
 import { Route as Error404RouteImport } from '/imports/ui/pages/404';
 

@@ -70,12 +70,17 @@ export default class Widget extends CommonUtils implements TWidget {
   readonly notificationApi: NotificationInstance;
   readonly intl: TIntl;
 
+  path: string;
+
   constructor(
     Entity: new (arg0: IUser) => TWidget,
     user: IUser,
+    path: string,
     config: Pick<TMessageConfig, 'notificationApi' | 'intl'>,
   ) {
     super();
+
+    this.path = path;
 
     this.notificationApi = config.notificationApi;
     this.intl = config.intl;
@@ -106,6 +111,7 @@ export default class Widget extends CommonUtils implements TWidget {
     });
 
     this.name = widget.name;
+    this.path = widget.path;
     this.description = widget.description;
     this.thumbnail = widget.thumbnail;
     this.dimensions = widget.dimensions;

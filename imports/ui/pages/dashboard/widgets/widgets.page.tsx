@@ -43,6 +43,7 @@ import { WidgetNew } from './widget/widget.new';
 import Widget from '/imports/api/environment/Widget';
 
 import './widgets.module.less';
+import { importWidget } from '/imports/utils/widget.util';
 
 export interface IDataType extends ICommonDataType {
   name: string;
@@ -159,38 +160,13 @@ const WidgetsPage: React.FC = (): JSX.Element => {
       content: (
         <WidgetNew
           disabled={isLoading()}
-          onSave={(values) => {
-            if (!values?.path) {
-              catchClassErrorMsg(notificationApi!, {
-                message: 'Widget path is required',
-              });
-              return;
-            }
+          onSave={async (values) => {
+            const widget = (await importWidget(
+              values?.path as string,
+              user as IUser,
+            )) as TWidget;
 
-            import(values.path)
-              .then((module) => {
-                const Entity = Object.values(module)[0] as new (
-                  arg0: IUser,
-                ) => TWidget;
-
-                if (typeof Entity !== 'function') {
-                  catchClassErrorMsg(notificationApi!, {
-                    message: 'Unable to load widget',
-                  });
-                }
-
-                const widget = new Widget(Entity, user as IUser, {
-                  notificationApi: notificationApi!,
-                  intl,
-                });
-
-                createWidget(widget, handleRefresh, messageConfig);
-              })
-              .catch((e) => {
-                catchClassErrorMsg(notificationApi!, {
-                  message: e.message,
-                });
-              });
+            createWidget(widget, handleRefresh, messageConfig);
           }}
         />
       ),

@@ -1,0 +1,4 @@
+# .meteorignore
+__tests__/coverage/
+__tests__/reports/
+__tests__/screenshots/
